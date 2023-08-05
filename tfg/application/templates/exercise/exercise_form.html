@@ -1,0 +1,13 @@
+<!-- templates/exercise/exercise_form.html -->
+
+{% extends "application/base.html" %}
+
+{% block content %}
+<h2>{% if object %}Editar{% else %}Crear{% endif %} Ejercicio</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">{% if object %}Actualizar{% else %}Crear{% endif %}</button>
+</form>
+{% endblock %}

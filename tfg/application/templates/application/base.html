@@ -1,0 +1,26 @@
+<!-- application/templates/application/base.html -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TFG{% endblock %}</title>
+    <!-- Aquí puedes agregar tus CSS, JS, etc. -->
+</head>
+<body>
+    <header>
+        <!-- Contenido del encabezado, como menús de navegación -->
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- El contenido específico de cada página se insertará aquí -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <!-- Contenido del pie de página -->
+    </footer>
+</body>
+</html>

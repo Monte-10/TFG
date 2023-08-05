@@ -1,0 +1,7 @@
+{% extends 'application/base.html' %}
+{% block content %}
+    <h2>{{ object.name }}</h2>
+    <!-- Muestra los detalles del desafío. Ajusta según los campos de tu modelo -->
+    <a href="{% url 'challenge_update' object.pk %}">Edit</a>
+    <a href="{% url 'challenge_delete' object.pk %}">Delete</a>
+{% endblock %}

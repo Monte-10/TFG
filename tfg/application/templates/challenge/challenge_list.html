@@ -1,0 +1,12 @@
+{% extends 'application/base.html' %}
+{% block content %}
+    <h2>Challenge List</h2>
+    <a href="{% url 'challenge_create' %}">Create New Challenge</a>
+    <ul>
+    {% for challenge in object_list %}
+        <li>
+            <a href="{% url 'challenge_detail' challenge.pk %}">{{ challenge.name }}</a>
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}

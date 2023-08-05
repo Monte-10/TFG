@@ -1,0 +1,19 @@
+<!-- templates/exercise/exercise_list.html -->
+
+{% extends "application/base.html" %}
+
+{% block content %}
+<h2>Listado de Ejercicios</h2>
+
+<ul>
+    {% for exercise in object_list %}
+        <li>
+            <a href="{% url 'exercise_detail' exercise.pk %}">{{ exercise.name }}</a>
+        </li>
+    {% empty %}
+        <li>No hay ejercicios disponibles.</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'exercise_create' %}">Crear nuevo ejercicio</a>
+{% endblock %}

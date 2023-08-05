@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Detalles de {{ object.username }}</h2>
+    
+    <p><strong>Nombre:</strong> {{ object.first_name }}</p>
+    <p><strong>Apellido:</strong> {{ object.last_name }}</p>
+    <p><strong>Email:</strong> {{ object.email }}</p>
+    <p><strong>Género:</strong> {{ object.get_gender_display }}</p>
+    <p><strong>Peso:</strong> {{ object.weight }} kg</p>
+    <p><strong>Altura:</strong> {{ object.height }} cm</p>
+    <p><strong>Edad:</strong> {{ object.age }} años</p>
+    <p><strong>Medida de cintura:</strong> {{ object.waist_measurement }} cm</p>
+    <p><strong>Medida de cadera:</strong> {{ object.hip_measurement }} cm</p>
+    <p><strong>Objetivo:</strong> {{ object.goal }}</p>
+    <p><strong>Problemas de salud:</strong> {{ object.health_issues }}</p>
+    <p><strong>Presión arterial:</strong> {{ object.blood_pressure }}</p>
+    <p><strong>Azúcar en sangre:</strong> {{ object.blood_sugar }}</p>
+    <p><strong>Consumo diario de agua:</strong> {{ object.daily_water_intake }} litros</p>
+    <p><strong>Tipo de dieta:</strong> {{ object.diet_type }}</p>
+    <p><strong>Consumo calórico:</strong> {{ object.calorie_intake }} cal</p>
+    <p><strong>Estilo de vida:</strong> {{ object.lifestyle }}</p>
+    <p><strong>Otros objetivos:</strong> {{ object.other_goals }}</p>
+
+{% endblock %}

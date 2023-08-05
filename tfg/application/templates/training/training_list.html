@@ -1,0 +1,12 @@
+{% extends 'application/base.html' %}
+{% block content %}
+    <h2>Training List</h2>
+    <a href="{% url 'training_create' %}">Create New Training</a>
+    <ul>
+    {% for training in object_list %}
+        <li>
+            <a href="{% url 'training_detail' training.pk %}">{{ training.name }}</a>
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}
