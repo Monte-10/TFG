@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser, Exercise, Training, TrainingExercise, ActivityRecord, Challenge, UserChallenge
+from .models import CustomUser, Exercise, Training, TrainingExercise, ActivityRecord, Challenge, UserChallenge, MuscleGroup
 
 # ModelAdmin personalizado para CustomUser
 class CustomUserAdmin(admin.ModelAdmin):
@@ -9,7 +9,7 @@ class CustomUserAdmin(admin.ModelAdmin):
 
 # ModelAdmin personalizado para Exercise
 class ExerciseAdmin(admin.ModelAdmin):
-    list_display = ('name', 'duration', 'sets', 'repetitions',)
+    list_display = ('name', 'duration',)
     search_fields = ('name',)
 
 # ModelAdmin personalizado para Training
@@ -21,6 +21,10 @@ class TrainingAdmin(admin.ModelAdmin):
 class ChallengeAdmin(admin.ModelAdmin):
     list_display = ('name', 'start_date', 'end_date',)
     search_fields = ('name',)
+    
+class MuscleGroupAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
 
 # Registrando los modelos en el sitio de administración
 admin.site.register(CustomUser, CustomUserAdmin)
@@ -30,3 +34,4 @@ admin.site.register(TrainingExercise)  # Puedes personalizar esto más tarde si 
 admin.site.register(ActivityRecord)  # Puedes personalizar esto más tarde si lo deseas
 admin.site.register(Challenge, ChallengeAdmin)
 admin.site.register(UserChallenge)  # Puedes personalizar esto más tarde si lo deseas
+admin.site.register(MuscleGroup, MuscleGroupAdmin)

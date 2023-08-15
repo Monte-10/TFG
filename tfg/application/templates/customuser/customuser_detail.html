@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "application/base.html" %}
 
 {% block content %}
     <h2>Detalles de {{ object.username }}</h2>
@@ -21,5 +21,8 @@
     <p><strong>Consumo calórico:</strong> {{ object.calorie_intake }} cal</p>
     <p><strong>Estilo de vida:</strong> {{ object.lifestyle }}</p>
     <p><strong>Otros objetivos:</strong> {{ object.other_goals }}</p>
+
+    <a href="{% url 'customuser_update' object.pk %}">Editar</a>
+    <a href="{% url 'customuser_delete' object.pk %}">Eliminar</a>
 
 {% endblock %}

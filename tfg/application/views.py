@@ -13,13 +13,13 @@ class CustomUserDetailView(DetailView):
 
 class CustomUserCreateView(CreateView):
     model = CustomUser
-    fields = ['username', 'gender', 'weight', 'height', ...]  # Agrega todos los campos que necesites aquí
+    fields = ['username', 'first_name', 'last_name', 'email', 'gender', 'weight', 'height', 'age', 'waist_measurement', 'hip_measurement', 'goal', 'health_issues', 'blood_pressure', 'blood_sugar', 'daily_water_intake', 'diet_type', 'calorie_intake', 'lifestyle', 'other_goals']  # Agrega todos los campos que necesites aquí
     template_name = 'customuser/customuser_form.html'
     success_url = reverse_lazy('customuser_list')
 
 class CustomUserUpdateView(UpdateView):
     model = CustomUser
-    fields = ['username', 'gender', 'weight', 'height', ...]  # Agrega todos los campos que necesites aquí
+    fields = ['username', 'first_name', 'last_name', 'email', 'gender', 'weight', 'height', 'age', 'waist_measurement', 'hip_measurement', 'goal', 'health_issues', 'blood_pressure', 'blood_sugar', 'daily_water_intake', 'diet_type', 'calorie_intake', 'lifestyle', 'other_goals']  # Agrega todos los campos que necesites aquí
     template_name = 'customuser/customuser_form.html'
     success_url = reverse_lazy('customuser_list')
 
@@ -39,13 +39,13 @@ class ExerciseDetailView(DetailView):
     
 class ExerciseCreateView(CreateView):
     model = Exercise
-    fields = ['name', 'duration', 'sets', 'repetitions', ...]  # Agrega todos los campos que necesites aquí
+    fields = ['name', 'video_url', 'description', 'muscle_groups', 'muscle_image', 'duration', 'timer',]  # Agrega todos los campos que necesites aquí
     template_name = 'exercise/exercise_form.html'
     success_url = reverse_lazy('exercise_list')
     
 class ExerciseUpdateView(UpdateView):
     model = Exercise
-    fields = ['name', 'duration', 'sets', 'repetitions', ...]  # Agrega todos los campos que necesites aquí
+    fields = ['name', 'video_url', 'description', 'muscle_groups', 'muscle_image', 'duration', 'timer',]  # Agrega todos los campos que necesites aquí
     template_name = 'exercise/exercise_form.html'
     success_url = reverse_lazy('exercise_list')
     

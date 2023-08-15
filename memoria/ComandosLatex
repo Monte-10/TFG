@@ -1,0 +1,10 @@
+COMANDOS LATEX
+
+Crear documento:
+ - touch test.tex
+
+Compilar documento:
+ - pdflatex test.tex
+ 
+Ver el documento:
+ - evince test.pdf
