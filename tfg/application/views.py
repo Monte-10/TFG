@@ -91,7 +91,7 @@ class ChallengeDetailView(DetailView):
     
 class ChallengeCreateView(CreateView):
     model = Challenge
-    fields = '__all__'  # Asume que queremos todos los campos, cámbialo si es necesario
+    fields = '__all__' 
     template_name = 'challenge/challenge_form.html'
     success_url = reverse_lazy('challenge_list')
     

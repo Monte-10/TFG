@@ -5,7 +5,7 @@ from .models import CustomUser, Exercise, Training, TrainingExercise, ActivityRe
 class CustomUserAdmin(admin.ModelAdmin):
     list_display = ('username', 'email', 'gender', 'age',)
     search_fields = ('username', 'email',)
-    # Agrega cualquier otro campo o configuración que desees
+    
 
 # ModelAdmin personalizado para Exercise
 class ExerciseAdmin(admin.ModelAdmin):
@@ -30,8 +30,8 @@ class MuscleGroupAdmin(admin.ModelAdmin):
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Exercise, ExerciseAdmin)
 admin.site.register(Training, TrainingAdmin)
-admin.site.register(TrainingExercise)  # Puedes personalizar esto más tarde si lo deseas
-admin.site.register(ActivityRecord)  # Puedes personalizar esto más tarde si lo deseas
+admin.site.register(TrainingExercise)  
+admin.site.register(ActivityRecord)  
 admin.site.register(Challenge, ChallengeAdmin)
-admin.site.register(UserChallenge)  # Puedes personalizar esto más tarde si lo deseas
+admin.site.register(UserChallenge)  
 admin.site.register(MuscleGroup, MuscleGroupAdmin)
