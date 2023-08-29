@@ -4,7 +4,75 @@
     <h2>{% if object %}Actualizar{% else %}Crear{% endif %} Usuario</h2>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        
+        {% if not object %}  {# Si no existe el objeto, es un registro nuevo #}
+            <div>
+                <label for="username">Nombre de Usuario:</label>
+                <input type="text" name="username" required>
+            </div>
+            <div>
+                <label for="password">Contraseña:</label>
+                <input type="password" name="password" required>
+            </div>
+            <div>
+                <label>Rol:</label>
+                <input type="radio" name="role" value="cliente" id="role_cliente" required>
+                <label for="role_cliente">Cliente</label>
+
+                <input type="radio" name="role" value="entrenador" id="role_entrenador" required>
+                <label for="role_entrenador">Entrenador</label>
+            </div>
+        {% endif %}
+
+        <div id="client_fields">
+            {# Campos para el cliente #}
+            {% if form.gender %} {{ form.gender.label_tag }} {{ form.gender }} {% endif %}
+            {% if form.weight %} {{ form.weight.label_tag }} {{ form.weight }} {% endif %}
+            {% if form.height %} {{ form.height.label_tag }} {{ form.height }} {% endif %}
+            {% if form.age %} {{ form.age.label_tag }} {{ form.age }} {% endif %}
+            {% if form.waist_measurement %} {{ form.waist_measurement.label_tag }} {{ form.waist_measurement }} {% endif %}
+            {% if form.hip_measurement %} {{ form.hip_measurement.label_tag }} {{ form.hip_measurement }} {% endif %}
+            {% if form.goal %} {{ form.goal.label_tag }} {{ form.goal }} {% endif %}
+            {% if form.health_issues %} {{ form.health_issues.label_tag }} {{ form.health_issues }} {% endif %}
+            {% if form.blood_pressure %} {{ form.blood_pressure.label_tag }} {{ form.blood_pressure }} {% endif %}
+            {% if form.blood_sugar %} {{ form.blood_sugar.label_tag }} {{ form.blood_sugar }} {% endif %}
+            {% if form.daily_water_intake %} {{ form.daily_water_intake.label_tag }} {{ form.daily_water_intake }} {% endif %}
+            {% if form.diet_type %} {{ form.diet_type.label_tag }} {{ form.diet_type }} {% endif %}
+            {% if form.calorie_intake %} {{ form.calorie_intake.label_tag }} {{ form.calorie_intake }} {% endif %}
+            {% if form.lifestyle %} {{ form.lifestyle.label_tag }} {{ form.lifestyle }} {% endif %}
+            {% if form.other_goals %} {{ form.other_goals.label_tag }} {{ form.other_goals }} {% endif %}
+
+        </div>
+
+        <div id="trainer_fields" style="display: none;">
+            {# Campos para el entrenador #}
+        </div>
+        
         <button type="submit">Guardar</button>
     </form>
+
+    <script>
+        // Mostrar/ocultar campos basados en el rol seleccionado.
+        document.addEventListener('DOMContentLoaded', function() {
+            let role_cliente = document.getElementById('role_cliente');
+            let role_entrenador = document.getElementById('role_entrenador');
+
+            let client_fields = document.getElementById('client_fields');
+            let trainer_fields = document.getElementById('trainer_fields');
+
+            role_cliente.addEventListener('change', function() {
+                if (role_cliente.checked) {
+                    client_fields.style.display = 'block';
+                    trainer_fields.style.display = 'none';
+                }
+            });
+
+            role_entrenador.addEventListener('change', function() {
+                if (role_entrenador.checked) {
+                    client_fields.style.display = 'none';
+                    trainer_fields.style.display = 'block';
+                }
+            });
+        });
+    </script>
 {% endblock %}

@@ -1,11 +1,12 @@
 # application/urls.py
-from django.urls import path
+from django.urls import path, re_path
 from .views import (CustomUserListView, CustomUserDetailView, CustomUserCreateView, CustomUserUpdateView, CustomUserDeleteView)
 from .views import (ExerciseListView, ExerciseDetailView, ExerciseCreateView, ExerciseUpdateView, ExerciseDeleteView)
 from .views import (TrainingListView, TrainingDetailView, TrainingCreateView, TrainingUpdateView, TrainingDeleteView)
 from .views import (ChallengeListView, ChallengeDetailView, ChallengeCreateView, ChallengeUpdateView, ChallengeDeleteView)
 
 urlpatterns = [
+    re_path(r'^$', CustomUserCreateView.as_view(), name='home'),
     path('customuser/', CustomUserListView.as_view(), name='customuser_list'),
     path('customuser/<int:pk>/', CustomUserDetailView.as_view(), name='customuser_detail'),
     path('customuser/create/', CustomUserCreateView.as_view(), name='customuser_create'),

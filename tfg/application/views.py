@@ -1,8 +1,29 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import CustomUser, Exercise, Training, Challenge
+from django.shortcuts import render, redirect
 
 # Vistas para CustomUser
+
+def user_choice(request):
+    if request.method == 'POST':
+        role = request.POST.get('role')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        # Aquí puedes crear un usuario y guardar solo el username y el password
+        # Y después, dependiendo del rol, rediriges a la vista adecuada
+
+        if role == "entrenador":
+            # Redirigir a la vista/formulario del entrenador
+            return redirect('entrenador_form', username=username)
+        else:
+            # Redirigir a la vista/formulario del cliente
+            return redirect('cliente_form', username=username)
+
+    return render(request, 'register_choice.html')
+
+
 class CustomUserListView(ListView):
     model = CustomUser
     template_name = 'customuser/customuser_list.html'

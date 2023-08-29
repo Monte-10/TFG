@@ -14,6 +14,11 @@ class CustomUser(AbstractUser):
     groups = models.ManyToManyField(Group, related_name='customuser_groups')
     user_permissions = models.ManyToManyField(Permission, related_name='customuser_permissions')
     
+    ROLE_CHOICES = [
+        ('cliente', 'Cliente'),
+        ('entrenador', 'Entrenador'),
+    ]
+    
     GENDER_CHOICES = [
         ('Hombre', 'Hombre'),
         ('Mujer', 'Mujer'),
@@ -35,6 +40,7 @@ class CustomUser(AbstractUser):
     ]
     
     # Extended fields for the user
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='cliente')
     gender = models.CharField(max_length=20, choices=GENDER_CHOICES)
     weight = models.FloatField()
     height = models.FloatField()
