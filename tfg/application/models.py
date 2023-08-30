@@ -42,9 +42,9 @@ class CustomUser(AbstractUser):
     # Extended fields for the user
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='cliente')
     gender = models.CharField(max_length=20, choices=GENDER_CHOICES)
-    weight = models.FloatField()
-    height = models.FloatField()
-    age = models.IntegerField()
+    weight = models.FloatField(null=True, blank=True)
+    height = models.FloatField(null=True, blank=True)
+    age = models.IntegerField(null=True, blank=True)
     waist_measurement = models.FloatField(null=True, blank=True)
     hip_measurement = models.FloatField(null=True, blank=True)
     goal = models.CharField(max_length=50, choices=GOAL_CHOICES)
@@ -56,6 +56,7 @@ class CustomUser(AbstractUser):
     calorie_intake = models.FloatField(null=True, blank=True)
     lifestyle = models.CharField(max_length=50, choices=LIFE_STYLE_CHOICES)
     other_goals = models.TextField(null=True, blank=True)
+    entrenador = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='clientes')
     
 class Exercise(models.Model):
     name = models.CharField(max_length=100)
@@ -67,7 +68,7 @@ class Exercise(models.Model):
     timer = models.DurationField(null=True, blank=True)
 
 class Training(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    cliente = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True, related_name='entrenamientos')
     name = models.CharField(max_length=100)
     description = models.TextField()
     approximate_duration = models.DurationField()

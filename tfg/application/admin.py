@@ -14,8 +14,8 @@ class ExerciseAdmin(admin.ModelAdmin):
 
 # ModelAdmin personalizado para Training
 class TrainingAdmin(admin.ModelAdmin):
-    list_display = ('name', 'user', 'date',)
-    search_fields = ('name', 'user__username',)
+    list_display = ('name','date',)
+    search_fields = ('name',)
 
 # ModelAdmin personalizado para Challenge
 class ChallengeAdmin(admin.ModelAdmin):
