@@ -4,16 +4,16 @@ from .views import (CustomUserListView, CustomUserDetailView, CustomUserCreateVi
 from .views import (ExerciseListView, ExerciseDetailView, ExerciseCreateView, ExerciseUpdateView, ExerciseDeleteView)
 from .views import (TrainingListView, TrainingDetailView, TrainingCreateView, TrainingUpdateView, TrainingDeleteView)
 from .views import (ChallengeListView, ChallengeDetailView, ChallengeCreateView, ChallengeUpdateView, ChallengeDeleteView)
-from .views import register_customuser
+from .views import home
 
 urlpatterns = [
-    re_path(r'^$', CustomUserCreateView.as_view(), name='home'),
+    re_path(r'^$', home, name='home'),
     path('customuser/', CustomUserListView.as_view(), name='customuser_list'),
     path('user/<int:pk>/', CustomUserDetailView.as_view(), name='customuser_detail'),
     #path('user/create/', CustomUserCreateView.as_view(), name='customuser_create'),
     path('customuser/update/<int:pk>/', CustomUserUpdateView.as_view(), name='customuser_update'),
     path('customuser/delete/<int:pk>/', CustomUserDeleteView.as_view(), name='customuser_delete'),
-    path('register/', register_customuser, name='register'),
+    path('register/', CustomUserCreateView.as_view(), name='register'),
 ]
 
 urlpatterns += [

@@ -5,12 +5,30 @@
     <form method="post">
         {% csrf_token %}
 
+        <!-- CORRECCION ERRORES -->
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                Por favor, corrige los siguientes errores: <br>
+                {{ form.errors }}
+            </div>
+        {% endif %} 
+        
+
         {{ form.username.label_tag }} {{ form.username }}
-        {{ form.password.label_tag }} {{ form.password }}
+        {{ form.username.errors }}
+
+        {{ form.password1.label_tag }} {{ form.password1 }}
+        {{ form.password1.errors }}
+
+        {{ form.password2.label_tag }} {{ form.password2 }}
+        {{ form.password2.errors }}
+
+
         {{ form.email.label_tag }} {{ form.email }}
+        {{ form.email.errors }}
 
         <div>
-            <label>¿Qué eres?:</label>
+            <label for="role_cliente">¿Qué eres?:</label>
             <input type="radio" name="role" value="cliente" id="role_cliente" required>
             <label for="role_cliente">Cliente</label>
 

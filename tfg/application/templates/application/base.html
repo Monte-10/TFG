@@ -20,6 +20,12 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="{% url 'home' %}">Mi Aplicación</a>
+
+        <!-- Botón de Registro -->
+        <div class="ml-auto">
+            <a href="{% url 'register' %}" class="btn btn-primary">Registro</a>
+        </div>
+
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -28,14 +34,14 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'home' %}">Inicio</a>
                 </li>
-                <!-- Puedes añadir más elementos de navegación aquí -->
+                <!-- Elementos de navegación -->
             </ul>
         </div>
     </nav>
 
     <div class="container mt-4">
         {% block content %}
-        <!-- El contenido específico de cada página irá aquí -->
+        <!-- Contenido de cada página -->
         {% endblock %}
     </div>
 

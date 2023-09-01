@@ -2,8 +2,12 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import CustomUser, Exercise, Training, Challenge
 from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, CustomUserUpdateForm
 from django.contrib import messages
+
+#View para el home
+def home(request):
+    return render(request, 'application/base.html')
 
 # Vistas para CustomUser
 
@@ -15,16 +19,15 @@ def register_customuser(request):
             # Mensaje de éxito:
             messages.success(request, 'Registro completado con éxito. Ahora puedes iniciar sesión.')
             # Redirige al usuario a la página de inicio (home.html) después del registro exitoso.
-            return redirect('home')  # Asumiendo que 'home' es el nombre de la URL para home.html.
+            return redirect('customuser_list')  # Asumiendo que 'home' es el nombre de la URL para home.html.
         else:
             # Si el formulario es inválido, vuelve a mostrar el formulario con los errores.
             messages.error(request, 'Por favor, corrige los errores.')
+            print(form.errors)
     else:
         form = CustomUserCreationForm()
 
     return render(request, 'customuser/customuser_form.html', {'form': form})
-
-
 
 class CustomUserListView(ListView):
     model = CustomUser
@@ -36,13 +39,14 @@ class CustomUserDetailView(DetailView):
 
 class CustomUserCreateView(CreateView):
     model = CustomUser
-    fields = ['username', 'password', 'email', 'first_name', 'last_name', 'email', 'gender', 'weight', 'height', 'age', 'waist_measurement', 'hip_measurement', 'goal', 'health_issues', 'blood_pressure', 'blood_sugar', 'daily_water_intake', 'diet_type', 'calorie_intake', 'lifestyle', 'other_goals']  # Agrega todos los campos que necesites aquí
+    form_class = CustomUserCreationForm  # Usar form_class en lugar de fields
     template_name = 'customuser/customuser_form.html'
     success_url = reverse_lazy('customuser_list')
 
+
 class CustomUserUpdateView(UpdateView):
     model = CustomUser
-    fields = ['username', 'password', 'email', 'first_name', 'last_name', 'email', 'gender', 'weight', 'height', 'age', 'waist_measurement', 'hip_measurement', 'goal', 'health_issues', 'blood_pressure', 'blood_sugar', 'daily_water_intake', 'diet_type', 'calorie_intake', 'lifestyle', 'other_goals']  # Agrega todos los campos que necesites aquí
+    form_class = CustomUserUpdateForm  # Usar form_class en lugar de fields
     template_name = 'customuser/customuser_form.html'
     success_url = reverse_lazy('customuser_list')
 
