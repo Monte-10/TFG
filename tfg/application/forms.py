@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUser
+from .models import CustomUser, Exercise
 
 class CustomUserBaseForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -150,3 +150,22 @@ class CustomUserUpdateForm(CustomUserBaseForm):
             for field in ["gender", "goal", "lifestyle", "weight", "height", "age"]:
                 self.fields[field].required = False
         return cleaned_data
+    
+class ExerciseForm(forms.ModelForm):
+    class Meta:
+        model = Exercise
+        fields = ['name', 'video_url', 'description', 'target']
+
+        # Opcionalmente, si deseas especificar etiquetas personalizadas o widgets:
+        labels = {
+            'name': 'Nombre del ejercicio',
+            'video_url': 'URL del video',
+            'description': 'Descripción',
+            'target': 'Grupo muscular objetivo',
+        }
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'video_url': forms.URLInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
+            'target': forms.SelectMultiple(attrs={'class': 'form-control'}),
+        }

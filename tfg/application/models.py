@@ -62,10 +62,7 @@ class Exercise(models.Model):
     name = models.CharField(max_length=100)
     video_url = models.URLField()
     description = models.TextField()
-    muscle_groups = models.ManyToManyField(MuscleGroup)  # Relación con el modelo MuscleGroup
-    muscle_image = models.ImageField(upload_to='muscles/')
-    duration = models.DurationField(null=True, blank=True)
-    timer = models.DurationField(null=True, blank=True)
+    target = models.ManyToManyField(MuscleGroup)  # Relación con el modelo MuscleGroup
 
 class Training(models.Model):
     cliente = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True, related_name='entrenamientos')

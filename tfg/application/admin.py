@@ -9,7 +9,7 @@ class CustomUserAdmin(admin.ModelAdmin):
 
 # ModelAdmin personalizado para Exercise
 class ExerciseAdmin(admin.ModelAdmin):
-    list_display = ('name', 'duration',)
+    list_display = ('name',)
     search_fields = ('name',)
 
 # ModelAdmin personalizado para Training

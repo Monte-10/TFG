@@ -2,7 +2,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import CustomUser, Exercise, Training, Challenge
 from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm, CustomUserUpdateForm
+from .forms import CustomUserCreationForm, CustomUserUpdateForm, ExerciseForm
 from django.contrib import messages
 
 #View para el home
@@ -66,13 +66,13 @@ class ExerciseDetailView(DetailView):
     
 class ExerciseCreateView(CreateView):
     model = Exercise
-    fields = ['name', 'video_url', 'description', 'muscle_groups', 'muscle_image', 'duration', 'timer',]  # Agrega todos los campos que necesites aquí
+    form_class = ExerciseForm  # Usa el formulario que has creado
     template_name = 'exercise/exercise_form.html'
     success_url = reverse_lazy('exercise_list')
     
 class ExerciseUpdateView(UpdateView):
     model = Exercise
-    fields = ['name', 'video_url', 'description', 'muscle_groups', 'muscle_image', 'duration', 'timer',]  # Agrega todos los campos que necesites aquí
+    form_class = ExerciseForm  # Usa el formulario que has creado
     template_name = 'exercise/exercise_form.html'
     success_url = reverse_lazy('exercise_list')
     
