@@ -58,11 +58,17 @@ class CustomUser(AbstractUser):
     other_goals = models.TextField(null=True, blank=True)
     entrenador = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='clientes')
     
+    def __str__(self):
+        return self.username
+    
 class Exercise(models.Model):
     name = models.CharField(max_length=100)
     video_url = models.URLField()
     description = models.TextField()
     target = models.ManyToManyField(MuscleGroup)  # Relación con el modelo MuscleGroup
+    
+    def __str__(self):
+        return self.name
 
 class Training(models.Model):
     cliente = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True, related_name='entrenamientos')
@@ -72,13 +78,17 @@ class Training(models.Model):
     muscle_groups = models.ManyToManyField(MuscleGroup)  # Relación con el modelo MuscleGroup, reemplazando el TextField anterior
     note = models.TextField(null=True, blank=True)
     date = models.DateField(default=date.today, null=True, blank=True)
-    exercises = models.ManyToManyField(Exercise, through='TrainingExercise')
+    exercises = models.ManyToManyField(Exercise, through='TrainingExercise', null=True, blank=True)
+    
+    def __str__(self):
+        return self.name
 
 class TrainingExercise(models.Model):
     training = models.ForeignKey(Training, on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
-    repetitions = models.IntegerField(default=0)
-    sets = models.IntegerField(default=0)
+    repetitions = models.IntegerField(default=1)
+    sets = models.IntegerField(default=1)
+    order = models.PositiveIntegerField(default=0)
 
 class ActivityRecord(models.Model):
     ACTIVITY_TYPE = [

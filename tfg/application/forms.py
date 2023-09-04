@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUser, Exercise
+from .models import CustomUser, Exercise, Training, TrainingExercise
+from django.forms import inlineformset_factory
 
 class CustomUserBaseForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -169,3 +170,35 @@ class ExerciseForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control'}),
             'target': forms.SelectMultiple(attrs={'class': 'form-control'}),
         }
+    
+class TrainingForm(forms.ModelForm):
+    class Meta:
+        model = Training
+        fields = ['cliente', 'name', 'description', 'approximate_duration', 'muscle_groups', 'note', 'date', 'exercises']
+
+        widgets = {
+            'cliente': forms.Select(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
+            'approximate_duration': forms.TextInput(attrs={'class': 'form-control'}),  # Cambio aquí
+            'muscle_groups': forms.SelectMultiple(attrs={'class': 'form-control'}),
+            'note': forms.Textarea(attrs={'class': 'form-control'}),
+            'date': forms.DateInput(attrs={'class': 'form-control'}),
+            'exercises': forms.SelectMultiple(attrs={'class': 'form-control'}),
+        }
+
+        
+# Definición de TrainingExerciseFormSet
+TrainingExerciseFormSet = inlineformset_factory(
+    Training, 
+    TrainingExercise, 
+    fields=('exercise', 'repetitions', 'sets'),
+    extra=1, # permite agregar 1 formulario vacío adicional para nuevos ejercicios
+    widgets={
+        'exercise': forms.Select(attrs={'class': 'form-control'}),
+        'repetitions': forms.NumberInput(attrs={'class': 'form-control'}),
+        'sets': forms.NumberInput(attrs={'class': 'form-control'}),
+    }
+)
+
+   
