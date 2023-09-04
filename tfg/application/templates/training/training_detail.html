@@ -1,9 +1,18 @@
 {% extends 'application/base.html' %}
 {% block content %}
     <h2>{{ object.name }}</h2>
+    <p>Cliente: {{ object.client }}</p>
     <p>Description: {{ object.description }}</p>
-    <p>Duration: {{ object.approximate_duration }}</p>
+    <p>Duración: {{ object.approximate_duration }}</p>
+    <p>Ejercicios:</p>
+        <ul>
+        {% for exercise in object.exercises.all %}
+            <li><a href="{% url 'exercise_detail' exercise.pk %}">{{ exercise.name }}</a></li>
+        {% endfor %}
+        </ul>
+
+
     <!-- Y así sucesivamente para los demás campos -->
-    <a href="{% url 'training_update' object.pk %}">Edit</a>
-    <a href="{% url 'training_delete' object.pk %}">Delete</a>
+    <a href="{% url 'training_update' object.pk %}">Editar</a>
+    <a href="{% url 'training_delete' object.pk %}">Eliminar</a>
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'application/base.html' %}
 {% block content %}
-    <h2>Training List</h2>
-    <a href="{% url 'training_create' %}">Create New Training</a>
+    <h2>Lista de Entrenamientos</h2>
+    <a href="{% url 'training_create' %}">Crear Entrenamiento</a>
     <ul>
     {% for training in object_list %}
         <li>

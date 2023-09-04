@@ -2,8 +2,12 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import CustomUser, Exercise, Training, Challenge
 from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm, CustomUserUpdateForm, ExerciseForm, TrainingForm, TrainingExerciseFormSet
+from .forms import CustomUserCreationForm, CustomUserUpdateForm, ExerciseForm, TrainingForm
 from django.contrib import messages
+
+import logging
+
+logger = logging.getLogger(__name__)
 
 #View para el home
 def home(request):
@@ -92,61 +96,15 @@ class TrainingDetailView(DetailView):
     
 class TrainingCreateView(CreateView):
     model = Training
-    form_class = TrainingForm  # como definido anteriormente
+    form_class = TrainingForm  # Usa el formulario que has creado
     template_name = 'training/training_form.html'
+    success_url = reverse_lazy('training_list')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        if self.request.POST:
-            context['exercise_form'] = TrainingExerciseFormSet(self.request.POST, instance=self.object)
-        else:
-            context['exercise_form'] = TrainingExerciseFormSet(instance=self.object)
-        return context
-
-    def form_valid(self, form):
-        context = self.get_context_data()
-        exercise_form = context['exercise_form']
-        if exercise_form.is_valid():
-            self.object = form.save()
-            exercise_form.instance = self.object
-            exercise_form.save()
-            return redirect(self.get_success_url())
-        else:
-            return self.render_to_response(self.get_context_data(form=form))
-    
-    def get_success_url(self):
-        return reverse_lazy('training_list')
-
-    
 class TrainingUpdateView(UpdateView):
     model = Training
-    form_class = TrainingForm  # como definido anteriormente
+    form_class = TrainingForm  # Usa el formulario que has creado
     template_name = 'training/training_form.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        if self.request.POST:
-            # Pasar la instancia de Training ya existente (self.object) al FormSet
-            context['exercise_form'] = TrainingExerciseFormSet(self.request.POST, instance=self.object)
-        else:
-            context['exercise_form'] = TrainingExerciseFormSet(instance=self.object)
-        return context
-
-    def form_valid(self, form):
-        context = self.get_context_data()
-        exercise_form = context['exercise_form']
-        if exercise_form.is_valid():
-            self.object = form.save()
-            exercise_form.instance = self.object
-            exercise_form.save()
-            return redirect(self.get_success_url())
-        else:
-            return self.render_to_response(self.get_context_data(form=form))
-    
-    def get_success_url(self):
-        return reverse_lazy('training_list')
-
-
+    success_url = reverse_lazy('training_list')
     
 class TrainingDeleteView(DeleteView):
     model = Training

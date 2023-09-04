@@ -187,18 +187,4 @@ class TrainingForm(forms.ModelForm):
             'exercises': forms.SelectMultiple(attrs={'class': 'form-control'}),
         }
 
-        
-# Definición de TrainingExerciseFormSet
-TrainingExerciseFormSet = inlineformset_factory(
-    Training, 
-    TrainingExercise, 
-    fields=('exercise', 'repetitions', 'sets'),
-    extra=1, # permite agregar 1 formulario vacío adicional para nuevos ejercicios
-    widgets={
-        'exercise': forms.Select(attrs={'class': 'form-control'}),
-        'repetitions': forms.NumberInput(attrs={'class': 'form-control'}),
-        'sets': forms.NumberInput(attrs={'class': 'form-control'}),
-    }
-)
-
    

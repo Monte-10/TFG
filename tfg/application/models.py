@@ -78,7 +78,7 @@ class Training(models.Model):
     muscle_groups = models.ManyToManyField(MuscleGroup)  # Relación con el modelo MuscleGroup, reemplazando el TextField anterior
     note = models.TextField(null=True, blank=True)
     date = models.DateField(default=date.today, null=True, blank=True)
-    exercises = models.ManyToManyField(Exercise, through='TrainingExercise', null=True, blank=True)
+    exercises = models.ManyToManyField(Exercise, through='TrainingExercise')
     
     def __str__(self):
         return self.name
