@@ -4,14 +4,15 @@ from .models import CustomUser, Exercise, Training, Challenge
 from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm, CustomUserUpdateForm, ExerciseForm, TrainingForm
 from django.contrib import messages
-
-import logging
-
-logger = logging.getLogger(__name__)
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 #View para el home
 def home(request):
     return render(request, 'application/base.html')
+
+def login(request):
+    return render(request, 'application/login.html')
 
 # Vistas para CustomUser
 
@@ -136,3 +137,13 @@ class ChallengeDeleteView(DeleteView):
     model = Challenge
     template_name = 'challenge/challenge_confirm_delete.html'
     success_url = reverse_lazy('challenge_list')
+    
+@method_decorator(login_required, name='dispatch')
+class ClientTrainingsListView(ListView):
+    model = Training
+    template_name = 'training/my_trainings_list.html'
+    context_object_name = 'trainings'
+    
+    def get_queryset(self):
+        # Filtrar los entrenamientos para el usuario actual y ordenar por fecha
+        return Training.objects.filter(cliente=self.request.user).order_by('-date')

@@ -1,0 +1,13 @@
+{% extends "application/base.html" %}
+
+{% block content %}
+    <h1>Mis Entrenamientos</h1>
+    <ul>
+        {% for training in trainings %}
+            <li>
+                <strong>{{ training.name }}</strong> - {{ training.date }}
+                <p>{{ training.description }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

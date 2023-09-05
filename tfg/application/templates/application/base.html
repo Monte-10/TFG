@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Mi Aplicación{% endblock %}</title>
+    <title>{% block title %}TFG{% endblock %}</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -19,7 +19,7 @@
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="{% url 'home' %}">Mi Aplicación</a>
+        <a class="navbar-brand" href="{% url 'home' %}">TFG</a>
 
         <!-- Botón de Registro -->
         <div class="ml-auto">
@@ -37,6 +37,16 @@
                 <!-- Elementos de navegación -->
             </ul>
         </div>
+        {% if user.is_authenticated %}
+        <div>Has iniciado sesión como: {{ user.username }}</div>
+        <div class="ml-auto">
+            <a href="{% url 'logout' %}" class="btn btn-danger">Cerrar sesión</a>
+        </div>
+        {% else %}
+        <div class="ml-auto">
+            <a href="{% url 'login' %}" class="btn btn-success">Iniciar sesión</a>
+        </div>
+        {% endif %}
     </nav>
 
     <div class="container mt-4">

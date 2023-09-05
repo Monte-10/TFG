@@ -4,6 +4,7 @@ from .views import (CustomUserListView, CustomUserDetailView, CustomUserCreateVi
 from .views import (ExerciseListView, ExerciseDetailView, ExerciseCreateView, ExerciseUpdateView, ExerciseDeleteView)
 from .views import (TrainingListView, TrainingDetailView, TrainingCreateView, TrainingUpdateView, TrainingDeleteView)
 from .views import (ChallengeListView, ChallengeDetailView, ChallengeCreateView, ChallengeUpdateView, ChallengeDeleteView)
+from .views import (ClientTrainingsListView)
 from .views import home
 
 urlpatterns = [
@@ -38,4 +39,8 @@ urlpatterns += [
     path('challenge/create/', ChallengeCreateView.as_view(), name='challenge_create'),
     path('challenge/update/<int:pk>/', ChallengeUpdateView.as_view(), name='challenge_update'),
     path('challenge/delete/<int:pk>/', ChallengeDeleteView.as_view(), name='challenge_delete'),
+]
+
+urlpatterns += [
+    path('my_trainings/', ClientTrainingsListView.as_view(), name='my_trainings'),
 ]
