@@ -1,6 +1,8 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import CustomUser, Exercise, Training, Challenge
+from .models import Alimento 
+''', Comida, DiaDieta, Dieta'''
 from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm, CustomUserUpdateForm, ExerciseForm, TrainingForm
 from django.contrib import messages
@@ -63,87 +65,112 @@ class CustomUserDeleteView(DeleteView):
 # Vistas para Exercise
 class ExerciseListView(ListView):
     model = Exercise
-    template_name = 'exercise/exercise_list.html'
+    template_name = 'deporte/exercise/exercise_list.html'
     
 class ExerciseDetailView(DetailView):
     model = Exercise
-    template_name = 'exercise/exercise_detail.html'
+    template_name = 'deporte/exercise/exercise_detail.html'
     
 class ExerciseCreateView(CreateView):
     model = Exercise
     form_class = ExerciseForm  # Usa el formulario que has creado
-    template_name = 'exercise/exercise_form.html'
+    template_name = 'deporte/exercise/exercise_form.html'
     success_url = reverse_lazy('exercise_list')
     
 class ExerciseUpdateView(UpdateView):
     model = Exercise
     form_class = ExerciseForm  # Usa el formulario que has creado
-    template_name = 'exercise/exercise_form.html'
+    template_name = 'deporte/exercise/exercise_form.html'
     success_url = reverse_lazy('exercise_list')
     
 class ExerciseDeleteView(DeleteView):
     model = Exercise
-    template_name = 'exercise/exercise_confirm_delete.html'
+    template_name = 'deporte/exercise/exercise_confirm_delete.html'
     success_url = reverse_lazy('exercise_list')
     
 # Vistas para Training
 class TrainingListView(ListView):
     model = Training
-    template_name = 'training/training_list.html'
+    template_name = 'deporte/training/training_list.html'
     
 class TrainingDetailView(DetailView):
     model = Training
-    template_name = 'training/training_detail.html'
+    template_name = 'deporte/training/training_detail.html'
     
 class TrainingCreateView(CreateView):
     model = Training
     form_class = TrainingForm  # Usa el formulario que has creado
-    template_name = 'training/training_form.html'
+    template_name = 'deporte/training/training_form.html'
     success_url = reverse_lazy('training_list')
 
 class TrainingUpdateView(UpdateView):
     model = Training
     form_class = TrainingForm  # Usa el formulario que has creado
-    template_name = 'training/training_form.html'
+    template_name = 'deporte/training/training_form.html'
     success_url = reverse_lazy('training_list')
     
 class TrainingDeleteView(DeleteView):
     model = Training
-    template_name = 'training/training_confirm_delete.html'
+    template_name = 'deporte/training/training_confirm_delete.html'
     success_url = reverse_lazy('training_list')
 
 # Vistas para Challenge
 class ChallengeListView(ListView):
     model = Challenge
-    template_name = 'challenge/challenge_list.html'
+    template_name = 'deporte/challenge/challenge_list.html'
     
 class ChallengeDetailView(DetailView):
     model = Challenge
-    template_name = 'challenge/challenge_detail.html'
+    template_name = 'deporte/challenge/challenge_detail.html'
     
 class ChallengeCreateView(CreateView):
     model = Challenge
     fields = '__all__' 
-    template_name = 'challenge/challenge_form.html'
+    template_name = 'deporte/challenge/challenge_form.html'
     success_url = reverse_lazy('challenge_list')
     
 class ChallengeUpdateView(UpdateView):
     model = Challenge
     fields = '__all__'
-    template_name = 'challenge/challenge_form.html'
+    template_name = 'deporte/challenge/challenge_form.html'
     success_url = reverse_lazy('challenge_list')
     
 class ChallengeDeleteView(DeleteView):
     model = Challenge
-    template_name = 'challenge/challenge_confirm_delete.html'
+    template_name = 'deporte/challenge/challenge_confirm_delete.html'
     success_url = reverse_lazy('challenge_list')
     
 @method_decorator(login_required, name='dispatch')
 class ClientTrainingsListView(ListView):
     model = Training
-    template_name = 'training/my_trainings_list.html'
+    template_name = 'deporte/training/my_trainings_list.html'
     context_object_name = 'trainings'
     
     def get_queryset(self):
         # Filtrar los entrenamientos para el usuario actual y ordenar por fecha
         return Training.objects.filter(cliente=self.request.user).order_by('-date')
+    
+class AlimentoCreateView(CreateView):
+    model = Alimento
+    fields = '__all__' 
+    template_name = 'alimentacion/alimento/alimento_form.html'
+    success_url = reverse_lazy('alimento_list')
+    
+class AlimentoListView(ListView):
+    model = Alimento
+    template_name = 'alimentacion/alimento/alimento_list.html'
+    
+class AlimentoDetailView(DetailView):
+    model = Alimento
+    template_name = 'alimentacion/alimento/alimento_detail.html'
+    
+class AlimentoUpdateView(UpdateView):
+    model = Alimento
+    fields = '__all__'
+    template_name = 'alimentacion/alimento/alimento_form.html'
+    success_url = reverse_lazy('alimento_list')
+    
+class AlimentoDeleteView(DeleteView):
+    model = Alimento
+    template_name = 'alimentacion/alimento/alimento_confirm_delete.html'
+    success_url = reverse_lazy('alimento_list')

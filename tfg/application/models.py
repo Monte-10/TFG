@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from datetime import date
 
+
+# ----------  DEPORTE  ------------ #
+
 class MuscleGroup(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)  # Una breve descripción del grupo muscular, si es necesario
@@ -119,3 +122,38 @@ class UserChallenge(models.Model):
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
     completed_date = models.DateField(null=True, blank=True)
     status = models.CharField(max_length=50)  # ej. "completado", "en progreso", etc.
+    
+    
+# ----------  DIETA  ------------ #
+
+class Alimento(models.Model):
+    name = models.CharField(max_length=100)
+    cantidad = models.FloatField(null=True, blank=True, default=100)
+    kcal = models.IntegerField(null=True, blank=True)
+    proteina = models.FloatField(null=True, blank=True)
+    hc = models.FloatField(null=True, blank=True)
+    azucar = models.FloatField(null=True, blank=True)
+    fibra = models.FloatField(null=True, blank=True)
+    grasa = models.FloatField(null=True, blank=True)
+    grasa_sat = models.FloatField(null=True, blank=True)
+    apto_celiacos = models.BooleanField(default=False)
+    apto_lactosa = models.BooleanField(default=False)
+    apto_veganos = models.BooleanField(default=False)
+    apto_vegetarianos = models.BooleanField(default=False)
+    apto_pescetarianos = models.BooleanField(default=False)
+    carne = models.BooleanField(default=False)
+    verdura = models.BooleanField(default=False)
+    pescado_marisco_enlatado_conserva = models.BooleanField(default=False)
+    cereal = models.BooleanField(default=False)
+    pasta_arroz = models.BooleanField(default=False)
+    lacteo_yogur_queso = models.BooleanField(default=False)
+    fruta = models.BooleanField(default=False)
+    fruto_seco = models.BooleanField(default=False)
+    legumbre = models.BooleanField(default=False)
+    salsa_condimento = models.BooleanField(default=False)
+    fiambre = models.BooleanField(default=False)
+    pan_panMolde_tostada = models.BooleanField(default=False)
+    huevo = models.BooleanField(default=False)
+    suplemento_bebida_especial = models.BooleanField(default=False)
+    tuberculo = models.BooleanField(default=False)
+    otros = models.BooleanField(default=False)

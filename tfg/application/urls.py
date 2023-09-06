@@ -5,6 +5,7 @@ from .views import (ExerciseListView, ExerciseDetailView, ExerciseCreateView, Ex
 from .views import (TrainingListView, TrainingDetailView, TrainingCreateView, TrainingUpdateView, TrainingDeleteView)
 from .views import (ChallengeListView, ChallengeDetailView, ChallengeCreateView, ChallengeUpdateView, ChallengeDeleteView)
 from .views import (ClientTrainingsListView)
+from .views import (AlimentoListView, AlimentoDetailView, AlimentoCreateView, AlimentoUpdateView, AlimentoDeleteView)
 from .views import home
 
 urlpatterns = [
@@ -43,4 +44,12 @@ urlpatterns += [
 
 urlpatterns += [
     path('my_trainings/', ClientTrainingsListView.as_view(), name='my_trainings'),
+]
+
+urlpatterns += [
+    path('alimento/', AlimentoListView.as_view(), name='alimento_list'),
+    path('alimento/<int:pk>/', AlimentoDetailView.as_view(), name='alimento_detail'),
+    path('alimento/create/', AlimentoCreateView.as_view(), name='alimento_create'),
+    path('alimento/update/<int:pk>/', AlimentoUpdateView.as_view(), name='alimento_update'),
+    path('alimento/delete/<int:pk>/', AlimentoDeleteView.as_view(), name='alimento_delete'),
 ]
