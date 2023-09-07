@@ -6,6 +6,7 @@ from .views import (TrainingListView, TrainingDetailView, TrainingCreateView, Tr
 from .views import (ChallengeListView, ChallengeDetailView, ChallengeCreateView, ChallengeUpdateView, ChallengeDeleteView)
 from .views import (ClientTrainingsListView)
 from .views import (AlimentoListView, AlimentoDetailView, AlimentoCreateView, AlimentoUpdateView, AlimentoDeleteView)
+from .views import (ComidaListView, ComidaDetailView, ComidaCreateView, ComidaUpdateView, ComidaDeleteView)
 from .views import home
 
 urlpatterns = [
@@ -52,4 +53,12 @@ urlpatterns += [
     path('alimento/create/', AlimentoCreateView.as_view(), name='alimento_create'),
     path('alimento/update/<int:pk>/', AlimentoUpdateView.as_view(), name='alimento_update'),
     path('alimento/delete/<int:pk>/', AlimentoDeleteView.as_view(), name='alimento_delete'),
+]
+
+urlpatterns += [
+    path('comida/', ComidaListView.as_view(), name='comida_list'),
+    path('comida/<int:pk>/', ComidaDetailView.as_view(), name='comida_detail'),
+    path('comida/create/', ComidaCreateView.as_view(), name='comida_create'),
+    path('comida/update/<int:pk>/', ComidaUpdateView.as_view(), name='comida_update'),
+    path('comida/delete/<int:pk>/', ComidaDeleteView.as_view(), name='comida_delete'),
 ]

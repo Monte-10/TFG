@@ -1,10 +1,10 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import CustomUser, Exercise, Training, Challenge
-from .models import Alimento 
-''', Comida, DiaDieta, Dieta'''
+from .models import Alimento, Comida
+''', DiaDieta, Dieta'''
 from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm, CustomUserUpdateForm, ExerciseForm, TrainingForm
+from .forms import CustomUserCreationForm, CustomUserUpdateForm, ExerciseForm, TrainingForm, ComidaForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -73,13 +73,13 @@ class ExerciseDetailView(DetailView):
     
 class ExerciseCreateView(CreateView):
     model = Exercise
-    form_class = ExerciseForm  # Usa el formulario que has creado
+    form_class = ExerciseForm  
     template_name = 'deporte/exercise/exercise_form.html'
     success_url = reverse_lazy('exercise_list')
     
 class ExerciseUpdateView(UpdateView):
     model = Exercise
-    form_class = ExerciseForm  # Usa el formulario que has creado
+    form_class = ExerciseForm  
     template_name = 'deporte/exercise/exercise_form.html'
     success_url = reverse_lazy('exercise_list')
     
@@ -99,13 +99,13 @@ class TrainingDetailView(DetailView):
     
 class TrainingCreateView(CreateView):
     model = Training
-    form_class = TrainingForm  # Usa el formulario que has creado
+    form_class = TrainingForm  
     template_name = 'deporte/training/training_form.html'
     success_url = reverse_lazy('training_list')
 
 class TrainingUpdateView(UpdateView):
     model = Training
-    form_class = TrainingForm  # Usa el formulario que has creado
+    form_class = TrainingForm  
     template_name = 'deporte/training/training_form.html'
     success_url = reverse_lazy('training_list')
     
@@ -174,3 +174,28 @@ class AlimentoDeleteView(DeleteView):
     model = Alimento
     template_name = 'alimentacion/alimento/alimento_confirm_delete.html'
     success_url = reverse_lazy('alimento_list')
+    
+class ComidaCreateView(CreateView):
+    model = Comida
+    form_class = ComidaForm
+    template_name = 'alimentacion/comida/comida_form.html'
+    success_url = reverse_lazy('comida_list')
+    
+class ComidaListView(ListView):
+    model = Comida
+    template_name = 'alimentacion/comida/comida_list.html'
+    
+class ComidaDetailView(DetailView):
+    model = Comida
+    template_name = 'alimentacion/comida/comida_detail.html'
+    
+class ComidaUpdateView(UpdateView):
+    model = Comida
+    form_class = ComidaForm
+    template_name = 'alimentacion/comida/comida_form.html'
+    success_url = reverse_lazy('comida_list')
+    
+class ComidaDeleteView(DeleteView):
+    model = Comida
+    template_name = 'alimentacion/comida/comida_confirm_delete.html'
+    success_url = reverse_lazy('comida_list')

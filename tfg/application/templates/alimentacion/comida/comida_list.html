@@ -1,0 +1,21 @@
+<!-- templates/comida/comida_list.html -->
+
+{% extends "application/base.html" %}
+
+{% block content %}
+<h2>Listado de comidas</h2>
+
+<ul>
+    {% for comida in object_list %}
+        <li>
+            <a href="{% url 'comida_detail' comida.pk %}">{{ comida.name }}</a>
+            <a href="{% url 'comida_update' comida.pk %}">Editar</a>
+            <a href="{% url 'comida_delete' comida.pk %}">Eliminar</a>
+        </li>
+    {% empty %}
+        <li>No hay comidas disponibles.</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'comida_create' %}">Crear nueva comida</a>
+{% endblock %}

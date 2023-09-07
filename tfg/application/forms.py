@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUser, Exercise, Training, TrainingExercise
-from django.forms import inlineformset_factory
+from .models import CustomUser, Exercise, Training, TrainingExercise, Challenge, Alimento, Comida
+''', DiaDieta, Dieta'''
 
 class CustomUserBaseForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -187,4 +187,115 @@ class TrainingForm(forms.ModelForm):
             'exercises': forms.SelectMultiple(attrs={'class': 'form-control'}),
         }
 
-   
+class ComidaForm(forms.ModelForm):
+    class Meta:
+        model = Comida
+        fields = ['name', 'alimentos', 'kcal', 'proteina', 'hc', 'azucar',
+                  'fibra', 'grasa', 'grasa_sat', 'apto_celiacos', 'apto_lactosa',
+                  'apto_veganos', 'apto_vegetarianos', 'apto_pescetarianos',
+                  'carne', 'verdura', 'pescado_marisco_enlatado_conserva', 'cereal',
+                  'pasta_arroz', 'lacteo_yogur_queso', 'fruta', 'fruto_seco', 'legumbre',
+                  'salsa_condimento', 'fiambre', 'pan_panMolde_tostada', 'huevo',
+                  'suplemento_bebida_especial', 'tuberculo', 'otros']
+
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'alimentos': forms.SelectMultiple(attrs={'class': 'form-control'}),
+            'kcal': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'proteina': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'hc': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'azucar': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'fibra': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'grasa': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'grasa_sat': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'apto_celiacos': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'apto_lactosa': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'apto_veganos': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'apto_vegetarianos': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'apto_pescetarianos': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'carne': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'verdura': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'pescado_marisco_enlatado_conserva': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'cereal': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'pasta_arroz': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'lacteo_yogur_queso': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'fruta': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'fruto_seco': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'legumbre': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'salsa_condimento': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'fiambre': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'pan_panMolde_tostada': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'huevo': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'suplemento_bebida_especial': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'tuberculo': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'otros': forms.CheckboxInput(attrs={'class': 'form-control'}),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        alimentos = cleaned_data.get('alimentos')
+        
+        # Calcular kcal, proteina y hc sumando los valores de los alimentos seleccionados
+        if alimentos:
+            for alimento in alimentos:
+                kcal += alimento.kcal
+                proteina += alimento.proteina
+                hc += alimento.hc
+                azucar += alimento.azucar
+                fibra += alimento.fibra
+                grasa += alimento.grasa
+                grasa_sat += alimento.grasa_sat
+
+                # Actualizar variables booleanas si todos los alimentos cumplen la condición
+                apto_celiacos = apto_celiacos and alimento.apto_celiacos
+                apto_lactosa = apto_lactosa and alimento.apto_lactosa
+                apto_veganos = apto_veganos and alimento.apto_veganos
+                apto_vegetarianos = apto_vegetarianos and alimento.apto_vegetarianos
+                apto_pescetarianos = apto_pescetarianos and alimento.apto_pescetarianos
+                carne = carne or alimento.carne
+                verdura = verdura or alimento.verdura
+                pescado_marisco_enlatado_conserva = pescado_marisco_enlatado_conserva or alimento.pescado_marisco_enlatado_conserva
+                cereal = cereal or alimento.cereal
+                pasta_arroz = pasta_arroz or alimento.pasta_arroz
+                lacteo_yogur_queso = lacteo_yogur_queso or alimento.lacteo_yogur_queso
+                fruta = fruta or alimento.fruta
+                fruto_seco = fruto_seco or alimento.fruto_seco
+                legumbre = legumbre or alimento.legumbre
+                salsa_condimento = salsa_condimento or alimento.salsa_condimento
+                fiambre = fiambre or alimento.fiambre
+                pan_panMolde_tostada = pan_panMolde_tostada or alimento.pan_panMolde_tostada
+                huevo = huevo or alimento.huevo
+                suplemento_bebida_especial = suplemento_bebida_especial or alimento.suplemento_bebida_especial
+                tuberculo = tuberculo or alimento.tuberculo
+                otros = otros or alimento.otros
+
+        # Actualizar los valores en el formulario
+        cleaned_data['kcal'] = kcal
+        cleaned_data['proteina'] = proteina
+        cleaned_data['hc'] = hc
+        cleaned_data['azucar'] = azucar
+        cleaned_data['fibra'] = fibra
+        cleaned_data['grasa'] = grasa
+        cleaned_data['grasa_sat'] = grasa_sat
+        cleaned_data['apto_celiacos'] = apto_celiacos
+        cleaned_data['apto_lactosa'] = apto_lactosa
+        cleaned_data['apto_veganos'] = apto_veganos
+        cleaned_data['apto_vegetarianos'] = apto_vegetarianos
+        cleaned_data['apto_pescetarianos'] = apto_pescetarianos
+        cleaned_data['carne'] = carne
+        cleaned_data['verdura'] = verdura
+        cleaned_data['pescado_marisco_enlatado_conserva'] = pescado_marisco_enlatado_conserva
+        cleaned_data['cereal'] = cereal
+        cleaned_data['pasta_arroz'] = pasta_arroz
+        cleaned_data['lacteo_yogur_queso'] = lacteo_yogur_queso
+        cleaned_data['fruta'] = fruta
+        cleaned_data['fruto_seco'] = fruto_seco
+        cleaned_data['legumbre'] = legumbre
+        cleaned_data['salsa_condimento'] = salsa_condimento
+        cleaned_data['fiambre'] = fiambre
+        cleaned_data['pan_panMolde_tostada'] = pan_panMolde_tostada
+        cleaned_data['huevo'] = huevo
+        cleaned_data['suplemento_bebida_especial'] = suplemento_bebida_especial
+        cleaned_data['tuberculo'] = tuberculo
+        cleaned_data['otros'] = otros
+        return cleaned_data
