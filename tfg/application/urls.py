@@ -7,6 +7,7 @@ from .views import (ChallengeListView, ChallengeDetailView, ChallengeCreateView,
 from .views import (ClientTrainingsListView)
 from .views import (AlimentoListView, AlimentoDetailView, AlimentoCreateView, AlimentoUpdateView, AlimentoDeleteView)
 from .views import (ComidaListView, ComidaDetailView, ComidaCreateView, ComidaUpdateView, ComidaDeleteView)
+from .views import (DiaDeDietaListView, DiaDeDietaDetailView, DiaDeDietaCreateView, DiaDeDietaUpdateView, DiaDeDietaDeleteView)
 from .views import home
 
 urlpatterns = [
@@ -61,4 +62,12 @@ urlpatterns += [
     path('comida/create/', ComidaCreateView.as_view(), name='comida_create'),
     path('comida/update/<int:pk>/', ComidaUpdateView.as_view(), name='comida_update'),
     path('comida/delete/<int:pk>/', ComidaDeleteView.as_view(), name='comida_delete'),
+]
+
+urlpatterns += [
+    path('diadedieta/', DiaDeDietaListView.as_view(), name='diaDeDieta_list'),
+    path('diadedieta/<int:pk>/', DiaDeDietaDetailView.as_view(), name='diaDeDieta_detail'),
+    path('diadedieta/create/', DiaDeDietaCreateView.as_view(), name='diaDeDieta_create'),
+    path('diadedieta/update/<int:pk>/', DiaDeDietaUpdateView.as_view(), name='diaDeDieta_update'),
+    path('diadedieta/delete/<int:pk>/', DiaDeDietaDeleteView.as_view(), name='diaDeDieta_delete'),
 ]

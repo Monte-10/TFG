@@ -1,10 +1,9 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import CustomUser, Exercise, Training, Challenge
-from .models import Alimento, Comida
-''', DiaDieta, Dieta'''
+from .models import Alimento, Comida, DiaDeDieta, Dieta
 from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm, CustomUserUpdateForm, ExerciseForm, TrainingForm, ComidaForm
+from .forms import CustomUserCreationForm, CustomUserUpdateForm, ExerciseForm, TrainingForm, ComidaForm, DiaDeDietaForm, DietaForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -199,3 +198,53 @@ class ComidaDeleteView(DeleteView):
     model = Comida
     template_name = 'alimentacion/comida/comida_confirm_delete.html'
     success_url = reverse_lazy('comida_list')
+    
+class DiaDeDietaCreateView(CreateView):
+    model = DiaDeDieta
+    form_class = DiaDeDietaForm
+    template_name = 'alimentacion/diaDeDieta/diaDeDieta_form.html'
+    success_url = reverse_lazy('diaDeDieta_list')
+    
+class DiaDeDietaListView(ListView):
+    model = DiaDeDieta
+    template_name = 'alimentacion/diaDeDieta/diaDeDieta_list.html'
+    
+class DiaDeDietaDetailView(DetailView):
+    model = DiaDeDieta
+    template_name = 'alimentacion/diaDeDieta/diaDeDieta_detail.html'
+    
+class DiaDeDietaUpdateView(UpdateView):
+    model = DiaDeDieta
+    form_class = DiaDeDietaForm
+    template_name = 'alimentacion/diaDeDieta/diaDeDieta_form.html'
+    success_url = reverse_lazy('diaDeDieta_list')
+    
+class DiaDeDietaDeleteView(DeleteView):
+    model = DiaDeDieta
+    template_name = 'alimentacion/diaDeDieta/diaDeDieta_confirm_delete.html'
+    success_url = reverse_lazy('diaDeDieta_list')
+    
+class DietaCreateView(CreateView):
+    model = Dieta
+    form_class = DietaForm
+    template_name = 'alimentacion/dieta/dieta_form.html' 
+    success_url = reverse_lazy('dieta_list')
+    
+class DietaListView(ListView):
+    model = Dieta
+    template_name = 'alimentacion/dieta/dieta_list.html'
+    
+class DietaDetailView(DetailView):
+    model = Dieta
+    template_name = 'alimentacion/dieta/dieta_detail.html'
+    
+class DietaUpdateView(UpdateView):
+    model = Dieta
+    form_class = DietaForm
+    template_name = 'alimentacion/dieta/dieta_form.html'
+    success_url = reverse_lazy('dieta_list')
+
+class DietaDeleteView(DeleteView):
+    model = Dieta
+    template_name = 'alimentacion/dieta/dieta_confirm_delete.html'
+    success_url = reverse_lazy('dieta_list')

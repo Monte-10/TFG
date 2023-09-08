@@ -1,0 +1,21 @@
+<!-- templates/alimentacion/diaDeDieta/diaDeDieta_list.html -->
+
+{% extends "application/base.html" %}
+
+{% block content %}
+<h2>Listado de dias de dieta</h2>
+
+<ul>
+    {% for diaDeDieta in object_list %}
+        <li>
+            <a href="{% url 'diaDeDieta_detail' diaDeDieta.pk %}">{{ diaDeDieta.name }}</a>
+            <a href="{% url 'diaDeDieta_update' diaDeDieta.pk %}">Editar</a>
+            <a href="{% url 'diaDeDieta_delete' diaDeDieta.pk %}">Eliminar</a>
+        </li>
+    {% empty %}
+        <li>No hay dias de dieta disponibles.</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'diaDeDieta_create' %}">Crear nueva dia de dieta</a>
+{% endblock %}

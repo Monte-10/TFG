@@ -1,0 +1,13 @@
+<!-- templates/alimentacion/dieta/dieta_confirm_delete.html -->
+
+{% extends "application/base.html" %}
+
+{% block content %}
+<h2>¿Estás seguro de que deseas eliminar la dieta "{{ object.name }}"?</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Eliminar</button>
+    <a href="{% url 'dieta_list' %}">Cancelar</a>
+</form>
+{% endblock %}

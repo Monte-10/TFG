@@ -1,10 +1,16 @@
-<!-- templates/alimentacion/comida/comida_detail.html -->
+<!-- templates/alimentacion/dieta/dieta_detail.html -->
 
 {% extends "application/base.html" %}
 
 {% block content %}
 <h2>{{ object.name }}</h2>
-
+    <p>Nombre: {{ object.name }}</p>
+    <p>Cliente: {{ object.cliente }}</p>
+    <p>Desayuno: {{ object.desayuno }}</p>
+    <p>Almuerzo: {{ object.almuerzo }}</p>
+    <p>Comida: {{ object.comida }}</p>
+    <p>Merienda: {{ object.merienda }}</p>
+    <p>Cena: {{ object.cena }}</p>
     <p>Kcal: {{ object.kcal }}</p>
     <p>Proteínas: {{ object.proteina }}</p>
     <p>Hidratos de Carbono: {{ object.hc }}</p>
@@ -36,6 +42,6 @@
 
 <!-- Puedes seguir mostrando otros campos del modelo -->
 
-<a href="{% url 'comida_update' object.pk %}">Editar</a>
-<a href="{% url 'comida_delete' object.pk %}">Eliminar</a>
+<a href="{% url 'dieta_update' object.pk %}">Editar</a>
+<a href="{% url 'dieta_delete' object.pk %}">Eliminar</a>
 {% endblock %}
