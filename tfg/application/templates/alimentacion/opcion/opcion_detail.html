@@ -1,11 +1,10 @@
-<!-- templates/alimentacion/dieta/dieta_detail.html -->
+<!-- templates/alimentacion/opcion/opcion_detail.html -->
 
 {% extends "application/base.html" %}
 
 {% block content %}
 <h2>{{ object.name }}</h2>
     <p>Nombre: {{ object.name }}</p>
-    <p>Cliente: {{ object.cliente }}</p>
     <p>Desayuno: {{ object.desayuno }}</p>
     <p>Almuerzo: {{ object.almuerzo }}</p>
     <p>Comida: {{ object.comida }}</p>
@@ -25,7 +24,8 @@
     <p>Apto para Pescetarianos: {% if object.apto_pescetarianos %}Sí{% else %}No{% endif %}</p>
     <p>Carne: {% if object.carne %}Sí{% else %}No{% endif %}</p>
     <p>Verdura: {% if object.verdura %}Sí{% else %}No{% endif %}</p>
-    <p>Pescado/Marisco Enlatado/Conserva: {% if object.pescado_marisco_enlatado_conserva %}Sí{% else %}No{% endif %}</p>
+    <p>Pescado/Marisco: {% if object.pescado_marisco %}Sí{% else %}No{% endif %}</p>
+    <p>Enlatado/Conserva: {% if object.enlatado_conserva %}Sí{% else %}No{% endif %}</p>
     <p>Cereal: {% if object.cereal %}Sí{% else %}No{% endif %}</p>
     <p>Pasta/Arroz: {% if object.pasta_arroz %}Sí{% else %}No{% endif %}</p>
     <p>Lácteo (Yogur/Queso): {% if object.lacteo_yogur_queso %}Sí{% else %}No{% endif %}</p>
@@ -42,6 +42,7 @@
 
 <!-- Puedes seguir mostrando otros campos del modelo -->
 
-<a href="{% url 'dieta_update' object.pk %}">Editar</a>
-<a href="{% url 'dieta_delete' object.pk %}">Eliminar</a>
+<a href="{% url 'opcion_update' object.pk %}">Editar</a>
+<a href="{% url 'opcion_delete' object.pk %}">Eliminar</a>
+<a href="{% url 'opcion_list' %}"> Volver al listado</a>
 {% endblock %}

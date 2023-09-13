@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from bootstrap_datepicker_plus import DatePickerInput
-from .models import CustomUser, Exercise, Training, TrainingExercise, Challenge, Alimento, Comida, DiaDeDieta, Dieta
+from bootstrap_datepicker_plus.widgets import DatePickerInput
+from django.forms.widgets import HiddenInput
+from .models import CustomUser, Exercise, Training, TrainingExercise, Challenge, Alimento, Comida, Opcion, Plan
 
 class CustomUserBaseForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -193,7 +194,7 @@ class ComidaForm(forms.ModelForm):
         fields = ['name', 'alimentos', 'kcal', 'proteina', 'hc', 'azucar',
                   'fibra', 'grasa', 'grasa_sat', 'apto_celiacos', 'apto_lactosa',
                   'apto_veganos', 'apto_vegetarianos', 'apto_pescetarianos',
-                  'carne', 'verdura', 'pescado_marisco_enlatado_conserva', 'cereal',
+                  'carne', 'verdura', 'pescado_marisco', 'enlatado_conserva', 'cereal',
                   'pasta_arroz', 'lacteo_yogur_queso', 'fruta', 'fruto_seco', 'legumbre',
                   'salsa_condimento', 'fiambre', 'pan_panMolde_tostada', 'huevo',
                   'suplemento_bebida_especial', 'tuberculo', 'otros']
@@ -201,34 +202,35 @@ class ComidaForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'alimentos': forms.SelectMultiple(attrs={'class': 'form-control'}),
-            'kcal': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'proteina': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'hc': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'azucar': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'fibra': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'grasa': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'grasa_sat': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'apto_celiacos': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'apto_lactosa': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'apto_veganos': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'apto_vegetarianos': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'apto_pescetarianos': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'carne': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'verdura': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'pescado_marisco_enlatado_conserva': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'cereal': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'pasta_arroz': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'lacteo_yogur_queso': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'fruta': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'fruto_seco': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'legumbre': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'salsa_condimento': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'fiambre': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'pan_panMolde_tostada': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'huevo': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'suplemento_bebida_especial': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'tuberculo': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'otros': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'kcal': HiddenInput(),  # Use HiddenInput widget for invisible fields
+            'proteina': HiddenInput(),
+            'hc': HiddenInput(),
+            'azucar': HiddenInput(),
+            'fibra': HiddenInput(),
+            'grasa': HiddenInput(),
+            'grasa_sat': HiddenInput(),
+            'apto_celiacos': HiddenInput(),
+            'apto_lactosa': HiddenInput(),
+            'apto_veganos': HiddenInput(),
+            'apto_vegetarianos': HiddenInput(),
+            'apto_pescetarianos': HiddenInput(),
+            'carne': HiddenInput(),
+            'verdura': HiddenInput(),
+            'pescado_marisco': HiddenInput(),
+            'enlatado_conserva': HiddenInput(),
+            'cereal': HiddenInput(),
+            'pasta_arroz': HiddenInput(),
+            'lacteo_yogur_queso': HiddenInput(),
+            'fruta': HiddenInput(),
+            'fruto_seco': HiddenInput(),
+            'legumbre': HiddenInput(),
+            'salsa_condimento': HiddenInput(),
+            'fiambre': HiddenInput(),
+            'pan_panMolde_tostada': HiddenInput(),
+            'huevo': HiddenInput(),
+            'suplemento_bebida_especial': HiddenInput(),
+            'tuberculo': HiddenInput(),
+            'otros': HiddenInput(),
         }
 
     def clean(self):
@@ -250,7 +252,8 @@ class ComidaForm(forms.ModelForm):
         apto_pescetarianos = True
         carne = False
         verdura = False
-        pescado_marisco_enlatado_conserva = False
+        pescado_marisco = False
+        enlatado_conserva = False
         cereal = False
         pasta_arroz = False
         lacteo_yogur_queso = False
@@ -282,7 +285,8 @@ class ComidaForm(forms.ModelForm):
                 apto_pescetarianos = apto_pescetarianos and alimento.apto_pescetarianos
                 carne = carne or alimento.carne
                 verdura = verdura or alimento.verdura
-                pescado_marisco_enlatado_conserva = pescado_marisco_enlatado_conserva or alimento.pescado_marisco_enlatado_conserva
+                pescado_marisco = pescado_marisco or alimento.pescado_marisco
+                enlatado_conserva = enlatado_conserva or alimento.enlatado_conserva
                 cereal = cereal or alimento.cereal
                 pasta_arroz = pasta_arroz or alimento.pasta_arroz
                 lacteo_yogur_queso = lacteo_yogur_queso or alimento.lacteo_yogur_queso
@@ -312,7 +316,8 @@ class ComidaForm(forms.ModelForm):
         cleaned_data['apto_pescetarianos'] = apto_pescetarianos
         cleaned_data['carne'] = carne
         cleaned_data['verdura'] = verdura
-        cleaned_data['pescado_marisco_enlatado_conserva'] = pescado_marisco_enlatado_conserva
+        cleaned_data['pescado_marisco'] = pescado_marisco
+        cleaned_data['enlatado_conserva'] = enlatado_conserva
         cleaned_data['cereal'] = cereal
         cleaned_data['pasta_arroz'] = pasta_arroz
         cleaned_data['lacteo_yogur_queso'] = lacteo_yogur_queso
@@ -328,53 +333,53 @@ class ComidaForm(forms.ModelForm):
         cleaned_data['otros'] = otros
         return cleaned_data
 
-class DiaDeDietaForm(forms.ModelForm):
+class OpcionForm(forms.ModelForm):
     class Meta:
-        model = DiaDeDieta
-        fields = ['name', 'cliente', 'desayuno', 'almuerzo', 'comida', 'merienda', 'cena', 'kcal', 'proteina', 'hc', 'azucar',
+        model = Opcion
+        fields = ['name', 'desayuno', 'almuerzo', 'comida', 'merienda', 'cena', 'kcal', 'proteina', 'hc', 'azucar',
                   'fibra', 'grasa', 'grasa_sat', 'apto_celiacos', 'apto_lactosa',
                   'apto_veganos', 'apto_vegetarianos', 'apto_pescetarianos',
-                  'carne', 'verdura', 'pescado_marisco_enlatado_conserva', 'cereal',
+                  'carne', 'verdura', 'pescado_marisco', 'enlatado_conserva', 'cereal',
                   'pasta_arroz', 'lacteo_yogur_queso', 'fruta', 'fruto_seco', 'legumbre',
                   'salsa_condimento', 'fiambre', 'pan_panMolde_tostada', 'huevo',
                   'suplemento_bebida_especial', 'tuberculo', 'otros']
         
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'cliente': forms.Select(attrs={'class': 'form-control'}),
             'desayuno': forms.Select(attrs={'class': 'form-control'}),
             'almuerzo': forms.Select(attrs={'class': 'form-control'}),
             'comida': forms.Select(attrs={'class': 'form-control'}),
             'merienda': forms.Select(attrs={'class': 'form-control'}),
             'cena': forms.Select(attrs={'class': 'form-control'}),
-            'kcal': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'proteina': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'hc': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'azucar': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'fibra': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'grasa': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'grasa_sat': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'apto_celiacos': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'apto_lactosa': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'apto_veganos': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'apto_vegetarianos': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'apto_pescetarianos': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'carne': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'verdura': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'pescado_marisco_enlatado_conserva': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'cereal': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'pasta_arroz': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'lacteo_yogur_queso': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'fruta': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'fruto_seco': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'legumbre': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'salsa_condimento': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'fiambre': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'pan_panMolde_tostada': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'huevo': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'suplemento_bebida_especial': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'tuberculo': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'otros': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'kcal': HiddenInput(),
+            'proteina': HiddenInput(),
+            'hc': HiddenInput(),
+            'azucar': HiddenInput(),
+            'fibra': HiddenInput(),
+            'grasa': HiddenInput(),
+            'grasa_sat': HiddenInput(),
+            'apto_celiacos': HiddenInput(),
+            'apto_lactosa': HiddenInput(),
+            'apto_veganos': HiddenInput(),
+            'apto_vegetarianos': HiddenInput(),
+            'apto_pescetarianos': HiddenInput(),
+            'carne': HiddenInput(),
+            'verdura': HiddenInput(),
+            'pescado_marisco': HiddenInput(),
+            'enlatado_conserva': HiddenInput(),
+            'cereal': HiddenInput(),
+            'pasta_arroz': HiddenInput(),
+            'lacteo_yogur_queso': HiddenInput(),
+            'fruta': HiddenInput(),
+            'fruto_seco': HiddenInput(),
+            'legumbre': HiddenInput(),
+            'salsa_condimento': HiddenInput(),
+            'fiambre': HiddenInput(),
+            'pan_panMolde_tostada': HiddenInput(),
+            'huevo': HiddenInput(),
+            'suplemento_bebida_especial': HiddenInput(),
+            'tuberculo': HiddenInput(),
+            'otros': HiddenInput(),
         }
     
     def clean(self):
@@ -397,7 +402,8 @@ class DiaDeDietaForm(forms.ModelForm):
         apto_pescetarianos = False
         carne = False
         verdura = False
-        pescado_marisco_enlatado_conserva = False
+        pescado_marisco = False
+        enlatado_conserva = False
         cereal = False
         pasta_arroz = False
         lacteo_yogur_queso = False
@@ -429,7 +435,8 @@ class DiaDeDietaForm(forms.ModelForm):
                 apto_pescetarianos = apto_pescetarianos or comida.apto_pescetarianos
                 carne = carne or comida.carne
                 verdura = verdura or comida.verdura
-                pescado_marisco_enlatado_conserva = pescado_marisco_enlatado_conserva or comida.pescado_marisco_enlatado_conserva
+                pescado_marisco = pescado_marisco or comida.pescado_marisco
+                enlatado_conserva = enlatado_conserva or comida.enlatado_conserva
                 cereal = cereal or comida.cereal
                 pasta_arroz = pasta_arroz or comida.pasta_arroz
                 lacteo_yogur_queso = lacteo_yogur_queso or comida.lacteo_yogur_queso
@@ -459,7 +466,8 @@ class DiaDeDietaForm(forms.ModelForm):
         cleaned_data['apto_pescetarianos'] = apto_pescetarianos
         cleaned_data['carne'] = carne
         cleaned_data['verdura'] = verdura
-        cleaned_data['pescado_marisco_enlatado_conserva'] = pescado_marisco_enlatado_conserva
+        cleaned_data['pescado_marisco'] = pescado_marisco
+        cleaned_data['enlatado_conserva'] = enlatado_conserva
         cleaned_data['cereal'] = cereal
         cleaned_data['pasta_arroz'] = pasta_arroz
         cleaned_data['lacteo_yogur_queso'] = lacteo_yogur_queso
@@ -474,7 +482,57 @@ class DiaDeDietaForm(forms.ModelForm):
         cleaned_data['tuberculo'] = tuberculo
         cleaned_data['otros'] = otros
         return cleaned_data
- 
+
+from datetime import timedelta
+import datetime
+
+class PlanForm(forms.ModelForm):
+    class Meta:
+        model = Plan
+        fields = ['cliente', 'name', 'description', 'start_date', 'end_date', 'suplementos', 'notas', 'goal']
+
+    opcion1 = forms.ModelChoiceField(
+        queryset=Opcion.objects.all(),
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+    )
+
+    opcion2 = forms.ModelChoiceField(
+        queryset=Opcion.objects.all(),
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+    )
+
+    opcion3 = forms.ModelChoiceField(
+        queryset=Opcion.objects.all(),
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+    )
+    
+    # Agregar el widget DatePicker a los campos de fecha y ponemos default de inicio hoy y final en 7 días
+    start_date = forms.DateField(widget=DatePickerInput(format='%d-%m-%Y'), initial=datetime.date.today())
+    end_date = forms.DateField(widget=DatePickerInput(format='%d-%m-%Y'), initial=datetime.date.today() + timedelta(days=7))
+
+    def clean(self):
+        cleaned_data = super().clean()
+        start_date = cleaned_data.get('start_date')
+        end_date = cleaned_data.get('end_date')
+        opcion1 = cleaned_data.get('opcion1')
+        opcion2 = cleaned_data.get('opcion2')
+        opcion3 = cleaned_data.get('opcion3')
+
+        if start_date and end_date and opcion1 and opcion2 and opcion3:
+            date_range = [start_date + timedelta(days=i) for i in range((end_date - start_date).days + 1)]
+            opciones = [opcion1, opcion2, opcion3]
+
+            for i, date in enumerate(date_range):
+                opcion = opciones[i % 3]
+                plan_existente = Plan.objects.filter(start_date=date, end_date=date, opcion1=opcion).exists()
+
+                if plan_existente:
+                    raise forms.ValidationError(f"La opción {opcion} ya está asignada para la fecha {date}.")
+        return cleaned_data
+"""
 class DietaForm(forms.ModelForm):
     class Meta:
         model = Dieta
@@ -488,3 +546,4 @@ class DietaForm(forms.ModelForm):
     # Agregar el widget DatePicker a los campos de fecha
     start_date = forms.DateField(widget=DatePickerInput(format='%Y-%m-%d'))
     end_date = forms.DateField(widget=DatePickerInput(format='%Y-%m-%d'))
+"""

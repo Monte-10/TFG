@@ -143,7 +143,8 @@ class Alimento(models.Model):
     apto_pescetarianos = models.BooleanField(default=False)
     carne = models.BooleanField(default=False)
     verdura = models.BooleanField(default=False)
-    pescado_marisco_enlatado_conserva = models.BooleanField(default=False)
+    pescado_marisco = models.BooleanField(default=False)
+    enlatado_conserva = models.BooleanField(default=False)
     cereal = models.BooleanField(default=False)
     pasta_arroz = models.BooleanField(default=False)
     lacteo_yogur_queso = models.BooleanField(default=False)
@@ -177,7 +178,8 @@ class Comida(models.Model):
     apto_pescetarianos = models.BooleanField(default=False)
     carne = models.BooleanField(default=False)
     verdura = models.BooleanField(default=False)
-    pescado_marisco_enlatado_conserva = models.BooleanField(default=False)
+    pescado_marisco = models.BooleanField(default=False)
+    enlatado_conserva = models.BooleanField(default=False)
     cereal = models.BooleanField(default=False)
     pasta_arroz = models.BooleanField(default=False)
     lacteo_yogur_queso = models.BooleanField(default=False)
@@ -196,9 +198,8 @@ class Comida(models.Model):
     def __str__(self):
         return self.name
 
-class DiaDeDieta(models.Model):
+class Opcion(models.Model):
     name = models.CharField(max_length=100)
-    cliente = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True, related_name='dias_de_dieta')
     desayuno = models.ForeignKey(Comida, on_delete=models.CASCADE, null=True, blank=True, related_name='desayuno')
     almuerzo = models.ForeignKey(Comida, on_delete=models.CASCADE, null=True, blank=True, related_name='almuerzo')
     comida = models.ForeignKey(Comida, on_delete=models.CASCADE, null=True, blank=True, related_name='comida')
@@ -218,7 +219,8 @@ class DiaDeDieta(models.Model):
     apto_pescetarianos = models.BooleanField(default=False)
     carne = models.BooleanField(default=False)
     verdura = models.BooleanField(default=False)
-    pescado_marisco_enlatado_conserva = models.BooleanField(default=False)
+    pescado_marisco = models.BooleanField(default=False)
+    enlatado_conserva = models.BooleanField(default=False)
     cereal = models.BooleanField(default=False)
     pasta_arroz = models.BooleanField(default=False)
     lacteo_yogur_queso = models.BooleanField(default=False)
@@ -236,10 +238,18 @@ class DiaDeDieta(models.Model):
     def __str__(self):
         return self.name
 
-class Dieta(models.Model):
+class Plan(models.Model):
     cliente = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True, related_name='dietas')
     name = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField(null=True, blank=True)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
+    opcion1 = models.ForeignKey(Opcion, on_delete=models.CASCADE, null=True, blank=True, related_name='opcion1')
+    opcion2 = models.ForeignKey(Opcion, on_delete=models.CASCADE, null=True, blank=True, related_name='opcion2')
+    opcion3 = models.ForeignKey(Opcion, on_delete=models.CASCADE, null=True, blank=True, related_name='opcion3')
+    suplementos = models.TextField(null=True, blank=True)
+    notas = models.TextField(null=True, blank=True)
     goal = models.TextField(null=True, blank=True)
+    
+    def __str__(self):
+        return self.name

@@ -1,0 +1,21 @@
+<!-- templates/alimentacion/plan/plan_list.html -->
+
+{% extends "application/base.html" %}
+
+{% block content %}
+<h2>Listado de planes</h2>
+
+<ul>
+    {% for plan in object_list %}
+        <li>
+            <a href="{% url 'plan_detail' plan.pk %}">{{ plan.name }}</a>
+            <a href="{% url 'plan_update' plan.pk %}">Editar</a>
+            <a href="{% url 'plan_delete' plan.pk %}">Eliminar</a>
+        </li>
+    {% empty %}
+        <li>No hay planes disponibles.</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'plan_create' %}">Crear nuevo Plan</a>
+{% endblock %}

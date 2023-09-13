@@ -1,9 +1,9 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import CustomUser, Exercise, Training, Challenge
-from .models import Alimento, Comida, DiaDeDieta, Dieta
+from .models import Alimento, Comida, Opcion, Plan
 from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm, CustomUserUpdateForm, ExerciseForm, TrainingForm, ComidaForm, DiaDeDietaForm, DietaForm
+from .forms import CustomUserCreationForm, CustomUserUpdateForm, ExerciseForm, TrainingForm, ComidaForm, OpcionForm, PlanForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -199,52 +199,52 @@ class ComidaDeleteView(DeleteView):
     template_name = 'alimentacion/comida/comida_confirm_delete.html'
     success_url = reverse_lazy('comida_list')
     
-class DiaDeDietaCreateView(CreateView):
-    model = DiaDeDieta
-    form_class = DiaDeDietaForm
-    template_name = 'alimentacion/diaDeDieta/diaDeDieta_form.html'
-    success_url = reverse_lazy('diaDeDieta_list')
+class OpcionCreateView(CreateView):
+    model = Opcion
+    form_class = OpcionForm
+    template_name = 'alimentacion/opcion/opcion_form.html'
+    success_url = reverse_lazy('opcion_list')
     
-class DiaDeDietaListView(ListView):
-    model = DiaDeDieta
-    template_name = 'alimentacion/diaDeDieta/diaDeDieta_list.html'
+class OpcionListView(ListView):
+    model = Opcion
+    template_name = 'alimentacion/opcion/opcion_list.html'
     
-class DiaDeDietaDetailView(DetailView):
-    model = DiaDeDieta
-    template_name = 'alimentacion/diaDeDieta/diaDeDieta_detail.html'
+class OpcionDetailView(DetailView):
+    model = Opcion
+    template_name = 'alimentacion/opcion/opcion_detail.html'
     
-class DiaDeDietaUpdateView(UpdateView):
-    model = DiaDeDieta
-    form_class = DiaDeDietaForm
-    template_name = 'alimentacion/diaDeDieta/diaDeDieta_form.html'
-    success_url = reverse_lazy('diaDeDieta_list')
+class OpcionUpdateView(UpdateView):
+    model = Opcion
+    form_class = OpcionForm
+    template_name = 'alimentacion/opcion/opcion_form.html'
+    success_url = reverse_lazy('opcion_list')
     
-class DiaDeDietaDeleteView(DeleteView):
-    model = DiaDeDieta
-    template_name = 'alimentacion/diaDeDieta/diaDeDieta_confirm_delete.html'
-    success_url = reverse_lazy('diaDeDieta_list')
-    
-class DietaCreateView(CreateView):
-    model = Dieta
-    form_class = DietaForm
-    template_name = 'alimentacion/dieta/dieta_form.html' 
-    success_url = reverse_lazy('dieta_list')
-    
-class DietaListView(ListView):
-    model = Dieta
-    template_name = 'alimentacion/dieta/dieta_list.html'
-    
-class DietaDetailView(DetailView):
-    model = Dieta
-    template_name = 'alimentacion/dieta/dieta_detail.html'
-    
-class DietaUpdateView(UpdateView):
-    model = Dieta
-    form_class = DietaForm
-    template_name = 'alimentacion/dieta/dieta_form.html'
-    success_url = reverse_lazy('dieta_list')
+class OpcionDeleteView(DeleteView):
+    model = Opcion
+    template_name = 'alimentacion/opcion/opcion_confirm_delete.html'
+    success_url = reverse_lazy('opcion_list')
 
-class DietaDeleteView(DeleteView):
-    model = Dieta
-    template_name = 'alimentacion/dieta/dieta_confirm_delete.html'
-    success_url = reverse_lazy('dieta_list')
+class PlanCreateView(CreateView):
+    model = Plan
+    form_class = PlanForm
+    template_name = 'alimentacion/plan/plan_form.html' 
+    success_url = reverse_lazy('plan_list')
+    
+class PlanListView(ListView):
+    model = Plan
+    template_name = 'alimentacion/plan/plan_list.html'
+    
+class PlanDetailView(DetailView):
+    model = Plan
+    template_name = 'alimentacion/plan/plan_detail.html'
+    
+class PlanUpdateView(UpdateView):
+    model = Plan
+    form_class = PlanForm
+    template_name = 'alimentacion/plan/plan_form.html'
+    success_url = reverse_lazy('plan_list')
+
+class PlanDeleteView(DeleteView):
+    model = Plan
+    template_name = 'alimentacion/plan/plan_confirm_delete.html'
+    success_url = reverse_lazy('plan_list')

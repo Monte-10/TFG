@@ -1,4 +1,4 @@
-<!-- templates/alimentacion/diaDeDieta/diaDeDieta_detail.html -->
+<!-- templates/alimentacion/plan/plan_detail.html -->
 
 {% extends "application/base.html" %}
 
@@ -25,7 +25,8 @@
     <p>Apto para Pescetarianos: {% if object.apto_pescetarianos %}Sí{% else %}No{% endif %}</p>
     <p>Carne: {% if object.carne %}Sí{% else %}No{% endif %}</p>
     <p>Verdura: {% if object.verdura %}Sí{% else %}No{% endif %}</p>
-    <p>Pescado/Marisco Enlatado/Conserva: {% if object.pescado_marisco_enlatado_conserva %}Sí{% else %}No{% endif %}</p>
+    <p>Pescado/Marisco: {% if object.pescado_marisco %}Sí{% else %}No{% endif %}</p>
+    <p>Enlatado/Conserva: {% if object.enlatado_conserva %}Sí{% else %}No{% endif %}</p>
     <p>Cereal: {% if object.cereal %}Sí{% else %}No{% endif %}</p>
     <p>Pasta/Arroz: {% if object.pasta_arroz %}Sí{% else %}No{% endif %}</p>
     <p>Lácteo (Yogur/Queso): {% if object.lacteo_yogur_queso %}Sí{% else %}No{% endif %}</p>
@@ -42,6 +43,6 @@
 
 <!-- Puedes seguir mostrando otros campos del modelo -->
 
-<a href="{% url 'diaDeDieta_update' object.pk %}">Editar</a>
-<a href="{% url 'diaDeDieta_delete' object.pk %}">Eliminar</a>
+<a href="{% url 'plan_update' object.pk %}">Editar</a>
+<a href="{% url 'plan_delete' object.pk %}">Eliminar</a>
 {% endblock %}

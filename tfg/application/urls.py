@@ -7,7 +7,8 @@ from .views import (ChallengeListView, ChallengeDetailView, ChallengeCreateView,
 from .views import (ClientTrainingsListView)
 from .views import (AlimentoListView, AlimentoDetailView, AlimentoCreateView, AlimentoUpdateView, AlimentoDeleteView)
 from .views import (ComidaListView, ComidaDetailView, ComidaCreateView, ComidaUpdateView, ComidaDeleteView)
-from .views import (DiaDeDietaListView, DiaDeDietaDetailView, DiaDeDietaCreateView, DiaDeDietaUpdateView, DiaDeDietaDeleteView)
+from .views import (OpcionListView, OpcionDetailView, OpcionCreateView, OpcionUpdateView, OpcionDeleteView)
+from .views import (PlanListView, PlanDetailView, PlanCreateView, PlanUpdateView, PlanDeleteView)
 from .views import home
 
 urlpatterns = [
@@ -65,9 +66,17 @@ urlpatterns += [
 ]
 
 urlpatterns += [
-    path('diadedieta/', DiaDeDietaListView.as_view(), name='diaDeDieta_list'),
-    path('diadedieta/<int:pk>/', DiaDeDietaDetailView.as_view(), name='diaDeDieta_detail'),
-    path('diadedieta/create/', DiaDeDietaCreateView.as_view(), name='diaDeDieta_create'),
-    path('diadedieta/update/<int:pk>/', DiaDeDietaUpdateView.as_view(), name='diaDeDieta_update'),
-    path('diadedieta/delete/<int:pk>/', DiaDeDietaDeleteView.as_view(), name='diaDeDieta_delete'),
+    path('opcion/', OpcionListView.as_view(), name='opcion_list'),
+    path('opcion/<int:pk>/', OpcionDetailView.as_view(), name='opcion_detail'),
+    path('opcion/create/', OpcionCreateView.as_view(), name='opcion_create'),
+    path('opcion/update/<int:pk>/', OpcionUpdateView.as_view(), name='opcion_update'),
+    path('opcion/delete/<int:pk>/', OpcionDeleteView.as_view(), name='opcion_delete'),
+]
+
+urlpatterns += [
+    path('plan/', PlanListView.as_view(), name='plan_list'),
+    path('plan/<int:pk>/', PlanDetailView.as_view(), name='plan_detail'),
+    path('plan/create/', PlanCreateView.as_view(), name='plan_create'),
+    path('plan/update/<int:pk>/', PlanUpdateView.as_view(), name='plan_update'),
+    path('plan/delete/<int:pk>/', PlanDeleteView.as_view(), name='plan_delete'),
 ]
