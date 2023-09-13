@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from bootstrap_datepicker_plus import DatePickerInput
+from bootstrap_datepicker_plus.widgets import DatePickerInput
+import datetime
 from .models import CustomUser, Exercise, Training, TrainingExercise, Challenge, Alimento, Comida, DiaDeDieta, Dieta
 
 class CustomUserBaseForm(forms.ModelForm):
@@ -474,17 +475,25 @@ class DiaDeDietaForm(forms.ModelForm):
         cleaned_data['tuberculo'] = tuberculo
         cleaned_data['otros'] = otros
         return cleaned_data
- 
+
 class DietaForm(forms.ModelForm):
     class Meta:
         model = Dieta
         fields = ['cliente', 'name', 'description', 'start_date', 'end_date', 'goal']
 
-    dias = forms.ModelMultipleChoiceField(
-        queryset=DiaDeDieta.objects.all(),
-        widget=forms.CheckboxSelectMultiple,  # Puedes cambiar esto a otra forma de selección si lo deseas
-    )
-
     # Agregar el widget DatePicker a los campos de fecha
-    start_date = forms.DateField(widget=DatePickerInput(format='%Y-%m-%d'))
-    end_date = forms.DateField(widget=DatePickerInput(format='%Y-%m-%d'))
+    start_date = forms.DateField(widget=DatePickerInput(format='%d-%m-%Y'), initial=datetime.date.today())
+    end_date = forms.DateField(widget=DatePickerInput(format='%d-%m-%Y'), initial=datetime.date.today()+datetime.timedelta(days=7))
+
+class AsignarDiasForm(forms.Form):
+    def __init__(self, fechas_de_dieta, dias_de_dieta_disponibles, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for fecha in fechas_de_dieta:
+            field_name = f'dia_{fecha.strftime("%d-%m-%Y")}'
+            choices = [(dia.id, str(dia)) for dia in dias_de_dieta_disponibles]
+            self.fields[field_name] = forms.ChoiceField(
+                label=fecha.strftime("%j %B %Y"),
+                choices=[('', 'Select')] + choices,
+                required=False,
+            )

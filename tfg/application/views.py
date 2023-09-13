@@ -1,13 +1,14 @@
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
+from django.http import HttpResponseRedirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import CustomUser, Exercise, Training, Challenge
-from .models import Alimento, Comida, DiaDeDieta, Dieta
+from .models import Alimento, Comida, DiaDeDieta, Dieta, AsignacionDiaDeDieta
 from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm, CustomUserUpdateForm, ExerciseForm, TrainingForm, ComidaForm, DiaDeDietaForm, DietaForm
+from .forms import CustomUserCreationForm, CustomUserUpdateForm, ExerciseForm, TrainingForm, ComidaForm, DiaDeDietaForm, DietaForm, AsignarDiasForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-
+from datetime import timedelta
 #View para el home
 def home(request):
     return render(request, 'application/base.html')
@@ -229,6 +230,12 @@ class DietaCreateView(CreateView):
     form_class = DietaForm
     template_name = 'alimentacion/dieta/dieta_form.html' 
     success_url = reverse_lazy('dieta_list')
+    def form_valid(self, form):
+        # Guarda la dieta
+        self.object = form.save()
+        
+        # Redirige a la página de asignación de días de dieta
+        return HttpResponseRedirect(reverse('asignar_dias_de_dieta', args=[self.object.pk]))
     
 class DietaListView(ListView):
     model = Dieta
@@ -248,3 +255,43 @@ class DietaDeleteView(DeleteView):
     model = Dieta
     template_name = 'alimentacion/dieta/dieta_confirm_delete.html'
     success_url = reverse_lazy('dieta_list')
+
+def asignar_dias_de_dieta(request, pk):
+    dieta = Dieta.objects.get(id=pk)
+
+    # Obtain the dates within the range of the diet
+    fechas_de_dieta = [dieta.start_date + timedelta(days=i) for i in range((dieta.end_date - dieta.start_date).days + 1)]
+
+    # Obtain all existing "DiasDeDieta"
+    dias_de_dieta_disponibles = DiaDeDieta.objects.all()
+
+    # Get existing assignments for this diet
+    existing_assignments = AsignacionDiaDeDieta.objects.filter(dieta=dieta)
+
+    if request.method == 'POST':
+        form = AsignarDiasForm(fechas_de_dieta, dias_de_dieta_disponibles)
+        if form.is_valid():
+            for fecha in fechas_de_dieta:
+                field_name = f'dia_{fecha.strftime("d-%m-%Y")}'
+                dia_id = form.cleaned_data.get(field_name)
+                if dia_id:
+                    dia_de_dieta = DiaDeDieta.objects.get(id=dia_id)
+                    # Create or update assignments here
+                    assignment, created = AsignacionDiaDeDieta.objects.get_or_create(dieta=dieta, fecha=fecha)
+                    assignment.dia_de_dieta = dia_de_dieta
+                    assignment.save()
+
+            return redirect('dieta_detail', pk=pk)
+    else:
+        # Initialize the form with fechas_de_dieta and dias_de_dieta_disponibles
+        initial_data = {}
+        for assignment in existing_assignments:
+            assignment_date = assignment.fecha.strftime("%d-%m-%Y")
+            initial_data[f'dia_{assignment_date}'] = assignment.dia_de_dieta.id if assignment.dia_de_dieta else None
+        form = AsignarDiasForm(fechas_de_dieta, dias_de_dieta_disponibles, initial=initial_data)
+
+    return render(request, 'alimentacion/dieta/asignar_dias_de_dieta.html', {
+        'dieta': dieta,
+        'fechas_de_dieta': fechas_de_dieta,
+        'form': form,
+    })

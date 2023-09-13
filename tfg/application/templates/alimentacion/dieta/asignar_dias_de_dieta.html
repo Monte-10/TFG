@@ -1,0 +1,21 @@
+{% extends "application/base.html" %}
+{% block content %}
+<h2>Asignar Días de Dieta para la Dieta: {{ dieta.name }}</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    {% for fecha in fechas_de_dieta %}
+    <div class="form-group">
+        <label for="id_dia_{{ fecha|date:"d-m-Y" }}">{{ fecha|date:"j F Y" }}</label>
+        <select class="form-control" id="id_dia_{{ fecha|date:"d-m-Y" }}" name="dia_{{ fecha|date:"d-m-Y" }}">
+            <option value="">---</option>
+            {% for dia in dias %}
+                <option value="{{ dia.id }}" {% if dia.id == asignaciones[fecha] %}selected{% endif %}>{{ dia.name }}</option>
+            {% endfor %}
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary">Guardar asignaciones</button>
+</form>
+
+{% endblock %}

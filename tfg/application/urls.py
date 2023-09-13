@@ -8,7 +8,8 @@ from .views import (ClientTrainingsListView)
 from .views import (AlimentoListView, AlimentoDetailView, AlimentoCreateView, AlimentoUpdateView, AlimentoDeleteView)
 from .views import (ComidaListView, ComidaDetailView, ComidaCreateView, ComidaUpdateView, ComidaDeleteView)
 from .views import (DiaDeDietaListView, DiaDeDietaDetailView, DiaDeDietaCreateView, DiaDeDietaUpdateView, DiaDeDietaDeleteView)
-from .views import home
+from .views import (DietaListView, DietaDetailView, DietaCreateView, DietaUpdateView, DietaDeleteView)
+from .views import home, asignar_dias_de_dieta
 
 urlpatterns = [
     re_path(r'^$', home, name='home'),
@@ -70,4 +71,13 @@ urlpatterns += [
     path('diadedieta/create/', DiaDeDietaCreateView.as_view(), name='diaDeDieta_create'),
     path('diadedieta/update/<int:pk>/', DiaDeDietaUpdateView.as_view(), name='diaDeDieta_update'),
     path('diadedieta/delete/<int:pk>/', DiaDeDietaDeleteView.as_view(), name='diaDeDieta_delete'),
+]
+
+urlpatterns += [
+    path('dieta/', DietaListView.as_view(), name='dieta_list'),
+    path('dieta/<int:pk>/', DietaDetailView.as_view(), name='dieta_detail'),
+    path('dieta/create/', DietaCreateView.as_view(), name='dieta_create'),
+    path('dieta/update/<int:pk>/', DietaUpdateView.as_view(), name='dieta_update'),
+    path('dieta/delete/<int:pk>/', DietaDeleteView.as_view(), name='dieta_delete'),
+    path('dieta/asignar_dias_de_dieta/<int:pk>/', asignar_dias_de_dieta, name='asignar_dias_de_dieta')
 ]

@@ -243,3 +243,12 @@ class Dieta(models.Model):
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
     goal = models.TextField(null=True, blank=True)
+    dias_de_dieta = models.ManyToManyField(DiaDeDieta, through='AsignacionDiaDeDieta', related_name='dietas')
+    
+    def __str__(self):
+        return self.name
+
+class AsignacionDiaDeDieta(models.Model):
+    dieta = models.ForeignKey(Dieta, on_delete=models.CASCADE)
+    dia_de_dieta = models.ForeignKey(DiaDeDieta, on_delete=models.CASCADE)
+    fecha_asignacion = models.DateField()

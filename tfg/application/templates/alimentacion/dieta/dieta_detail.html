@@ -40,7 +40,12 @@
     <p>Tubérculo: {% if object.tuberculo %}Sí{% else %}No{% endif %}</p>
     <p>Otros: {% if object.otros %}Sí{% else %}No{% endif %}</p>
 
-<!-- Puedes seguir mostrando otros campos del modelo -->
+    <h3>Días de Dieta Asignados:</h3>
+    <ul>
+        {% for dia in object.dias.all %}
+            <li>{{ dia.fecha|date:"j F Y" }} - {{ dia.name }}</li>
+        {% endfor %}
+    </ul>
 
 <a href="{% url 'dieta_update' object.pk %}">Editar</a>
 <a href="{% url 'dieta_delete' object.pk %}">Eliminar</a>
