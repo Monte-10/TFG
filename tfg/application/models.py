@@ -253,3 +253,20 @@ class Plan(models.Model):
     
     def __str__(self):
         return self.name
+
+from django.core.exceptions import ValidationError
+class Calendario(models.Model):
+    plan = models.ForeignKey(Plan, on_delete=models.CASCADE, related_name='calendario')
+    fecha = models.DateField()
+    opcion = models.ForeignKey(Opcion, on_delete=models.CASCADE, null=True, blank=True)
+
+    class Meta:
+        unique_together = ['plan', 'fecha']
+
+    def __str__(self):
+        return f'Calendario para {self.plan} - {self.fecha}'
+
+    def clean(self):
+        # Verifica que la fecha esté dentro del rango de fechas del plan
+        if self.fecha < self.plan.start_date or self.fecha > self.plan.end_date:
+            raise ValidationError('La fecha no está dentro del rango del plan')

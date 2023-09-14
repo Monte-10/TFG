@@ -512,38 +512,3 @@ class PlanForm(forms.ModelForm):
     # Agregar el widget DatePicker a los campos de fecha y ponemos default de inicio hoy y final en 7 días
     start_date = forms.DateField(widget=DatePickerInput(format='%d-%m-%Y'), initial=datetime.date.today())
     end_date = forms.DateField(widget=DatePickerInput(format='%d-%m-%Y'), initial=datetime.date.today() + timedelta(days=7))
-
-    def clean(self):
-        cleaned_data = super().clean()
-        start_date = cleaned_data.get('start_date')
-        end_date = cleaned_data.get('end_date')
-        opcion1 = cleaned_data.get('opcion1')
-        opcion2 = cleaned_data.get('opcion2')
-        opcion3 = cleaned_data.get('opcion3')
-
-        if start_date and end_date and opcion1 and opcion2 and opcion3:
-            date_range = [start_date + timedelta(days=i) for i in range((end_date - start_date).days + 1)]
-            opciones = [opcion1, opcion2, opcion3]
-
-            for i, date in enumerate(date_range):
-                opcion = opciones[i % 3]
-                plan_existente = Plan.objects.filter(start_date=date, end_date=date, opcion1=opcion).exists()
-
-                if plan_existente:
-                    raise forms.ValidationError(f"La opción {opcion} ya está asignada para la fecha {date}.")
-        return cleaned_data
-"""
-class DietaForm(forms.ModelForm):
-    class Meta:
-        model = Dieta
-        fields = ['cliente', 'name', 'description', 'start_date', 'end_date', 'goal']
-
-    dias = forms.ModelMultipleChoiceField(
-        queryset=DiaDeDieta.objects.all(),
-        widget=forms.CheckboxSelectMultiple,  # Puedes cambiar esto a otra forma de selección si lo deseas
-    )
-
-    # Agregar el widget DatePicker a los campos de fecha
-    start_date = forms.DateField(widget=DatePickerInput(format='%Y-%m-%d'))
-    end_date = forms.DateField(widget=DatePickerInput(format='%Y-%m-%d'))
-"""
