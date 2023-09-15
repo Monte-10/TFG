@@ -259,6 +259,7 @@ class Calendario(models.Model):
     plan = models.ForeignKey(Plan, on_delete=models.CASCADE, related_name='calendario')
     fecha = models.DateField()
     opcion = models.ForeignKey(Opcion, on_delete=models.CASCADE, null=True, blank=True)
+    cliente = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True, related_name='calendario')
 
     class Meta:
         unique_together = ['plan', 'fecha']

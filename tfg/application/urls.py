@@ -9,7 +9,8 @@ from .views import (AlimentoListView, AlimentoDetailView, AlimentoCreateView, Al
 from .views import (ComidaListView, ComidaDetailView, ComidaCreateView, ComidaUpdateView, ComidaDeleteView)
 from .views import (OpcionListView, OpcionDetailView, OpcionCreateView, OpcionUpdateView, OpcionDeleteView)
 from .views import (PlanListView, PlanDetailView, PlanCreateView, PlanUpdateView, PlanDeleteView)
-from .views import home
+#from .views import (CalendarioCreateView)
+from .views import home, crear_calendario
 
 urlpatterns = [
     re_path(r'^$', home, name='home'),
@@ -77,6 +78,11 @@ urlpatterns += [
     path('plan/', PlanListView.as_view(), name='plan_list'),
     path('plan/<int:pk>/', PlanDetailView.as_view(), name='plan_detail'),
     path('plan/create/', PlanCreateView.as_view(), name='plan_create'),
+    #path('plan/create/', crear_plan_con_calendario, name='plan_create'),
     path('plan/update/<int:pk>/', PlanUpdateView.as_view(), name='plan_update'),
     path('plan/delete/<int:pk>/', PlanDeleteView.as_view(), name='plan_delete'),
+]
+
+urlpatterns += [
+    path('calendario/create/<int:plan_id>', crear_calendario, name='calendario_create'),
 ]

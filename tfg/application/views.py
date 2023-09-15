@@ -1,9 +1,9 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import CustomUser, Exercise, Training, Challenge
-from .models import Alimento, Comida, Opcion, Plan
+from .models import Alimento, Comida, Opcion, Plan, Calendario
 from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm, CustomUserUpdateForm, ExerciseForm, TrainingForm, ComidaForm, OpcionForm, PlanForm
+from .forms import CustomUserCreationForm, CustomUserUpdateForm, ExerciseForm, TrainingForm, ComidaForm, OpcionForm, PlanForm, CalendarioForm, CalendarioFechaOpcionFormSet
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -227,8 +227,16 @@ class OpcionDeleteView(DeleteView):
 class PlanCreateView(CreateView):
     model = Plan
     form_class = PlanForm
-    template_name = 'alimentacion/plan/plan_form.html' 
+    template_name = 'alimentacion/plan/plan_form.html'
     success_url = reverse_lazy('plan_list')
+
+    def form_valid(self, form):
+        # Obten el objeto Plan creado
+        self.object = form.save()
+        # Redirige al usuario a la página de creación de Calendario, pasando el ID del Plan recién creado en la URL
+        return redirect('calendario_create', plan_id=self.object.id)
+        #return redirect('plan_list')
+
     
 class PlanListView(ListView):
     model = Plan
@@ -248,3 +256,50 @@ class PlanDeleteView(DeleteView):
     model = Plan
     template_name = 'alimentacion/plan/plan_confirm_delete.html'
     success_url = reverse_lazy('plan_list')
+
+"""   
+class CalendarioCreateView(CreateView):
+    model = Calendario
+    form_class = CalendarioForm
+    template_name = 'alimentacion/calendario/calendario_form.html' 
+    success_url = reverse_lazy('')
+"""
+from django.shortcuts import get_object_or_404
+from datetime import timedelta
+from django.forms import modelformset_factory
+
+def crear_calendario(request, plan_id):
+    plan = get_object_or_404(Plan, id=plan_id)
+
+    # Obtener todas las fechas entre start_date y end_date del plan, incluyendo end_date
+    fechas_plan = [plan.start_date + timedelta(days=i) for i in range((plan.end_date - plan.start_date).days + 1)]
+
+    # Calcula la cantidad de días entre start_date y end_date
+    diferencia_dias = (plan.end_date - plan.start_date).days
+
+    # Asegúrate de que el valor mínimo de extra sea 0 para que no haya formularios adicionales
+    extra = max(diferencia_dias, 0)
+
+    # Crea un formset con la cantidad adecuada de formularios
+    CalendarioFechaOpcionFormSet = modelformset_factory(Calendario, fields=('fecha', 'opcion'), extra=extra)
+
+    if request.method == 'POST':
+        # Crear el formset con los datos POST
+        formset = CalendarioFechaOpcionFormSet(queryset=Calendario.objects.none(), prefix='calendario_formset', initial=initial_data)
+
+        if formset.is_valid():
+            # Guardar cada fecha y opción en el formset
+            for i, form in enumerate(formset):
+                if form.cleaned_data.get('fecha') and form.cleaned_data.get('opcion'):
+                    calendario = form.save(commit=False)
+                    calendario.fecha = fechas_plan[i]  # Establece la fecha
+                    calendario.plan = plan  # Establece el plan
+                    calendario.save()
+
+            return redirect('home')  # Redirige a donde desees después de guardar los calendarios
+    else:
+        # Crea una lista de datos iniciales para el formset
+        initial_data = [{'fecha': fecha} for fecha in fechas_plan]
+        formset = CalendarioFechaOpcionFormSet(queryset=Calendario.objects.none(), prefix='calendario_formset', initial=initial_data, plan=plan)
+
+    return render(request, 'alimentacion/calendario/calendario_form.html', {'formset': formset})

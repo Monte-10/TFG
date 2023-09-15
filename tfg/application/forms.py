@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from bootstrap_datepicker_plus.widgets import DatePickerInput
 from django.forms.widgets import HiddenInput
-from .models import CustomUser, Exercise, Training, TrainingExercise, Challenge, Alimento, Comida, Opcion, Plan
+from .models import CustomUser, Exercise, Training, TrainingExercise, Challenge, Alimento, Comida, Opcion, Plan, Calendario
 
 class CustomUserBaseForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -489,7 +489,7 @@ import datetime
 class PlanForm(forms.ModelForm):
     class Meta:
         model = Plan
-        fields = ['cliente', 'name', 'description', 'start_date', 'end_date', 'suplementos', 'notas', 'goal']
+        fields = ['cliente', 'name', 'description', 'start_date', 'end_date', 'suplementos', 'notas', 'goal', 'opcion1', 'opcion2', 'opcion3']
 
     opcion1 = forms.ModelChoiceField(
         queryset=Opcion.objects.all(),
@@ -512,3 +512,51 @@ class PlanForm(forms.ModelForm):
     # Agregar el widget DatePicker a los campos de fecha y ponemos default de inicio hoy y final en 7 días
     start_date = forms.DateField(widget=DatePickerInput(format='%d-%m-%Y'), initial=datetime.date.today())
     end_date = forms.DateField(widget=DatePickerInput(format='%d-%m-%Y'), initial=datetime.date.today() + timedelta(days=7))
+    
+    cliente = forms.ModelChoiceField(
+        queryset=CustomUser.objects.filter(role='cliente'),
+        required=True,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+    )
+
+class CalendarioForm(forms.ModelForm):
+    class Meta:
+        model = Calendario
+        fields = ['plan', 'fecha', 'opcion']
+
+    def __init__(self, *args, **kwargs):
+        plan = kwargs.pop('plan', None)  # Obtén el plan de los argumentos kwargs
+        super().__init__(*args, **kwargs)
+
+        # Configura las fechas disponibles basadas en el plan proporcionado
+        if plan:
+            self.fields['fecha'].widget = forms.Select(choices=self.get_fechas_disponibles(plan))
+
+    def get_fechas_disponibles(self, plan):
+        # Obtén todas las fechas entre start_date y end_date del plan
+        fechas_plan = [plan.start_date + timedelta(days=i) for i in range((plan.end_date - plan.start_date).days + 1)]
+        
+        # Verifica si las fechas ya tienen una opción asignada
+        fechas_con_opcion = Calendario.objects.filter(plan=plan).exclude(opcion=None).values_list('fecha', flat=True)
+        
+        # Crea una lista de opciones para el widget de fecha, excluyendo las fechas ya asignadas
+        opciones = [(fecha, fecha.strftime('%d-%m-%Y')) for fecha in fechas_plan if fecha not in fechas_con_opcion]
+
+        return [('', '---------')] + opciones
+
+from django.forms import formset_factory
+
+class CalendarioFechaOpcionForm(forms.ModelForm):
+    class Meta:
+        model = Calendario
+        fields = ['fecha', 'opcion']
+
+    def __init__(self, *args, **kwargs):
+        plan = kwargs.pop('plan', None)
+        super().__init__(*args, **kwargs)
+
+        if plan:
+            self.fields['fecha'].widget = forms.Select(choices=self.get_fechas_disponibles(plan))
+
+
+CalendarioFechaOpcionFormSet = formset_factory(CalendarioFechaOpcionForm, extra=1, can_delete=True)

@@ -1,0 +1,26 @@
+<!-- templates/alimentacion/plan/calendario_form.html -->
+
+{% extends "application/base.html" %}
+
+{% block content %}
+<h2>{% if object %}Editar{% else %}Crear{% endif %} Calendario</h2>
+
+<h3>Asignar Opciones de Calendario</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ formset.management_form }}
+    {{ formset.non_form_errors }}
+    
+    {% for form in formset %}
+        <div class="formset-row">
+            {{ form.id }}
+            {{ form.fecha.label_tag }}
+            {{ form.fecha }}
+            {{ form.opcion.label_tag }}
+            {{ form.opcion }}
+        </div>
+    {% endfor %}
+    
+    <input type="submit" value="Guardar Calendario">
+</form>
+{% endblock %}
