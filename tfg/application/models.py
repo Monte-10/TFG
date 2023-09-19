@@ -259,7 +259,7 @@ class Calendario(models.Model):
     plan = models.ForeignKey(Plan, on_delete=models.CASCADE, related_name='calendario')
     fecha = models.DateField()
     opcion = models.ForeignKey(Opcion, on_delete=models.CASCADE, null=True, blank=True)
-    cliente = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True, related_name='calendario')
+    cliente = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='calendario')
 
     class Meta:
         unique_together = ['plan', 'fecha']
@@ -268,6 +268,10 @@ class Calendario(models.Model):
         return f'Calendario para {self.plan} - {self.fecha}'
 
     def clean(self):
-        # Verifica que la fecha esté dentro del rango de fechas del plan
-        if self.fecha < self.plan.start_date or self.fecha > self.plan.end_date:
-            raise ValidationError('La fecha no está dentro del rango del plan')
+        # Verifica si la instancia tiene un plan antes de realizar la validación
+        if self.plan:
+            if self.fecha < self.plan.start_date or self.fecha > self.plan.end_date:
+                raise ValidationError('La fecha no está dentro del rango del plan')
+        else:
+            raise ValidationError('El plan no está establecido para esta instancia de Calendario.')
+        

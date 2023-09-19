@@ -1,0 +1,12 @@
+{% extends "application/base.html" %}
+
+{% block content %}
+<h1>Bienvenido, {{ request.user.username }}</h1>
+
+<h2>Tu Calendario:</h2>
+<ul>
+    {% for fecha, opcion in calendario %}
+        <p>{{ fecha }}: {{ opcion }}</p>
+    {% endfor %}
+</ul>
+{% endblock %}

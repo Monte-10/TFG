@@ -519,44 +519,16 @@ class PlanForm(forms.ModelForm):
         widget=forms.Select(attrs={'class': 'form-control'}),
     )
 
-class CalendarioForm(forms.ModelForm):
-    class Meta:
-        model = Calendario
-        fields = ['plan', 'fecha', 'opcion']
-
-    def __init__(self, *args, **kwargs):
-        plan = kwargs.pop('plan', None)  # Obtén el plan de los argumentos kwargs
-        super().__init__(*args, **kwargs)
-
-        # Configura las fechas disponibles basadas en el plan proporcionado
-        if plan:
-            self.fields['fecha'].widget = forms.Select(choices=self.get_fechas_disponibles(plan))
-
-    def get_fechas_disponibles(self, plan):
-        # Obtén todas las fechas entre start_date y end_date del plan
-        fechas_plan = [plan.start_date + timedelta(days=i) for i in range((plan.end_date - plan.start_date).days + 1)]
-        
-        # Verifica si las fechas ya tienen una opción asignada
-        fechas_con_opcion = Calendario.objects.filter(plan=plan).exclude(opcion=None).values_list('fecha', flat=True)
-        
-        # Crea una lista de opciones para el widget de fecha, excluyendo las fechas ya asignadas
-        opciones = [(fecha, fecha.strftime('%d-%m-%Y')) for fecha in fechas_plan if fecha not in fechas_con_opcion]
-
-        return [('', '---------')] + opciones
-
-from django.forms import formset_factory
-
 class CalendarioFechaOpcionForm(forms.ModelForm):
     class Meta:
         model = Calendario
         fields = ['fecha', 'opcion']
 
     def __init__(self, *args, **kwargs):
-        plan = kwargs.pop('plan', None)
-        super().__init__(*args, **kwargs)
-
+        plan = kwargs.pop('plan', None)  # Extract the plan from kwargs
+        super(CalendarioFechaOpcionForm, self).__init__(*args, **kwargs)
+        
+        # If we have a plan, adjust the queryset for the 'opcion' field to only include the plan's options
         if plan:
-            self.fields['fecha'].widget = forms.Select(choices=self.get_fechas_disponibles(plan))
+            self.fields['opcion'].queryset = Opcion.objects.filter(id__in=[plan.opcion1.id, plan.opcion2.id, plan.opcion3.id])
 
-
-CalendarioFechaOpcionFormSet = formset_factory(CalendarioFechaOpcionForm, extra=1, can_delete=True)

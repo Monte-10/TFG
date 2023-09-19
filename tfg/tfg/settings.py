@@ -57,7 +57,7 @@ ROOT_URLCONF = 'tfg.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'tfg/application/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -94,7 +94,9 @@ DATABASES = {
 
 AUTH_USER_MODEL = 'application.CustomUser'
 
-LOGIN_REDIRECT_URL = 'home'
+from django.urls import reverse_lazy
+
+LOGIN_REDIRECT_URL = reverse_lazy('inicio_view')
 LOGOUT_REDIRECT_URL = 'home'
 
 AUTH_PASSWORD_VALIDATORS = [
