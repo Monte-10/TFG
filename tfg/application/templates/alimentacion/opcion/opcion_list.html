@@ -1,19 +1,19 @@
 <!-- templates/alimentacion/opcion/opcion_list.html -->
 
-{% extends "application/base.html" %}
+{% extends 'base_generic.html' %}
 
 {% block content %}
-<h2>Listado de opciones</h2>
+<h2 class="my-4">Listado de opciones</h2>
 
-<ul>
+<ul class="list-group">
     {% for opcion in object_list %}
-        <li>
+        <li class="list-group-item">
             <a href="{% url 'opcion_detail' opcion.pk %}">{{ opcion.name }}</a>
             <a href="{% url 'opcion_update' opcion.pk %}">Editar</a>
             <a href="{% url 'opcion_delete' opcion.pk %}">Eliminar</a>
         </li>
     {% empty %}
-        <li>No hay opciones disponibles.</li>
+        <li class="list-group-item">No hay opciones disponibles.</li>
     {% endfor %}
 </ul>
 

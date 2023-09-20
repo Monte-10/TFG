@@ -10,7 +10,7 @@ from django.utils.decorators import method_decorator
 
 #View para el home
 def home(request):
-    return render(request, 'application/base.html')
+    return render(request, 'base_generic.html')
 
 def login(request):
     return render(request, 'application/login.html')
@@ -301,3 +301,31 @@ def crear_calendario(request, plan_id):
         formset = CalendarioFechaOpcionFormSet(queryset=Calendario.objects.none(), prefix='calendario_formset', initial=initial_data, form_kwargs={'plan': plan})
 
     return render(request, 'alimentacion/calendario/calendario_form.html', {'formset': formset})
+
+from django.http import JsonResponse
+
+@login_required
+def calendario_data(request):
+    cliente_id = request.user.id
+    # Assuming cliente_id is the ID of the logged-in cliente or can be obtained some other way
+    calendarios = Calendario.objects.filter(cliente_id=cliente_id)
+    
+    events = [
+        {
+            'title': calendario.opcion.name,
+            'start': calendario.fecha.strftime('%Y-%m-%d'),
+        }
+        for calendario in calendarios
+    ]
+    
+    return JsonResponse(events, safe=False)
+
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def alimentacion(request):
+    if request.user.is_authenticated and request.user.role == "entrenador":
+        return render(request, 'alimentacion/alimentacion_entrenador.html')
+    else:
+        return render(request, 'alimentacion/alimentacion_cliente.html')

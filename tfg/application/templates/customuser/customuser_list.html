@@ -4,9 +4,9 @@
 
 {% block content %}
 <h1>Lista de Usuarios</h1>
-<ul>
+<ul class="list-group">
     {% for user in customuser_list %}
-    <li>
+    <li class="list-group-item">
         {{ user.username }} - {{ user.email }}  
         <a href="{% url 'customuser_update' user.pk %}">Editar</a>
         <a href="{% url 'customuser_delete' user.pk %}">Eliminar</a>

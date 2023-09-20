@@ -1,0 +1,11 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h2>Alimentación para Entrenador</h2>
+<ul>
+    <li><a href="{% url 'alimento/alimento_list' %}">Gestionar Alimento</a></li>
+    <li><a href="comida/comida_list">Gestionar Comida</a></li>
+    <li><a href="opcion/opcion_list">Gestionar Opción</a></li>
+    <li><a href="plan/plan_list">Gestionar Plan</a></li>
+</ul>
+{% endblock %}

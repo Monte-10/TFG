@@ -10,7 +10,7 @@ from .views import (ComidaListView, ComidaDetailView, ComidaCreateView, ComidaUp
 from .views import (OpcionListView, OpcionDetailView, OpcionCreateView, OpcionUpdateView, OpcionDeleteView)
 from .views import (PlanListView, PlanDetailView, PlanCreateView, PlanUpdateView, PlanDeleteView)
 #from .views import (CalendarioCreateView)
-from .views import home, crear_calendario
+from .views import home, crear_calendario, alimentacion
 
 urlpatterns = [
     re_path(r'^$', home, name='home'),
@@ -85,4 +85,7 @@ urlpatterns += [
 
 urlpatterns += [
     path('calendario/create/<int:plan_id>', crear_calendario, name='calendario_create'),
+    path('alimentacion/', alimentacion, name='alimentacion'),
 ]
+
+

@@ -1,6 +1,6 @@
-{% extends 'application/base.html' %}
+{% extends 'base_generic.html' %}
 {% block content %}
-    <h2>{{ object.name }}</h2>
+    <h2 class="my-4">{{ object.name }}</h2>
     <!-- Muestra los detalles del desafío. Ajusta según los campos de tu modelo -->
     <a href="{% url 'challenge_update' object.pk %}">Edit</a>
     <a href="{% url 'challenge_delete' object.pk %}">Delete</a>

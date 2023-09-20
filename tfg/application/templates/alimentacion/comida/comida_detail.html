@@ -1,9 +1,9 @@
 <!-- templates/alimentacion/comida/comida_detail.html -->
 
-{% extends "application/base.html" %}
+{% extends 'base_generic.html' %}
 
 {% block content %}
-<h2>{{ object.name }}</h2>
+<h2 class="my-4">{{ object.name }}</h2>
 
     <p>Kcal: {{ object.kcal }}</p>
     <p>Proteínas: {{ object.proteina }}</p>

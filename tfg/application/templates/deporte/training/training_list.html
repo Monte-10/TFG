@@ -1,10 +1,10 @@
-{% extends 'application/base.html' %}
+{% extends 'base_generic.html' %}
 {% block content %}
-    <h2>Lista de Entrenamientos</h2>
+    <h2 class="my-4">Lista de Entrenamientos</h2>
     <a href="{% url 'training_create' %}">Crear Entrenamiento</a>
-    <ul>
+    <ul class="list-group">
     {% for training in object_list %}
-        <li>
+        <li class="list-group-item">
             <a href="{% url 'training_detail' training.pk %}">{{ training.name }}</a>
             <a href="{% url 'training_update' training.pk %}">Editar</a>
             <a href="{% url 'training_delete' training.pk %}">Eliminar</a>

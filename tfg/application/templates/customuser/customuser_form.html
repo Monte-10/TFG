@@ -2,7 +2,7 @@
 
 {% block content %}
     <h2>{% if object %}Actualizar{% else %}Crear{% endif %} Usuario</h2>
-    <form method="post">
+    <form class="form-custom" method="post">
         {% csrf_token %}
 
         <!-- CORRECCION ERRORES -->
@@ -59,7 +59,7 @@
             {# Campos para el entrenador (agrega los campos específicos si es necesario) #}
         </div>
 
-        <button type="submit">Guardar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
     </form>
 
     <script>

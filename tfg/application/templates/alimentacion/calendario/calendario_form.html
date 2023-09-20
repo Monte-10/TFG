@@ -1,12 +1,12 @@
 <!-- templates/alimentacion/plan/calendario_form.html -->
 
-{% extends "application/base.html" %}
+{% extends 'base_generic.html' %}
 
 {% block content %}
 <h2>{% if object %}Editar{% else %}Crear{% endif %} Calendario</h2>
 
 <h3>Asignar Opciones de Calendario</h3>
-<form method="post">
+<form class="form-custom" method="post" class="form-custom">
     {% csrf_token %}
     {{ formset.management_form }}
     {{ formset.non_form_errors }}
@@ -21,6 +21,6 @@
         </div>
     {% endfor %}
     
-    <input type="submit" value="Guardar Calendario">
+    <input type="submit" class="btn btn-primary" class="btn btn-primary mt-3" value="Guardar Calendario">
 </form>
 {% endblock %}

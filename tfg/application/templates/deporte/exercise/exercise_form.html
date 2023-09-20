@@ -5,9 +5,9 @@
 {% block content %}
 <h2>{% if object %}Editar{% else %}Crear{% endif %} Ejercicio</h2>
 
-<form method="post">
+<form class="form-custom" method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">{% if object %}Actualizar{% else %}Crear{% endif %}</button>
+    <button type="submit" class="btn btn-primary">{% if object %}Actualizar{% else %}Crear{% endif %}</button>
 </form>
 {% endblock %}

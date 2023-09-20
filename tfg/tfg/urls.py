@@ -24,5 +24,5 @@ urlpatterns = [
     path('login/', LoginView.as_view(template_name='application/login.html'), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('inicio/', views.inicio, name='inicio_view'),
-
+    path('calendario/', views.calendario_data, name='calendario_data'),
 ]

@@ -1,12 +1,19 @@
-{% extends "application/base.html" %}
-
+{% extends 'base_generic.html' %}
 {% block content %}
-<h1>Bienvenido, {{ request.user.username }}</h1>
 
-<h2>Tu Calendario:</h2>
-<ul>
-    {% for fecha, opcion in calendario %}
-        <p>{{ fecha }}: {{ opcion }}</p>
-    {% endfor %}
-</ul>
+<div id='calendar'></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            events: '/calendario/data/' + '{{ user.id }}'  // Assuming user.id is the ID of the logged-in cliente
+        });
+
+        calendar.render();
+    });
+</script>
+
 {% endblock %}

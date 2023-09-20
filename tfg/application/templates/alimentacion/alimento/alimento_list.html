@@ -1,19 +1,19 @@
 <!-- templates/alimentacion/alimento/alimento_list.html -->
 
-{% extends "application/base.html" %}
+{% extends 'base_generic.html' %}
 
 {% block content %}
-<h2>Listado de Alimentos</h2>
+<h2 class="my-4">Listado de Alimentos</h2>
 
-<ul>
+<ul class="list-group">
     {% for alimento in object_list %}
-        <li>
+        <li class="list-group-item">
             <a href="{% url 'alimento_detail' alimento.pk %}">{{ alimento.name }}</a>
             <a href="{% url 'alimento_update' alimento.pk %}">Editar</a>
             <a href="{% url 'alimento_delete' alimento.pk %}">Eliminar</a>
         </li>
     {% empty %}
-        <li>No hay alimentos disponibles.</li>
+        <li class="list-group-item">No hay alimentos disponibles.</li>
     {% endfor %}
 </ul>
 

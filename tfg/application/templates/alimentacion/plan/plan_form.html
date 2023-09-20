@@ -1,16 +1,16 @@
 <!-- templates/alimentacion/plan/plan_form.html -->
 
-{% extends "application/base.html" %}
+{% extends 'base_generic.html' %}
 
 {% block content %}
 <h2>{% if object %}Editar{% else %}Crear{% endif %} plan</h2>
 
-<form method="post">
+<form class="form-custom" method="post">
     {% csrf_token %}
     {% load static %}
     <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
     {{ form.media }}
     {{ form.as_p }}
-    <input type="submit" value="Guardar">
+    <input type="submit" class="btn btn-primary" value="Guardar">
 </form>
 {% endblock %}

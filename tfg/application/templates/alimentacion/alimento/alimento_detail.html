@@ -1,9 +1,9 @@
 <!-- templates/alimentacion/alimento/alimento_detail.html -->
 
-{% extends "application/base.html" %}
+{% extends 'base_generic.html' %}
 
 {% block content %}
-<h2>{{ object.name }}</h2>
+<h2 class="my-4">{{ object.name }}</h2>
 
     <p>Cantidad: {{ object.cantidad }} {% if object.cantidad >= 100 %} gramos {% elif object.cantidad == 1 %} unidad {% else %} unidades {% endif %}</p>
     <p>Kcal: {{ object.kcal }}</p>
