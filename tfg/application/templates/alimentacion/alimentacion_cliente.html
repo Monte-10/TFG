@@ -2,5 +2,15 @@
 
 {% block content %}
 <h2>Alimentación para Cliente</h2>
-<p>Aquí puedes ver tu calendario de comidas.</p>
+<div id="calendar"></div>
+<script>
+    $(document).ready(function() {
+        $('#calendar').fullCalendar({
+            defaultView: 'month',
+            events: {{ events|safe }}
+        });
+    });    
+    </script>
 {% endblock %}
+
+

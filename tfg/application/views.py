@@ -328,4 +328,24 @@ def alimentacion(request):
     if request.user.is_authenticated and request.user.role == "entrenador":
         return render(request, 'alimentacion/alimentacion_entrenador.html')
     else:
-        return render(request, 'alimentacion/alimentacion_cliente.html')
+        events = []
+        if request.user.is_authenticated and request.user.role == "cliente":
+            calendarios = Calendario.objects.filter(cliente=request.user)
+            for calendario in calendarios:
+                event = {
+                    "title": calendario.opcion.name,
+                    "start": calendario.fecha.strftime('%Y-%m-%d')
+                }
+                events.append(event)
+            return render(request, 'alimentacion/alimentacion_cliente.html', {"events": events})
+        else:
+            return redirect('login')
+
+
+@login_required
+def view_assigned_clients(request):
+    if request.user.role == 'entrenador':
+        assigned_clients = CustomUser.objects.filter(entrenador=request.user)
+        return render(request, 'customuser/trainer_assigned_clients.html', {'clients': assigned_clients})
+    else:
+        return redirect('home')  # Redirect to home if user is not a trainer

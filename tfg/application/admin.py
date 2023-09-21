@@ -3,8 +3,8 @@ from .models import CustomUser, Exercise, Training, TrainingExercise, ActivityRe
 
 # ModelAdmin personalizado para CustomUser
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'email', 'gender', 'age',)
-    search_fields = ('username', 'email',)
+    list_display = ('username', 'email', 'gender', 'age', 'entrenador')
+    search_fields = ('username', 'email', 'entrenador')
     
 
 # ModelAdmin personalizado para Exercise

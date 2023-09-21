@@ -1,0 +1,11 @@
+
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h2>Clientes asignados</h2>
+    <ul>
+    {% for client in clients %}
+        <li>{{ client.username }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}
