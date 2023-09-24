@@ -4,6 +4,18 @@ from bootstrap_datepicker_plus.widgets import DatePickerInput
 from django.forms.widgets import HiddenInput
 from .models import CustomUser, Exercise, Training, TrainingExercise, Challenge, Alimento, Comida, Opcion, Plan, Calendario
 
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['gender', 'weight', 'height', 'age', 'waist_measurement', 'hip_measurement', 'goal', 'health_issues',
+                  'blood_pressure', 'blood_sugar', 'daily_water_intake', 'diet_type', 'calorie_intake', 'lifestyle', 'other_goals']
+        
+        def clean_age(self):
+            age = self.cleaned_data.get('age')
+            if age < 0 or age > 99:
+                raise forms.ValidationError("La edad debe estar entre 0 y 99 años.")
+            return age
+        
 class CustomUserBaseForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

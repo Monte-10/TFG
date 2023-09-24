@@ -14,9 +14,6 @@ class MuscleGroup(models.Model):
     
 class CustomUser(AbstractUser):
     
-    groups = models.ManyToManyField(Group, related_name='customuser_groups')
-    user_permissions = models.ManyToManyField(Permission, related_name='customuser_permissions')
-    
     ROLE_CHOICES = [
         ('cliente', 'Cliente'),
         ('entrenador', 'Entrenador'),
@@ -51,14 +48,14 @@ class CustomUser(AbstractUser):
     waist_measurement = models.FloatField(null=True, blank=True)
     hip_measurement = models.FloatField(null=True, blank=True)
     goal = models.CharField(max_length=50, choices=GOAL_CHOICES, null=True, blank=True)
-    health_issues = models.TextField(null=True, blank=True)
+    health_issues = models.CharField(max_length=50, null=True, blank=True)
     blood_pressure = models.FloatField(null=True, blank=True)
     blood_sugar = models.FloatField(null=True, blank=True)
     daily_water_intake = models.FloatField(null=True, blank=True)
     diet_type = models.CharField(max_length=50, null=True, blank=True)
     calorie_intake = models.FloatField(null=True, blank=True)
     lifestyle = models.CharField(max_length=50, choices=LIFE_STYLE_CHOICES, null=True, blank=True)
-    other_goals = models.TextField(null=True, blank=True)
+    other_goals = models.CharField(max_length=50, null=True, blank=True)
     entrenador = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='clientes')
     
     def __str__(self):
@@ -122,6 +119,20 @@ class UserChallenge(models.Model):
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
     completed_date = models.DateField(null=True, blank=True)
     status = models.CharField(max_length=50)  # ej. "completado", "en progreso", etc.
+    
+class TrainingRequest(models.Model):
+    client = models.ForeignKey(CustomUser, related_name='training_requests_made', on_delete=models.CASCADE)
+    trainer = models.ForeignKey(CustomUser, related_name='training_requests_received', on_delete=models.CASCADE)
+    
+    STATUS_CHOICES = [
+        ('pendiente', 'Pendiente'),
+        ('aceptada', 'Aceptada'),
+        ('rechazada', 'Rechazada'),
+    ]
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pendiente')
+
+    def __str__(self):
+        return f"Request from {self.client} to {self.trainer} - {self.status}"
     
     
 # ----------  DIETA  ------------ #

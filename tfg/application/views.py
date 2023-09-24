@@ -3,7 +3,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .models import CustomUser, Exercise, Training, Challenge
 from .models import Alimento, Comida, Opcion, Plan, Calendario
 from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm, CustomUserUpdateForm, ExerciseForm, TrainingForm, ComidaForm, OpcionForm, PlanForm
+from .forms import CustomUserCreationForm, CustomUserUpdateForm, ExerciseForm, TrainingForm, ComidaForm, OpcionForm, PlanForm, UserProfileForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -16,14 +16,41 @@ def login(request):
     return render(request, 'application/login.html')
 
 def inicio(request):
-    calendario_list = []
+    context = {}
     
-    if request.user.is_authenticated and request.user.role == "cliente":
-        calendario_entries = Calendario.objects.filter(cliente=request.user).order_by('fecha')
-        calendario_list = [(entry.fecha, entry.opcion) for entry in calendario_entries]
-        
-    return render(request, 'application/inicio_cliente.html', {'calendario': calendario_list})
+    if request.user.is_authenticated:
+        if request.user.role == "entrenador":
+            context['is_trainer'] = True
+            context['has_pending_requests'] = TrainingRequest.objects.filter(trainer=request.user, status='pendiente').exists()
+        else:
+            context['is_trainer'] = False
+            context['has_trainer'] = request.user.entrenador is not None
+            if context['has_trainer']:
+                context['trainer_name'] = request.user.entrenador.username
+                
+    return render(request, 'application/inicio.html', context)
 
+def perfil(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    if request.user.role == 'cliente' and request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Perfil actualizado con éxito.')
+            return redirect('perfil')
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+
+    elif request.user.role == 'cliente':
+        form = UserProfileForm(instance=request.user)
+    else:
+        form = None
+        
+    return render(request, 'application/perfil.html', {'user': request.user, 'form': form})
 # Vistas para CustomUser
 
 def register_customuser(request):
@@ -52,11 +79,20 @@ class CustomUserDetailView(DetailView):
     model = CustomUser
     template_name = 'customuser/customuser_detail.html'
 
+from django.contrib.auth import authenticate, login
 class CustomUserCreateView(CreateView):
     model = CustomUser
     form_class = CustomUserCreationForm  # Usar form_class en lugar de fields
     template_name = 'customuser/customuser_form.html'
-    success_url = reverse_lazy('customuser_list')
+    success_url = reverse_lazy('inicio')
+    
+    def form_valid(self, form):
+        # Este método se llama cuando el formulario es válido y se va a guardar
+        response = super().form_valid(form)
+        user = authenticate(username=self.object.username, password=form.cleaned_data['password1'])
+        if user:
+            login(self.request, user)
+        return response
 
 
 class CustomUserUpdateView(UpdateView):
@@ -349,3 +385,50 @@ def view_assigned_clients(request):
         return render(request, 'customuser/trainer_assigned_clients.html', {'clients': assigned_clients})
     else:
         return redirect('home')  # Redirect to home if user is not a trainer
+
+from .models import TrainingRequest
+
+@login_required
+def request_trainer_view(request):
+    # Asegurarse de que el usuario esté autenticado y sea un cliente
+    if not request.user.is_authenticated or request.user.role != 'cliente':
+        return redirect('login')  # O redirige a donde prefieras
+
+    trainers = CustomUser.objects.filter(role='entrenador')
+    if request.method == 'POST':
+        trainer_id = request.POST.get('trainer_id')
+        trainer = CustomUser.objects.get(id=trainer_id)
+        TrainingRequest.objects.create(client=request.user, trainer=trainer)
+        return redirect('home')  # Redirige a la vista que prefieras después de enviar la solicitud
+
+    return render(request, 'customuser/request_trainer.html', {'trainers': trainers})
+
+@login_required
+def view_requests_view(request):
+    
+    if not request.user.is_authenticated or request.user.role != 'entrenador':
+        return redirect('login')
+
+    requests = TrainingRequest.objects.filter(trainer=request.user, status='pendiente')
+    return render(request, 'customuser/view_requests.html', {'requests': requests})
+
+
+def accept_request(request, request_id):
+    try:
+        training_request = TrainingRequest.objects.get(id=request_id)
+        training_request.status = 'aceptada'
+        training_request.client.entrenador = training_request.trainer
+        training_request.client.save()
+        training_request.save()
+    except TrainingRequest.DoesNotExist:
+        pass
+    return redirect('view_requests')
+
+def reject_request(request, request_id):
+    try:
+        training_request = TrainingRequest.objects.get(id=request_id)
+        training_request.status = 'rechazada'
+        training_request.save()
+    except TrainingRequest.DoesNotExist:
+        pass
+    return redirect('view_requests')

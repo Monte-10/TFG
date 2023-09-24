@@ -10,10 +10,12 @@ from .views import (ComidaListView, ComidaDetailView, ComidaCreateView, ComidaUp
 from .views import (OpcionListView, OpcionDetailView, OpcionCreateView, OpcionUpdateView, OpcionDeleteView)
 from .views import (PlanListView, PlanDetailView, PlanCreateView, PlanUpdateView, PlanDeleteView)
 #from .views import (CalendarioCreateView)
-from .views import home, crear_calendario, alimentacion, view_assigned_clients
+from .views import home, crear_calendario, alimentacion, view_assigned_clients, inicio, perfil
 
 urlpatterns = [
     re_path(r'^$', home, name='home'),
+    path('inicio/', inicio, name='inicio'),
+    path('perfil/', perfil, name='perfil'),
     path('customuser/', CustomUserListView.as_view(), name='customuser_list'),
     path('user/<int:pk>/', CustomUserDetailView.as_view(), name='customuser_detail'),
     #path('user/create/', CustomUserCreateView.as_view(), name='customuser_create'),
@@ -87,5 +89,13 @@ urlpatterns += [
     path('calendario/create/<int:plan_id>', crear_calendario, name='calendario_create'),
     path('alimentacion/', alimentacion, name='alimentacion'),
     path('clientes_entrenador/', view_assigned_clients, name='clientes_entrenador'),
+]
 
+from .views import request_trainer_view, view_requests_view, accept_request, reject_request
+
+urlpatterns += [
+    path('solicitar_entrenador/', request_trainer_view, name='request_trainer'),
+    path('ver_solicitudes/', view_requests_view, name='view_requests'),
+    path('ver_solicitudes/aceptar/<int:request_id>/', accept_request, name='accept_request'),
+    path('ver_solicitudes/rechazar/<int:request_id>/', reject_request, name='reject_request'),
 ]

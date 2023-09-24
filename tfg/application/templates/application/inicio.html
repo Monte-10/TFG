@@ -1,0 +1,17 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+
+{% if is_trainer %}
+    <a href="{% url 'clientes_entrenador' %}">Ver mis clientes asignados</a>
+    {% if has_pending_requests %}
+        <a href="{% url 'view_requests' %}">Ver solicitudes pendientes</a>
+    {% endif %}
+{% else %}
+    {% if has_trainer %}
+        Tu entrenador es: {{ trainer_name }}
+    {% else %}
+        <a href="{% url 'request_trainer' %}">Solicitar entrenador</a>
+    {% endif %}
+{% endif %}
+
+{% endblock %}
