@@ -539,103 +539,599 @@ class PlatoVariable(models.Model):
     def __str__(self):
         return f'{self.plato_base.name} - Variable'
 
-class Comida(models.Model):
+class ComidaBase(models.Model):
     name = models.CharField(max_length=100)
-    kcal = models.IntegerField(default=0)
-    proteina = models.FloatField(default=0)
-    hc = models.FloatField(default=0)
-    azucar = models.FloatField(default=0)
-    fibra = models.FloatField(default=0)
-    grasa = models.FloatField(default=0)
-    grasa_sat = models.FloatField(default=0)
-    apto_celiacos = models.BooleanField(default=False)
-    apto_lactosa = models.BooleanField(default=False)
-    apto_veganos = models.BooleanField(default=False)
-    apto_vegetarianos = models.BooleanField(default=False)
-    apto_pescetarianos = models.BooleanField(default=False)
-    carne = models.BooleanField(default=False)
-    verdura = models.BooleanField(default=False)
-    pescado_marisco = models.BooleanField(default=False)
-    enlatado_conserva = models.BooleanField(default=False)
-    cereal = models.BooleanField(default=False)
-    pasta_arroz = models.BooleanField(default=False)
-    lacteo_yogur_queso = models.BooleanField(default=False)
-    fruta = models.BooleanField(default=False)
-    fruto_seco = models.BooleanField(default=False)
-    legumbre = models.BooleanField(default=False)
-    salsa_condimento = models.BooleanField(default=False)
-    fiambre = models.BooleanField(default=False)
-    pan_panMolde_tostada = models.BooleanField(default=False)
-    huevo = models.BooleanField(default=False)
-    suplemento_bebida_especial = models.BooleanField(default=False)
-    tuberculo = models.BooleanField(default=False)
-    otros = models.BooleanField(default=False)
-    alimentos = models.ManyToManyField(Alimento)
+    platos = models.ManyToManyField(PlatoVariable)
+    
+    @property
+    def kcal(self):
+        return sum([plato.kcal for plato in self.platos_variables.all()])
+    
+    @property
+    def proteina(self):
+        return sum([plato.proteina for plato in self.platos_variables.all()])
+    
+    @property
+    def hc(self):
+        return sum([plato.hc for plato in self.platos_variables.all()])
+    
+    @property
+    def azucar(self):
+        return sum([plato.azucar for plato in self.platos_variables.all()])
+    
+    @property
+    def fibra(self):
+        return sum([plato.fibra for plato in self.platos_variables.all()])
+    
+    @property
+    def grasa(self):
+        return sum([plato.grasa for plato in self.platos_variables.all()])
+    
+    @property
+    def grasa_sat(self):
+        return sum([plato.grasa_sat for plato in self.platos_variables.all()])
+    
+    @property
+    def apto_celiacos(self):
+        return all([plato.apto_celiacos for plato in self.platos_variables.all()])
+    
+    @property
+    def apto_lactosa(self):
+        return all([plato.apto_lactosa for plato in self.platos_variables.all()])
+    
+    @property
+    def apto_veganos(self):
+        return all([plato.apto_veganos for plato in self.platos_variables.all()])
+    
+    @property
+    def apto_vegetarianos(self):
+        return all([plato.apto_vegetarianos for plato in self.platos_variables.all()])
+    
+    @property
+    def apto_pescetarianos(self):
+        return all([plato.apto_pescetarianos for plato in self.platos_variables.all()])
+    
+    @property
+    def carne(self):
+        return any([plato.carne for plato in self.platos_variables.all()])
+    
+    @property
+    def verdura(self):
+        return any([plato.verdura for plato in self.platos_variables.all()])
+    
+    @property
+    def pescado_marisco(self):
+        return any([plato.pescado_marisco for plato in self.platos_variables.all()])
+    
+    @property
+    def enlatado_conserva(self):
+        return any([plato.enlatado_conserva for plato in self.platos_variables.all()])
+    
+    @property
+    def cereal(self):
+        return any([plato.cereal for plato in self.platos_variables.all()])
+    
+    @property
+    def pasta_arroz(self):
+        return any([plato.pasta_arroz for plato in self.platos_variables.all()])
+    
+    @property
+    def lacteo_yogur_queso(self):
+        return any([plato.lacteo_yogur_queso for plato in self.platos_variables.all()])
+    
+    @property
+    def fruta(self):
+        return any([plato.fruta for plato in self.platos_variables.all()])
+    
+    @property
+    def fruto_seco(self):
+        return any([plato.fruto_seco for plato in self.platos_variables.all()])
+    
+    @property
+    def legumbre(self):
+        return any([plato.legumbre for plato in self.platos_variables.all()])
+    
+    @property
+    def salsa_condimento(self):
+        return any([plato.salsa_condimento for plato in self.platos_variables.all()])
+    
+    @property
+    def fiambre(self):
+        return any([plato.fiambre for plato in self.platos_variables.all()])
+    
+    @property
+    def pan_panMolde_tostada(self):
+        return any([plato.pan_panMolde_tostada for plato in self.platos_variables.all()])
+    
+    @property
+    def huevo(self):
+        return any([plato.huevo for plato in self.platos_variables.all()])
+    
+    @property
+    def suplemento_bebida_especial(self):
+        return any([plato.suplemento_bebida_especial for plato in self.platos_variables.all()])
+    
+    @property
+    def tuberculo(self):
+        return any([plato.tuberculo for plato in self.platos_variables.all()])
+    
+    @property
+    def otros(self):
+        return any([plato.otros for plato in self.platos_variables.all()])
     
     def __str__(self):
-        return self.name
-
-class Opcion(models.Model):
-    name = models.CharField(max_length=100)
-    desayuno = models.ForeignKey(Comida, on_delete=models.CASCADE, null=True, blank=True, related_name='desayuno')
-    almuerzo = models.ForeignKey(Comida, on_delete=models.CASCADE, null=True, blank=True, related_name='almuerzo')
-    comida = models.ForeignKey(Comida, on_delete=models.CASCADE, null=True, blank=True, related_name='comida')
-    merienda = models.ForeignKey(Comida, on_delete=models.CASCADE, null=True, blank=True, related_name='merienda')
-    cena = models.ForeignKey(Comida, on_delete=models.CASCADE, null=True, blank=True, related_name='cena')
-    kcal = models.IntegerField(null=True, blank=True)
-    proteina = models.FloatField(null=True, blank=True)
-    hc = models.FloatField(null=True, blank=True)
-    azucar = models.FloatField(null=True, blank=True)
-    fibra = models.FloatField(null=True, blank=True)
-    grasa = models.FloatField(null=True, blank=True)
-    grasa_sat = models.FloatField(null=True, blank=True)
-    apto_celiacos = models.BooleanField(default=False)
-    apto_lactosa = models.BooleanField(default=False)
-    apto_veganos = models.BooleanField(default=False)
-    apto_vegetarianos = models.BooleanField(default=False)
-    apto_pescetarianos = models.BooleanField(default=False)
-    carne = models.BooleanField(default=False)
-    verdura = models.BooleanField(default=False)
-    pescado_marisco = models.BooleanField(default=False)
-    enlatado_conserva = models.BooleanField(default=False)
-    cereal = models.BooleanField(default=False)
-    pasta_arroz = models.BooleanField(default=False)
-    lacteo_yogur_queso = models.BooleanField(default=False)
-    fruta = models.BooleanField(default=False)
-    fruto_seco = models.BooleanField(default=False)
-    legumbre = models.BooleanField(default=False)
-    salsa_condimento = models.BooleanField(default=False)
-    fiambre = models.BooleanField(default=False)
-    pan_panMolde_tostada = models.BooleanField(default=False)
-    huevo = models.BooleanField(default=False)
-    suplemento_bebida_especial = models.BooleanField(default=False)
-    tuberculo = models.BooleanField(default=False)
-    otros = models.BooleanField(default=False)
+        return f'{self.name}'
+    
+class ComidaVariable(models.Model):
+    comida_base = models.ForeignKey(ComidaBase, on_delete=models.CASCADE, null=True, blank=True)
+    platos_variables = models.ManyToManyField(PlatoVariable)
+    
+    @property
+    def kcal(self):
+        return sum([plato.kcal for plato in self.platos_variables.all()])
+    
+    @property
+    def proteina(self):
+        return sum([plato.proteina for plato in self.platos_variables.all()])
+    
+    @property
+    def hc(self):
+        return sum([plato.hc for plato in self.platos_variables.all()])
+    
+    @property
+    def azucar(self):
+        return sum([plato.azucar for plato in self.platos_variables.all()])
+    
+    @property
+    def fibra(self):
+        return sum([plato.fibra for plato in self.platos_variables.all()])
+    
+    @property
+    def grasa(self):
+        return sum([plato.grasa for plato in self.platos_variables.all()])
+    
+    @property
+    def grasa_sat(self):
+        return sum([plato.grasa_sat for plato in self.platos_variables.all()])
+    
+    @property
+    def apto_celiacos(self):
+        return all([plato.apto_celiacos for plato in self.platos_variables.all()])
+    
+    @property
+    def apto_lactosa(self):
+        return all([plato.apto_lactosa for plato in self.platos_variables.all()])
+    
+    @property
+    def apto_veganos(self):
+        return all([plato.apto_veganos for plato in self.platos_variables.all()])
+    
+    @property
+    def apto_vegetarianos(self):
+        return all([plato.apto_vegetarianos for plato in self.platos_variables.all()])
+    
+    @property
+    def apto_pescetarianos(self):
+        return all([plato.apto_pescetarianos for plato in self.platos_variables.all()])
+    
+    @property
+    def carne(self):
+        return any([plato.carne for plato in self.platos_variables.all()])
+    
+    @property
+    def verdura(self):
+        return any([plato.verdura for plato in self.platos_variables.all()])
+    
+    @property
+    def pescado_marisco(self):
+        return any([plato.pescado_marisco for plato in self.platos_variables.all()])
+    
+    @property
+    def enlatado_conserva(self):
+        return any([plato.enlatado_conserva for plato in self.platos_variables.all()])
+    
+    @property
+    def cereal(self):
+        return any([plato.cereal for plato in self.platos_variables.all()])
+    
+    @property
+    def pasta_arroz(self):
+        return any([plato.pasta_arroz for plato in self.platos_variables.all()])
+    
+    @property
+    def lacteo_yogur_queso(self):
+        return any([plato.lacteo_yogur_queso for plato in self.platos_variables.all()])
+    
+    @property
+    def fruta(self):
+        return any([plato.fruta for plato in self.platos_variables.all()])
+    
+    @property
+    def fruto_seco(self):
+        return any([plato.fruto_seco for plato in self.platos_variables.all()])
+    
+    @property
+    def legumbre(self):
+        return any([plato.legumbre for plato in self.platos_variables.all()])
+    
+    @property
+    def salsa_condimento(self):
+        return any([plato.salsa_condimento for plato in self.platos_variables.all()])
+    
+    @property
+    def fiambre(self):
+        return any([plato.fiambre for plato in self.platos_variables.all()])
+    
+    @property
+    def pan_panMolde_tostada(self):
+        return any([plato.pan_panMolde_tostada for plato in self.platos_variables.all()])
+    
+    @property
+    def huevo(self):
+        return any([plato.huevo for plato in self.platos_variables.all()])
+    
+    @property
+    def suplemento_bebida_especial(self):
+        return any([plato.suplemento_bebida_especial for plato in self.platos_variables.all()])
+    
+    @property
+    def tuberculo(self):
+        return any([plato.tuberculo for plato in self.platos_variables.all()])
+    
+    @property
+    def otros(self):
+        return any([plato.otros for plato in self.platos_variables.all()])
     
     def __str__(self):
-        return self.name
+        return f'{self.comida_base.name} - Variable'
 
-class Plan(models.Model):
-    cliente = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True, related_name='dietas')
+class OpcionBase(models.Model):
+    name = models.CharField(max_length=100)
+    desayuno = models.ForeignKey(ComidaVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='base_desayuno')
+    almuerzo = models.ForeignKey(ComidaVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='base_almuerzo')
+    comida = models.ForeignKey(ComidaVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='base_comida')
+    merienda = models.ForeignKey(ComidaVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='base_merienda')
+    cena = models.ForeignKey(ComidaVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='base_cena')
+
+    @property
+    def kcal(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return sum([comida.kcal for comida in comidas if comida])
+
+    @property
+    def proteina(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return sum([comida.proteina for comida in comidas if comida])
+
+    @property
+    def hc(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return sum([comida.hc for comida in comidas if comida])
+
+    @property
+    def azucar(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return sum([comida.azucar for comida in comidas if comida])
+
+    @property
+    def fibra(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return sum([comida.fibra for comida in comidas if comida])
+
+    @property
+    def grasa(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return sum([comida.grasa for comida in comidas if comida])
+
+    @property
+    def grasa_sat(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return sum([comida.grasa_sat for comida in comidas if comida])
+    
+    @property
+    def apto_celiacos(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return all([comida.apto_celiacos for comida in comidas if comida])
+    
+    @property
+    def apto_lactosa(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return all([comida.apto_lactosa for comida in comidas if comida])
+    
+    @property
+    def apto_veganos(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return all([comida.apto_veganos for comida in comidas if comida])
+    
+    @property
+    def apto_vegetarianos(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return all([comida.apto_vegetarianos for comida in comidas if comida])
+    
+    @property
+    def apto_pescetarianos(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return all([comida.apto_pescetarianos for comida in comidas if comida])
+    
+    @property
+    def carne(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return any([comida.carne for comida in comidas if comida])
+    
+    @property
+    def verdura(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return any([comida.verdura for comida in comidas if comida])
+    
+    @property
+    def pescado_marisco(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return any([comida.pescado_marisco for comida in comidas if comida])
+    
+    @property
+    def enlatado_conserva(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return any([comida.enlatado_conserva for comida in comidas if comida])
+    
+    @property
+    def cereal(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return any([comida.cereal for comida in comidas if comida])
+    
+    @property
+    def pasta_arroz(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return any([comida.pasta_arroz for comida in comidas if comida])
+    
+    @property
+    def lacteo_yogur_queso(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return any([comida.lacteo_yogur_queso for comida in comidas if comida])
+    
+    @property
+    def fruta(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return any([comida.fruta for comida in comidas if comida])
+    
+    @property
+    def fruto_seco(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena] 
+        return any([comida.fruto_seco for comida in comidas if comida])
+    
+    @property
+    def legumbre(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena] 
+        return any([comida.legumbre for comida in comidas if comida])
+    
+    @property
+    def salsa_condimento(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena] 
+        return any([comida.salsa_condimento for comida in comidas if comida])
+    
+    @property
+    def fiambre(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena] 
+        return any([comida.fiambre for comida in comidas if comida])
+    
+    @property
+    def pan_panMolde_tostada(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena] 
+        return any([comida.pan_panMolde_tostada for comida in comidas if comida])
+    
+    @property
+    def huevo(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena] 
+        return any([comida.huevo for comida in comidas if comida])
+    
+    @property
+    def suplemento_bebida_especial(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena] 
+        return any([comida.suplemento_bebida_especial for comida in comidas if comida])
+    
+    @property
+    def tuberculo(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return any([comida.tuberculo for comida in comidas if comida])
+    
+    @property
+    def otros(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena] 
+        return any([comida.otros for comida in comidas if comida])
+    
+    def __str__(self):
+        return f'{self.name}'
+    
+class OpcionVariable(models.Model):
+    opcion = models.ForeignKey(OpcionBase, on_delete=models.CASCADE, null=True, blank=True)
+    desayuno = models.ForeignKey(ComidaVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='base_desayuno')
+    almuerzo = models.ForeignKey(ComidaVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='base_almuerzo')
+    comida = models.ForeignKey(ComidaVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='base_comida')
+    merienda = models.ForeignKey(ComidaVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='base_merienda')
+    cena = models.ForeignKey(ComidaVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='base_cena')
+
+    @property
+    def kcal(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return sum([comida.kcal for comida in comidas if comida])
+
+    @property
+    def proteina(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return sum([comida.proteina for comida in comidas if comida])
+
+    @property
+    def hc(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return sum([comida.hc for comida in comidas if comida])
+
+    @property
+    def azucar(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return sum([comida.azucar for comida in comidas if comida])
+
+    @property
+    def fibra(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return sum([comida.fibra for comida in comidas if comida])
+
+    @property
+    def grasa(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return sum([comida.grasa for comida in comidas if comida])
+
+    @property
+    def grasa_sat(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return sum([comida.grasa_sat for comida in comidas if comida])
+    
+    @property
+    def apto_celiacos(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return all([comida.apto_celiacos for comida in comidas if comida])
+    
+    @property
+    def apto_lactosa(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return all([comida.apto_lactosa for comida in comidas if comida])
+    
+    @property
+    def apto_veganos(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return all([comida.apto_veganos for comida in comidas if comida])
+    
+    @property
+    def apto_vegetarianos(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return all([comida.apto_vegetarianos for comida in comidas if comida])
+    
+    @property
+    def apto_pescetarianos(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return all([comida.apto_pescetarianos for comida in comidas if comida])
+    
+    @property
+    def carne(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return any([comida.carne for comida in comidas if comida])
+    
+    @property
+    def verdura(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return any([comida.verdura for comida in comidas if comida])
+    
+    @property
+    def pescado_marisco(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return any([comida.pescado_marisco for comida in comidas if comida])
+    
+    @property
+    def enlatado_conserva(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return any([comida.enlatado_conserva for comida in comidas if comida])
+    
+    @property
+    def cereal(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return any([comida.cereal for comida in comidas if comida])
+    
+    @property
+    def pasta_arroz(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return any([comida.pasta_arroz for comida in comidas if comida])
+    
+    @property
+    def lacteo_yogur_queso(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return any([comida.lacteo_yogur_queso for comida in comidas if comida])
+    
+    @property
+    def fruta(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return any([comida.fruta for comida in comidas if comida])
+    
+    @property
+    def fruto_seco(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena] 
+        return any([comida.fruto_seco for comida in comidas if comida])
+    
+    @property
+    def legumbre(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena] 
+        return any([comida.legumbre for comida in comidas if comida])
+    
+    @property
+    def salsa_condimento(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena] 
+        return any([comida.salsa_condimento for comida in comidas if comida])
+    
+    @property
+    def fiambre(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena] 
+        return any([comida.fiambre for comida in comidas if comida])
+    
+    @property
+    def pan_panMolde_tostada(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena] 
+        return any([comida.pan_panMolde_tostada for comida in comidas if comida])
+    
+    @property
+    def huevo(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena] 
+        return any([comida.huevo for comida in comidas if comida])
+    
+    @property
+    def suplemento_bebida_especial(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena] 
+        return any([comida.suplemento_bebida_especial for comida in comidas if comida])
+    
+    @property
+    def tuberculo(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena]
+        return any([comida.tuberculo for comida in comidas if comida])
+    
+    @property
+    def otros(self):
+        comidas = [self.desayuno, self.almuerzo, self.comida, self.merienda, self.cena] 
+        return any([comida.otros for comida in comidas if comida])
+    
+    def __str__(self):
+        return f'{self.opcion.name}'
+    
+class PlanBase(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
-    opcion1 = models.ForeignKey(Opcion, on_delete=models.CASCADE, null=True, blank=True, related_name='opcion1')
-    opcion2 = models.ForeignKey(Opcion, on_delete=models.CASCADE, null=True, blank=True, related_name='opcion2')
-    opcion3 = models.ForeignKey(Opcion, on_delete=models.CASCADE, null=True, blank=True, related_name='opcion3')
+    opcion1 = models.ForeignKey(OpcionVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='opcion1')
+    opcion2 = models.ForeignKey(OpcionVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='opcion2')
+    opcion3 = models.ForeignKey(OpcionVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='opcion3')
     suplementos = models.TextField(null=True, blank=True)
     notas = models.TextField(null=True, blank=True)
     goal = models.TextField(null=True, blank=True)
     
     def __str__(self):
         return self.name
+    
+class PlanVariable(models.Model):
+    cliente = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True, related_name='dietas')
+    plan = models.ForeignKey(PlanBase, on_delete=models.CASCADE, null=True, blank=True)
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
+    opcion1 = models.ForeignKey(OpcionVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='opcion1')
+    opcion2 = models.ForeignKey(OpcionVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='opcion2')
+    opcion3 = models.ForeignKey(OpcionVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='opcion3')
+    suplementos = models.TextField(null=True, blank=True)
+    notas = models.TextField(null=True, blank=True)
+    goal = models.TextField(null=True, blank=True)
+    
+    def __str__(self):
+        return f'{self.cliente} - {self.plan}' 
 
 from django.core.exceptions import ValidationError
 class Calendario(models.Model):
-    plan = models.ForeignKey(Plan, on_delete=models.CASCADE, related_name='calendario')
+    plan = models.ForeignKey(PlanVariable, on_delete=models.CASCADE, related_name='calendario')
     fecha = models.DateField()
-    opcion = models.ForeignKey(Opcion, on_delete=models.CASCADE, null=True, blank=True)
+    opcion = models.ForeignKey(OpcionVariable, on_delete=models.CASCADE, null=True, blank=True)
     cliente = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='calendario')
 
     class Meta:
@@ -651,4 +1147,3 @@ class Calendario(models.Model):
                 raise ValidationError('La fecha no está dentro del rango del plan')
         else:
             raise ValidationError('El plan no está establecido para esta instancia de Calendario.')
-        

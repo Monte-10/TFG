@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from bootstrap_datepicker_plus.widgets import DatePickerInput
 from django.forms.widgets import HiddenInput
-from .models import CustomUser, Exercise, Training, TrainingExercise, Challenge, Alimento, Comida, Opcion, Plan, Calendario
+from .models import CustomUser, Exercise, Training, TrainingExercise, Challenge, AlimentoVariable, AlimentoBase, ComidaBase, ComidaVariable, OpcionBase, OpcionVariable, PlanBase, PlanVariable, Calendario
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
@@ -203,7 +203,7 @@ class TrainingForm(forms.ModelForm):
 class ComidaForm(forms.ModelForm):
     class Meta:
         model = Comida
-        fields = ['name', 'alimentos', 'kcal', 'proteina', 'hc', 'azucar',
+        fields = ['name', 'platos', 'kcal', 'proteina', 'hc', 'azucar',
                   'fibra', 'grasa', 'grasa_sat', 'apto_celiacos', 'apto_lactosa',
                   'apto_veganos', 'apto_vegetarianos', 'apto_pescetarianos',
                   'carne', 'verdura', 'pescado_marisco', 'enlatado_conserva', 'cereal',
@@ -213,7 +213,7 @@ class ComidaForm(forms.ModelForm):
 
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'alimentos': forms.SelectMultiple(attrs={'class': 'form-control'}),
+            'platos': forms.SelectMultiple(attrs={'class': 'form-control'}),
             'kcal': HiddenInput(),  # Use HiddenInput widget for invisible fields
             'proteina': HiddenInput(),
             'hc': HiddenInput(),
@@ -247,7 +247,7 @@ class ComidaForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        alimentos = cleaned_data.get('alimentos')
+        platos = cleaned_data.get('platos')
         
         # Inicializar todas las variables
         kcal = 0
@@ -280,38 +280,38 @@ class ComidaForm(forms.ModelForm):
         tuberculo = False
         otros = False
 
-        if alimentos:
-            for alimento in alimentos:
-                kcal += alimento.kcal
-                proteina += alimento.proteina
-                hc += alimento.hc
-                azucar += alimento.azucar
-                fibra += alimento.fibra
-                grasa += alimento.grasa
-                grasa_sat += alimento.grasa_sat
+        if platos:
+            for plato in platos:
+                kcal += plato.kcal
+                proteina += plato.proteina
+                hc += plato.hc
+                azucar += plato.azucar
+                fibra += plato.fibra
+                grasa += plato.grasa
+                grasa_sat += plato.grasa_sat
 
-                apto_celiacos = apto_celiacos and alimento.apto_celiacos
-                apto_lactosa = apto_lactosa and alimento.apto_lactosa
-                apto_veganos = apto_veganos and alimento.apto_veganos
-                apto_vegetarianos = apto_vegetarianos and alimento.apto_vegetarianos
-                apto_pescetarianos = apto_pescetarianos and alimento.apto_pescetarianos
-                carne = carne or alimento.carne
-                verdura = verdura or alimento.verdura
-                pescado_marisco = pescado_marisco or alimento.pescado_marisco
-                enlatado_conserva = enlatado_conserva or alimento.enlatado_conserva
-                cereal = cereal or alimento.cereal
-                pasta_arroz = pasta_arroz or alimento.pasta_arroz
-                lacteo_yogur_queso = lacteo_yogur_queso or alimento.lacteo_yogur_queso
-                fruta = fruta or alimento.fruta
-                fruto_seco = fruto_seco or alimento.fruto_seco
-                legumbre = legumbre or alimento.legumbre
-                salsa_condimento = salsa_condimento or alimento.salsa_condimento
-                fiambre = fiambre or alimento.fiambre
-                pan_panMolde_tostada = pan_panMolde_tostada or alimento.pan_panMolde_tostada
-                huevo = huevo or alimento.huevo
-                suplemento_bebida_especial = suplemento_bebida_especial or alimento.suplemento_bebida_especial
-                tuberculo = tuberculo or alimento.tuberculo
-                otros = otros or alimento.otros
+                apto_celiacos = apto_celiacos and plato.apto_celiacos
+                apto_lactosa = apto_lactosa and plato.apto_lactosa
+                apto_veganos = apto_veganos and plato.apto_veganos
+                apto_vegetarianos = apto_vegetarianos and plato.apto_vegetarianos
+                apto_pescetarianos = apto_pescetarianos and plato.apto_pescetarianos
+                carne = carne or plato.carne
+                verdura = verdura or plato.verdura
+                pescado_marisco = pescado_marisco or plato.pescado_marisco
+                enlatado_conserva = enlatado_conserva or plato.enlatado_conserva
+                cereal = cereal or plato.cereal
+                pasta_arroz = pasta_arroz or plato.pasta_arroz
+                lacteo_yogur_queso = lacteo_yogur_queso or plato.lacteo_yogur_queso
+                fruta = fruta or plato.fruta
+                fruto_seco = fruto_seco or plato.fruto_seco
+                legumbre = legumbre or plato.legumbre
+                salsa_condimento = salsa_condimento or plato.salsa_condimento
+                fiambre = fiambre or plato.fiambre
+                pan_panMolde_tostada = pan_panMolde_tostada or plato.pan_panMolde_tostada
+                huevo = huevo or plato.huevo
+                suplemento_bebida_especial = suplemento_bebida_especial or plato.suplemento_bebida_especial
+                tuberculo = tuberculo or plato.tuberculo
+                otros = otros or plato.otros
 
         # Actualizar los valores en el formulario
         cleaned_data['kcal'] = kcal
