@@ -137,7 +137,7 @@ class TrainingRequest(models.Model):
     
 # ----------  DIETA  ------------ #
 
-class Alimento(models.Model):
+class AlimentoBase(models.Model):
     name = models.CharField(max_length=100)
     cantidad = models.FloatField(default=100)
     kcal = models.IntegerField(default=0)
@@ -172,6 +172,372 @@ class Alimento(models.Model):
     
     def __str__(self):
         return self.name
+    
+class AlimentoVariable(models.Model):
+    alimento_base = models.ForeignKey(AlimentoBase, on_delete=models.CASCADE, null=True, blank=True)
+    cantidad = models.FloatField(default=100)
+    
+    @property
+    def kcal(self):
+        return (self.cantidad / self.alimento_base.cantidad) * self.alimento_base.kcal
+    
+    @property
+    def proteina(self):
+        return (self.cantidad / self.alimento_base.cantidad) * self.alimento_base.proteina
+    
+    @property
+    def hc(self):
+        return (self.cantidad / self.alimento_base.cantidad) * self.alimento_base.hc
+    
+    @property
+    def azucar(self):
+        return (self.cantidad / self.alimento_base.cantidad) * self.alimento_base.azucar
+    
+    @property
+    def fibra(self):
+        return (self.cantidad / self.alimento_base.cantidad) * self.alimento_base.fibra
+    
+    @property
+    def grasa(self):
+        return (self.cantidad / self.alimento_base.cantidad) * self.alimento_base.grasa
+    
+    @property
+    def grasa_sat(self):
+        return (self.cantidad / self.alimento_base.cantidad) * self.alimento_base.grasa_sat
+    
+    @property
+    def apto_celiacos(self):
+        return self.alimento_base.apto_celiacos
+    
+    @property
+    def apto_lactosa(self):
+        return self.alimento_base.apto_lactosa
+    
+    @property
+    def apto_veganos(self):
+        return self.alimento_base.apto_veganos
+    
+    @property
+    def apto_vegetarianos(self):
+        return self.alimento_base.apto_vegetarianos
+    
+    @property
+    def apto_pescetarianos(self):
+        return self.alimento_base.apto_pescetarianos
+    
+    @property
+    def carne(self):
+        return self.alimento_base.carne
+    
+    @property
+    def verdura(self):
+        return self.alimento_base.verdura
+    
+    @property
+    def pescado_marisco(self):
+        return self.alimento_base.pescado_marisco
+    
+    @property
+    def enlatado_conserva(self):
+        return self.alimento_base.enlatado_conserva
+    
+    @property
+    def cereal(self):
+        return self.alimento_base.cereal
+    
+    @property
+    def pasta_arroz(self):
+        return self.alimento_base.pasta_arroz
+    
+    @property
+    def lacteo_yogur_queso(self):
+        return self.alimento_base.lacteo_yogur_queso
+    
+    @property
+    def fruta(self):
+        return self.alimento_base.fruta
+    
+    @property
+    def fruto_seco(self):
+        return self.alimento_base.fruto_seco
+    
+    @property
+    def legumbre(self):
+        return self.alimento_base.legumbre
+    
+    @property
+    def salsa_condimento(self):
+        return self.alimento_base.salsa_condimento
+    
+    @property
+    def fiambre(self):
+        return self.alimento_base.fiambre
+    
+    @property
+    def pan_panMolde_tostada(self):
+        return self.alimento_base.pan_panMolde_tostada
+    
+    @property
+    def huevo(self):
+        return self.alimento_base.huevo
+    
+    @property
+    def suplemento_bebida_especial(self):
+        return self.alimento_base.suplemento_bebida_especial
+    
+    @property
+    def tuberculo(self):
+        return self.alimento_base.tuberculo
+    
+    @property
+    def otros(self):
+        return self.alimento_base.otros
+    
+    def __str__(self):
+        return f'{self.alimento_base.name} - {self.cantidad}g'
+
+class PlatoBase(models.Model):
+    name = models.CharField(max_length=100)
+    alimentos = models.ManyToManyField(AlimentoVariable)
+    
+    @property
+    def kcal(self):
+        return sum([alimento.kcal for alimento in self.alimentos.all()])
+    
+    @property
+    def proteina(self):
+        return sum([alimento.proteina for alimento in self.alimentos.all()])
+    
+    @property
+    def hc(self):
+        return sum([alimento.hc for alimento in self.alimentos.all()])
+    
+    @property
+    def azucar(self):
+        return sum([alimento.azucar for alimento in self.alimentos.all()])
+    
+    @property
+    def fibra(self):
+        return sum([alimento.fibra for alimento in self.alimentos.all()])
+    
+    @property
+    def grasa(self):
+        return sum([alimento.grasa for alimento in self.alimentos.all()])
+    
+    @property
+    def grasa_sat(self):
+        return sum([alimento.grasa_sat for alimento in self.alimentos.all()])
+    
+    @property
+    def apto_celiacos(self):
+        return all([alimento.apto_celiacos for alimento in self.alimentos.all()])
+    
+    @property
+    def apto_lactosa(self):
+        return all([alimento.apto_lactosa for alimento in self.alimentos.all()])
+    
+    @property
+    def apto_veganos(self):
+        return all([alimento.apto_veganos for alimento in self.alimentos.all()])
+    
+    @property
+    def apto_vegetarianos(self):
+        return all([alimento.apto_vegetarianos for alimento in self.alimentos.all()])
+    
+    @property
+    def apto_pescetarianos(self):
+        return all([alimento.apto_pescetarianos for alimento in self.alimentos.all()])
+    
+    @property
+    def carne(self):
+        return any([alimento.carne for alimento in self.alimentos.all()])
+    
+    @property
+    def verdura(self):
+        return any([alimento.verdura for alimento in self.alimentos.all()])
+    
+    @property
+    def pescado_marisco(self):
+        return any([alimento.pescado_marisco for alimento in self.alimentos.all()])
+    
+    @property
+    def enlatado_conserva(self):
+        return any([alimento.enlatado_conserva for alimento in self.alimentos.all()])
+    
+    @property
+    def cereal(self):
+        return any([alimento.cereal for alimento in self.alimentos.all()])
+    
+    @property
+    def pasta_arroz(self):
+        return any([alimento.pasta_arroz for alimento in self.alimentos.all()])
+    
+    @property
+    def lacteo_yogur_queso(self):
+        return any([alimento.lacteo_yogur_queso for alimento in self.alimentos.all()])
+    
+    @property
+    def fruta(self):
+        return any([alimento.fruta for alimento in self.alimentos.all()])
+    
+    @property
+    def fruto_seco(self):
+        return any([alimento.fruto_seco for alimento in self.alimentos.all()])
+    
+    @property
+    def legumbre(self):
+        return any([alimento.legumbre for alimento in self.alimentos.all()])
+    
+    @property
+    def salsa_condimento(self):
+        return any([alimento.salsa_condimento for alimento in self.alimentos.all()])
+    
+    @property
+    def fiambre(self):
+        return any([alimento.fiambre for alimento in self.alimentos.all()])
+    
+    @property
+    def pan_panMolde_tostada(self):
+        return any([alimento.pan_panMolde_tostada for alimento in self.alimentos.all()])
+    
+    @property
+    def huevo(self):
+        return any([alimento.huevo for alimento in self.alimentos.all()])
+    
+    @property
+    def suplemento_bebida_especial(self):
+        return any([alimento.suplemento_bebida_especial for alimento in self.alimentos.all()])
+    
+    @property
+    def tuberculo(self):
+        return any([alimento.tuberculo for alimento in self.alimentos.all()])
+    
+    @property
+    def otros(self):
+        return any([alimento.otros for alimento in self.alimentos.all()])
+    
+class PlatoVariable(models.Model):
+    plato_base = models.ForeignKey(PlatoBase, on_delete=models.CASCADE, null=True, blank=True)
+    alimentos_variables = models.ManyToManyField(AlimentoVariable)
+    
+    @property
+    def kcal(self):
+        return sum([alimento.kcal for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def proteina(self):
+        return sum([alimento.proteina for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def hc(self):
+        return sum([alimento.hc for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def azucar(self):
+        return sum([alimento.azucar for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def fibra(self):
+        return sum([alimento.fibra for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def grasa(self):
+        return sum([alimento.grasa for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def grasa_sat(self):
+        return sum([alimento.grasa_sat for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def apto_celiacos(self):
+        return all([alimento.apto_celiacos for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def apto_lactosa(self):
+        return all([alimento.apto_lactosa for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def apto_veganos(self):
+        return all([alimento.apto_veganos for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def apto_vegetarianos(self):
+        return all([alimento.apto_vegetarianos for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def apto_pescetarianos(self):
+        return all([alimento.apto_pescetarianos for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def carne(self):
+        return any([alimento.carne for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def verdura(self):
+        return any([alimento.verdura for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def pescado_marisco(self):
+        return any([alimento.pescado_marisco for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def enlatado_conserva(self):
+        return any([alimento.enlatado_conserva for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def cereal(self):
+        return any([alimento.cereal for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def pasta_arroz(self):
+        return any([alimento.pasta_arroz for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def lacteo_yogur_queso(self):
+        return any([alimento.lacteo_yogur_queso for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def fruta(self):
+        return any([alimento.fruta for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def fruto_seco(self):
+        return any([alimento.fruto_seco for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def legumbre(self):
+        return any([alimento.legumbre for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def salsa_condimento(self):
+        return any([alimento.salsa_condimento for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def fiambre(self):
+        return any([alimento.fiambre for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def pan_panMolde_tostada(self):
+        return any([alimento.pan_panMolde_tostada for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def huevo(self):
+        return any([alimento.huevo for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def suplemento_bebida_especial(self):
+        return any([alimento.suplemento_bebida_especial for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def tuberculo(self):
+        return any([alimento.tuberculo for alimento in self.alimentos_variables.all()])
+    
+    @property
+    def otros(self):
+        return any([alimento.otros for alimento in self.alimentos_variables.all()])
+    
+    def __str__(self):
+        return f'{self.plato_base.name} - Variable'
 
 class Comida(models.Model):
     name = models.CharField(max_length=100)
