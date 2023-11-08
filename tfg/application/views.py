@@ -1,7 +1,7 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import CustomUser, Exercise, Training, Challenge
-from .models import Alimento, Comida, Opcion, Plan, Calendario
+from .models import AlimentoVariable, ComidaVariable, OpcionVariable, PlanVariable, Calendario
 from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm, CustomUserUpdateForm, ExerciseForm, TrainingForm, ComidaForm, OpcionForm, PlanForm, UserProfileForm
 from django.contrib import messages
@@ -193,84 +193,84 @@ class ClientTrainingsListView(ListView):
     def get_queryset(self):
         # Filtrar los entrenamientos para el usuario actual y ordenar por fecha
         return Training.objects.filter(cliente=self.request.user).order_by('-date')
-    
+
 class AlimentoCreateView(CreateView):
-    model = Alimento
+    model = AlimentoVariable
     fields = '__all__' 
     template_name = 'alimentacion/alimento/alimento_form.html'
     success_url = reverse_lazy('alimento_list')
     
 class AlimentoListView(ListView):
-    model = Alimento
+    model = AlimentoVariable
     template_name = 'alimentacion/alimento/alimento_list.html'
     
 class AlimentoDetailView(DetailView):
-    model = Alimento
+    model = AlimentoVariable
     template_name = 'alimentacion/alimento/alimento_detail.html'
     
 class AlimentoUpdateView(UpdateView):
-    model = Alimento
+    model = AlimentoVariable
     fields = '__all__'
     template_name = 'alimentacion/alimento/alimento_form.html'
     success_url = reverse_lazy('alimento_list')
     
 class AlimentoDeleteView(DeleteView):
-    model = Alimento
+    model = AlimentoVariable
     template_name = 'alimentacion/alimento/alimento_confirm_delete.html'
     success_url = reverse_lazy('alimento_list')
     
 class ComidaCreateView(CreateView):
-    model = Comida
+    model = ComidaVariable
     form_class = ComidaForm
     template_name = 'alimentacion/comida/comida_form.html'
     success_url = reverse_lazy('comida_list')
     
 class ComidaListView(ListView):
-    model = Comida
+    model = ComidaVariable
     template_name = 'alimentacion/comida/comida_list.html'
     
 class ComidaDetailView(DetailView):
-    model = Comida
+    model = ComidaVariable
     template_name = 'alimentacion/comida/comida_detail.html'
     
 class ComidaUpdateView(UpdateView):
-    model = Comida
+    model = ComidaVariable
     form_class = ComidaForm
     template_name = 'alimentacion/comida/comida_form.html'
     success_url = reverse_lazy('comida_list')
     
 class ComidaDeleteView(DeleteView):
-    model = Comida
+    model = ComidaVariable
     template_name = 'alimentacion/comida/comida_confirm_delete.html'
     success_url = reverse_lazy('comida_list')
     
 class OpcionCreateView(CreateView):
-    model = Opcion
+    model = OpcionVariable
     form_class = OpcionForm
     template_name = 'alimentacion/opcion/opcion_form.html'
     success_url = reverse_lazy('opcion_list')
     
 class OpcionListView(ListView):
-    model = Opcion
+    model = OpcionVariable
     template_name = 'alimentacion/opcion/opcion_list.html'
     
 class OpcionDetailView(DetailView):
-    model = Opcion
+    model = OpcionVariable
     template_name = 'alimentacion/opcion/opcion_detail.html'
     
 class OpcionUpdateView(UpdateView):
-    model = Opcion
+    model = OpcionVariable
     form_class = OpcionForm
     template_name = 'alimentacion/opcion/opcion_form.html'
     success_url = reverse_lazy('opcion_list')
     
 class OpcionDeleteView(DeleteView):
-    model = Opcion
+    model = OpcionVariable
     template_name = 'alimentacion/opcion/opcion_confirm_delete.html'
     success_url = reverse_lazy('opcion_list')
 
 class PlanCreateView(CreateView):
-    model = Plan
+    model = PlanVariable
     form_class = PlanForm
     template_name = 'alimentacion/plan/plan_form.html'
     success_url = reverse_lazy('plan_list')
@@ -284,21 +284,21 @@ class PlanCreateView(CreateView):
 
     
 class PlanListView(ListView):
-    model = Plan
+    model = PlanVariable
     template_name = 'alimentacion/plan/plan_list.html'
     
 class PlanDetailView(DetailView):
-    model = Plan
+    model = PlanVariable
     template_name = 'alimentacion/plan/plan_detail.html'
     
 class PlanUpdateView(UpdateView):
-    model = Plan
+    model = PlanVariable
     form_class = PlanForm
     template_name = 'alimentacion/plan/plan_form.html'
     success_url = reverse_lazy('plan_list')
 
 class PlanDeleteView(DeleteView):
-    model = Plan
+    model = PlanVariable
     template_name = 'alimentacion/plan/plan_confirm_delete.html'
     success_url = reverse_lazy('plan_list')
 
@@ -309,7 +309,7 @@ from .forms import CalendarioFechaOpcionForm
 from django.http import HttpResponseForbidden
 
 def crear_calendario(request, plan_id):
-    plan = get_object_or_404(Plan, id=plan_id)
+    plan = get_object_or_404(PlanVariable, id=plan_id)
     cliente = plan.cliente
 
     # Obtener todas las fechas entre start_date y end_date del plan, incluyendo end_date
@@ -432,3 +432,46 @@ def reject_request(request, request_id):
     except TrainingRequest.DoesNotExist:
         pass
     return redirect('view_requests')
+
+
+from django.shortcuts import render, redirect
+from .models import AlimentoBase, AlimentoVariable
+from .forms import AlimentoForm
+
+def list_alimento_base(request):
+    alimentos = AlimentoBase.objects.all()
+    return render(request, 'alimentacion/alimento/list_alimento_base.html', {'alimentos': alimentos})
+
+def add_edit_alimento_base(request, alimento_id=None):
+    if alimento_id:
+        alimento = AlimentoBase.objects.get(id=alimento_id)
+    else:
+        alimento = None
+
+    if request.method == 'POST':
+        form = AlimentoForm(request.POST, instance=alimento)
+        if form.is_valid():
+            form.save()
+            return redirect('list_alimento_base')
+    else:
+        form = AlimentoForm(instance=alimento)
+
+    return render(request, 'alimentacion/alimento/add_edit_alimento_base.html', {'form': form})
+
+# The view to add an alimento to a comida will be defined later after understanding the 'comida' model and its relations
+
+def add_alimento_to_comida(request):
+    if request.method == 'POST':
+        form = ComidaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('comida_list')  # Assuming there's a view named 'comida_list'
+    else:
+        form = ComidaForm()
+
+    return render(request, 'alimentacion/comida/comida_form.html', {'form': form})
+
+class AlimentoBaseDeleteView(DeleteView):
+    model = AlimentoBase
+    template_name = 'alimentacion/alimento/alimento_base_confirm_delete.html'
+    success_url = reverse_lazy('list_alimento_base')

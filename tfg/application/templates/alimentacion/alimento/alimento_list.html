@@ -7,6 +7,19 @@
 
 <ul class="list-group">
     {% for alimento in object_list %}
+
+    <tr>
+        <td>{{ alimento.name }}</td>
+        <td>{{ alimento.cantidad }}</td>
+        <td>{{ alimento.kcal }}</td>
+        <td>{{ alimento.proteina }}</td>
+        <td>{{ alimento.hc }}</td>
+        <td>{{ alimento.azucar }}</td>
+        <td>{{ alimento.fibra }}</td>
+        <td>{{ alimento.grasa }}</td>
+        <td>{{ alimento.grasa_sat }}</td>
+    </tr>
+    
         <li class="list-group-item">
             <a href="{% url 'alimento_detail' alimento.pk %}">{{ alimento.name }}</a>
             <a href="{% url 'alimento_update' alimento.pk %}">Editar</a>

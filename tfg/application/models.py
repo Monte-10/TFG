@@ -178,6 +178,10 @@ class AlimentoVariable(models.Model):
     cantidad = models.FloatField(default=100)
     
     @property
+    def name(self):
+        return self.alimento_base.name
+    
+    @property
     def kcal(self):
         return (self.cantidad / self.alimento_base.cantidad) * self.alimento_base.kcal
     
@@ -943,11 +947,11 @@ class OpcionBase(models.Model):
     
 class OpcionVariable(models.Model):
     opcion = models.ForeignKey(OpcionBase, on_delete=models.CASCADE, null=True, blank=True)
-    desayuno = models.ForeignKey(ComidaVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='base_desayuno')
-    almuerzo = models.ForeignKey(ComidaVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='base_almuerzo')
-    comida = models.ForeignKey(ComidaVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='base_comida')
-    merienda = models.ForeignKey(ComidaVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='base_merienda')
-    cena = models.ForeignKey(ComidaVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='base_cena')
+    desayuno = models.ForeignKey(ComidaVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='variable_desayuno')
+    almuerzo = models.ForeignKey(ComidaVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='variable_almuerzo')
+    comida = models.ForeignKey(ComidaVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='variable_comida')
+    merienda = models.ForeignKey(ComidaVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='variable_merienda')
+    cena = models.ForeignKey(ComidaVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='variable_cena')
 
     @property
     def kcal(self):
@@ -1102,9 +1106,9 @@ class PlanBase(models.Model):
     description = models.TextField(null=True, blank=True)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
-    opcion1 = models.ForeignKey(OpcionVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='opcion1')
-    opcion2 = models.ForeignKey(OpcionVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='opcion2')
-    opcion3 = models.ForeignKey(OpcionVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='opcion3')
+    opcion1 = models.ForeignKey(OpcionVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='base_opcion1')
+    opcion2 = models.ForeignKey(OpcionVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='base_opcion2')
+    opcion3 = models.ForeignKey(OpcionVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='base_opcion3')
     suplementos = models.TextField(null=True, blank=True)
     notas = models.TextField(null=True, blank=True)
     goal = models.TextField(null=True, blank=True)
@@ -1117,9 +1121,9 @@ class PlanVariable(models.Model):
     plan = models.ForeignKey(PlanBase, on_delete=models.CASCADE, null=True, blank=True)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
-    opcion1 = models.ForeignKey(OpcionVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='opcion1')
-    opcion2 = models.ForeignKey(OpcionVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='opcion2')
-    opcion3 = models.ForeignKey(OpcionVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='opcion3')
+    opcion1 = models.ForeignKey(OpcionVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='variable_opcion1')
+    opcion2 = models.ForeignKey(OpcionVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='variable_opcion2')
+    opcion3 = models.ForeignKey(OpcionVariable, on_delete=models.CASCADE, null=True, blank=True, related_name='variable_opcion3')
     suplementos = models.TextField(null=True, blank=True)
     notas = models.TextField(null=True, blank=True)
     goal = models.TextField(null=True, blank=True)

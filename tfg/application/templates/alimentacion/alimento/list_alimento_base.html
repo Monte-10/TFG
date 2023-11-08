@@ -1,0 +1,48 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h2>Lista de Alimentos Base</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Cantidad</th>
+        <th>Kcal</th>
+        <th>Proteina</th>
+        <th>Hc</th>
+        <th>Azucar</th>
+        <th>Fibra</th>
+        <th>Grasa</th>
+        <th>Grasa Sat</th>
+        <!-- Add more headers based on your fields -->
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for alimento in alimentos %}
+        <tr>
+          <td>{{ alimento.name }}</td>
+          <td>{{ alimento.cantidad }}</td>
+          <td>{{ alimento.kcal }}</td>
+          <td>{{ alimento.proteina }}</td>
+          <td>{{ alimento.hc }}</td>
+          <td>{{ alimento.azucar }}</td>
+          <td>{{ alimento.fibra }}</td>
+          <td>{{ alimento.grasa }}</td>
+          <td>{{ alimento.grasa_sat }}</td>
+          <!-- Add more data cells based on your fields -->
+          <td>
+            <a href="{% url 'edit_alimento_base' alimento.id %}">Editar</a> | 
+            <a href="{% url 'delete_alimento_base' alimento.id %}">Eliminar</a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="9">No se han encontrado Alimentos Base.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <a href="{% url 'add_alimento_base' %}">Añadir Alimento Base</a>
+{% endblock %}

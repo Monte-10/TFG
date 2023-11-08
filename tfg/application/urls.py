@@ -99,3 +99,18 @@ urlpatterns += [
     path('ver_solicitudes/aceptar/<int:request_id>/', accept_request, name='accept_request'),
     path('ver_solicitudes/rechazar/<int:request_id>/', reject_request, name='reject_request'),
 ]
+
+
+from . import views
+from .views import AlimentoBaseDeleteView
+
+urlpatterns += [
+    path('list_alimento_base/', views.list_alimento_base, name='list_alimento_base'),
+    path('add_alimento_base/', views.add_edit_alimento_base, name='add_alimento_base'),
+    path('edit_alimento_base/<int:alimento_id>/', views.add_edit_alimento_base, name='edit_alimento_base'),
+    path('add_alimento_to_comida/', views.add_alimento_to_comida, name='add_alimento_to_comida'),
+    path('alimento_base/delete/<int:pk>/', AlimentoBaseDeleteView.as_view(), name='delete_alimento_base'),
+]
+
+
+    

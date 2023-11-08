@@ -7,7 +7,7 @@
 
 <form class="form-custom" method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form.alimento_base }}<br>{{ form.cantidad }}<br>{{ form.as_p }}
     <button type="submit" class="btn btn-primary">{% if object %}Actualizar{% else %}Crear{% endif %}</button>
 </form>
 {% endblock %}

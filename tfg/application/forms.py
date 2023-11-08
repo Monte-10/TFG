@@ -202,18 +202,12 @@ class TrainingForm(forms.ModelForm):
 
 class ComidaForm(forms.ModelForm):
     class Meta:
-        model = Comida
-        fields = ['name', 'platos', 'kcal', 'proteina', 'hc', 'azucar',
-                  'fibra', 'grasa', 'grasa_sat', 'apto_celiacos', 'apto_lactosa',
-                  'apto_veganos', 'apto_vegetarianos', 'apto_pescetarianos',
-                  'carne', 'verdura', 'pescado_marisco', 'enlatado_conserva', 'cereal',
-                  'pasta_arroz', 'lacteo_yogur_queso', 'fruta', 'fruto_seco', 'legumbre',
-                  'salsa_condimento', 'fiambre', 'pan_panMolde_tostada', 'huevo',
-                  'suplemento_bebida_especial', 'tuberculo', 'otros']
+        model = ComidaVariable
+        fields = ['comida_base', 'platos_variables']
 
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'platos': forms.SelectMultiple(attrs={'class': 'form-control'}),
+            'comida_base': forms.Select(attrs={'class': 'form-control'}),
+            'platos_variables': forms.SelectMultiple(attrs={'class': 'form-control'}),
             'kcal': HiddenInput(),  # Use HiddenInput widget for invisible fields
             'proteina': HiddenInput(),
             'hc': HiddenInput(),
@@ -347,17 +341,11 @@ class ComidaForm(forms.ModelForm):
 
 class OpcionForm(forms.ModelForm):
     class Meta:
-        model = Opcion
-        fields = ['name', 'desayuno', 'almuerzo', 'comida', 'merienda', 'cena', 'kcal', 'proteina', 'hc', 'azucar',
-                  'fibra', 'grasa', 'grasa_sat', 'apto_celiacos', 'apto_lactosa',
-                  'apto_veganos', 'apto_vegetarianos', 'apto_pescetarianos',
-                  'carne', 'verdura', 'pescado_marisco', 'enlatado_conserva', 'cereal',
-                  'pasta_arroz', 'lacteo_yogur_queso', 'fruta', 'fruto_seco', 'legumbre',
-                  'salsa_condimento', 'fiambre', 'pan_panMolde_tostada', 'huevo',
-                  'suplemento_bebida_especial', 'tuberculo', 'otros']
+        model = OpcionVariable
+        fields = ['opcion', 'desayuno', 'almuerzo', 'comida', 'merienda', 'cena']
         
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'opcion': forms.Select(attrs={'class': 'form-control'}),
             'desayuno': forms.Select(attrs={'class': 'form-control'}),
             'almuerzo': forms.Select(attrs={'class': 'form-control'}),
             'comida': forms.Select(attrs={'class': 'form-control'}),
@@ -500,23 +488,23 @@ import datetime
 
 class PlanForm(forms.ModelForm):
     class Meta:
-        model = Plan
-        fields = ['cliente', 'name', 'description', 'start_date', 'end_date', 'suplementos', 'notas', 'goal', 'opcion1', 'opcion2', 'opcion3']
+        model = PlanVariable
+        fields = ['cliente', 'plan', 'start_date', 'end_date', 'suplementos', 'notas', 'goal', 'opcion1', 'opcion2', 'opcion3']
 
     opcion1 = forms.ModelChoiceField(
-        queryset=Opcion.objects.all(),
+        queryset=OpcionVariable.objects.all(),
         required=False,
         widget=forms.Select(attrs={'class': 'form-control'}),
     )
 
     opcion2 = forms.ModelChoiceField(
-        queryset=Opcion.objects.all(),
+        queryset=OpcionVariable.objects.all(),
         required=False,
         widget=forms.Select(attrs={'class': 'form-control'}),
     )
 
     opcion3 = forms.ModelChoiceField(
-        queryset=Opcion.objects.all(),
+        queryset=OpcionVariable.objects.all(),
         required=False,
         widget=forms.Select(attrs={'class': 'form-control'}),
     )
@@ -542,5 +530,14 @@ class CalendarioFechaOpcionForm(forms.ModelForm):
         
         # If we have a plan, adjust the queryset for the 'opcion' field to only include the plan's options
         if plan:
-            self.fields['opcion'].queryset = Opcion.objects.filter(id__in=[plan.opcion1.id, plan.opcion2.id, plan.opcion3.id])
+            self.fields['opcion'].queryset = OpcionVariable.objects.filter(id__in=[plan.opcion1.id, plan.opcion2.id, plan.opcion3.id])
 
+
+class AlimentoForm(forms.ModelForm):
+    class Meta:
+        model = AlimentoBase
+        fields = '__all__'
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            # Add other fields and widgets as needed
+        }
