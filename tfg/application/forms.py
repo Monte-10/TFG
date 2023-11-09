@@ -200,6 +200,147 @@ class TrainingForm(forms.ModelForm):
             'exercises': forms.SelectMultiple(attrs={'class': 'form-control'}),
         }
 
+from .models import PlatoVariable
+
+class PlatoForm(forms.ModelForm):
+    class Meta:
+        model = PlatoVariable
+        fields = ['plato_base', 'alimentos']
+        
+        widgets = {
+            'plato_base': forms.Select(attrs={'class': 'form-control'}),
+            'alimentos': forms.SelectMultiple(attrs={'class': 'form-control'}),
+            'kcal': HiddenInput(),  # Use HiddenInput widget for invisible fields
+            'proteina': HiddenInput(),
+            'hc': HiddenInput(),
+            'azucar': HiddenInput(),
+            'fibra': HiddenInput(),
+            'grasa': HiddenInput(),
+            'grasa_sat': HiddenInput(),
+            'apto_celiacos': HiddenInput(),
+            'apto_lactosa': HiddenInput(),
+            'apto_veganos': HiddenInput(),
+            'apto_vegetarianos': HiddenInput(),
+            'apto_pescetarianos': HiddenInput(),
+            'carne': HiddenInput(),
+            'verdura': HiddenInput(),
+            'pescado_marisco': HiddenInput(),
+            'enlatado_conserva': HiddenInput(),
+            'cereal': HiddenInput(),
+            'pasta_arroz': HiddenInput(),
+            'lacteo_yogur_queso': HiddenInput(),
+            'fruta': HiddenInput(),
+            'fruto_seco': HiddenInput(),
+            'legumbre': HiddenInput(),
+            'salsa_condimento': HiddenInput(),
+            'fiambre': HiddenInput(),
+            'pan_panMolde_tostada': HiddenInput(),
+            'huevo': HiddenInput(),
+            'suplemento_bebida_especial': HiddenInput(),
+            'tuberculo': HiddenInput(),
+            'otros': HiddenInput(),
+        }
+        
+    def clean(self):
+        cleaned_data = super().clean()
+        alimentos = cleaned_data.get('alimentos')
+        
+        # Inicializar todas las variables
+        kcal = 0
+        proteina = 0
+        hc = 0
+        azucar = 0
+        fibra = 0
+        grasa = 0
+        grasa_sat = 0
+        apto_celiacos = True
+        apto_lactosa = True
+        apto_veganos = True
+        apto_vegetarianos = True
+        apto_pescetarianos = True
+        carne = False
+        verdura = False
+        pescado_marisco = False
+        enlatado_conserva = False
+        cereal = False
+        pasta_arroz = False
+        lacteo_yogur_queso = False
+        fruta = False
+        fruto_seco = False
+        legumbre = False
+        salsa_condimento = False
+        fiambre = False
+        pan_panMolde_tostada = False
+        huevo = False
+        suplemento_bebida_especial = False
+        tuberculo = False
+        otros = False
+
+        if alimentos:
+            for plato in alimentos:
+                kcal += plato.kcal
+                proteina += plato.proteina
+                hc += plato.hc
+                azucar += plato.azucar
+                fibra += plato.fibra
+                grasa += plato.grasa
+                grasa_sat += plato.grasa_sat
+
+                apto_celiacos = apto_celiacos and plato.apto_celiacos
+                apto_lactosa = apto_lactosa and plato.apto_lactosa
+                apto_veganos = apto_veganos and plato.apto_veganos
+                apto_vegetarianos = apto_vegetarianos and plato.apto_vegetarianos
+                apto_pescetarianos = apto_pescetarianos and plato.apto_pescetarianos
+                carne = carne or plato.carne
+                verdura = verdura or plato.verdura
+                pescado_marisco = pescado_marisco or plato.pescado_marisco
+                enlatado_conserva = enlatado_conserva or plato.enlatado_conserva
+                cereal = cereal or plato.cereal
+                pasta_arroz = pasta_arroz or plato.pasta_arroz
+                lacteo_yogur_queso = lacteo_yogur_queso or plato.lacteo_yogur_queso
+                fruta = fruta or plato.fruta
+                fruto_seco = fruto_seco or plato.fruto_seco
+                legumbre = legumbre or plato.legumbre
+                salsa_condimento = salsa_condimento or plato.salsa_condimento
+                fiambre = fiambre or plato.fiambre
+                pan_panMolde_tostada = pan_panMolde_tostada or plato.pan_panMolde_tostada
+                huevo = huevo or plato.huevo
+                suplemento_bebida_especial = suplemento_bebida_especial or plato.suplemento_bebida_especial
+                tuberculo = tuberculo or plato.tuberculo
+                otros = otros or plato.otros
+
+        # Actualizar los valores en el formulario
+        cleaned_data['kcal'] = kcal
+        cleaned_data['proteina'] = proteina
+        cleaned_data['hc'] = hc
+        cleaned_data['azucar'] = azucar
+        cleaned_data['fibra'] = fibra
+        cleaned_data['grasa'] = grasa
+        cleaned_data['grasa_sat'] = grasa_sat
+        cleaned_data['apto_celiacos'] = apto_celiacos
+        cleaned_data['apto_lactosa'] = apto_lactosa
+        cleaned_data['apto_veganos'] = apto_veganos
+        cleaned_data['apto_vegetarianos'] = apto_vegetarianos
+        cleaned_data['apto_pescetarianos'] = apto_pescetarianos
+        cleaned_data['carne'] = carne
+        cleaned_data['verdura'] = verdura
+        cleaned_data['pescado_marisco'] = pescado_marisco
+        cleaned_data['enlatado_conserva'] = enlatado_conserva
+        cleaned_data['cereal'] = cereal
+        cleaned_data['pasta_arroz'] = pasta_arroz
+        cleaned_data['lacteo_yogur_queso'] = lacteo_yogur_queso
+        cleaned_data['fruta'] = fruta
+        cleaned_data['fruto_seco'] = fruto_seco
+        cleaned_data['legumbre'] = legumbre
+        cleaned_data['salsa_condimento'] = salsa_condimento
+        cleaned_data['fiambre'] = fiambre
+        cleaned_data['pan_panMolde_tostada'] = pan_panMolde_tostada
+        cleaned_data['huevo'] = huevo
+        cleaned_data['suplemento_bebida_especial'] = suplemento_bebida_especial
+        cleaned_data['tuberculo'] = tuberculo
+        cleaned_data['otros'] = otros
+        return cleaned_data
+
 class ComidaForm(forms.ModelForm):
     class Meta:
         model = ComidaVariable
@@ -541,3 +682,19 @@ class AlimentoForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             # Add other fields and widgets as needed
         }
+
+from .models import PlatoBase
+from django.forms import inlineformset_factory
+
+class PlatoBaseForm(forms.ModelForm):
+    class Meta:
+        model = PlatoBase
+        fields = ['name']
+
+AlimentoVariableFormSet = inlineformset_factory(
+    PlatoBase,
+    AlimentoVariable,
+    fields=('alimento_base', 'cantidad'),
+    extra=1,
+    can_delete=True
+)

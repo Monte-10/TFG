@@ -1,0 +1,48 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h2>Lista de Platos Base</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Cantidad</th>
+        <th>Kcal</th>
+        <th>Proteina</th>
+        <th>Hc</th>
+        <th>Azucar</th>
+        <th>Fibra</th>
+        <th>Grasa</th>
+        <th>Grasa Sat</th>
+        <!-- Add more headers based on your fields -->
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for plato in platos %}
+        <tr>
+          <td>{{ plato.name }}</td>
+          <td>{{ plato.cantidad }}</td>
+          <td>{{ plato.kcal }}</td>
+          <td>{{ plato.proteina }}</td>
+          <td>{{ plato.hc }}</td>
+          <td>{{ plato.azucar }}</td>
+          <td>{{ plato.fibra }}</td>
+          <td>{{ plato.grasa }}</td>
+          <td>{{ plato.grasa_sat }}</td>
+          <!-- Add more data cells based on your fields -->
+          <td>
+            <a href="{% url 'edit_plato_base' plato.id %}">Editar</a> | 
+            <a href="{% url 'delete_plato_base' plato.id %}">Eliminar</a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="9">No se han encontrado Platos Base.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <a href="{% url 'add_plato_base' %}">Añadir Plato Base</a>
+{% endblock %}

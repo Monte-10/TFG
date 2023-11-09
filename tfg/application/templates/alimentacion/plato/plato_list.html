@@ -1,0 +1,34 @@
+<!-- templates/alimentacion/plato/plato_list.html -->
+
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<h2 class="my-4">Listado de Platos</h2>
+
+<ul class="list-group">
+    {% for plato in object_list %}
+
+    <tr>
+        <td>{{ plato.name }}</td>
+        <td>{{ plato.cantidad }}</td>
+        <td>{{ plato.kcal }}</td>
+        <td>{{ plato.proteina }}</td>
+        <td>{{ plato.hc }}</td>
+        <td>{{ plato.azucar }}</td>
+        <td>{{ plato.fibra }}</td>
+        <td>{{ plato.grasa }}</td>
+        <td>{{ plato.grasa_sat }}</td>
+    </tr>
+    
+        <li class="list-group-item">
+            <a href="{% url 'plato_detail' plato.pk %}">{{ plato.name }}</a>
+            <a href="{% url 'plato_update' plato.pk %}">Editar</a>
+            <a href="{% url 'plato_delete' plato.pk %}">Eliminar</a>
+        </li>
+    {% empty %}
+        <li class="list-group-item">No hay platos disponibles.</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'plato_create' %}">Crear nuevo plato</a>
+{% endblock %}

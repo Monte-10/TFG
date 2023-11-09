@@ -112,5 +112,21 @@ urlpatterns += [
     path('alimento_base/delete/<int:pk>/', AlimentoBaseDeleteView.as_view(), name='delete_alimento_base'),
 ]
 
+urlpatterns += [
+    path('plato/', PlatoListView.as_view(), name='plato_list'),
+    path('plato/<int:pk>/', PlatoDetailView.as_view(), name='plato_detail'),
+    path('plato/create/', PlatoCreateView.as_view(), name='plato_create'),
+    path('plato/update/<int:pk>/', PlatoUpdateView.as_view(), name='plato_update'),
+    path('plato/delete/<int:pk>/', PlatoDeleteView.as_view(), name='plato_delete'),
+    path('list_plato_base/', views.list_plato_base, name='list_plato_base'),
+    path('add_plato_base/', views.add_edit_plato_base, name='add_plato_base'),
+    path('edit_plato_base/<int:plato_id>/', views.add_edit_plato_base, name='edit_plato_base'),
+    path('plato_base/delete/<int:pk>/', views.PlatoBaseDeleteView.as_view(), name='delete_opcion_base'),
+]
 
-    
+urlpatterns += [
+    path('list_comida_base/', views.list_comida, name='list_comida_base'),
+    path('add_comida_base/', views.add_edit_comida, name='add_comida_base'),
+    path('edit_comida_base/<int:comida_id>/', views.add_edit_comida, name='edit_comida_base'),
+    path('comida_base/delete/<int:pk>/', views.ComidaDeleteView.as_view(), name='delete_comida_base'),
+]

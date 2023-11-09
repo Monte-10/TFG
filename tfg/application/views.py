@@ -435,7 +435,7 @@ def reject_request(request, request_id):
 
 
 from django.shortcuts import render, redirect
-from .models import AlimentoBase, AlimentoVariable
+from .models import AlimentoBase
 from .forms import AlimentoForm
 
 def list_alimento_base(request):
@@ -475,3 +475,93 @@ class AlimentoBaseDeleteView(DeleteView):
     model = AlimentoBase
     template_name = 'alimentacion/alimento/alimento_base_confirm_delete.html'
     success_url = reverse_lazy('list_alimento_base')
+
+from .models import PlatoBase, PlatoVariable
+from .forms import PlatoForm, PlatoBaseForm, AlimentoVariableFormSet
+
+def list_plato_base(request):
+    platos = PlatoBase.objects.all()
+    return render(request, 'alimentacion/plato/list_plato_base.html', {'platos': platos})
+
+def add_edit_plato_base(request, plato_id=None):
+    if plato_id:
+        plato_base = get_object_or_404(PlatoBase, id=plato_id)
+        plato_form = PlatoBaseForm(instance=plato_base)
+        formset = AlimentoVariableFormSet(instance=plato_base)
+    else:
+        plato_form = PlatoBaseForm()
+        formset = AlimentoVariableFormSet()
+
+    if request.method == 'POST':
+        plato_form = PlatoBaseForm(request.POST, instance=plato_base if plato_id else None)
+        formset = AlimentoVariableFormSet(request.POST, instance=plato_base if plato_id else None)
+
+        if plato_form.is_valid() and formset.is_valid():
+            created_plato = plato_form.save()
+            formset.instance = created_plato
+            formset.save()
+            return redirect('list_plato_base')
+
+    context = {
+        'plato_form': plato_form,
+        'formset': formset,
+    }
+    return render(request, 'alimentacion/plato/add_edit_plato_base.html', context)
+
+class PlatoCreateView(CreateView):
+    model = PlatoVariable
+    form_class = PlatoForm
+    template_name = 'alimentacion/plato/plato_form.html'
+    success_url = reverse_lazy('plato_list')
+    
+class PlatoListView(ListView):
+    model = PlatoVariable
+    template_name = 'alimentacion/plato/plato_list.html'
+    
+class PlatoDetailView(DetailView):
+    model = PlatoVariable
+    template_name = 'alimentacion/plato/plato_detail.html'
+    
+class PlatoUpdateView(UpdateView):
+    model = PlatoVariable
+    form_class = PlatoForm
+    template_name = 'alimentacion/plato/plato_form.html'
+    success_url = reverse_lazy('plato_list')
+    
+class PlatoDeleteView(DeleteView):
+    model = PlatoVariable
+    template_name = 'alimentacion/plato/plato_confirm_delete.html'
+    success_url = reverse_lazy('plato_list')
+    
+class PlatoBaseDeleteView(DeleteView):
+    model = PlatoBase
+    template_name = 'alimentacion/plato/plato_base_confirm_delete.html'
+    success_url = reverse_lazy('list_plato_base')
+
+from .models import ComidaBase
+from .forms import ComidaForm
+    
+def list_comida_base(request):
+    comidas = ComidaBase.objects.all()
+    return render(request, 'alimentacion/comida/list_comida_base.html', {'comidas': comidas})
+
+def add_edit_comida_base(request, comida_id=None):
+    if comida_id:
+        comida = ComidaBase.objects.get(id=comida_id)
+    else:
+        comida = None
+
+    if request.method == 'POST':
+        form = ComidaForm(request.POST, instance=comida)
+        if form.is_valid():
+            form.save()
+            return redirect('list_comida_base')
+    else:
+        form = ComidaForm(instance=comida)
+
+    return render(request, 'alimentacion/comida/add_edit_comida_base.html', {'form': form})
+
+class ComidaBaseDeleteView(DeleteView):
+    model = ComidaBase
+    template_name = 'alimentacion/comida/comida_base_confirm_delete.html'
+    success_url = reverse_lazy('list_comida_base')
