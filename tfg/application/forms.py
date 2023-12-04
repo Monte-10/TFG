@@ -205,7 +205,7 @@ from .models import PlatoVariable
 class PlatoForm(forms.ModelForm):
     class Meta:
         model = PlatoVariable
-        fields = ['plato_base', 'alimentos']
+        fields = ['plato_base', 'alimentos_variables']
         
         widgets = {
             'plato_base': forms.Select(attrs={'class': 'form-control'}),
@@ -243,7 +243,7 @@ class PlatoForm(forms.ModelForm):
         
     def clean(self):
         cleaned_data = super().clean()
-        alimentos = cleaned_data.get('alimentos')
+        alimentos = cleaned_data.get('alimentos_variables')
         
         # Inicializar todas las variables
         kcal = 0
