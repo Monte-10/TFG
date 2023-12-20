@@ -1,0 +1,19 @@
+Campos Heredados de AbstractUser
+
+El modelo AbstractUser incluye una variedad de campos y métodos que son típicos para un sistema de autenticación de usuarios. Algunos de los campos más importantes incluyen:
+
+username: El nombre de usuario para autenticar.
+first_name y last_name: Nombres y apellidos del usuario.
+email: Dirección de correo electrónico del usuario.
+password: Contraseña hash del usuario.
+is_active: Indica si el usuario debe considerarse "activo". Se utiliza para permitir o no el inicio de sesión.
+is_staff: Indica si el usuario puede acceder al sitio de administración de Django.
+is_superuser: Indica si el usuario tiene todos los permisos sin asignarlos explícitamente.
+last_login: La última vez que el usuario inició sesión.
+date_joined: Cuando el usuario creó su cuenta.
+
+
+
+Métodos y Comportamientos
+
+Además de estos campos, AbstractUser también incluye una serie de métodos y comportamientos que son necesarios para el manejo de usuarios en Django. Por ejemplo, métodos para establecer y verificar contraseñas, métodos para obtener el nombre completo del usuario, etc.
