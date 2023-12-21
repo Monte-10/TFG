@@ -10,6 +10,16 @@
     <header>
         <nav>
             <!-- Enlaces -->
+            <ul>
+                <!-- Comprueba si estas loggeado para cerrar sesion o registrate o loggearte -->
+                {% if request.user.is_authenticated %}
+                <li> Has iniciado sesión como {{ request.user.username }} </li>
+                <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
+                {% else %}
+                    <li><a href="{% url 'signup' %}">Registrarse</a></li>
+                    <li><a href="{% url 'login' %}">Iniciar sesión</a></li>
+                {% endif %}
+            </ul>
             
         </nav>
     </header>
