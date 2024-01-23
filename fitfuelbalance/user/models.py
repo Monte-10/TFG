@@ -1,22 +1,36 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib.postgres.fields import ArrayField
 
 # Modelos del usuario
 
 class CustomUser(AbstractUser):
-    USER_TYPE_CHOICES = (
-        ('trainer', 'Entrenador'),
-        ('nutritionist', 'Nutricionista'),
-        ('mixed', 'Mixto'),
-        ('regularUser', 'Usuario'),
-    )
-    user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES, default='regularUser')
-    
-class UserInfo(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.username
+
+class RegularUser(CustomUser):
     weight = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     height = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
-    weekly_exercise = models.IntegerField(null=True, blank=True)
+
+class Trainer(CustomUser):
+    clients = models.ManyToManyField(RegularUser, related_name='clients', null=True, blank=True)
+    
+    SPECIALTY_CHOICES = [
+        ('weight', 'Weight loss'),
+        ('muscle', 'Muscle gain'),
+        ('strength', 'Strength'),
+        ('endurance', 'Endurance'),
+        ('flexibility', 'Flexibility'),
+        ('other', 'Other'),
+    ]
+    specialty = models.CharField(max_length=200, blank=True)
+    
+    TRAINER_TYPE = [
+        ('trainer', 'Trainer'),
+        ('nutritionist', 'Nutritionist'),
+        ('both', 'Trainer and Nutritionist'),
+    ]
+    trainer_type = models.CharField(max_length=12, choices=TRAINER_TYPE, null=True, blank=True)
 
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)

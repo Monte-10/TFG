@@ -54,7 +54,7 @@
                 <li>Has iniciado sesión como {{ request.user.username }}</li>
                 <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
                 {% else %}
-                    <li><a href="{% url 'signup' %}">Registrarse</a></li>
+                    <li><a href="{% url 'regularsignup' %}">Registrarse</a></li>
                     <li><a href="{% url 'login' %}">Iniciar sesión</a></li>
                 {% endif %}
             </ul>
