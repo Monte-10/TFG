@@ -7,23 +7,40 @@ from django.contrib.postgres.fields import ArrayField
 class CustomUser(AbstractUser):
     def __str__(self):
         return self.username
+    
+    def is_regular_user(self):
+        return hasattr(self, 'regularuser')
+    
+    def is_trainer(self):
+        return hasattr(self, 'trainer')
 
 class RegularUser(CustomUser):
+    personal_trainer = models.ForeignKey('Trainer', on_delete=models.CASCADE, null=True, blank=True)
     weight = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     height = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
-
-class Trainer(CustomUser):
-    clients = models.ManyToManyField(RegularUser, related_name='clients', null=True, blank=True)
     
+    def has_personal_trainer(self):
+        return self.personal_trainer is not None
+
+class Specialty(models.Model):
     SPECIALTY_CHOICES = [
-        ('weight', 'Weight loss'),
-        ('muscle', 'Muscle gain'),
+        ('weight_loss', 'Weight loss'),
+        ('muscle_gain', 'Muscle gain'),
         ('strength', 'Strength'),
         ('endurance', 'Endurance'),
         ('flexibility', 'Flexibility'),
         ('other', 'Other'),
     ]
-    specialty = models.CharField(max_length=200, blank=True)
+
+    name = models.CharField(max_length=100, choices=SPECIALTY_CHOICES, unique=True)
+    
+    def __str__(self):
+        return self.get_name_display()
+
+class Trainer(CustomUser):
+    clients = models.ManyToManyField(RegularUser, related_name='clients', blank=True)
+    
+    specialties = models.ManyToManyField(Specialty, related_name='specialties', blank=True)
     
     TRAINER_TYPE = [
         ('trainer', 'Trainer'),
@@ -41,3 +58,11 @@ class Profile(models.Model):
     
     def __str__(self):
         return f'{self.user.username} Profile'
+    
+class TrainingRequest(models.Model):
+    regular_user = models.ForeignKey(RegularUser, on_delete=models.CASCADE)
+    trainer = models.ForeignKey(Trainer, on_delete=models.CASCADE)
+    is_accepted = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ('regular_user', 'trainer')

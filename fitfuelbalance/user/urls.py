@@ -9,3 +9,12 @@ urlpatterns = [
     path('trainersignup/', views.TrainerSingUpView.as_view(), name='trainersignup'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
 ]
+
+urlpatterns += [
+    path('search_trainer/', views.search_trainer, name='search_trainer'),
+    path('send_request/<int:trainer_id>/', views.send_request, name='send_request'),
+    path('accept_request/<int:request_id>/', views.accept_request, name='accept_request'),
+    path('reject_request/<int:request_id>/', views.reject_request, name='reject_request'),
+    path('cancel_request/<int:request_id>/', views.cancel_request, name='cancel_request'),
+    path('requests_page/', views.requests, name='requests_page'),
+]

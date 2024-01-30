@@ -1,11 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
+from django.views.generic import TemplateView
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseBadRequest
 from .forms import *
-
-from .models import Profile, RegularUser
+from .models import *
 
 # Vistas del usuario
 
@@ -35,7 +37,7 @@ class TrainerSingUpView(generic.CreateView):
         login(self.request, user)
         return valid
 
-class ProfileView(generic.TemplateView):
+class ProfileView(TemplateView):
     template_name = 'profile.html'
 
     def get_context_data(self, **kwargs):
@@ -44,43 +46,117 @@ class ProfileView(generic.TemplateView):
         context['profile'], _ = Profile.objects.get_or_create(user=user)
 
         # Verificar si el usuario es un RegularUser
-        if hasattr(user, 'regularuser'):
-            regular_user_form = RegularUserInfoForm(instance=user.regularuser)  # Usa RegularUserInfoForm
-            context['user_form'] = regular_user_form
+        if user.is_regular_user():
+            regular_user = user.regularuser
+            context['user_form'] = RegularUserInfoForm(instance=regular_user)
+            context['personal_trainer'] = regular_user.personal_trainer
         # Verificar si el usuario es un Trainer
-        elif hasattr(user, 'trainer'):
-            trainer_form = TrainerInfoForm(instance=user.trainer)
-            context['user_form'] = trainer_form
-        else:
-            context['user_form'] = None
+        elif user.is_trainer():
+            trainer = user.trainer
+            context['user_form'] = TrainerInfoForm(instance=trainer)
+            context['clients'] = trainer.clients.all()
 
         context['profile_form'] = ProfileForm(instance=context['profile'])
         return context
 
     def post(self, request, *args, **kwargs):
-        user = request.user
-        profile, _ = Profile.objects.get_or_create(user=user)
-        profile_form = ProfileForm(request.POST, instance=profile)
-        user_form = None
-
-        if hasattr(user, 'regularuser'):
-            user_form = RegularUserInfoForm(request.POST, instance=user.regularuser)
-        elif hasattr(user, 'trainer'):
-            user_form = TrainerInfoForm(request.POST, instance=user.trainer)
-
-        if profile_form.is_valid() and (user_form is None or user_form.is_valid()):
+        context = self.get_context_data(**kwargs)
+        profile_form = ProfileForm(request.POST, instance=context['profile'])
+        if profile_form.is_valid():
             profile_form.save()
-            if user_form:
-                user_form_instance = user_form.save(commit=False)
-                user_form_instance.user = user  # Asegura la relación con el usuario
-                user_form_instance.save()
-                if hasattr(user_form, 'save_m2m'):
-                    user_form.save_m2m()  # Para campos ManyToMany
-            return redirect('profile')
 
-        # Agregar manejo de errores aquí si es necesario
+        user_form = None
+        if request.user.is_regular_user():
+            user_form = RegularUserInfoForm(request.POST, instance=request.user.regularuser)
+        elif request.user.is_trainer():
+            user_form = TrainerInfoForm(request.POST, instance=request.user.trainer)
 
-        return self.render_to_response(self.get_context_data(
-            profile_form=profile_form, 
-            user_form=user_form
-        ))
+        if user_form and user_form.is_valid():
+            user_form_instance = user_form.save(commit=False)
+            user_form_instance.user = request.user  # Asegura la relación con el usuario
+            user_form_instance.save()
+            if hasattr(user_form, 'save_m2m'):
+                user_form.save_m2m()  # Para campos ManyToMany
+
+        return redirect('profile')
+
+
+@login_required  # Asegura que el usuario esté autenticado
+def search_trainer(request):
+    if not request.user.is_regular_user():
+        return HttpResponseBadRequest("Solo los usuarios regulares pueden enviar solicitudes.")
+    
+    # Si el usuario ya tiene un entrenador, no puede enviar más solicitudes
+    regularUser = RegularUser.objects.filter(id=request.user.id).first()
+    if regularUser.has_personal_trainer():
+        return HttpResponseBadRequest("Ya tienes un entrenador.")
+    
+    form = TrainerSearchForm(request.GET or None)
+    trainers = Trainer.objects.all()
+
+    if form.is_valid():
+        if form.cleaned_data['specialty']:
+            trainers = trainers.filter(specialties__in=form.cleaned_data['specialty']).distinct()
+        if form.cleaned_data['trainer_type']:
+            trainers = trainers.filter(trainer_type=form.cleaned_data['trainer_type']).distinct()
+
+    return render(request, 'search_trainer.html', {'form': form, 'trainers': trainers})
+
+@login_required  # Asegura que el usuario esté autenticado
+def send_request(request, trainer_id):
+    # Verifica que el request.user sea una instancia de RegularUser
+    if not request.user.is_regular_user():
+        return HttpResponseBadRequest("Solo los usuarios regulares pueden enviar solicitudes.")
+
+    trainer = get_object_or_404(Trainer, pk=trainer_id)
+    regular_user = RegularUser.objects.filter(id=request.user.id).first()
+    # Crea la TrainingRequest solo si el usuario es un RegularUser
+    TrainingRequest.objects.create(regular_user=regular_user, trainer=trainer)
+    
+    return redirect('profile')
+
+@login_required
+def requests(request):
+    # Obtener el entrenador autenticado
+    trainer = Trainer.objects.get(id=request.user.id)
+
+    # Obtener todas las solicitudes relacionadas con este entrenador
+    requests = TrainingRequest.objects.filter(trainer=trainer)
+
+    context = {
+        'requests': requests
+    }
+
+    return render(request, 'requests.html', context)
+
+def accept_request(request, request_id):
+    training_request = TrainingRequest.objects.get(pk=request_id)
+    if training_request:
+        # Comprueba si el RegularUser ya tiene un entrenador
+        if TrainingRequest.objects.filter(regular_user=training_request.regular_user, is_accepted=True).exists():
+            # Manejar el caso donde el usuario ya tiene un entrenador
+            pass
+        else:
+            training_request.is_accepted = True
+            training_request.save()
+            trainer = training_request.trainer
+            regular_user = training_request.regular_user
+            trainer.clients.add(regular_user)
+            trainer.save()
+            regular_user.personal_trainer = trainer
+            regular_user.save()
+            # Opcional: cancelar otras solicitudes
+    return redirect('profile')
+
+
+def reject_request(request, request_id):
+    training_request = get_object_or_404(TrainingRequest, id=request_id, trainer=request.user)
+    training_request.delete()
+    # Redireccionar a la página donde el entrenador ve todas las solicitudes
+    return redirect('requests_page')
+
+def cancel_request(request, request_id):
+    training_request = get_object_or_404(TrainingRequest, id=request_id, regular_user=request.user)
+    training_request.delete()
+    # Redireccionar a la página donde el usuario puede ver o enviar nuevas solicitudes
+    return redirect('search_trainer')

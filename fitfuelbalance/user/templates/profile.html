@@ -9,5 +9,14 @@
         <h3>Información de Usuario</h3>
         {{ user_form.as_p }}
         <button type="submit">Guardar Cambios</button>
+        {% if user.is_regular_user %}
+            <h3>Tu Entrenador:</h3>
+            <p>{{ personal_trainer }}</p> <!-- Cambiado para usar la variable del contexto -->
+        {% elif user.is_trainer %}
+            <h3>Tus Clientes:</h3>
+            {% for regularUser in clients %} <!-- Cambiado para usar la variable del contexto -->
+                <p>{{ regularUser }}</p>
+            {% endfor %}
+        {% endif %}
     </form>
 {% endblock %}

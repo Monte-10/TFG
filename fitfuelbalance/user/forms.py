@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUser, Profile, RegularUser, Trainer
+from .models import *
 
 
 # Formularios del usuario
@@ -32,35 +32,23 @@ class RegularUserInfoForm(forms.ModelForm):
         fields = ['weight', 'height']
         
 class TrainerInfoForm(forms.ModelForm):
-    SPECIALTY_CHOICES = [
-        ('weight', 'Weight loss'),
-        ('muscle', 'Muscle gain'),
-        ('strength', 'Strength'),
-        ('endurance', 'Endurance'),
-        ('flexibility', 'Flexibility'),
-        ('other', 'Other'),
-    ]
-    
-    specialty = forms.MultipleChoiceField(
-        choices=SPECIALTY_CHOICES,
-        widget=forms.CheckboxSelectMultiple,
-        required=False
-    )
-
     class Meta:
         model = Trainer
-        fields = ['trainer_type', 'specialty']
+        fields = ['trainer_type', 'specialties']
+        widgets = {
+            'specialties': forms.CheckboxSelectMultiple()
+        }
 
     def __init__(self, *args, **kwargs):
         super(TrainerInfoForm, self).__init__(*args, **kwargs)
-        if self.instance.pk:
-            self.fields['specialty'].initial = self.instance.specialty.split(',')
 
-    def save(self, commit=True):
-        instance = super().save(commit=False)
-        instance.specialty = ','.join(self.cleaned_data['specialty'])
-        if commit:
-            instance.save()
-        return instance
-
-
+class TrainerSearchForm(forms.Form):
+    specialty = forms.ModelMultipleChoiceField(
+        queryset=Specialty.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
+    trainer_type = forms.ChoiceField(
+        choices=Trainer.TRAINER_TYPE,
+        required=False
+    )
