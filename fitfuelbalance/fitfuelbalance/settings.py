@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_filters',
+    'fitfuelbalance',
     'nutrition',
     'sport',
     'user',
@@ -90,6 +92,7 @@ DATABASES = {
 
 AUTH_USER_MODEL = 'user.CustomUser'
 
+LOGIN_REDIRECT_URL = 'profile'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

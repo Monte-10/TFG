@@ -1,7 +1,9 @@
 from django.db import models
 
 class Food(models.Model):
-    calories = models.IntegerField(default=0)
+    name = models.CharField(max_length=100, default='')
+    unit_weight = models.FloatField(default=0)
+    calories = models.FloatField(default=0)
     protein = models.FloatField(default=0)
     carbohydrates = models.FloatField(default=0)
     sugar = models.FloatField(default=0)
@@ -15,8 +17,7 @@ class Food(models.Model):
     pescetarian = models.BooleanField(default=False)
     contains_meat = models.BooleanField(default=False)
     contains_vegetables = models.BooleanField(default=False)
-    contains_fish_shellfish = models.BooleanField(default=False)
-    canned_or_preserved = models.BooleanField(default=False)
+    contains_fish_shellfish_canned_preserved = models.BooleanField(default=False)
     cereal = models.BooleanField(default=False)
     pasta_or_rice = models.BooleanField(default=False)
     dairy_yogurt_cheese = models.BooleanField(default=False)
@@ -29,15 +30,15 @@ class Food(models.Model):
     egg = models.BooleanField(default=False)
     special_drink_or_supplement = models.BooleanField(default=False)
     tuber = models.BooleanField(default=False)
+    other = models.BooleanField(default=False)
 
     def __str__(self):
-        return str(self.name)
+        return self.name
     
 class Ingredient(models.Model):
     name = models.CharField(max_length=100)
     food = models.ForeignKey(Food, on_delete=models.CASCADE)
     quantity = models.FloatField(default=0)
-    unit = models.CharField(max_length=100, default='g')
     
     @property
     def calories(self):
@@ -96,12 +97,8 @@ class Ingredient(models.Model):
         return self.food.contains_vegetables
     
     @property
-    def contains_fish_shellfish(self):
-        return self.food.contains_fish_shellfish
-    
-    @property
-    def canned_or_preserved(self):
-        return self.food.canned_or_preserved
+    def contains_fish_shellfish_canned_preserved(self):
+        return self.food.contains_fish_shellfish_canned_preserved
     
     @property
     def cereal(self):
@@ -150,6 +147,10 @@ class Ingredient(models.Model):
     @property
     def tuber(self):
         return self.food.tuber
+    
+    @property
+    def other(self):
+        return self.food.other
     
     def __str__(self):
         return str(self.name)
@@ -216,12 +217,8 @@ class Dish(models.Model):
         return any([ingredient.contains_vegetables for ingredient in self.ingredients.all()])
     
     @property
-    def contains_fish_shellfish(self):
-        return any([ingredient.contains_fish_shellfish for ingredient in self.ingredients.all()])
-    
-    @property
-    def canned_or_preserved(self):
-        return any([ingredient.canned_or_preserved for ingredient in self.ingredients.all()])
+    def contains_fish_shellfish_canned_preserved(self):
+        return any([ingredient.contains_fish_shellfish_canned_preserved for ingredient in self.ingredients.all()])
     
     @property
     def cereal(self):
@@ -270,6 +267,10 @@ class Dish(models.Model):
     @property
     def tuber(self):
         return any([ingredient.tuber for ingredient in self.ingredients.all()])
+    
+    @property
+    def other(self):
+        return any([ingredient.other for ingredient in self.ingredients.all()])
     
     def __str__(self):
         return str(self.name)
@@ -337,16 +338,60 @@ class Meal(models.Model):
         return any([dish.contains_vegetables for dish in self.dishes.all()])
     
     @property
-    def contains_fish_shellfish(self):
-        return any([dish.contains_fish_shellfish for dish in self.dishes.all()])
-    
-    @property
-    def canned_or_preserved(self):
-        return any([dish.canned_or_preserved for dish in self.dishes.all()])
+    def contains_fish_shellfish_canned_preserved(self):
+        return any([dish.contains_fish_shellfish_canned_preserved for dish in self.dishes.all()])
     
     @property
     def cereal(self):
         return any([dish.cereal for dish in self.dishes.all()])
+    
+    @property
+    def pasta_or_rice(self):
+        return any([dish.pasta_or_rice for dish in self.dishes.all()])
+    
+    @property
+    def dairy_yogurt_cheese(self):
+        return any([dish.dairy_yogurt_cheese for dish in self.dishes.all()])
+    
+    @property
+    def fruit(self):
+        return any([dish.fruit for dish in self.dishes.all()])
+    
+    @property
+    def nuts(self):
+        return any([dish.nuts for dish in self.dishes.all()])
+    
+    @property
+    def legume(self):
+        return any([dish.legume for dish in self.dishes.all()])
+    
+    @property
+    def sauce_or_condiment(self):
+        return any([dish.sauce_or_condiment for dish in self.dishes.all()])
+    
+    @property
+    def deli_meat(self):
+        return any([dish.deli_meat for dish in self.dishes.all()])
+    
+    @property
+    def bread_or_toast(self):
+        return any([dish.bread_or_toast for dish in self.dishes.all()])
+    
+    @property
+    def egg(self):
+        return any([dish.egg for dish in self.dishes.all()])
+    
+    @property
+    def special_drink_or_supplement(self):
+        return any([dish.special_drink_or_supplement for dish in self.dishes.all()])
+    
+    @property
+    def tuber(self):
+        return any([dish.tuber for dish in self.dishes.all()])
+    
+    @property
+    def other(self):
+        return any([dish.other for dish in self.dishes.all()])
     
 class Diet(models.Model):
     user = models.ForeignKey('user.RegularUser', on_delete=models.CASCADE)
@@ -423,8 +468,8 @@ class DailyDiet(models.Model):
         return any([meal.contains_vegetables for meal in self.meals.all()])
     
     @property
-    def contains_fish_shellfish(self):
-        return any([meal.contains_fish_shellfish for meal in self.meals.all()])
+    def contains_fish_shellfish_canned_preserved(self):
+        return any([meal.contains_fish_shellfish_canned_preserved for meal in self.meals.all()])
     
     @property
     def canned_or_preserved(self):
@@ -477,6 +522,10 @@ class DailyDiet(models.Model):
     @property
     def tuber(self):
         return any([meal.tuber for meal in self.meals.all()])
+    
+    @property
+    def other(self):
+        return any([meal.other for meal in self.meals.all()])
     
     class Meta:
         unique_together = ('diet', 'date')
