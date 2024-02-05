@@ -6,6 +6,9 @@ urlpatterns = [
     path('food_upload/', views.upload_food_csv, name='upload_food_csv'),
     path('food_detail/<int:pk>/', views.food_detail, name='food_detail'),
     path('food_list/', views.food_list, name='food_list'),
+]
+
+urlpatterns += [
     path('diet/create/', views.create_diet, name='create_diet'),
     path('diet/detail/<int:pk>/', views.diet_detail, name='diet_detail'),
     path('meal/add/<int:daily_diet_id>/', views.add_meal, name='add_meal'),
@@ -18,4 +21,5 @@ urlpatterns = [
     path('diet/delete/<int:pk>/', views.delete_diet, name='delete_diet'),
     path('meal/delete/<int:pk>/', views.delete_meal, name='delete_meal'),
     path('dish/delete/<int:pk>/', views.delete_dish, name='delete_dish'),
+    path('test/', views.nutrition_test, name='nutrition_test'),
 ]

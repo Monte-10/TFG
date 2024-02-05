@@ -10,9 +10,16 @@ class FoodCSVForm(forms.Form):
     csv_file = forms.FileField()
     
 class DietForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        trainer = kwargs.pop('trainer', None)
+        super(DietForm, self).__init__(*args, **kwargs)
+        if trainer:
+            self.fields['user'].queryset = trainer.clients.all()
+
     class Meta:
         model = Diet
-        fields = ['name', 'start_date', 'end_date']
+        fields = ['user', 'name', 'start_date', 'end_date']
+
         
 class MealForm(forms.ModelForm):
     class Meta:

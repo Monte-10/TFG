@@ -95,3 +95,72 @@ def add_ingredient(request, dish_id):
     else:
         form = IngredientForm()
     return render(request, 'add_ingredient.html', {'form': form, 'dish': dish})
+
+def diet_detail(request, pk):
+    diet = get_object_or_404(Diet, pk=pk)
+    return render(request, 'diet_detail.html', {'diet': diet})
+
+def daily_diet_detail(request, pk):
+    daily_diet = get_object_or_404(DailyDiet, pk=pk)
+    return render(request, 'daily_diet_detail.html', {'daily_diet': daily_diet})
+
+def meal_detail(request, pk):
+    meal = get_object_or_404(Meal, pk=pk)
+    return render(request, 'meal_detail.html', {'meal': meal})
+
+def edit_diet(request, pk):
+    diet = get_object_or_404(Diet, pk=pk)
+    if request.method == 'POST':
+        form = DietForm(request.POST, instance=diet)
+        if form.is_valid():
+            diet = form.save()
+            return redirect('diet_detail', pk=diet.pk)
+    else:
+        form = DietForm(instance=diet)
+    return render(request, 'edit_diet.html', {'form': form})
+
+def edit_meal(request, pk):
+    meal = get_object_or_404(Meal, pk=pk)
+    if request.method == 'POST':
+        form = MealForm(request.POST, instance=meal)
+        if form.is_valid():
+            meal = form.save()
+            return redirect('meal_detail', pk=meal.pk)
+    else:
+        form = MealForm(instance=meal)
+    return render(request, 'edit_meal.html', {'form': form})
+
+def edit_dish(request, pk):
+    dish = get_object_or_404(Dish, pk=pk)
+    if request.method == 'POST':
+        form = DishForm(request.POST, instance=dish)
+        if form.is_valid():
+            dish = form.save()
+            return redirect('dish_detail', pk=dish.pk)
+    else:
+        form = DishForm(instance=dish)
+    return render(request, 'edit_dish.html', {'form': form})
+
+def delete_diet(request, pk):
+    diet = get_object_or_404(Diet, pk=pk)
+    if request.method == 'POST':
+        diet.delete()
+        return redirect('diet_list')  # Asegúrate de que 'diet_list' sea el nombre correcto de tu URL
+    return render(request, 'delete_diet.html', {'diet': diet})
+
+def delete_meal(request, pk):
+    meal = get_object_or_404(Meal, pk=pk)
+    if request.method == 'POST':
+        meal.delete()
+        return redirect('meal_list')  # Asegúrate de que 'meal_list' sea el nombre correcto de tu URL
+    return render(request, 'delete_meal.html', {'meal': meal})
+
+def delete_dish(request, pk):
+    dish = get_object_or_404(Dish, pk=pk)
+    if request.method == 'POST':
+        dish.delete()
+        return redirect('dish_list')  # Asegúrate de que 'dish_list' sea el nombre correcto de tu URL
+    return render(request, 'delete_dish.html', {'dish': dish})
+
+def nutrition_test(request):
+    return render(request, 'nutrition_test.html')
