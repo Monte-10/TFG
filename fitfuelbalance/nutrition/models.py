@@ -158,7 +158,7 @@ class Ingredient(models.Model):
 class Dish(models.Model):
     user = models.ForeignKey('user.RegularUser', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    ingredients = models.ManyToManyField(Ingredient)
+    ingredients = models.ManyToManyField(Ingredient, through='DishIngredient')
     
     @property
     def calories(self):
@@ -274,12 +274,17 @@ class Dish(models.Model):
     
     def __str__(self):
         return str(self.name)
-    
+
+class DishIngredient(models.Model):
+    dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    quantity = models.DecimalField(max_digits=5, decimal_places=2)
+
 class Meal(models.Model):
     user = models.ForeignKey('user.RegularUser', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     date = models.DateField()
-    dishes = models.ManyToManyField(Dish)
+    dishes = models.ManyToManyField(Dish, through='MealDish')
     
     @property
     def calories(self):
@@ -392,6 +397,15 @@ class Meal(models.Model):
     @property
     def other(self):
         return any([dish.other for dish in self.dishes.all()])
+
+class MealDish(models.Model):
+    meal = models.ForeignKey(Meal, on_delete=models.CASCADE)
+    dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
+    portion = models.DecimalField(max_digits=5, decimal_places=2)
+    notes = models.TextField(blank=True,null=True)
+    
+    class Meta:
+        unique_together = ('meal', 'dish')
     
 class Diet(models.Model):
     user = models.ForeignKey('user.RegularUser', on_delete=models.CASCADE)

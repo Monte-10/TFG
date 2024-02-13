@@ -1,35 +1,42 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
-import Calendario from './components/Calendario';
-import Entrenamientos from './components/Entrenamientos';
-import Dieta from './components/Dieta';
+import React, { useEffect, useState } from 'react';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import moment from 'moment';
+import axios from 'axios';
 
-function App() {
+const localizer = momentLocalizer(moment);
+
+const Calendario = () => {
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const res = await axios.get('TU_ENDPOINT_DE_API/events');
+        const fetchedEvents = res.data.map(event => ({
+          ...event,
+          start: new Date(event.start),
+          end: new Date(event.end)
+        }));
+        setEvents(fetchedEvents);
+      } catch (error) {
+        console.error('Error al cargar eventos:', error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
   return (
-    <Router>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Calendario</Link>
-            </li>
-            <li>
-              <Link to="/entrenamientos">Entrenamientos</Link>
-            </li>
-            <li>
-              <Link to="/dieta">Dieta</Link>
-            </li>
-          </ul>
-        </nav>
-
-        <Switch>
-          <Route path="/" exact component={Calendario} />
-          <Route path="/entrenamientos" component={Entrenamientos} />
-          <Route path="/dieta" component={Dieta} />
-        </Switch>
-      </div>
-    </Router>
+    <div style={{ height: '100vh' }}>
+      <Calendar
+        localizer={localizer}
+        events={events}
+        startAccessor="start"
+        endAccessor="end"
+        style={{ height: '100%' }}
+      />
+    </div>
   );
-}
+};
 
-export default App;
+export default Calendario;
