@@ -1,42 +1,55 @@
-import React, { useEffect, useState } from 'react';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
-import moment from 'moment';
-import axios from 'axios';
+import React from 'react';
+import './App.css';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import CreateIngredient from './components/nutrition/CreateIngredient';
+import CreateFood from './components/nutrition/CreateFood';
+import CreateDish from './components/nutrition/CreateDish';
 
-const localizer = momentLocalizer(moment);
-
-const Calendario = () => {
-  const [events, setEvents] = useState([]);
-
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const res = await axios.get('TU_ENDPOINT_DE_API/events');
-        const fetchedEvents = res.data.map(event => ({
-          ...event,
-          start: new Date(event.start),
-          end: new Date(event.end)
-        }));
-        setEvents(fetchedEvents);
-      } catch (error) {
-        console.error('Error al cargar eventos:', error);
-      }
-    };
-
-    fetchEvents();
-  }, []);
-
+function App() {
   return (
-    <div style={{ height: '100vh' }}>
-      <Calendar
-        localizer={localizer}
-        events={events}
-        startAccessor="start"
-        endAccessor="end"
-        style={{ height: '100%' }}
-      />
+    <Router>
+      <div className="App">
+        <header className="App-header">
+          <nav>
+            <ul>
+              <li>
+                <Link to="/nutrition">Nutrition</Link>
+              </li>
+              <li>
+                <Link to="/sport">Sport</Link>
+              </li>
+            </ul>
+          </nav>
+
+          {/* Aquí se configuran las rutas */}
+          <Routes>
+            <Route path="/nutrition" element={<Nutrition />} />
+            <Route path="/sport" element={<Sport />} />
+            <Route path="/nutrition/create-food" element={<CreateFood />} />
+            <Route path="/nutrition/create-ingredient" element={<CreateIngredient />} />
+            <Route path="/nutrition/create-dish" element={<CreateDish />} />
+            {/* Añadir más rutas según sea necesario */}
+          </Routes>
+        </header>
+      </div>
+    </Router>
+  );
+}
+
+function Nutrition() {
+  return (
+    <div>
+      <h2>Nutrition</h2>
+      <Link to="/nutrition/create-food">Create Food</Link><br/>
+      <Link to="/nutrition/create-ingredient">Create Ingredient</Link>
+      <Link to="/nutrition/create-dish">Create Dish</Link>
     </div>
   );
-};
+}
 
-export default Calendario;
+// Componente de placeholder para Sport
+function Sport() {
+  return <h2>Sport</h2>;
+}
+
+export default App;

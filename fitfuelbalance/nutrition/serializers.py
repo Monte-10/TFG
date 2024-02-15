@@ -166,11 +166,25 @@ class DishSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
     def create(self, validated_data):
-        ingredients_data = validated_data.pop('dishingredient_set')
+        ingredients_data = validated_data.pop('dish_ingredients', [])
         dish = Dish.objects.create(**validated_data)
+        
         for ingredient_data in ingredients_data:
-            DishIngredient.objects.create(dish=dish, **ingredient_data)
-        return dish
+            if 'id' in ingredient_data:
+                # Caso para un ingrediente existente
+                ingredient_id = ingredient_data.get('id')
+                quantity = ingredient_data.get('quantity', 0)
+                ingredient = Ingredient.objects.get(id=ingredient_id)
+                DishIngredient.objects.create(dish=dish, ingredient=ingredient, quantity=quantity)
+            else:
+                # Caso para la creación de un nuevo ingrediente
+                ingredient_serializer = IngredientSerializer(data=ingredient_data)
+                if ingredient_serializer.is_valid(raise_exception=True):
+                    new_ingredient = ingredient_serializer.save()
+                    # Solo crea la relación DishIngredient con el nuevo ingrediente creado
+                    DishIngredient.objects.create(dish=dish, ingredient=new_ingredient, quantity=ingredient_data.get('quantity', 0))
+
+
 
     def update(self, instance, validated_data):
         ingredients_data = validated_data.pop('dishingredient_set', [])
@@ -287,8 +301,8 @@ class DishSerializer(serializers.ModelSerializer):
 
 class MealSerializer(serializers.ModelSerializer):
     dishes = DishSerializer(many=True, read_only=True)
-    existing_dishes = serializers.ListField(write_only=True, required=False)
-    new_dishes = DishSerializer(many=True, required=False, write_only=True)
+    existing_dishes = serializers.ListField(write_only=True, child=serializers.DictField(), required=False)
+    new_dishes = DishSerializer(many=True, write_only=True, required=False)
     
     calories = serializers.SerializerMethodField()
     protein = serializers.SerializerMethodField()
@@ -325,25 +339,26 @@ class MealSerializer(serializers.ModelSerializer):
         extra_kwargs = {'existing_dishes': {'required': False}, 'new_dishes': {'required': False}}
         
     def create(self, validated_data):
-        dishes_data = validated_data.pop('dishes_data', [])
+        existing_dishes_data = validated_data.pop('existing_dishes', [])
+        new_dishes_data = validated_data.pop('new_dishes', [])
         meal = Meal.objects.create(**validated_data)
 
-        for dish_data in dishes_data:
-            if "id" in dish_data:
-                # Manejar platos existentes
-                dish_id = dish_data.get('id')
-                portion = dish_data.get('portion', 1)  # Asume un valor predeterminado si es necesario
-                notes = dish_data.get('notes', '')
-                dish = Dish.objects.get(pk=dish_id)
-                MealDish.objects.create(meal=meal, dish=dish, portion=portion, notes=notes)
-            else:
-                # Crear nuevos platos
-                dish_serializer = DishSerializer(data=dish_data)
-                if dish_serializer.is_valid(raise_exception=True):
-                    new_dish = dish_serializer.save(user=validated_data['user'])  # Asume que el usuario es parte de validated_data
-                    portion = dish_data.get('portion', 1)
-                    notes = dish_data.get('notes', '')
-                    MealDish.objects.create(meal=meal, dish=new_dish, portion=portion, notes=notes)
+        for dish_data in existing_dishes_data:
+            dish_id = dish_data.get('id')
+            portion = dish_data.get('portion')  # Asegúrate de obtener el valor de 'portion'
+            dish = Dish.objects.get(pk=dish_id)
+            # Aquí creas directamente una instancia de MealDish, asegurándote de incluir 'portion'
+            MealDish.objects.create(meal=meal, dish=dish, portion=portion)
+
+        for dish_data in new_dishes_data:
+            dish_serializer = DishSerializer(data=dish_data)
+            if not dish_serializer.is_valid():
+                print(dish_serializer.errors)
+                raise serializers.ValidationError(dish_serializer.errors)
+            if dish_serializer.is_valid(raise_exception=True):
+                new_dish = dish_serializer.save()
+                portion = dish_data.get('portion', 1)  # Proporciona un valor por defecto si 'portion' no se especifica
+                MealDish.objects.create(meal=meal, dish=new_dish, portion=portion)
 
         return meal
 
