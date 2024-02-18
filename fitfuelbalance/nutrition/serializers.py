@@ -131,7 +131,7 @@ class DishIngredientSerializer(serializers.ModelSerializer):
         fields = ['ingredient', 'quantity']
     
 class DishSerializer(serializers.ModelSerializer):
-    dish_ingredients = DishIngredientSerializer(source='dishingredient_set', many=True)
+    ingredients = serializers.PrimaryKeyRelatedField(many=True, queryset=Ingredient.objects.all(), write_only=True)
     calories = serializers.SerializerMethodField()
     protein = serializers.SerializerMethodField()
     carbohydrates = serializers.SerializerMethodField()
@@ -166,25 +166,14 @@ class DishSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
     def create(self, validated_data):
-        ingredients_data = validated_data.pop('dish_ingredients', [])
+        ingredients_data = validated_data.pop('ingredients_data', [])
         dish = Dish.objects.create(**validated_data)
-        
-        for ingredient_data in ingredients_data:
-            if 'id' in ingredient_data:
-                # Caso para un ingrediente existente
-                ingredient_id = ingredient_data.get('id')
-                quantity = ingredient_data.get('quantity', 0)
-                ingredient = Ingredient.objects.get(id=ingredient_id)
-                DishIngredient.objects.create(dish=dish, ingredient=ingredient, quantity=quantity)
-            else:
-                # Caso para la creación de un nuevo ingrediente
-                ingredient_serializer = IngredientSerializer(data=ingredient_data)
-                if ingredient_serializer.is_valid(raise_exception=True):
-                    new_ingredient = ingredient_serializer.save()
-                    # Solo crea la relación DishIngredient con el nuevo ingrediente creado
-                    DishIngredient.objects.create(dish=dish, ingredient=new_ingredient, quantity=ingredient_data.get('quantity', 0))
-
-
+        for ingredient_info in ingredients_data:
+            ingredient_id = ingredient_info.get('ingredient')
+            quantity = ingredient_info.get('quantity', 0)
+            ingredient = Ingredient.objects.get(pk=ingredient_id)
+            DishIngredient.objects.create(dish=dish, ingredient=ingredient, quantity=quantity)
+        return dish
 
     def update(self, instance, validated_data):
         ingredients_data = validated_data.pop('dishingredient_set', [])

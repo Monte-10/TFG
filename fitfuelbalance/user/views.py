@@ -8,7 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest
 from .forms import *
 from .models import *
-
+from .serializers import *
+from rest_framework import viewsets
 # Vistas del usuario
 
 class RegularUserSingUpView(generic.CreateView):
@@ -160,3 +161,11 @@ def cancel_request(request, request_id):
     training_request.delete()
     # Redireccionar a la página donde el usuario puede ver o enviar nuevas solicitudes
     return redirect('search_trainer')
+
+class RegularUserViewSet(viewsets.ModelViewSet):
+    queryset = RegularUser.objects.all()
+    serializer_class = RegularUserSerializer
+    
+class TrainerViewSet(viewsets.ModelViewSet):
+    queryset = Trainer.objects.all()
+    serializer_class = TrainerSerializer
