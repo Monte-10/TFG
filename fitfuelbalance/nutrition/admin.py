@@ -37,3 +37,13 @@ class MealAdmin(admin.ModelAdmin):
 class MealDishAdmin(admin.ModelAdmin):
     list_display = ('meal', 'dish', 'portion', 'notes')
     search_fields = ('meal__name', 'dish__name')
+    
+@admin.register(DailyDiet)
+class DailyDietAdmin(admin.ModelAdmin):
+    list_display = ('date', 'calories', 'protein', 'carbohydrates', 'sugar', 'fiber', 'fat', 'saturated_fat', 'gluten_free', 'lactose_free', 'vegan', 'vegetarian', 'pescetarian', 'contains_meat', 'contains_vegetables', 'contains_fish_shellfish_canned_preserved', 'cereal', 'pasta_or_rice', 'dairy_yogurt_cheese', 'fruit', 'nuts', 'legume', 'sauce_or_condiment', 'deli_meat', 'bread_or_toast', 'egg', 'special_drink_or_supplement', 'tuber', 'other')
+    search_fields = ('date',)
+    
+@admin.register(Diet)
+class DietAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)

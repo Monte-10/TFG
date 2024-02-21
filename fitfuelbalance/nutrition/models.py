@@ -283,7 +283,6 @@ class DishIngredient(models.Model):
 class Meal(models.Model):
     user = models.ForeignKey('user.RegularUser', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    date = models.DateField()
     dishes = models.ManyToManyField(Dish, through='MealDish')
     
     @property
@@ -407,18 +406,33 @@ class MealDish(models.Model):
     class Meta:
         unique_together = ('meal', 'dish')
     
+from datetime import timedelta
+
 class Diet(models.Model):
     user = models.ForeignKey('user.RegularUser', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     start_date = models.DateField()
     end_date = models.DateField()
-    
+
     def __str__(self):
-        return str(self.name)
+        return self.name
     
     @property
     def duration(self):
         return (self.end_date - self.start_date).days + 1
+
+    def save(self, *args, **kwargs):
+        is_new = self._state.adding
+        super(Diet, self).save(*args, **kwargs)
+        if is_new:
+            self.generate_daily_diets()
+
+    def generate_daily_diets(self):
+        date = self.start_date
+        while date <= self.end_date:
+            DailyDiet.objects.create(diet=self, date=date)
+            date += timedelta(days=1)
+
     
 class DailyDiet(models.Model):
     diet = models.ForeignKey(Diet, on_delete=models.CASCADE)

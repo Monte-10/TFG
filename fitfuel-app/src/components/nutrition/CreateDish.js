@@ -1,124 +1,138 @@
 import React, { useState, useEffect } from 'react';
 
 function CreateDish() {
-    const [ingredients, setIngredients] = useState([]);
-    const [selectedIngredients, setSelectedIngredients] = useState({});
-    const [regularUsers, setRegularUsers] = useState([]);
-    const [selectedUser, setSelectedUser] = useState('');
-    const [dishName, setDishName] = useState('');
+  const [ingredients, setIngredients] = useState([]);
+  const [selectedIngredients, setSelectedIngredients] = useState([{
+    ingredientId: '',
+    quantity: ''
+  }]);
+  const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState('');
+  const [name, setName] = useState('');
+  const [dishCreated, setDishCreated] = useState(false);
+  const [createdDishId, setCreatedDishId] = useState(null);
 
-    useEffect(() => {
-        fetch('http://127.0.0.1:8000/nutrition/ingredients/')
-            .then(response => response.json())
-            .then(data => setIngredients(data));
+  useEffect(() => {
+    fetch('http://127.0.0.1:8000/nutrition/ingredients/')
+      .then(response => response.json())
+      .then(data => {
+        setIngredients(data);
+      });
 
-        fetch('http://127.0.0.1:8000/user/regularusers/')
-            .then(response => response.json())
-            .then(data => setRegularUsers(data));
-    }, []);
+  fetch('http://127.0.0.1:8000/user/regularusers/')
+      .then(response => response.json())
+      .then(data => {
+        setUsers(data);
+        if (data.length > 0) {
+          setSelectedUser(data[0].id.toString()); // Opcional: inicializar con el primer usuario
+        }
+      });
+  }, []);
 
-    const handleIngredientChange = (ingredientId, isChecked) => {
-        setSelectedIngredients(prev => {
-            const newSelection = { ...prev };
-            if (isChecked) {
-                newSelection[ingredientId] = ''; // Initialize with empty quantity
-            } else {
-                delete newSelection[ingredientId];
-            }
-            return newSelection;
-        });
+  const handleIngredientChange = (index, field, value) => {
+    const newSelectedIngredients = [...selectedIngredients];
+    newSelectedIngredients[index][field] = value;
+    setSelectedIngredients(newSelectedIngredients);
+  };
+
+  const addIngredientField = () => {
+    setSelectedIngredients([...selectedIngredients, { ingredientId: '', quantity: '' }]);
+  };
+
+  const removeIngredientField = (index) => {
+    const newSelectedIngredients = [...selectedIngredients];
+    newSelectedIngredients.splice(index, 1);
+    setSelectedIngredients(newSelectedIngredients);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const dishData = {
+      name,
+      user: selectedUser,
+      ingredients: selectedIngredients.map(si => ({
+        ingredient: si.ingredientId,
+        quantity: si.quantity
+      }))
     };
 
-    const handleQuantityChange = (ingredientId, quantity) => {
-        setSelectedIngredients(prev => ({
-            ...prev,
-            [ingredientId]: quantity
-        }));
-    };
+    console.log("Sending dish data", dishData);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    fetch('http://127.0.0.1:8000/nutrition/dishes/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dishData),
+    })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error('Network response was not ok.');
+    })
+    .then(data => {
+      console.log('Success:', data);
+      setDishCreated(true);
+      setCreatedDishId(data.id); // Asume que tu API devuelve el ID del plato creado
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  };
 
-        const dishIngredientsData = Object.keys(selectedIngredients)
-            .filter(id => selectedIngredients[id]) // Filter out unchecked or empty quantities
-            .map(id => ({
-                ingredient: parseInt(id, 10),
-                quantity: parseFloat(selectedIngredients[id])
-            }));
-
-        const dishData = {
-            name: dishName,
-            user: selectedUser,
-            dish_ingredients: dishIngredientsData,
-        };
-
-        fetch('http://127.0.0.1:8000/nutrition/dishes/', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dishData),
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Dish created successfully:', data);
-            alert('Dish created successfully!');
-            // Reset form or redirect as needed
-        })
-        .catch(error => {
-            console.error('Error creating dish:', error);
-            alert(error.message);
-        });
-    };
-
-    return (
+  return (
+    <div>
+      {dishCreated ? (
         <div>
-            <h2>Create Dish</h2>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Dish Name:
-                    <input
-                        type="text"
-                        value={dishName}
-                        onChange={(e) => setDishName(e.target.value)}
-                    />
-                </label>
-                <label>
-                    Select User:
-                    <select
-                        value={selectedUser}
-                        onChange={(e) => setSelectedUser(e.target.value)}
-                    >
-                        <option value="">Select a Regular User</option>
-                        {regularUsers.map(user => (
-                            <option key={user.id} value={user.id}>{user.username}</option>
-                        ))}
-                    </select>
-                </label>
-                <h3>Select Ingredients and Quantities</h3>
-                {ingredients.map(ingredient => (
-                    <div key={ingredient.id}>
-                        <label>
-                            <input
-                                type="checkbox"
-                                checked={selectedIngredients.hasOwnProperty(ingredient.id)}
-                                onChange={(e) => handleIngredientChange(ingredient.id, e.target.checked)}
-                            />
-                            {ingredient.name}
-                        </label>
-                        {selectedIngredients.hasOwnProperty(ingredient.id) && (
-                            <input
-                                type="number"
-                                min="0"
-                                placeholder="Quantity"
-                                value={selectedIngredients[ingredient.id]}
-                                onChange={(e) => handleQuantityChange(ingredient.id, e.target.value)}
-                            />
-                        )}
-                    </div>
-                ))}
-                <button type="submit">Create Dish</button>
-            </form>
+          <p>El Plato se ha creado correctamente.</p>
+          <a href={`/dishes/${createdDishId}`}>Ir a verlo</a> {/* Ajusta esta URL según tu enrutamiento */}
+          <button onClick={() => setDishCreated(false)}>Crear otro plato</button>
         </div>
-    );
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <label>
+            Nombre del Plato:
+            <input
+              type="text"
+              value={name}
+              onChange={e => setName(e.target.value)}
+            />
+          </label>
+          <label>
+            Usuario:
+            <select value={selectedUser} onChange={e => setSelectedUser(e.target.value)}>
+                <option value="">Seleccione un usuario</option>
+                {users.map(user => (
+                <option key={user.id} value={user.id}>{user.username}</option> // Asumiendo que el objeto user tiene un campo username
+                ))}
+            </select>
+            </label>
+
+          {selectedIngredients.map((ingredient, index) => (
+            <div key={index}>
+              <select value={ingredient.ingredientId} onChange={e => handleIngredientChange(index, 'ingredientId', e.target.value)}>
+                <option value="">Seleccione un ingrediente</option>
+                {ingredients.map(ing => (
+                  <option key={ing.id} value={ing.id}>{ing.name}</option>
+                ))}
+              </select>
+              <input
+                type="number"
+                value={ingredient.quantity}
+                onChange={e => handleIngredientChange(index, 'quantity', e.target.value)}
+                placeholder="Cantidad"
+              />
+              <button type="button" onClick={() => removeIngredientField(index)}>Eliminar</button>
+            </div>
+          ))}
+          <button type="button" onClick={addIngredientField}>Añadir Ingrediente</button>
+          <button type="submit">Crear Plato</button>
+        </form>
+      )}
+    </div>
+  );
 }
 
 export default CreateDish;

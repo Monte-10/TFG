@@ -56,3 +56,11 @@ class DishViewSet(viewsets.ModelViewSet):
 class MealViewSet(viewsets.ModelViewSet):
     queryset = Meal.objects.all()
     serializer_class = MealSerializer
+
+class DailyDietViewSet(viewsets.ModelViewSet):
+    queryset = DailyDiet.objects.all()
+    serializer_class = DailyDietSerializer
+    
+class DietViewSet(viewsets.ModelViewSet):
+    queryset = Diet.objects.all()
+    serializer_class = DietSerializer
