@@ -1,18 +1,17 @@
 from django.contrib import admin
-from .models import Ejercicio, Entrenamiento, EntrenamientoEjercicio
+from .models import Exercise, Training, TrainingExercise
 
-@admin.register(Ejercicio)
-class EjercicioAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'tipo', 'descripcion')
-    search_fields = ('nombre', 'tipo')
+@admin.register(Exercise)
+class ExerciseAdmin(admin.ModelAdmin):
+    list_display = ('name', 'type', 'description')
+    search_fields = ('name', 'type')
 
-@admin.register(Entrenamiento)
-class EntrenamientoAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'fecha', 'usuario')
-    search_fields = ('nombre', 'usuario__username')
-    list_filter = ('fecha',)
+@admin.register(Training)
+class TrainingAdmin(admin.ModelAdmin):
+    list_display = ('name', 'trainer')
+    search_fields = ('name', 'user__username', 'trainer__username')
 
-@admin.register(EntrenamientoEjercicio)
-class EntrenamientoEjercicioAdmin(admin.ModelAdmin):
-    list_display = ('entrenamiento', 'ejercicio', 'repeticiones', 'series', 'peso')
-    search_fields = ('entrenamiento__nombre', 'ejercicio__nombre')
+@admin.register(TrainingExercise)
+class TrainingExerciseAdmin(admin.ModelAdmin):
+    list_display = ('training', 'exercise', 'repetitions', 'sets', 'weight')
+    search_fields = ('training__name', 'exercise__name')

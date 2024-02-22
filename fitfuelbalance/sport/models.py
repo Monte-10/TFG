@@ -1,28 +1,43 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from user.models import *
 
 User = get_user_model()
 
-class Ejercicio(models.Model):
-    nombre = models.CharField(max_length=255)
-    descripcion = models.TextField()
-    tipo = models.CharField(max_length=100)  # Por ejemplo, cardio, fuerza, etc.
+class Exercise(models.Model):
+    EXERCISE_TYPE = (
+        ('FUERZA', 'Fuerza'),
+        ('RESISTENCIA', 'Resistencia'),
+        ('FLEXIBILIDAD', 'Flexibilidad'),
+        ('CARDIO', 'Cardio'),
+        ('HIIT', 'HIIT'),
+        ('FUNCIONAL', 'Funcional'),
+        ('BALANCE', 'Balance'),
+    )
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    type = models.CharField(max_length=255, choices=EXERCISE_TYPE)
+    image = models.ImageField(upload_to='exercises/images/', null=True, blank=True)
+    video_url = models.URLField(null=True, blank=True)
 
     def __str__(self):
-        return self.nombre
+        return self.name
 
-class Entrenamiento(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    nombre = models.CharField(max_length=255)
-    fecha = models.DateField()
-    ejercicios = models.ManyToManyField(Ejercicio, through='EntrenamientoEjercicio')
+class Training(models.Model):
+    trainer = models.ForeignKey('user.Trainer', on_delete=models.CASCADE, related_name='trainer')
+    name = models.CharField(max_length=255)
+    exercises = models.ManyToManyField(Exercise, through='TrainingExercise')
 
     def __str__(self):
-        return self.nombre
+        return self.name
 
-class EntrenamientoEjercicio(models.Model):
-    entrenamiento = models.ForeignKey(Entrenamiento, on_delete=models.CASCADE)
-    ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE)
-    repeticiones = models.IntegerField()
-    series = models.IntegerField()
-    peso = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+class TrainingExercise(models.Model):
+    training = models.ForeignKey(Training, on_delete=models.CASCADE)
+    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    repetitions = models.IntegerField()
+    sets = models.IntegerField()
+    weight = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    time = models.IntegerField(null=True, blank=True)
+    
+    def __str__(self):
+        return f"{self.exercise.name} x {self.sets} sets of {self.repetitions}"

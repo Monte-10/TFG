@@ -475,13 +475,21 @@ class DailyDietSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         meals_data = validated_data.pop('meal_set', None)
         instance.name = validated_data.get('name', instance.name)
-
+        
         if meals_data is not None:
-            # Aquí puedes decidir si quieres borrar todos los Meal existentes y crear nuevos,
-            # o actualizar los existentes de manera más sofisticada.
-            instance.meal_set.all().delete()
+            
+            existing_meal_ids = {meal.id for meal in instance.meal_set.all()}
             for meal_data in meals_data:
-                Meal.objects.create(daily_diet=instance, **meal_data)
+                meal_id = meal_data.get('id')
+                if meal_id in existing_meal_ids:
+                    # Actualizar el Meal existente
+                    Meal.objects.filter(id=meal_id).update(**meal_data)
+                else:
+                    # Crear un nuevo Meal
+                    Meal.objects.create(daily_diet=instance, **meal_data)
+            
+            # Opcional: Eliminar los Meal que no están en meals_data
+            # Meal.objects.filter(daily_diet=instance).exclude(id__in=[d['id'] for d in meals_data]).delete()
 
         instance.save()
         return instance
@@ -569,7 +577,9 @@ class DailyDietSerializer(serializers.ModelSerializer):
     
     def get_other(self, obj):
         return obj.other
-    
+
+from django.db.models import Q
+
 class DietSerializer(serializers.ModelSerializer):
     daily_diets = DailyDietSerializer(source='dailydiet_set', many=True, read_only=True)
     
@@ -583,7 +593,8 @@ class DietSerializer(serializers.ModelSerializer):
         end_date = validated_data['end_date']
         date = start_date
         while date <= end_date:
-            DailyDiet.objects.create(diet=diet, date=date)
+            if not DailyDiet.objects.filter(Q(diet=diet) & Q(date=date)).exists():
+                DailyDiet.objects.create(diet=diet, date=date)
             date += timedelta(days=1)
         return diet
 
@@ -593,3 +604,8 @@ class DietSerializer(serializers.ModelSerializer):
         instance.end_date = validated_data.get('end_date', instance.end_date)
         instance.save()
         return instance
+    
+    def validate(self, data):
+        if data['start_date'] > data['end_date']:
+            raise serializers.ValidationError("start_date must be before end_date")
+        return data

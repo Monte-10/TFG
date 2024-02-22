@@ -10,28 +10,34 @@ from .forms import *
 from .models import *
 from .serializers import *
 from rest_framework import viewsets
+from rest_framework.views import APIView
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.response import Response
+from django.utils.decorators import method_decorator
+from rest_framework import status
+from rest_framework.authtoken.models import Token
 # Vistas del usuario
 
-class RegularUserSingUpView(generic.CreateView):
+class RegularUserSignUpView(generic.CreateView):
     form_class = RegularUserCreationForm
     success_url = reverse_lazy('profile')
     template_name = 'regularsignup.html'
     
     def form_valid(self, form):
-        valid = super(RegularUserSingUpView, self).form_valid(form)
+        valid = super(RegularUserSignUpView, self).form_valid(form)
         username = form.cleaned_data['username']
         password = form.cleaned_data['password1']
         user = authenticate(username=username, password=password)
         login(self.request, user)
         return valid
     
-class TrainerSingUpView(generic.CreateView):
+class TrainerSignUpView(generic.CreateView):
     form_class = TrainerCreationForm
     success_url = reverse_lazy('profile')
     template_name = 'trainersignup.html'
     
     def form_valid(self, form):
-        valid = super(TrainerSingUpView, self).form_valid(form)
+        valid = super(TrainerSignUpView, self).form_valid(form)
         username = form.cleaned_data['username']
         password = form.cleaned_data['password1']
         user = authenticate(username=username, password=password)
@@ -169,3 +175,38 @@ class RegularUserViewSet(viewsets.ModelViewSet):
 class TrainerViewSet(viewsets.ModelViewSet):
     queryset = Trainer.objects.all()
     serializer_class = TrainerSerializer
+    
+class CustomUserViewSet(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
+
+class LoginView(APIView):
+    def post(self, request, *args, **kwargs):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            token, created = Token.objects.get_or_create(user=user)
+            return Response({'token': token.key}, status=status.HTTP_200_OK)
+        else:
+            return Response({'detail': 'Invalid Credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+        
+class RegularUserSignUpAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = RegularUserSignUpSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            token, created = Token.objects.get_or_create(user=user)
+            login(request, user)  # Inicia sesión al usuario
+            return Response({'token': token.key}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TrainerSignUpAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = TrainerSignUpSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            token, created = Token.objects.get_or_create(user=user)
+            login(request, user)  # Inicia sesión al usuario
+            return Response({'token': token.key}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

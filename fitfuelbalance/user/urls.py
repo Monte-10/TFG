@@ -6,13 +6,17 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 router.register(r'regularusers', views.RegularUserViewSet)
 router.register(r'trainers', views.TrainerViewSet)
+router.register(r'customusers', views.CustomUserViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('frontlogin/', views.LoginView.as_view(), name='frontlogin'),
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
-    path('regularsignup/', views.RegularUserSingUpView.as_view(), name='regularsignup'),
-    path('trainersignup/', views.TrainerSingUpView.as_view(), name='trainersignup'),
+    path('regularsignup/', views.RegularUserSignUpView.as_view(), name='regularsignup'),
+    path('trainersignup/', views.TrainerSignUpView.as_view(), name='trainersignup'),
+    path('signup/regularuser/', views.RegularUserSignUpAPIView.as_view(), name='regularuser_signup'),
+    path('signup/trainer/', views.TrainerSignUpAPIView.as_view(), name='trainer_signup'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
 ]
 
