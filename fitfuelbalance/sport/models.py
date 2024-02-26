@@ -27,6 +27,8 @@ class Training(models.Model):
     trainer = models.ForeignKey('user.Trainer', on_delete=models.CASCADE, related_name='trainer')
     name = models.CharField(max_length=255)
     exercises = models.ManyToManyField(Exercise, through='TrainingExercise')
+    date = models.DateField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
 
     def __str__(self):
         return self.name

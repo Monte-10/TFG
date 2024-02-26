@@ -6,6 +6,9 @@ from .filters import *
 from rest_framework import viewsets
 from .serializers import *
 from .utils import import_foods_from_csv
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.utils import timezone
 
 def create_food(request):
     if request.method == 'POST':
@@ -64,3 +67,18 @@ class DailyDietViewSet(viewsets.ModelViewSet):
 class DietViewSet(viewsets.ModelViewSet):
     queryset = Diet.objects.all()
     serializer_class = DietSerializer
+    
+class TodayDailyDietView(APIView):
+    def get(self, request, *args, **kwargs):
+        today = timezone.now().date()
+        user = request.user
+        
+        # Filtra las Dietas por el usuario logueado
+        diets = Diet.objects.filter(user=user)
+        
+        # Encuentra las DailyDiet dentro del rango de fechas de las Dietas filtradas que coincidan con 'hoy'
+        today_diets = DailyDiet.objects.filter(diet__in=diets, date=today)
+        
+        # Serializa y devuelve los resultados
+        serializer = DailyDietSerializer(today_diets, many=True)
+        return Response(serializer.data)

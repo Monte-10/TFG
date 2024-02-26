@@ -17,4 +17,5 @@ urlpatterns = [
     path('food_upload/', views.upload_food_csv, name='upload_food_csv'),
     path('food_detail/<int:pk>/', views.food_detail, name='food_detail'),
     path('food_list/', views.food_list, name='food_list'),
+    path('dailydiets/today', TodayDailyDietView.as_view(), name='today-dailydiets'),
 ]

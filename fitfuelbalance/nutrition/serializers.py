@@ -431,7 +431,7 @@ class MealSerializer(serializers.ModelSerializer):
         return obj.other
     
 class DailyDietSerializer(serializers.ModelSerializer):
-    meals = MealSerializer(source='meal_set', many=True, read_only=True)
+    meals = serializers.PrimaryKeyRelatedField(queryset=Meal.objects.all(), many=True)
     calories = serializers.SerializerMethodField()
     protein = serializers.SerializerMethodField()
     carbohydrates = serializers.SerializerMethodField()
@@ -473,26 +473,14 @@ class DailyDietSerializer(serializers.ModelSerializer):
         return daily_diet
 
     def update(self, instance, validated_data):
-        meals_data = validated_data.pop('meal_set', None)
-        instance.name = validated_data.get('name', instance.name)
-        
+        meals_data = validated_data.pop('meals', None)
+        instance.meals.clear()
         if meals_data is not None:
-            
-            existing_meal_ids = {meal.id for meal in instance.meal_set.all()}
             for meal_data in meals_data:
-                meal_id = meal_data.get('id')
-                if meal_id in existing_meal_ids:
-                    # Actualizar el Meal existente
-                    Meal.objects.filter(id=meal_id).update(**meal_data)
-                else:
-                    # Crear un nuevo Meal
-                    Meal.objects.create(daily_diet=instance, **meal_data)
-            
-            # Opcional: Eliminar los Meal que no están en meals_data
-            # Meal.objects.filter(daily_diet=instance).exclude(id__in=[d['id'] for d in meals_data]).delete()
-
+                instance.meals.add(meal_data)
         instance.save()
         return instance
+
         
     def get_calories(self, obj):
         return obj.calories

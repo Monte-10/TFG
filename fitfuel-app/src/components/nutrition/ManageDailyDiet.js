@@ -56,12 +56,14 @@ function ManageDailyDiet() {
   const saveDailyDietMeals = async (date) => {
     try {
       const dailyDietId = dailyDiets.find(dd => dd.date === date).id;
+      const mealsToSave = selectedMeals[date];
+      console.log('Saving meals:', mealsToSave);
       const response = await fetch(`http://127.0.0.1:8000/nutrition/daily_diets/${dailyDietId}/`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ meals: selectedMeals[date] }),
+        body: JSON.stringify({ meals: mealsToSave }),
       });
       if (!response.ok) throw new Error('Saving meals failed');
       alert('Meals updated successfully!');
@@ -69,6 +71,7 @@ function ManageDailyDiet() {
       console.error('Error saving meals:', error);
     }
   };
+  
 
   return (
     <div>
