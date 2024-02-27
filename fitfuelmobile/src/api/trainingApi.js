@@ -5,7 +5,6 @@ export const fetchTrainingDetails = async (trainingId) => {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          // Aquí deberías incluir cualquier encabezado necesario para la autenticación, si es aplicable.
         },
       });
       const json = await response.json();

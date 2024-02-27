@@ -34,11 +34,8 @@ const FoodDetailsScreen = ({ route }) => {
       <Text>Fibra: {foodDetails.fiber}g</Text>
       <Text>Grasas: {foodDetails.fat}g</Text>
       <Text>Grasas saturadas: {foodDetails.saturated_fat}g</Text>
-      {/* Añade aquí más detalles de la Food si lo deseas */}
-      {/* Mostrar valores booleanos como Sí/No */}
       <Text>Libre de gluten: {foodDetails.gluten_free ? 'Sí' : 'No'}</Text>
       <Text>Libre de lactosa: {foodDetails.lactose_free ? 'Sí' : 'No'}</Text>
-      {/* Continúa con el resto de las propiedades booleanas */}
     </ScrollView>
   );
 };
@@ -53,7 +50,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
   },
-  // Añade más estilos si lo necesitas
 });
 
 export default FoodDetailsScreen;

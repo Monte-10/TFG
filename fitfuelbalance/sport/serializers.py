@@ -27,7 +27,6 @@ class TrainingSerializer(serializers.ModelSerializer):
         print("User: ", self.context['request'].user)
         print("Validated data: ", validated_data)
         
-        # Ajusta aquí para extraer los datos correctos basado en la clave actual en validated_data
         exercises_data = validated_data.pop('trainingexercise_set', [])
         print("Exercises data: ", exercises_data)
         
@@ -41,7 +40,6 @@ class TrainingSerializer(serializers.ModelSerializer):
             
             # Ahora maneja la creación de los objetos TrainingExercise relacionados
             for exercise_data in exercises_data:
-                # Asegúrate de extraer correctamente el ID del ejercicio desde exercise_data si es necesario
                 exercise = exercise_data.get('exercise')
                 TrainingExercise.objects.create(
                     training=training, 
@@ -57,5 +55,4 @@ class TrainingSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("El usuario no es un entrenador.")
 
     def update(self, instance, validated_data):
-        # Implementa la lógica de actualización aquí si es necesario
         return super().update(instance, validated_data)

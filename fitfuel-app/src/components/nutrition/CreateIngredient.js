@@ -9,13 +9,10 @@ function CreateIngredient() {
   const [createdIngredientId, setCreatedIngredientId] = useState(null);
 
   useEffect(() => {
-    // Asegúrate de que la URL es correcta y coincide con tu configuración de Django
     fetch('http://127.0.0.1:8000/nutrition/foods/')
       .then(response => response.json())
       .then(data => {
         setFoods(data);
-        // Opcional: Inicializar selectedFood con el primer alimento cargado
-        // if (data.length > 0) setSelectedFood(data[0].id.toString());
       });
   }, []);
 

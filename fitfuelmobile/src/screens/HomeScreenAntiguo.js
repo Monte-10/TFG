@@ -12,7 +12,6 @@ function HomeScreen ({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Daily Diet y Training</Text>
-      {/* Aquí iría la lógica para mostrar el DailyDiet y el Training del día */}
 
       <Button
         title="Ver Detalles del Training"

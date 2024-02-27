@@ -14,7 +14,6 @@ const DishDetailsScreen = ({ route, navigation }) => {
       .then(response => response.json())
       .then(data => {
         setDishDetails(data);
-        // Ajuste para manejar la estructura de ingredients_details correctamente
         const ingredientIds = data.ingredients_details.map(item => item.ingredient);
         fetchIngredientsDetails(ingredientIds);
       })
@@ -66,7 +65,6 @@ const DishDetailsScreen = ({ route, navigation }) => {
           <Text>Grasas: {dishDetails.fat}g</Text>
           <Text>Fibras: {dishDetails.fiber}g</Text>
           <Text>Azúcares: {dishDetails.sugar}g</Text>
-          {/* Añade más líneas según los datos disponibles */}
         </View>
       </View>
     </ScrollView>

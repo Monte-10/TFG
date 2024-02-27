@@ -187,8 +187,6 @@ class DishSerializer(serializers.ModelSerializer):
         # Actualiza otros campos de Dish según sea necesario
 
         if ingredients_data is not None:
-            # Aquí asumimos que quieres reemplazar completamente los ingredientes existentes.
-            # Ajusta la lógica según tus necesidades específicas.
             instance.dishingredient_set.all().delete()  # Elimina las relaciones de ingredientes existentes
             for ingredient_data in ingredients_data:
                 DishIngredient.objects.create(
@@ -337,8 +335,6 @@ class MealSerializer(serializers.ModelSerializer):
         instance.name = validated_data.get('name', instance.name)
 
         if dishes_data is not None:
-            # Aquí puedes decidir si quieres borrar todos los MealDish existentes y crear nuevos,
-            # o actualizar los existentes de manera más sofisticada.
             instance.mealdish_set.all().delete()
             for dish_data in dishes_data:
                 MealDish.objects.create(meal=instance, **dish_data)

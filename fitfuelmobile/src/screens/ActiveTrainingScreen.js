@@ -66,7 +66,6 @@ function ActiveTrainingScreen({ route, navigation }) {
   const handleSkipRest = () => {
     setIsResting(false); // Detiene el descanso inmediatamente
     setTimer(null); // Resetea el temporizador
-    // No avanza automáticamente, permite al usuario decidir el próximo paso
   };
 
   const handleNextSetOrExercise = () => {

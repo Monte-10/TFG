@@ -31,7 +31,7 @@ def upload_food_csv(request):
                 messages.success(request, 'Foods imported successfully!')
             except Exception as e:
                 messages.error(request, f'Error importing foods: {e}')
-            return redirect('food_list.html')  # Asegúrate de que 'food_list' sea el nombre correcto de tu URL
+            return redirect('food_list.html')
     else:
         form = FoodCSVForm()
     return render(request, 'upload_food_csv.html', {'form': form})

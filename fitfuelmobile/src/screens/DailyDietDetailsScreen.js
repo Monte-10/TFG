@@ -31,7 +31,6 @@ const DailyDietDetailsScreen = ({ route, navigation }) => {
     Promise.all(mealsPromises)
       .then(mealsData => {
         setMealsDetails(mealsData);
-        // Aquí asumimos que cada meal tiene un array de dishIds
         const allDishIds = mealsData.flatMap(meal => meal.dishes);
         fetchDishDetails(allDishIds);
       })
@@ -63,7 +62,6 @@ const DailyDietDetailsScreen = ({ route, navigation }) => {
       {mealsDetails.map((meal, index) => (
         <View key={index}>
           <Text>Comida: {meal.name}</Text>
-          {/* Asumiendo que cada Meal ya incluye los IDs de los dishes en la respuesta del fetch */}
           {meal.dishes && meal.dishes.map((dishId, dishIndex) => {
             const dishObject = dishDetails.find(dish => dish.id === dishId);
             return dishObject ? (

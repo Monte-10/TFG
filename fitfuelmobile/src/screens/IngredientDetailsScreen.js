@@ -8,12 +8,10 @@ const IngredientDetailsScreen = ({ route, navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Asumiendo que tu API devuelve la información de la Food en la respuesta del ingrediente
     fetch(`http://10.0.2.2:8000/nutrition/ingredients/${ingredientId}`)
       .then((response) => response.json())
       .then((data) => {
         setIngredientDetails(data);
-        // Suponiendo que el ID de la Food viene dentro de los detalles del ingrediente
         return fetch(`http://10.0.2.2:8000/nutrition/foods/${data.food}`);
       })
       .then((response) => response.json())
@@ -30,11 +28,6 @@ const IngredientDetailsScreen = ({ route, navigation }) => {
   if (isLoading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
   }
-
-  // Función para navegar a los detalles de la Food
-  const goToFoodDetails = () => {
-    navigation.navigate('FoodDetailsScreen', { foodId: foodDetails.id });
-  };
 
   return (
     <View style={styles.container}>
@@ -77,7 +70,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 5,
   },
-  // Añade más estilos si lo necesitas
 });
 
 export default IngredientDetailsScreen;
