@@ -9,6 +9,7 @@ from .utils import import_foods_from_csv
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 
 def create_food(request):
     if request.method == 'POST':
@@ -21,6 +22,7 @@ def create_food(request):
         form = FoodForm()
     return render(request, 'create_food.html', {'form': form})
 
+@csrf_exempt
 def upload_food_csv(request):
     if request.method == 'POST':
         form = FoodCSVForm(request.POST, request.FILES)
@@ -81,4 +83,16 @@ class TodayDailyDietView(APIView):
         
         # Serializa y devuelve los resultados
         serializer = DailyDietSerializer(today_diets, many=True)
+        return Response(serializer.data)
+    
+class DailyDietByDateView(APIView):
+    def get(self, request, date, *args, **kwargs):
+        # Convierte la cadena de fecha en un objeto de fecha
+        date = timezone.datetime.strptime(date, '%Y-%m-%d').date()
+        user = request.user
+        
+        diets = Diet.objects.filter(user=user)
+        daily_diets = DailyDiet.objects.filter(diet__in=diets, date=date)
+        
+        serializer = DailyDietSerializer(daily_diets, many=True)
         return Response(serializer.data)

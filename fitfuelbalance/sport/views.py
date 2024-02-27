@@ -34,3 +34,15 @@ class TodayTrainingView(APIView):
 
         serializer = TrainingSerializer(trainings, many=True)
         return Response(serializer.data)
+    
+class TrainingByDateView(APIView):
+    def get(self, request, date, *args, **kwargs):
+        date = timezone.datetime.strptime(date, '%Y-%m-%d').date()
+        user = request.user
+        print('user:', user)
+        print('date:', date)
+        
+        sessions = Training.objects.filter(user=user, date=date)
+        
+        serializer = TrainingSerializer(sessions, many=True)
+        return Response(serializer.data)

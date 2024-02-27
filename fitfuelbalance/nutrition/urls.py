@@ -18,4 +18,5 @@ urlpatterns = [
     path('food_detail/<int:pk>/', views.food_detail, name='food_detail'),
     path('food_list/', views.food_list, name='food_list'),
     path('dailydiets/today', TodayDailyDietView.as_view(), name='today-dailydiets'),
+    path('dailydiets/date/<str:date>', DailyDietByDateView.as_view(), name='dailydiet-by-date'),
 ]

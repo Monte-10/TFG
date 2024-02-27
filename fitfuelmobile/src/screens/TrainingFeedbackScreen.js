@@ -26,10 +26,11 @@ function TrainingFeedbackScreen({ navigation, route }) {
   const [notes, setNotes] = useState('');
   const { trainingDetails } = route.params;
   const { name } = trainingDetails['name'];
+  const { id } = trainingDetails['id'];
   
   const handleSubmit = async () => {
     const userId = await AsyncStorage.getItem('userId');
-    const feedback = { name, effortLevel, notes, date: new Date().toISOString(), userId };
+    const feedback = { name, effortLevel, notes, date: new Date().toISOString(), userId, trainingId: id};
     try {
       const savedFeedback = await AsyncStorage.getItem('trainingFeedback');
       const feedbackList = savedFeedback ? JSON.parse(savedFeedback) : [];

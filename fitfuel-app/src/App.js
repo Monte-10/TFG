@@ -14,6 +14,7 @@ import CreateTraining from './components/sport/CreateTraining';
 import Login from './components/user/Login';
 import RegularUserSignUp from './components/user/RegularSignUp';
 import TrainerSignUp from './components/user/TrainerSignUp';
+import UploadFood from './components/nutrition/UploadFood';
 
 function App() {
   const [authToken, setAuthToken] = useState(localStorage.getItem('authToken') || '');
@@ -62,6 +63,7 @@ function App() {
                 <Route path="/nutrition/create-meal" element={<CreateMeal />} />
                 <Route path="/nutrition/create-diet" element={<CreateDiet />} />
                 <Route path="/edit-dailydiet/:dietId" element={<ManageDailyDiet />} />
+                <Route path="/nutrition/upload-food" element={<UploadFood />} />
                 <Route path="/sport/create-exercise" element={<CreateExercise />} />
                 <Route path="/sport/exercise/:id" element={<ExerciseDetails />} />
                 <Route path="/sport/edit-exercise/:id" element={<EditExercise />} />
@@ -93,7 +95,8 @@ function Nutrition() {
       <Link to="/nutrition/create-dish">Create Dish</Link><br />
       <Link to="/nutrition/create-meal">Create Meal</Link><br />
       <Link to="/nutrition/create-diet">Create Diet</Link><br />
-      <Link to="/edit-dailydiet/:dietId">Edit Daily Diet</Link>
+      <Link to="/edit-dailydiet/:dietId">Edit Daily Diet</Link><br />
+      <Link to="/nutrition/upload-food">Upload Food</Link><br />
     </div>
   );
 }
@@ -105,7 +108,7 @@ function Sport() {
       <Link to="/sport/create-exercise">Create Exercise</Link><br />
       <Link to="/sport/exercise/:id">Exercise Details</Link><br />
       <Link to="/sport/edit-exercise/:id">Edit Exercise</Link><br />
-      <Link to="/sport/create-training">Create Training</Link>
+      <Link to="/sport/create-training">Create Training</Link><br />
     </div>
   );
 }

@@ -11,6 +11,7 @@ import DailyDietDetailsScreen from '../screens/DailyDietDetailsScreen';
 import DishDetailsScreen from '../screens/DishDetailsScreen';
 import IngredientDetailsScreen from '../screens/IngredientDetailsScreen';
 import FoodDetailsScreen from '../screens/FoodDetailsScreen';
+import DetailsScreen from '../screens/DetailsScreen';
 
 const Stack = createStackNavigator();
 
@@ -28,6 +29,7 @@ const AppNavigator = () => {
       <Stack.Screen name="DishDetailsScreen" component={DishDetailsScreen} />
       <Stack.Screen name="IngredientDetailsScreen" component={IngredientDetailsScreen} />
       <Stack.Screen name="FoodDetailsScreen" component={FoodDetailsScreen} />
+      <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
     </Stack.Navigator>
   );
 }

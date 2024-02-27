@@ -11,4 +11,5 @@ router.register(r'training_exercises', views.TrainingExerciseViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('trainings/today', TodayTrainingView.as_view(), name='today-trainings'),
+    path('trainings/date/<str:date>', TrainingByDateView.as_view(), name='training-by-date'),
 ]

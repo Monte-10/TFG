@@ -33,6 +33,7 @@ const TrainingHistoryScreen = ({ navigation }) => {
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('TrainingDetailsScreen', { trainingId: item.trainingId })}>
+            <Text style={styles.title}>Id: {item.trainingId}</Text>
             <Text style={styles.title}>Fecha: {item.date}</Text>
             <Text>Entrenamiento: {item.name}</Text>
             <Text>Esfuerzo: {item.effortLevel}</Text>
