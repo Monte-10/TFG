@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.db.models import Q
 from .models import *
 
 class FoodSerializer(serializers.ModelSerializer):
@@ -562,8 +563,6 @@ class DailyDietSerializer(serializers.ModelSerializer):
     def get_other(self, obj):
         return obj.other
 
-from django.db.models import Q
-
 class DietSerializer(serializers.ModelSerializer):
     daily_diets = DailyDietSerializer(source='dailydiet_set', many=True, read_only=True)
     
@@ -593,3 +592,148 @@ class DietSerializer(serializers.ModelSerializer):
         if data['start_date'] > data['end_date']:
             raise serializers.ValidationError("start_date must be before end_date")
         return data
+    
+class OptionSerializer(serializers.ModelSerializer):
+    breakfast_data = serializers.PrimaryKeyRelatedField(queryset=Meal.objects.all(), source='breakfast')
+    mid_morning_data = serializers.PrimaryKeyRelatedField(queryset=Meal.objects.all(), source='mid_morning')
+    lunch_data = serializers.PrimaryKeyRelatedField(queryset=Meal.objects.all(), source='lunch')
+    snack_data = serializers.PrimaryKeyRelatedField(queryset=Meal.objects.all(), source='snack')
+    dinner_data = serializers.PrimaryKeyRelatedField(queryset=Meal.objects.all(), source='dinner')
+    extras_data = serializers.PrimaryKeyRelatedField(queryset=Meal.objects.all(), source='extras', many=True)
+    calories = serializers.SerializerMethodField()
+    protein = serializers.SerializerMethodField()
+    carbohydrates = serializers.SerializerMethodField()
+    sugar = serializers.SerializerMethodField()
+    fiber = serializers.SerializerMethodField()
+    fat = serializers.SerializerMethodField()
+    saturated_fat = serializers.SerializerMethodField()
+    gluten_free = serializers.SerializerMethodField()
+    lactose_free = serializers.SerializerMethodField()
+    vegan = serializers.SerializerMethodField()
+    vegetarian = serializers.SerializerMethodField()
+    pescetarian = serializers.SerializerMethodField()
+    contains_meat = serializers.SerializerMethodField()
+    contains_vegetables = serializers.SerializerMethodField()
+    contains_fish_shellfish_canned_preserved = serializers.SerializerMethodField()
+    cereal = serializers.SerializerMethodField()
+    pasta_or_rice = serializers.SerializerMethodField()
+    dairy_yogurt_cheese = serializers.SerializerMethodField()
+    fruit = serializers.SerializerMethodField()
+    nuts = serializers.SerializerMethodField()
+    legume = serializers.SerializerMethodField()
+    sauce_or_condiment = serializers.SerializerMethodField()
+    deli_meat = serializers.SerializerMethodField()
+    bread_or_toast = serializers.SerializerMethodField()
+    egg = serializers.SerializerMethodField()
+    special_drink_or_supplement = serializers.SerializerMethodField()
+    tuber = serializers.SerializerMethodField()
+    other = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Option
+        fields = '__all__'
+        
+    def create(self, validated_data):
+        extras_data = validated_data.pop('extras')
+        option = Option.objects.create(**validated_data)
+        option.extras.set(extras_data)
+        return option
+    
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.breakfast = validated_data.get('breakfast', instance.breakfast)
+        instance.mid_morning = validated_data.get('mid_morning', instance.mid_morning)
+        instance.lunch = validated_data.get('lunch', instance.lunch)
+        instance.snack = validated_data.get('snack', instance.snack)
+        instance.dinner = validated_data.get('dinner', instance.dinner)
+        
+        extras_data = validated_data.get('extras')
+        if extras_data is not None:
+            instance.extras.set(extras_data)
+        
+        instance.save()
+        return instance
+    
+    def get_calories(self, obj):
+        return obj.calories
+    
+    def get_protein(self, obj):
+        return obj.protein
+    
+    def get_carbohydrates(self, obj):
+        return obj.carbohydrates
+    
+    def get_sugar(self, obj):
+        return obj.sugar
+    
+    def get_fiber(self, obj):
+        return obj.fiber
+    
+    def get_fat(self, obj):
+        return obj.fat
+    
+    def get_saturated_fat(self, obj):
+        return obj.saturated_fat
+    
+    def get_gluten_free(self, obj):
+        return obj.gluten_free
+    
+    def get_lactose_free(self, obj):
+        return obj.lactose_free
+    
+    def get_vegan(self, obj):
+        return obj.vegan
+    
+    def get_vegetarian(self, obj):
+        return obj.vegetarian
+    
+    def get_pescetarian(self, obj):
+        return obj.pescetarian
+    
+    def get_contains_meat(self, obj):
+        return obj.contains_meat
+    
+    def get_contains_vegetables(self, obj):
+        return obj.contains_vegetables
+    
+    def get_contains_fish_shellfish_canned_preserved(self, obj):
+        return obj.contains_fish_shellfish_canned_preserved
+    
+    def get_cereal(self, obj):
+        return obj.cereal
+    
+    def get_pasta_or_rice(self, obj):
+        return obj.pasta_or_rice
+    
+    def get_dairy_yogurt_cheese(self, obj):
+        return obj.dairy_yogurt_cheese
+    
+    def get_fruit(self, obj):
+        return obj.fruit
+    
+    def get_nuts(self, obj):
+        return obj.nuts
+    
+    def get_legume(self, obj):
+        return obj.legume
+    
+    def get_sauce_or_condiment(self, obj):
+        return obj.sauce_or_condiment
+    
+    def get_deli_meat(self, obj):
+        return obj.deli_meat
+    
+    def get_bread_or_toast(self, obj):
+        return obj.bread_or_toast
+    
+    def get_egg(self, obj):
+        return obj.egg
+    
+    def get_special_drink_or_supplement(self, obj):
+        return obj.special_drink_or_supplement
+    
+    def get_tuber(self, obj):
+        return obj.tuber
+    
+    def get_other(self, obj):
+        return obj.other

@@ -15,6 +15,7 @@ import Login from './components/user/Login';
 import RegularUserSignUp from './components/user/RegularSignUp';
 import TrainerSignUp from './components/user/TrainerSignUp';
 import UploadFood from './components/nutrition/UploadFood';
+import CreateOption from './components/nutrition/CreateOption';
 
 function App() {
   const [authToken, setAuthToken] = useState(localStorage.getItem('authToken') || '');
@@ -68,6 +69,7 @@ function App() {
                 <Route path="/sport/exercise/:id" element={<ExerciseDetails />} />
                 <Route path="/sport/edit-exercise/:id" element={<EditExercise />} />
                 <Route path="/sport/create-training" element={<CreateTraining />} />
+                <Route path="/nutrition/create-option" element={<CreateOption />} />
                 <Route path="*" element={<Navigate replace to="/nutrition" />} />
               </>
             ) : (
@@ -97,6 +99,7 @@ function Nutrition() {
       <Link to="/nutrition/create-diet">Create Diet</Link><br />
       <Link to="/edit-dailydiet/:dietId">Edit Daily Diet</Link><br />
       <Link to="/nutrition/upload-food">Upload Food</Link><br />
+      <Link to="/nutrition/create-option">Create Option</Link><br />
     </div>
   );
 }

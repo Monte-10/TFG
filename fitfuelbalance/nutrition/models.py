@@ -561,3 +561,131 @@ class DailyDiet(models.Model):
     def __str__(self):
         return f"Dieta para el día {self.date}"
     
+class Option(models.Model):
+    trainer = models.ForeignKey('user.Trainer', on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    breakfast = models.ForeignKey(Meal, on_delete=models.CASCADE, related_name='breakfast')
+    mid_morning = models.ForeignKey(Meal, on_delete=models.CASCADE, related_name='mid_morning')
+    lunch = models.ForeignKey(Meal, on_delete=models.CASCADE, related_name='lunch')
+    snack = models.ForeignKey(Meal, on_delete=models.CASCADE, related_name='snack')
+    dinner = models.ForeignKey(Meal, on_delete=models.CASCADE, related_name='dinner')
+    extras = models.ManyToManyField(Meal, related_name='extras')
+    
+    @property
+    def calories(self):
+        return self.breakfast.calories + self.mid_morning.calories + self.lunch.calories + self.snack.calories + self.dinner.calories + sum([meal.calories for meal in self.extras.all()])
+    
+    @property
+    def protein(self):
+        return self.breakfast.protein + self.mid_morning.protein + self.lunch.protein + self.snack.protein + self.dinner.protein + sum([meal.protein for meal in self.extras.all()])
+    
+    @property
+    def carbohydrates(self):
+        return self.breakfast.carbohydrates + self.mid_morning.carbohydrates + self.lunch.carbohydrates + self.snack.carbohydrates + self.dinner.carbohydrates + sum([meal.carbohydrates for meal in self.extras.all()])
+    
+    @property
+    def sugar(self):
+        return self.breakfast.sugar + self.mid_morning.sugar + self.lunch.sugar + self.snack.sugar + self.dinner.sugar + sum([meal.sugar for meal in self.extras.all()])
+    
+    @property
+    def fiber(self):
+        return self.breakfast.fiber + self.mid_morning.fiber + self.lunch.fiber + self.snack.fiber + self.dinner.fiber + sum([meal.fiber for meal in self.extras.all()])
+    
+    @property
+    def fat(self):
+        return self.breakfast.fat + self.mid_morning.fat + self.lunch.fat + self.snack.fat + self.dinner.fat + sum([meal.fat for meal in self.extras.all()])
+    
+    @property
+    def saturated_fat(self):
+        return self.breakfast.saturated_fat + self.mid_morning.saturated_fat + self.lunch.saturated_fat + self.snack.saturated_fat + self.dinner.saturated_fat + sum([meal.saturated_fat for meal in self.extras.all()])
+    
+    @property
+    def gluten_free(self):
+        return self.breakfast.gluten_free and self.mid_morning.gluten_free and self.lunch.gluten_free and self.snack.gluten_free and self.dinner.gluten_free and all([meal.gluten_free for meal in self.extras.all()])
+    
+    @property
+    def lactose_free(self):
+        return self.breakfast.lactose_free and self.mid_morning.lactose_free and self.lunch.lactose_free and self.snack.lactose_free and self.dinner.lactose_free and all([meal.lactose_free for meal in self.extras.all()])
+    
+    @property
+    def vegan(self):
+        return self.breakfast.vegan and self.mid_morning.vegan and self.lunch.vegan and self.snack.vegan and self.dinner.vegan and all([meal.vegan for meal in self.extras.all()])
+    
+    @property
+    def vegetarian(self):
+        return self.breakfast.vegetarian and self.mid_morning.vegetarian and self.lunch.vegetarian and self.snack.vegetarian and self.dinner.vegetarian and all([meal.vegetarian for meal in self.extras.all()])
+    
+    @property
+    def pescetarian(self):
+        return self.breakfast.pescetarian and self.mid_morning.pescetarian and self.lunch.pescetarian and self.snack.pescetarian and self.dinner.pescetarian and all([meal.pescetarian for meal in self.extras.all()])
+    
+    @property
+    def contains_meat(self):
+        return self.breakfast.contains_meat or self.mid_morning.contains_meat or self.lunch.contains_meat or self.snack.contains_meat or self.dinner.contains_meat or any([meal.contains_meat for meal in self.extras.all()])
+    
+    @property
+    def contains_vegetables(self):
+        return self.breakfast.contains_vegetables or self.mid_morning.contains_vegetables or self.lunch.contains_vegetables or self.snack.contains_vegetables or self.dinner.contains_vegetables or any([meal.contains_vegetables for meal in self.extras.all()])
+    
+    @property
+    def contains_fish_shellfish_canned_preserved(self):
+        return self.breakfast.contains_fish_shellfish_canned_preserved or self.mid_morning.contains_fish_shellfish_canned_preserved or self.lunch.contains_fish_shellfish_canned_preserved or self.snack.contains_fish_shellfish_canned_preserved or self.dinner.contains_fish_shellfish_canned_preserved or any([meal.contains_fish_shellfish_canned_preserved for meal in self.extras.all()])
+    
+    @property
+    def canned_or_preserved(self):
+        return self.breakfast.canned_or_preserved or self.mid_morning.canned_or_preserved or self.lunch.canned_or_preserved or self.snack.canned_or_preserved or self.dinner.canned_or_preserved or any([meal.canned_or_preserved for meal in self.extras.all()])
+    
+    @property
+    def cereal(self):
+        return self.breakfast.cereal or self.mid_morning.cereal or self.lunch.cereal or self.snack.cereal or self.dinner.cereal or any([meal.cereal for meal in self.extras.all()])
+    
+    @property
+    def pasta_or_rice(self):
+        return self.breakfast.pasta_or_rice or self.mid_morning.pasta_or_rice or self.lunch.pasta_or_rice or self.snack.pasta_or_rice or self.dinner.pasta_or_rice or any([meal.pasta_or_rice for meal in self.extras.all()])
+    
+    @property
+    def dairy_yogurt_cheese(self):
+        return self.breakfast.dairy_yogurt_cheese or self.mid_morning.dairy_yogurt_cheese or self.lunch.dairy_yogurt_cheese or self.snack.dairy_yogurt_cheese or self.dinner.dairy_yogurt_cheese or any([meal.dairy_yogurt_cheese for meal in self.extras.all()])
+    
+    @property
+    def fruit(self):
+        return self.breakfast.fruit or self.mid_morning.fruit or self.lunch.fruit or self.snack.fruit or self.dinner.fruit or any([meal.fruit for meal in self.extras.all()])
+    
+    @property
+    def nuts(self):
+        return self.breakfast.nuts or self.mid_morning.nuts or self.lunch.nuts or self.snack.nuts or self.dinner.nuts or any([meal.nuts for meal in self.extras.all()])
+    
+    @property
+    def legume(self):
+        return self.breakfast.legume or self.mid_morning.legume or self.lunch.legume or self.snack.legume or self.dinner.legume or any([meal.legume for meal in self.extras.all()])
+    
+    @property
+    def sauce_or_condiment(self):
+        return self.breakfast.sauce_or_condiment or self.mid_morning.sauce_or_condiment or self.lunch.sauce_or_condiment or self.snack.sauce_or_condiment or self.dinner.sauce_or_condiment or any([meal.sauce_or_condiment for meal in self.extras.all()])
+    
+    @property
+    def deli_meat(self):
+        return self.breakfast.deli_meat or self.mid_morning.deli_meat or self.lunch.deli_meat or self.snack.deli_meat or self.dinner.deli_meat or any([meal.deli_meat for meal in self.extras.all()])
+    
+    @property
+    def bread_or_toast(self):
+        return self.breakfast.bread_or_toast or self.mid_morning.bread_or_toast or self.lunch.bread_or_toast or self.snack.bread_or_toast or self.dinner.bread_or_toast or any([meal.bread_or_toast for meal in self.extras.all()])
+    
+    @property
+    def egg(self):
+        return self.breakfast.egg or self.mid_morning.egg or self.lunch.egg or self.snack.egg or self.dinner.egg or any([meal.egg for meal in self.extras.all()])
+    
+    @property
+    def special_drink_or_supplement(self):
+        return self.breakfast.special_drink_or_supplement or self.mid_morning.special_drink_or_supplement or self.lunch.special_drink_or_supplement or self.snack.special_drink_or_supplement or self.dinner.special_drink_or_supplement or any([meal.special_drink_or_supplement for meal in self.extras.all()])
+    
+    @property
+    def tuber(self):
+        return self.breakfast.tuber or self.mid_morning.tuber or self.lunch.tuber or self.snack.tuber or self.dinner.tuber or any([meal.tuber for meal in self.extras.all()])
+    
+    @property
+    def other(self):
+        return self.breakfast.other or self.mid_morning.other or self.lunch.other or self.snack.other or self.dinner.other or any([meal.other for meal in self.extras.all()])
+    
+    def __str__(self):
+        return self.name

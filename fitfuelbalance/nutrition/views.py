@@ -96,3 +96,7 @@ class DailyDietByDateView(APIView):
         
         serializer = DailyDietSerializer(daily_diets, many=True)
         return Response(serializer.data)
+    
+class OptionViewSet(viewsets.ModelViewSet):
+    queryset = Option.objects.all()
+    serializer_class = OptionSerializer

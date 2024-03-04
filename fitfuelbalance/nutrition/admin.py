@@ -47,3 +47,8 @@ class DailyDietAdmin(admin.ModelAdmin):
 class DietAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
+    
+@admin.register(Option)
+class OptionAdmin(admin.ModelAdmin):
+    list_display = ('name', 'calories', 'protein', 'carbohydrates', 'sugar', 'fiber', 'fat', 'saturated_fat', 'gluten_free', 'lactose_free', 'vegan', 'vegetarian', 'pescetarian', 'contains_meat', 'contains_vegetables', 'contains_fish_shellfish_canned_preserved', 'cereal', 'pasta_or_rice', 'dairy_yogurt_cheese', 'fruit', 'nuts', 'legume', 'sauce_or_condiment', 'deli_meat', 'bread_or_toast', 'egg', 'special_drink_or_supplement', 'tuber', 'other')
+    search_fields = ('name', 'calories', 'protein', 'carbohydrates', 'sugar', 'fiber', 'fat', 'saturated_fat', 'gluten_free', 'lactose_free', 'vegan', 'vegetarian', 'pescetarian', 'contains_meat', 'contains_vegetables', 'contains_fish_shellfish_canned_preserved', 'cereal', 'pasta_or_rice', 'dairy_yogurt_cheese', 'fruit', 'nuts', 'legume', 'sauce_or_condiment', 'deli_meat', 'bread_or_toast', 'egg', 'special_drink_or_supplement', 'tuber', 'other')

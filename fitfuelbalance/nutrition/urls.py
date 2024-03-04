@@ -10,6 +10,7 @@ router.register(r'dishes', views.DishViewSet)
 router.register(r'meals', views.MealViewSet)
 router.register(r'daily_diets', views.DailyDietViewSet)
 router.register(r'diet', views.DietViewSet)
+router.register(r'options', views.OptionViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
