@@ -14,7 +14,7 @@ const CalendarScreen = ({ navigation }) => {
       if (!response.ok) throw new Error('Network response was not ok');
       const diets = await response.json();
       return diets.map(diet => ({
-        date: diet.date, // Asume este campo existe y está en formato 'YYYY-MM-DD'
+        date: diet.date, // Formato 'YYYY-MM-DD'
         type: 'diet'
       }));
     } catch (error) {
@@ -30,7 +30,7 @@ const CalendarScreen = ({ navigation }) => {
       if (!response.ok) throw new Error('Network response was not ok');
       const trainings = await response.json();
       return trainings.map(training => ({
-        date: training.date, // Asume este campo existe y está en formato 'YYYY-MM-DD'
+        date: training.date, // Formato 'YYYY-MM-DD'
         type: 'training'
       }));
     } catch (error) {

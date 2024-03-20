@@ -18,6 +18,7 @@ import UploadFood from './components/nutrition/UploadFood';
 import CreateDayOption from './components/nutrition/CreateDayOption';
 import CreateWeekOption from './components/nutrition/CreateWeekOption';
 import CreateOption from './components/nutrition/CreateOption';
+import AssignOptionToUser from './components/nutrition/AssignOptionToUser';
 
 function App() {
   const [authToken, setAuthToken] = useState(localStorage.getItem('authToken') || '');
@@ -74,6 +75,7 @@ function App() {
                 <Route path="/nutrition/create-dayoption" element={<CreateDayOption />} />
                 <Route path="/nutrition/create-weekoption" element={<CreateWeekOption />} />
                 <Route path="/nutrition/create-option" element={<CreateOption />} />
+                <Route path="/nutrition/assign-option" element={<AssignOptionToUser />} />
                 <Route path="*" element={<Navigate replace to="/nutrition" />} />
               </>
             ) : (
@@ -106,6 +108,7 @@ function Nutrition() {
       <Link to="/nutrition/create-dayoption">Create Day Option</Link><br />
       <Link to="/nutrition/create-weekoption">Create Week Option</Link><br />
       <Link to="/nutrition/create-option">Create Option</Link><br />
+      <Link to="/nutrition/assign-option">Assign Option</Link><br />
     </div>
   );
 }

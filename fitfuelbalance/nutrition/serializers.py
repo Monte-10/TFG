@@ -923,3 +923,12 @@ class OptionSerializer(serializers.ModelSerializer):
         # Crea la instancia de Option incluyendo el trainer obtenido del contexto
         option = Option.objects.create(**validated_data, trainer=trainer)
         return option
+    
+class UserOptionAssignmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserOptionAssignment
+        fields = '__all__'
+
+    def create(self, validated_data):
+        assignment = UserOptionAssignment.objects.create(**validated_data)
+        return assignment

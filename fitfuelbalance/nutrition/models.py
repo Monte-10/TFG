@@ -829,3 +829,8 @@ class Option(models.Model):
     
     def __str__(self):
         return self.name
+    
+class UserOptionAssignment(models.Model):
+    user = models.ForeignKey('user.RegularUser', on_delete=models.CASCADE)
+    option = models.ForeignKey('nutrition.Option', on_delete=models.CASCADE)
+    start_date = models.DateField()

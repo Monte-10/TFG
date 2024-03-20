@@ -11,6 +11,10 @@ from rest_framework.response import Response
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.permissions import IsAuthenticated
+import rest_framework.status as status
+from rest_framework.decorators import api_view
+from user.models import CustomUser
+import datetime
 
 def create_food(request):
     if request.method == 'POST':
@@ -109,3 +113,49 @@ class WeekOptionViewSet(viewsets.ModelViewSet):
 class OptionViewSet(viewsets.ModelViewSet):
     queryset = Option.objects.all()
     serializer_class = OptionSerializer
+    
+class UserOptionAssignmentViewSet(viewsets.ModelViewSet):
+    queryset = UserOptionAssignment.objects.all()
+    serializer_class = UserOptionAssignmentSerializer
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            user = request.user
+            if not user.is_trainer:
+                return Response({"error": "Solo los entrenadores pueden crear asignaciones."}, status=status.HTTP_403_FORBIDDEN)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+@api_view(['POST'])
+def assignOption(request):
+    # Asegurarse de que solo los entrenadores pueden asignar opciones
+    if not request.user.is_trainer:
+        return Response({"error": "Solo los entrenadores pueden crear asignaciones."}, status=status.HTTP_403_FORBIDDEN)
+    
+    user_id = request.data.get('userId')
+    option_id = request.data.get('optionId')
+
+    # Usa get_object_or_404 para manejar los casos donde el usuario o la opción no existen
+    user = get_object_or_404(CustomUser, id=user_id)
+    option = get_object_or_404(Option, id=option_id)
+
+    # Crear la asignación de la opción al usuario
+    assignment = UserOptionAssignment.objects.create(
+        user=user,
+        option=option,
+        assigned_date=datetime.now()
+    )
+
+    return Response({
+        "message": "Option assigned successfully",
+        "assignment": {
+            "id": assignment.id,
+            "user": user.username,
+            "option": option.name, 
+            "assigned_date": assignment.assigned_date.strftime("%Y-%m-%d")  # Formateando la fecha
+        }
+    }, status=status.HTTP_201_CREATED)
