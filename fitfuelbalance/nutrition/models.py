@@ -561,7 +561,7 @@ class DailyDiet(models.Model):
     def __str__(self):
         return f"Dieta para el día {self.date}"
     
-class Option(models.Model):
+class DayOption(models.Model):
     trainer = models.ForeignKey('user.Trainer', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     breakfast = models.ForeignKey(Meal, on_delete=models.CASCADE, related_name='breakfast')
@@ -686,6 +686,146 @@ class Option(models.Model):
     @property
     def other(self):
         return self.breakfast.other or self.mid_morning.other or self.lunch.other or self.snack.other or self.dinner.other or any([meal.other for meal in self.extras.all()])
+    
+    def __str__(self):
+        return self.name
+    
+class WeekOption(models.Model):
+    name = models.CharField(max_length=100)
+    trainer = models.ForeignKey('user.Trainer', on_delete=models.CASCADE)
+    monday_option = models.ForeignKey(DayOption, related_name='monday_options', on_delete=models.CASCADE)
+    tuesday_option = models.ForeignKey(DayOption, related_name='tuesday_options', on_delete=models.CASCADE)
+    wednesday_option = models.ForeignKey(DayOption, related_name='wednesday_options', on_delete=models.CASCADE)
+    thursday_option = models.ForeignKey(DayOption, related_name='thursday_options', on_delete=models.CASCADE)
+    friday_option = models.ForeignKey(DayOption, related_name='friday_options', on_delete=models.CASCADE)
+    saturday_option = models.ForeignKey(DayOption, related_name='saturday_options', on_delete=models.CASCADE)
+    sunday_option = models.ForeignKey(DayOption, related_name='sunday_options', on_delete=models.CASCADE)
+    
+    @property
+    def calories(self):
+        return self.monday_option.calories + self.tuesday_option.calories + self.wednesday_option.calories + self.thursday_option.calories + self.friday_option.calories + self.saturday_option.calories + self.sunday_option.calories
+    
+    @property
+    def protein(self):
+        return self.monday_option.protein + self.tuesday_option.protein + self.wednesday_option.protein + self.thursday_option.protein + self.friday_option.protein + self.saturday_option.protein + self.sunday_option.protein
+    
+    @property
+    def carbohydrates(self):
+        return self.monday_option.carbohydrates + self.tuesday_option.carbohydrates + self.wednesday_option.carbohydrates + self.thursday_option.carbohydrates + self.friday_option.carbohydrates + self.saturday_option.carbohydrates + self.sunday_option.carbohydrates
+    
+    @property
+    def sugar(self):
+        return self.monday_option.sugar + self.tuesday_option.sugar + self.wednesday_option.sugar + self.thursday_option.sugar + self.friday_option.sugar + self.saturday_option.sugar + self.sunday_option.sugar
+    
+    @property
+    def fiber(self):
+        return self.monday_option.fiber + self.tuesday_option.fiber + self.wednesday_option.fiber + self.thursday_option.fiber + self.friday_option.fiber + self.saturday_option.fiber + self.sunday_option.fiber
+    
+    @property
+    def fat(self):
+        return self.monday_option.fat + self.tuesday_option.fat + self.wednesday_option.fat + self.thursday_option.fat + self.friday_option.fat + self.saturday_option.fat + self.sunday_option.fat
+    
+    @property
+    def saturated_fat(self):
+        return self.monday_option.saturated_fat + self.tuesday_option.saturated_fat + self.wednesday_option.saturated_fat + self.thursday_option.saturated_fat + self.friday_option.saturated_fat + self.saturday_option.saturated_fat + self.sunday_option.saturated_fat
+    
+    @property
+    def gluten_free(self):
+        return self.monday_option.gluten_free and self.tuesday_option.gluten_free and self.wednesday_option.gluten_free and self.thursday_option.gluten_free and self.friday_option.gluten_free and self.saturday_option.gluten_free and self.sunday_option.gluten_free
+    
+    @property
+    def lactose_free(self):
+        return self.monday_option.lactose_free and self.tuesday_option.lactose_free and self.wednesday_option.lactose_free and self.thursday_option.lactose_free and self.friday_option.lactose_free and self.saturday_option.lactose_free and self.sunday_option.lactose_free
+    
+    @property
+    def vegan(self):
+        return self.monday_option.vegan and self.tuesday_option.vegan and self.wednesday_option.vegan and self.thursday_option.vegan and self.friday_option.vegan and self.saturday_option.vegan and self.sunday_option.vegan
+    
+    @property
+    def vegetarian(self):
+        return self.monday_option.vegetarian and self.tuesday_option.vegetarian and self.wednesday_option.vegetarian and self.thursday_option.vegetarian and self.friday_option.vegetarian and self.saturday_option.vegetarian and self.sunday_option.vegetarian
+    
+    @property
+    def pescetarian(self):
+        return self.monday_option.pescetarian and self.tuesday_option.pescetarian and self.wednesday_option.pescetarian and self.thursday_option.pescetarian and self.friday_option.pescetarian and self.saturday_option.pescetarian and self.sunday_option.pescetarian
+    
+    @property
+    def contains_meat(self):
+        return self.monday_option.contains_meat or self.tuesday_option.contains_meat or self.wednesday_option.contains_meat or self.thursday_option.contains_meat or self.friday_option.contains_meat or self.saturday_option.contains_meat or self.sunday_option.contains_meat
+    
+    @property
+    def contains_vegetables(self):
+        return self.monday_option.contains_vegetables or self.tuesday_option.contains_vegetables or self.wednesday_option.contains_vegetables or self.thursday_option.contains_vegetables or self.friday_option.contains_vegetables or self.saturday_option.contains_vegetables or self.sunday_option.contains_vegetables
+    
+    @property
+    def contains_fish_shellfish_canned_preserved(self):
+        return self.monday_option.contains_fish_shellfish_canned_preserved or self.tuesday_option.contains_fish_shellfish_canned_preserved or self.wednesday_option.contains_fish_shellfish_canned_preserved or self.thursday_option.contains_fish_shellfish_canned_preserved or self.friday_option.contains_fish_shellfish_canned_preserved or self.saturday_option.contains_fish_shellfish_canned_preserved or self.sunday_option.contains_fish_shellfish_canned_preserved
+    
+    @property
+    def canned_or_preserved(self):
+        return self.monday_option.canned_or_preserved or self.tuesday_option.canned_or_preserved or self.wednesday_option.canned_or_preserved or self.thursday_option.canned_or_preserved or self.friday_option.canned_or_preserved or self.saturday_option.canned_or_preserved or self.sunday_option.canned_or_preserved
+    
+    @property
+    def cereal(self):
+        return self.monday_option.cereal or self.tuesday_option.cereal or self.wednesday_option.cereal or self.thursday_option.cereal or self.friday_option.cereal or self.saturday_option.cereal or self.sunday_option.cereal
+    
+    @property
+    def pasta_or_rice(self):
+        return self.monday_option.pasta_or_rice or self.tuesday_option.pasta_or_rice or self.wednesday_option.pasta_or_rice or self.thursday_option.pasta_or_rice or self.friday_option.pasta_or_rice or self.saturday_option.pasta_or_rice or self.sunday_option.pasta_or_rice
+    
+    @property
+    def dairy_yogurt_cheese(self):
+        return self.monday_option.dairy_yogurt_cheese or self.tuesday_option.dairy_yogurt_cheese or self.wednesday_option.dairy_yogurt_cheese or self.thursday_option.dairy_yogurt_cheese or self.friday_option.dairy_yogurt_cheese or self.saturday_option.dairy_yogurt_cheese or self.sunday_option.dairy_yogurt_cheese
+    
+    @property
+    def fruit(self):
+        return self.monday_option.fruit or self.tuesday_option.fruit or self.wednesday_option.fruit or self.thursday_option.fruit or self.friday_option.fruit or self.saturday_option.fruit or self.sunday_option.fruit
+    
+    @property
+    def nuts(self):
+        return self.monday_option.nuts or self.tuesday_option.nuts or self.wednesday_option.nuts or self.thursday_option.nuts or self.friday_option.nuts or self.saturday_option.nuts or self.sunday_option.nuts
+    
+    @property
+    def legume(self):
+        return self.monday_option.legume or self.tuesday_option.legume or self.wednesday_option.legume or self.thursday_option.legume or self.friday_option.legume or self.saturday_option.legume or self.sunday_option.legume
+    
+    @property
+    def sauce_or_condiment(self):
+        return self.monday_option.sauce_or_condiment or self.tuesday_option.sauce_or_condiment or self.wednesday_option.sauce_or_condiment or self.thursday_option.sauce_or_condiment or self.friday_option.sauce_or_condiment or self.saturday_option.sauce_or_condiment or self.sunday_option.sauce_or_condiment
+    
+    @property
+    def deli_meat(self):
+        return self.monday_option.deli_meat or self.tuesday_option.deli_meat or self.wednesday_option.deli_meat or self.thursday_option.deli_meat or self.friday_option.deli_meat or self.saturday_option.deli_meat or self.sunday_option.deli_meat
+    
+    @property
+    def bread_or_toast(self):
+        return self.monday_option.bread_or_toast or self.tuesday_option.bread_or_toast or self.wednesday_option.bread_or_toast or self.thursday_option.bread_or_toast or self.friday_option.bread_or_toast or self.saturday_option.bread_or_toast or self.sunday_option.bread_or_toast
+    
+    @property
+    def egg(self):
+        return self.monday_option.egg or self.tuesday_option.egg or self.wednesday_option.egg or self.thursday_option.egg or self.friday_option.egg or self.saturday_option.egg or self.sunday_option.egg
+    
+    @property
+    def special_drink_or_supplement(self):
+        return self.monday_option.special_drink_or_supplement or self.tuesday_option.special_drink_or_supplement or self.wednesday_option.special_drink_or_supplement or self.thursday_option.special_drink_or_supplement or self.friday_option.special_drink_or_supplement or self.saturday_option.special_drink_or_supplement or self.sunday_option.special_drink_or_supplement
+    
+    @property
+    def tuber(self):
+        return self.monday_option.tuber or self.tuesday_option.tuber or self.wednesday_option.tuber or self.thursday_option.tuber or self.friday_option.tuber or self.saturday_option.tuber or self.sunday_option.tuber
+    
+    @property
+    def other(self):
+        return self.monday_option.other or self.tuesday_option.other or self.wednesday_option.other or self.thursday_option.other or self.friday_option.other or self.saturday_option.other or self.sunday_option.other
+    
+    def __str__(self):
+        return self.name
+    
+class Option(models.Model):
+    trainer = models.ForeignKey('user.Trainer', on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    week_option_one = models.ForeignKey(WeekOption, related_name='week_option_one', on_delete=models.CASCADE)
+    week_option_two = models.ForeignKey(WeekOption, related_name='week_option_two', on_delete=models.CASCADE)
+    week_option_three = models.ForeignKey(WeekOption, related_name='week_option_three', on_delete=models.CASCADE)
     
     def __str__(self):
         return self.name

@@ -1,7 +1,23 @@
 from collections.abc import Sequence
 from django.contrib import admin
 from django.http.request import HttpRequest
+from user.models import *
 from .models import *
+
+@admin.register(CustomUser)
+class CustomUserAdmin(admin.ModelAdmin):
+    list_display = ('username', 'email', 'first_name', 'last_name', 'date_joined')
+    search_fields = ('username', 'email', 'first_name', 'last_name')
+    
+@admin.register(Trainer)
+class TrainerAdmin(admin.ModelAdmin):
+    list_display = ('user', )
+    search_fields = ('user__username', 'user__email', 'user__first_name', 'user__last_name')
+    
+@admin.register(RegularUser)
+class RegularUserAdmin(admin.ModelAdmin):
+    list_display = ('user', 'weight', 'height')
+    search_fields = ('user__username', 'user__email', 'user__first_name', 'user__last_name')
 
 @admin.register(Food)
 class FoodAdmin(admin.ModelAdmin):
@@ -48,7 +64,7 @@ class DietAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
     
-@admin.register(Option)
-class OptionAdmin(admin.ModelAdmin):
-    list_display = ('name', 'calories', 'protein', 'carbohydrates', 'sugar', 'fiber', 'fat', 'saturated_fat', 'gluten_free', 'lactose_free', 'vegan', 'vegetarian', 'pescetarian', 'contains_meat', 'contains_vegetables', 'contains_fish_shellfish_canned_preserved', 'cereal', 'pasta_or_rice', 'dairy_yogurt_cheese', 'fruit', 'nuts', 'legume', 'sauce_or_condiment', 'deli_meat', 'bread_or_toast', 'egg', 'special_drink_or_supplement', 'tuber', 'other')
-    search_fields = ('name', 'calories', 'protein', 'carbohydrates', 'sugar', 'fiber', 'fat', 'saturated_fat', 'gluten_free', 'lactose_free', 'vegan', 'vegetarian', 'pescetarian', 'contains_meat', 'contains_vegetables', 'contains_fish_shellfish_canned_preserved', 'cereal', 'pasta_or_rice', 'dairy_yogurt_cheese', 'fruit', 'nuts', 'legume', 'sauce_or_condiment', 'deli_meat', 'bread_or_toast', 'egg', 'special_drink_or_supplement', 'tuber', 'other')
+@admin.register(DayOption)
+class DayOptionAdmin(admin.ModelAdmin):
+    list_display = ('name', 'trainer', 'calories', 'protein', 'carbohydrates', 'sugar', 'fiber', 'fat', 'saturated_fat', 'gluten_free', 'lactose_free', 'vegan', 'vegetarian', 'pescetarian', 'contains_meat', 'contains_vegetables', 'contains_fish_shellfish_canned_preserved', 'cereal', 'pasta_or_rice', 'dairy_yogurt_cheese', 'fruit', 'nuts', 'legume', 'sauce_or_condiment', 'deli_meat', 'bread_or_toast', 'egg', 'special_drink_or_supplement', 'tuber', 'other')
+    search_fields = ('name', 'trainer', 'calories', 'protein', 'carbohydrates', 'sugar', 'fiber', 'fat', 'saturated_fat', 'gluten_free', 'lactose_free', 'vegan', 'vegetarian', 'pescetarian', 'contains_meat', 'contains_vegetables', 'contains_fish_shellfish_canned_preserved', 'cereal', 'pasta_or_rice', 'dairy_yogurt_cheese', 'fruit', 'nuts', 'legume', 'sauce_or_condiment', 'deli_meat', 'bread_or_toast', 'egg', 'special_drink_or_supplement', 'tuber', 'other')

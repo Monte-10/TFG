@@ -10,6 +10,8 @@ router.register(r'dishes', views.DishViewSet)
 router.register(r'meals', views.MealViewSet)
 router.register(r'daily_diets', views.DailyDietViewSet)
 router.register(r'diet', views.DietViewSet)
+router.register(r'dayoptions', views.DayOptionViewSet)
+router.register(r'weekoptions', views.WeekOptionViewSet)
 router.register(r'options', views.OptionViewSet)
 
 urlpatterns = [

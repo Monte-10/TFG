@@ -1,11 +1,8 @@
-from django.shortcuts import render
-from requests import request
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from django.utils import timezone
-import logging
 from .models import *
 from .serializers import *
 

@@ -15,6 +15,8 @@ import Login from './components/user/Login';
 import RegularUserSignUp from './components/user/RegularSignUp';
 import TrainerSignUp from './components/user/TrainerSignUp';
 import UploadFood from './components/nutrition/UploadFood';
+import CreateDayOption from './components/nutrition/CreateDayOption';
+import CreateWeekOption from './components/nutrition/CreateWeekOption';
 import CreateOption from './components/nutrition/CreateOption';
 
 function App() {
@@ -69,6 +71,8 @@ function App() {
                 <Route path="/sport/exercise/:id" element={<ExerciseDetails />} />
                 <Route path="/sport/edit-exercise/:id" element={<EditExercise />} />
                 <Route path="/sport/create-training" element={<CreateTraining />} />
+                <Route path="/nutrition/create-dayoption" element={<CreateDayOption />} />
+                <Route path="/nutrition/create-weekoption" element={<CreateWeekOption />} />
                 <Route path="/nutrition/create-option" element={<CreateOption />} />
                 <Route path="*" element={<Navigate replace to="/nutrition" />} />
               </>
@@ -99,6 +103,8 @@ function Nutrition() {
       <Link to="/nutrition/create-diet">Create Diet</Link><br />
       <Link to="/edit-dailydiet/:dietId">Edit Daily Diet</Link><br />
       <Link to="/nutrition/upload-food">Upload Food</Link><br />
+      <Link to="/nutrition/create-dayoption">Create Day Option</Link><br />
+      <Link to="/nutrition/create-weekoption">Create Week Option</Link><br />
       <Link to="/nutrition/create-option">Create Option</Link><br />
     </div>
   );

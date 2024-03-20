@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.permissions import IsAuthenticated
 
 def create_food(request):
     if request.method == 'POST':
@@ -96,6 +97,14 @@ class DailyDietByDateView(APIView):
         
         serializer = DailyDietSerializer(daily_diets, many=True)
         return Response(serializer.data)
+    
+class DayOptionViewSet(viewsets.ModelViewSet):
+    queryset = DayOption.objects.all()
+    serializer_class = DayOptionSerializer
+    
+class WeekOptionViewSet(viewsets.ModelViewSet):
+    queryset = WeekOption.objects.all()
+    serializer_class = WeekOptionSerializer
     
 class OptionViewSet(viewsets.ModelViewSet):
     queryset = Option.objects.all()
