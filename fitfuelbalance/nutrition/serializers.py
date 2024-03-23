@@ -632,6 +632,7 @@ class DayOptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = DayOption
         fields = ['id', 'name', 'breakfast', 'mid_morning', 'lunch', 'snack', 'dinner', 'extras', 'calories', 'protein', 'carbohydrates', 'sugar', 'fiber', 'fat', 'saturated_fat', 'gluten_free', 'lactose_free', 'vegan', 'vegetarian', 'pescetarian', 'contains_meat', 'contains_vegetables', 'contains_fish_shellfish_canned_preserved', 'cereal', 'pasta_or_rice', 'dairy_yogurt_cheese', 'fruit', 'nuts', 'legume', 'sauce_or_condiment', 'deli_meat', 'bread_or_toast', 'egg', 'special_drink_or_supplement', 'tuber', 'other']
+        read_only_fields = ['trainer']
         
     def create(self, validated_data):
         user = self.context['request'].user
@@ -803,6 +804,8 @@ class WeekOptionSerializer(serializers.ModelSerializer):
             'calories', 'protein', 'carbohydrates', 'sugar', 'fiber', 'fat', 'saturated_fat', 'gluten_free', 'lactose_free', 'vegan', 'vegetarian', 'pescetarian', 'contains_meat', 'contains_vegetables', 'contains_fish_shellfish_canned_preserved', 'cereal', 'pasta_or_rice', 'dairy_yogurt_cheese', 'fruit', 'nuts', 'legume', 'sauce_or_condiment', 'deli_meat', 'bread_or_toast', 'egg', 'special_drink_or_supplement', 'tuber', 'other'
         ]
         
+        read_only_fields = ['trainer']
+        
     def create(self, validated_data):
         user = self.context['request'].user
         if user.is_trainer:
@@ -924,11 +927,11 @@ class OptionSerializer(serializers.ModelSerializer):
         option = Option.objects.create(**validated_data, trainer=trainer)
         return option
     
-class UserOptionAssignmentSerializer(serializers.ModelSerializer):
+class AssignedOptionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserOptionAssignment
+        model = AssignedOption
         fields = '__all__'
 
     def create(self, validated_data):
-        assignment = UserOptionAssignment.objects.create(**validated_data)
+        assignment = AssignedOption.objects.create(**validated_data)
         return assignment

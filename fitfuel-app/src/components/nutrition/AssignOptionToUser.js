@@ -1,34 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 function AssignOptionToUser() {
   const [users, setUsers] = useState([]);
   const [options, setOptions] = useState([]);
   const [selectedUser, setSelectedUser] = useState('');
   const [selectedOption, setSelectedOption] = useState('');
-  const navigate = useNavigate();
+  const [selectedDate, setSelectedDate] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    // Fetch users and options
     const fetchUsersAndOptions = async () => {
-      // Example fetches, adapt URLs and logic as needed
       try {
-        const usersRes = await fetch('http://127.0.0.1:8000/user/regularusers/', {
-          headers: { 'Authorization': `Token ${localStorage.getItem('authToken')}` }
+        const usersResponse = await fetch('http://127.0.0.1:8000/user/regularusers/', {
+          headers: { 'Authorization': `Token ${localStorage.getItem('authToken')}` },
         });
-        const optionsRes = await fetch('http://127.0.0.1:8000/nutrition/options/', {
-          headers: { 'Authorization': `Token ${localStorage.getItem('authToken')}` }
+        const optionsResponse = await fetch('http://127.0.0.1:8000/nutrition/options/', {
+          headers: { 'Authorization': `Token ${localStorage.getItem('authToken')}` },
         });
-        if (!usersRes.ok || !optionsRes.ok) throw new Error('Failed to fetch data');
+        if (!usersResponse.ok || !optionsResponse.ok) throw new Error('Failed to fetch data');
 
-        const usersData = await usersRes.json();
-        const optionsData = await optionsRes.json();
+        const usersData = await usersResponse.json();
+        const optionsData = await optionsResponse.json();
         setUsers(usersData);
         setOptions(optionsData);
       } catch (error) {
         setError('Failed to fetch data. Please try again later.');
-        console.error('Fetch error:', error);
       }
     };
 
@@ -37,47 +34,68 @@ function AssignOptionToUser() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // Submit selected option for user, adjust endpoint and request body as needed
+
     try {
-      const response = await fetch('http://127.0.0.1:8000/user/assignOption/', {
+      const response = await fetch('http://127.0.0.1:8000/nutrition/assignOption/', {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': `Token ${localStorage.getItem('authToken')}`,
         },
-        body: JSON.stringify({ userId: selectedUser, optionId: selectedOption }),
+        body: JSON.stringify({
+          userId: selectedUser,
+          optionId: selectedOption,
+          startDate: selectedDate,
+        }),
       });
-      if (!response.ok) throw new Error('Failed to assign option');
 
-      // Navigate to a success page or show success message
-      navigate('/successPage');
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to assign option: ${errorText}`);
+      }
+
+      setSuccess(true); // Establecer el éxito de la operación
+      setError('');
+
     } catch (error) {
-      setError('Failed to assign option. Please try again.');
-      console.error('Assignment error:', error);
+      setError(`Failed to assign option. Please try again. Error: ${error.message}`);
+      setSuccess(false);
     }
+    
   };
 
   return (
     <div>
       <h2>Assign Option to User</h2>
-      {error && <p>{error}</p>}
+      {error && <p className="error">{error}</p>}
+      {success && <p className="success">Option assigned successfully!</p>}
       <form onSubmit={handleSubmit}>
-        <label>
-          User:
+        <div>
+          <label>User:</label>
           <select value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)}>
+            <option value="">Select User</option>
             {users.map((user) => (
               <option key={user.id} value={user.id}>{user.username}</option>
             ))}
           </select>
-        </label>
-        <label>
-          Option:
+        </div>
+        <div>
+          <label>Option:</label>
           <select value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
+            <option value="">Select Option</option>
             {options.map((option) => (
               <option key={option.id} value={option.id}>{option.name}</option>
             ))}
           </select>
-        </label>
+        </div>
+        <div>
+          <label>Start Date:</label>
+          <input
+            type="date"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+          />
+        </div>
         <button type="submit">Assign Option</button>
       </form>
     </div>

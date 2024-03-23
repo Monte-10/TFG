@@ -13,7 +13,7 @@ router.register(r'diet', views.DietViewSet)
 router.register(r'dayoptions', views.DayOptionViewSet)
 router.register(r'weekoptions', views.WeekOptionViewSet)
 router.register(r'options', views.OptionViewSet)
-router.register(r'useroptionassignments', views.UserOptionAssignmentViewSet)
+router.register(r'assignedoptions', views.AssignedOptionViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
@@ -23,5 +23,5 @@ urlpatterns = [
     path('food_list/', views.food_list, name='food_list'),
     path('dailydiets/today', TodayDailyDietView.as_view(), name='today-dailydiets'),
     path('dailydiets/date/<str:date>', DailyDietByDateView.as_view(), name='dailydiet-by-date'),
-    path('user/assignOption/', views.assignOption, name='assignOption'),
+    path('assignOption/', views.assignOption, name='assignOption'),
 ]

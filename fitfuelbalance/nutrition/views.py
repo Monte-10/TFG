@@ -114,11 +114,10 @@ class OptionViewSet(viewsets.ModelViewSet):
     queryset = Option.objects.all()
     serializer_class = OptionSerializer
     
-class UserOptionAssignmentViewSet(viewsets.ModelViewSet):
-    queryset = UserOptionAssignment.objects.all()
-    serializer_class = UserOptionAssignmentSerializer
-    permission_classes = [IsAuthenticated]
-
+class AssignedOptionViewSet(viewsets.ModelViewSet):
+    queryset = AssignedOption.objects.all()
+    serializer_class = AssignedOptionSerializer
+    
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
@@ -144,10 +143,10 @@ def assignOption(request):
     option = get_object_or_404(Option, id=option_id)
 
     # Crear la asignación de la opción al usuario
-    assignment = UserOptionAssignment.objects.create(
+    assignment = AssignedOption.objects.create(
         user=user,
         option=option,
-        assigned_date=datetime.now()
+        start_date=timezone.now()  # Usando timezone.now para obtener la fecha actual
     )
 
     return Response({
@@ -156,6 +155,6 @@ def assignOption(request):
             "id": assignment.id,
             "user": user.username,
             "option": option.name, 
-            "assigned_date": assignment.assigned_date.strftime("%Y-%m-%d")  # Formateando la fecha
+            "start_date": assignment.start_date.strftime("%Y-%m-%d")  # Formateando la fecha
         }
     }, status=status.HTTP_201_CREATED)

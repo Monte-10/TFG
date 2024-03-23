@@ -1,4 +1,6 @@
 from django.db import models
+from datetime import timedelta
+from django.utils import timezone
 
 class Food(models.Model):
     name = models.CharField(max_length=100, default='')
@@ -405,8 +407,6 @@ class MealDish(models.Model):
     
     class Meta:
         unique_together = ('meal', 'dish')
-    
-from datetime import timedelta
 
 class Diet(models.Model):
     user = models.ForeignKey('user.RegularUser', on_delete=models.CASCADE)
@@ -830,7 +830,19 @@ class Option(models.Model):
     def __str__(self):
         return self.name
     
-class UserOptionAssignment(models.Model):
-    user = models.ForeignKey('user.RegularUser', on_delete=models.CASCADE)
-    option = models.ForeignKey('nutrition.Option', on_delete=models.CASCADE)
-    start_date = models.DateField()
+class AssignedOption(models.Model):
+    user = models.ForeignKey('user.CustomUser', on_delete=models.CASCADE)
+    start_date = models.DateField(default=timezone.now)
+    option = models.ForeignKey(Option, on_delete=models.CASCADE)
+    
+    # Campos para almacenar las opciones diarias seleccionadas
+    monday_option = models.ForeignKey(DayOption, related_name='assigned_monday_options', on_delete=models.SET_NULL, null=True, blank=True)
+    tuesday_option = models.ForeignKey(DayOption, related_name='assigned_tuesday_options', on_delete=models.SET_NULL, null=True, blank=True)
+    wednesday_option = models.ForeignKey(DayOption, related_name='assigned_wednesday_options', on_delete=models.SET_NULL, null=True, blank=True)
+    thursday_option = models.ForeignKey(DayOption, related_name='assigned_thursday_options', on_delete=models.SET_NULL, null=True, blank=True)
+    friday_option = models.ForeignKey(DayOption, related_name='assigned_friday_options', on_delete=models.SET_NULL, null=True, blank=True)
+    saturday_option = models.ForeignKey(DayOption, related_name='assigned_saturday_options', on_delete=models.SET_NULL, null=True, blank=True)
+    sunday_option = models.ForeignKey(DayOption, related_name='assigned_sunday_options', on_delete=models.SET_NULL, null=True, blank=True)
+    
+    def __str__(self):
+        return f"{self.user}'s option starting {self.start_date}"

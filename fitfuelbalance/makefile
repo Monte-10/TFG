@@ -13,5 +13,10 @@ migrations:
 migrate:
 	$(MANAGE_PY) migrate
 
+run:
+	$(MANAGE_PY) runserver
+
 # Comando para realizar ambas tareas: crear y aplicar migraciones
 all: migrations migrate
+
+all-run: all run

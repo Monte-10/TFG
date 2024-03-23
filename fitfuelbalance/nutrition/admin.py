@@ -11,13 +11,21 @@ class CustomUserAdmin(admin.ModelAdmin):
     
 @admin.register(Trainer)
 class TrainerAdmin(admin.ModelAdmin):
-    list_display = ('user', )
+    list_display = ('get_username', )
     search_fields = ('user__username', 'user__email', 'user__first_name', 'user__last_name')
-    
+
+    def get_username(self, obj):
+        return obj.user.username
+    get_username.short_description = 'Username'
+
 @admin.register(RegularUser)
 class RegularUserAdmin(admin.ModelAdmin):
-    list_display = ('user', 'weight', 'height')
+    list_display = ('get_username', 'weight', 'height')
     search_fields = ('user__username', 'user__email', 'user__first_name', 'user__last_name')
+
+    def get_username(self, obj):
+        return obj.user.username
+    get_username.short_description = 'Username'
 
 @admin.register(Food)
 class FoodAdmin(admin.ModelAdmin):
