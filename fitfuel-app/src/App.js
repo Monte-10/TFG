@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import './App.css';
+import './css/style.css';
+import './vendor/bootstrap/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import CreateIngredient from './components/nutrition/CreateIngredient';
 import CreateFood from './components/nutrition/CreateFood';
