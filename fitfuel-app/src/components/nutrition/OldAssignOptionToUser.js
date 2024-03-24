@@ -61,43 +61,42 @@ function AssignOptionToUser() {
       setError(`Failed to assign option. Please try again. Error: ${error.message}`);
       setSuccess(false);
     }
+    
   };
 
   return (
-    <div className="container mt-4">
+    <div>
       <h2>Assign Option to User</h2>
-      {error && <div className="alert alert-danger" role="alert">{error}</div>}
-      {success && <div className="alert alert-success" role="alert">Option assigned successfully!</div>}
+      {error && <p className="error">{error}</p>}
+      {success && <p className="success">Option assigned successfully!</p>}
       <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="userSelect" className="form-label">User:</label>
-          <select className="form-select" id="userSelect" value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)}>
+        <div>
+          <label>User:</label>
+          <select value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)}>
             <option value="">Select User</option>
             {users.map((user) => (
               <option key={user.id} value={user.id}>{user.username}</option>
             ))}
           </select>
         </div>
-        <div className="mb-3">
-          <label htmlFor="optionSelect" className="form-label">Option:</label>
-          <select className="form-select" id="optionSelect" value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
+        <div>
+          <label>Option:</label>
+          <select value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
             <option value="">Select Option</option>
             {options.map((option) => (
               <option key={option.id} value={option.id}>{option.name}</option>
             ))}
           </select>
         </div>
-        <div className="mb-3">
-          <label htmlFor="startDate" className="form-label">Start Date:</label>
+        <div>
+          <label>Start Date:</label>
           <input
             type="date"
-            className="form-control"
-            id="startDate"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
           />
         </div>
-        <button type="submit" className="btn btn-primary">Assign Option</button>
+        <button type="submit">Assign Option</button>
       </form>
     </div>
   );

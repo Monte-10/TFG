@@ -7,8 +7,6 @@ function CreateDiet() {
   const [name, setName] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [redirect, setRedirect] = useState(false);
-  const [newDietId, setNewDietId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,6 +28,7 @@ function CreateDiet() {
       start_date: startDate,
       end_date: endDate,
     };
+
     console.log("Sending diet data", dietData);
     fetch('http://127.0.0.1:8000/nutrition/diet/', {
         method: 'POST',
@@ -37,58 +36,47 @@ function CreateDiet() {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(dietData),
-        })
-        .then(response => {
+    })
+    .then(response => {
         if (!response.ok) {
-            return response.json().then(errorData => {
-            throw new Error(`Error: ${JSON.stringify(errorData)}`);
-            });
+            throw new Error('Something went wrong');
         }
         return response.json();
-        })
-        .then(data => {
-        setNewDietId(data.id);
-        setRedirect(true);
-        })
-        .catch(error => {
-        console.error('Error:', error.message);
+    })
+    .then(data => {
+        navigate(`/edit-dailydiet/${data.id}`);
+    })
+    .catch(error => {
+        console.error('Error:', error);
     });
   };
 
-  if (redirect) {
-    navigate(`/edit-dailydiet/${newDietId}`);
-  }
-
   return (
-    <div>
-      <h2>Crear Nueva Dieta</h2>
+    <div className="container mt-5">
+      <h2 className="mb-4">Crear Nueva Dieta</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nombre de la Dieta:
-            <input type="text" value={name} onChange={e => setName(e.target.value)} />
-          </label>
+        <div className="mb-3">
+          <label htmlFor="name" className="form-label">Nombre de la Dieta:</label>
+          <input type="text" className="form-control" id="name" value={name} onChange={e => setName(e.target.value)} required />
         </div>
-        <div>
-          <label>Usuario:
-            <select value={selectedUser} onChange={e => setSelectedUser(e.target.value)}>
-              <option value="">Seleccione un usuario</option>
-              {users.map(user => (
-                <option key={user.id} value={user.id}>{user.username}</option>
-              ))}
-            </select>
-          </label>
+        <div className="mb-3">
+          <label htmlFor="userSelect" className="form-label">Usuario:</label>
+          <select className="form-select" id="userSelect" value={selectedUser} onChange={e => setSelectedUser(e.target.value)} required>
+            <option value="">Seleccione un usuario</option>
+            {users.map(user => (
+              <option key={user.id} value={user.id}>{user.username}</option>
+            ))}
+          </select>
         </div>
-        <div>
-          <label>Fecha de Inicio:
-            <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
-          </label>
+        <div className="mb-3">
+          <label htmlFor="startDate" className="form-label">Fecha de Inicio:</label>
+          <input type="date" className="form-control" id="startDate" value={startDate} onChange={e => setStartDate(e.target.value)} required />
         </div>
-        <div>
-          <label>Fecha de Fin:
-            <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
-          </label>
+        <div className="mb-3">
+          <label htmlFor="endDate" className="form-label">Fecha de Fin:</label>
+          <input type="date" className="form-control" id="endDate" value={endDate} onChange={e => setEndDate(e.target.value)} required />
         </div>
-        <button type="submit">Crear Dieta</button>
+        <button type="submit" className="btn btn-primary">Crear Dieta</button>
       </form>
     </div>
   );

@@ -1,264 +1,258 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useEffect } from 'react';
 
 function CreateDish() {
-  const [ingredients, setIngredients] = useState([]);
-  const [selectedIngredients, setSelectedIngredients] = useState([{ ingredientId: '', quantity: 0 }]);
-  const [nutritionTotals, setNutritionTotals] = useState({ calories: 0, protein: 0, carbs: 0, fat: 0 });
-  const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState('');
-  const [name, setName] = useState('');
-  const [dishCreated, setDishCreated] = useState(false);
-  const [createdDishId, setCreatedDishId] = useState(null);
-
-  // Cargar ingredientes y usuarios al inicializar
-  useEffect(() => {
-    // Carga de ingredientes
-    fetch('http://127.0.0.1:8000/nutrition/ingredients/')
-      .then(response => response.json())
-      .then(data => setIngredients(data));
-    // Carga de usuarios
-    fetch('http://127.0.0.1:8000/user/regularusers/')
-      .then(response => response.json())
-      .then(data => {
-        setUsers(data);
-        if (data.length > 0) {
-          setSelectedUser(data[0].id.toString());
-        }
-      });
-  }, []);
-
-  // Actualización de los totales nutricionales
-  useEffect(() => {
-    const newTotals = { 
-      calories: 0,
-      protein: 0,
-      carbohydrates: 0,
-      sugar: 0,
-      fiber: 0,
-      fat: 0,
-      saturated_fat: 0,
-      gluten_free: false,
-      lactose_free: false,
-      vegan: false,
-      vegetarian: false,
-      pescetarian: false,
-      contains_meat: false,
-      contains_vegetables: false,
-      contains_fish_shellfish_canned_preserved: false,
-      cereal: false,
-      pasta_or_rice: false,
-      dairy_yogurt_cheese: false,
-      fruit: false,
-      nuts: false,
-      legume: false,
-      sauce_or_condiment: false,
-      deli_meat: false,
-      bread_or_toast: false,
-      egg: false,
-      special_drink_or_supplement: false,
-      tuber: false,
-      other: false,
-    };
-    selectedIngredients.forEach(({ ingredientId, quantity }) => {
-      const ingredient = ingredients.find(ing => ing.id === ingredientId);
-      if (ingredient && quantity) {
-        newTotals.calories += (ingredient.calories * quantity) / 100;
-        newTotals.protein += (ingredient.protein * quantity) / 100;
-        newTotals.carbohydrates += (ingredient.carbohydrates * quantity) / 100;
-        newTotals.sugar += (ingredient.sugar * quantity) / 100;
-        newTotals.fiber += (ingredient.fiber * quantity) / 100;
-        newTotals.fat += (ingredient.fat * quantity) / 100;
-        newTotals.saturated_fat += (ingredient.saturated_fat * quantity) / 100;
-        newTotals.gluten_free = newTotals.gluten_free || ingredient.gluten_free;
-        newTotals.lactose_free = newTotals.lactose_free || ingredient.lactose_free;
-        newTotals.vegan = newTotals.vegan || ingredient.vegan;
-        newTotals.vegetarian = newTotals.vegetarian || ingredient.vegetarian;
-        newTotals.pescetarian = newTotals.pescetarian || ingredient.pescetarian;
-        newTotals.contains_meat = newTotals.contains_meat || ingredient.contains_meat;
-        newTotals.contains_vegetables = newTotals.contains_vegetables || ingredient.contains_vegetables;
-        newTotals.contains_fish_shellfish_canned_preserved = newTotals.contains_fish_shellfish_canned_preserved || ingredient.contains_fish_shellfish_canned_preserved;
-        newTotals.cereal = newTotals.cereal || ingredient.cereal;
-        newTotals.pasta_or_rice = newTotals.pasta_or_rice || ingredient.pasta_or_rice;
-        newTotals.dairy_yogurt_cheese = newTotals.dairy_yogurt_cheese || ingredient.dairy_yogurt_cheese;
-        newTotals.fruit = newTotals.fruit || ingredient.fruit;
-        newTotals.nuts = newTotals.nuts || ingredient.nuts;
-        newTotals.legume = newTotals.legume || ingredient.legume;
-        newTotals.sauce_or_condiment = newTotals.sauce_or_condiment || ingredient.sauce_or_condiment;
-        newTotals.deli_meat = newTotals.deli_meat || ingredient.deli_meat;
-        newTotals.bread_or_toast = newTotals.bread_or_toast || ingredient.bread_or_toast;
-        newTotals.egg = newTotals.egg || ingredient.egg;
-        newTotals.special_drink_or_supplement = newTotals.special_drink_or_supplement || ingredient.special_drink_or_supplement;
-        newTotals.tuber = newTotals.tuber || ingredient.tuber;
-        newTotals.other = newTotals.other || ingredient.other;
-      }
+    const [ingredients, setIngredients] = useState([]);
+    const [selectedIngredients, setSelectedIngredients] = useState([]);
+    const [nutritionTotals, setNutritionTotals] = useState({
+        calories: 0, protein: 0, carbs: 0, fat: 0, sugar: 0, fiber: 0, saturated_fat: 0,
+        gluten_free: true, lactose_free: true, vegan: true, vegetarian: true, pescetarian: true,
+        contains_meat: false, contains_vegetables: false, contains_fish_shellfish_canned_preserved: false,
+        cereal: false, pasta_or_rice: false, dairy_yogurt_cheese: false, fruit: false, nuts: false,
+        legume: false, sauce_or_condiment: false, deli_meat: false, bread_or_toast: false, egg: false,
+        special_drink_or_supplement: false, tuber: false, other: false
     });
-    setNutritionTotals(newTotals);
-  }, [selectedIngredients, ingredients]);
+    const [users, setUsers] = useState([]);
+    const [selectedUser, setSelectedUser] = useState('');
+    const [name, setName] = useState('');
+    const [dishCreated, setDishCreated] = useState(false);
+    const [createdDishId, setCreatedDishId] = useState(null);
 
-  // Manejo de cambios en los ingredientes
-  const handleIngredientChange = (index, field, value) => {
-    const updatedIngredients = [...selectedIngredients];
-    updatedIngredients[index][field] = value;
-    setSelectedIngredients(updatedIngredients);
-  };
+    useEffect(() => {
+        fetch('http://127.0.0.1:8000/nutrition/ingredients/')
+            .then(response => response.json())
+            .then(data => setIngredients(data));
 
-  // Añadir y eliminar campos de ingredientes
-  const addIngredientField = () => {
-    setSelectedIngredients([...selectedIngredients, { ingredientId: '', quantity: 0 }]);
-  };
+        fetch('http://127.0.0.1:8000/user/regularusers/')
+            .then(response => response.json())
+            .then(data => {
+                setUsers(data);
+                if (data.length > 0) {
+                    setSelectedUser(data[0].id.toString());
+                }
+            });
+    }, []);
 
-  const removeIngredientField = (index) => {
-    const updatedIngredients = [...selectedIngredients];
-    updatedIngredients.splice(index, 1);
-    setSelectedIngredients(updatedIngredients);
-  };
-
-  // Envío del formulario
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-  
-    // Preparar los datos del formulario para el envío
-    const dishData = {
-      name: name,
-      user: selectedUser,
-      ingredients: selectedIngredients.filter(si => si.ingredientId && si.quantity).map(si => ({
-        ingredient: si.ingredientId,
-        quantity: si.quantity,
-      })),
-    };
-  
-    console.log("Enviando datos del plato:", dishData);
-  
-    try {
-      const response = await fetch('http://127.0.0.1:8000/nutrition/dishes/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dishData),
-      });
-  
-      if (!response.ok) {
-        throw new Error('La respuesta de la red no fue ok.');
-      }
-  
-      const data = await response.json();
-      console.log('Éxito:', data);
-      // Ajusta según necesidades, por ejemplo, actualizar el estado para reflejar la creación exitosa
-      setDishCreated(true);
-      setCreatedDishId(data.id); // Asume que tu API devuelve el ID del plato creado
-  
-      // Resetear el formulario o redirigir al usuario
-      // Por ejemplo, limpiar el formulario:
-      setName('');
-      setSelectedUser('');
-      setSelectedIngredients([{ ingredientId: '', quantity: '' }]);
-    } catch (error) {
-      console.error('Error:', error);
-      // Manejar errores, por ejemplo, mostrar un mensaje al usuario
-    }
-  };
-  
-return (
-    <div className="container mt-4">
-        {dishCreated ? (
-            <div className="alert alert-success">
-                <p>El Plato se ha creado correctamente.</p>
-                <a href={`/dishes/${createdDishId}`} className="btn btn-primary">Ir a verlo</a>
-                <button onClick={() => setDishCreated(false)} className="btn btn-secondary ml-2">Crear otro plato</button>
-            </div>
-        ) : (
-            <form onSubmit={handleSubmit} className="mb-4">
-                <div className="form-group">
-                    <label htmlFor="dishName">Nombre del Plato:</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="dishName"
-                        value={name}
-                        onChange={e => setName(e.target.value)}
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="userSelect">Usuario:</label>
-                    <select
-                        className="form-control"
-                        id="userSelect"
-                        value={selectedUser}
-                        onChange={e => setSelectedUser(e.target.value)}
-                        >
-                        <option value="">Seleccione un usuario</option>
-                        {users.map(user => (
-                            <option key={user.id} value={user.id}>{user.username}</option>
-                        ))}
-                    </select>
-                </div>
-                {selectedIngredients.map((ingredient, index) => (
-                    <div key={index} className="form-row align-items-center mb-2">
-                        <div className="col">
-                            <select
-                                className="form-control"
-                                value={ingredient.ingredientId}
-                                onChange={e => handleIngredientChange(index, 'ingredientId', e.target.value)}
-                            >
-                                <option value="">Seleccione un ingrediente</option>
-                                {ingredients.map(ing => (
-                                    <option key={ing.id} value={ing.id}>{ing.name}</option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="col">
-                            <input
-                                type="number"
-                                className="form-control"
-                                placeholder="Cantidad"
-                                value={ingredient.quantity}
-                                onChange={e => handleIngredientChange(index, 'quantity', e.target.value)}
-                            />
-                        </div>
-                        <div className="col-auto">
-                            <button type="button" className="btn btn-danger" onClick={() => removeIngredientField(index)}>Eliminar</button>
-                        </div>
-                    </div>
-                ))}
-                <button type="button" className="btn btn-info mb-3" onClick={addIngredientField}>Añadir Ingrediente</button>
-                <button type="submit" className="btn btn-primary">Crear Plato</button>
-            </form>
-        )}
+    useEffect(() => {
+        const initialTotals = {
+            calories: 0,
+            protein: 0,
+            carbohydrates: 0,
+            fat: 0,
+            sugar: 0,
+            fiber: 0,
+            saturated_fat: 0,
+            gluten_free: true,
+            lactose_free: true,
+            vegan: true,
+            vegetarian: true,
+            pescetarian: true,
+            contains_meat: false,
+            contains_vegetables: false,
+            contains_fish_shellfish_canned_preserved: false,
+            cereal: false,
+            pasta_or_rice: false,
+            dairy_yogurt_cheese: false,
+            fruit: false,
+            nuts: false,
+            legume: false,
+            sauce_or_condiment: false,
+            deli_meat: false,
+            bread_or_toast: false,
+            egg: false,
+            special_drink_or_supplement: false,
+            tuber: false,
+            other: false
+        };
     
-        <div className="nutrition-totals">
-            <h4>Totales Nutricionales:</h4>
-            <p>Calorías: {nutritionTotals.calories ? nutritionTotals.calories.toFixed(2) : '0'}</p>
-            <p>Proteínas: {nutritionTotals.protein ? nutritionTotals.protein.toFixed(2) : '0'}g</p>
-            <p>Carbohidratos: {nutritionTotals.carbs ? nutritionTotals.carbs.toFixed(2) : '0'}g</p>
-            <p>Grasas: {nutritionTotals.fat ? nutritionTotals.fat.toFixed(2) : '0'}g</p>
-            <p>Azúcar: {nutritionTotals.sugar ? nutritionTotals.sugar.toFixed(2) : '0'}g</p>
-            <p>Fibra: {nutritionTotals.fiber ? nutritionTotals.fiber.toFixed(2) : '0'}g</p>
-            <p>Grasas saturadas: {nutritionTotals.saturated_fat ? nutritionTotals.saturated_fat.toFixed(2) : '0'}g</p>
-            <p>Libre de gluten: {nutritionTotals.gluten_free ? 'Sí' : 'No'}</p>
-            <p>Libre de lactosa: {nutritionTotals.lactose_free ? 'Sí' : 'No'}</p>
-            <p>Vegano: {nutritionTotals.vegan ? 'Sí' : 'No'}</p>
-            <p>Vegetariano: {nutritionTotals.vegetarian ? 'Sí' : 'No'}</p>
-            <p>Pescetariano: {nutritionTotals.pescetarian ? 'Sí' : 'No'}</p>
-            <p>Contiene carne: {nutritionTotals.contains_meat ? 'Sí' : 'No'}</p>
-            <p>Contiene vegetales: {nutritionTotals.contains_vegetables ? 'Sí' : 'No'}</p>
-            <p>Contiene pescado/mariscos/conservas: {nutritionTotals.contains_fish_shellfish_canned_preserved ? 'Sí' : 'No'}</p>
-            <p>Cereal: {nutritionTotals.cereal ? 'Sí' : 'No'}</p>
-            <p>Pasta o arroz: {nutritionTotals.pasta_or_rice ? 'Sí' : 'No'}</p>
-            <p>Lácteos (yogur, queso): {nutritionTotals.dairy_yogurt_cheese ? 'Sí' : 'No'}</p>
-            <p>Fruta: {nutritionTotals.fruit ? 'Sí' : 'No'}</p>
-            <p>Nueces: {nutritionTotals.nuts ? 'Sí' : 'No'}</p>
-            <p>Legumbre: {nutritionTotals.legume ? 'Sí' : 'No'}</p>
-            <p>Salsa o condimento: {nutritionTotals.sauce_or_condiment ? 'Sí' : 'No'}</p>
-            <p>Embutido: {nutritionTotals.deli_meat ? 'Sí' : 'No'}</p>
-            <p>Pan o tostada: {nutritionTotals.bread_or_toast ? 'Sí' : 'No'}</p>
-            <p>Huevo: {nutritionTotals.egg ? 'Sí' : 'No'}</p>
-            <p>Bebida especial o suplemento: {nutritionTotals.special_drink_or_supplement ? 'Sí' : 'No'}</p>
-            <p>Tubérculo: {nutritionTotals.tuber ? 'Sí' : 'No'}</p>
-            <p>Otro: {nutritionTotals.other ? 'Sí' : 'No'}</p>
-        </div>
-    </div>
-);
-}
+        const totals = selectedIngredients.reduce((acc, { ingredientId, quantity }) => {
+            const ingredient = ingredients.find(ing => ing.id.toString() === ingredientId);
+            if (ingredient && quantity) {
+                acc.calories += ingredient.calories * quantity;
+                acc.protein += ingredient.protein * quantity;
+                acc.carbohydrates += ingredient.carbohydrates * quantity;
+                acc.fat += ingredient.fat * quantity;
+                acc.sugar += ingredient.sugar * quantity;
+                acc.fiber += ingredient.fiber * quantity;
+                acc.saturated_fat += ingredient.saturated_fat * quantity;
+                acc.gluten_free = acc.gluten_free && ingredient.gluten_free;
+                acc.lactose_free = acc.lactose_free && ingredient.lactose_free;
+                acc.vegan = acc.vegan && ingredient.vegan;
+                acc.vegetarian = acc.vegetarian && ingredient.vegetarian;
+                acc.pescetarian = acc.pescetarian && ingredient.pescetarian;
+                acc.contains_meat = acc.contains_meat || ingredient.contains_meat;
+                acc.contains_vegetables = acc.contains_vegetables || ingredient.contains_vegetables;
+                acc.contains_fish_shellfish_canned_preserved = acc.contains_fish_shellfish_canned_preserved || ingredient.contains_fish_shellfish_canned_preserved;
+                acc.cereal = acc.cereal || ingredient.cereal;
+                acc.pasta_or_rice = acc.pasta_or_rice || ingredient.pasta_or_rice;
+                acc.dairy_yogurt_cheese = acc.dairy_yogurt_cheese || ingredient.dairy_yogurt_cheese;
+                acc.fruit = acc.fruit || ingredient.fruit;
+                acc.nuts = acc.nuts || ingredient.nuts;
+                acc.legume = acc.legume || ingredient.legume;
+                acc.sauce_or_condiment = acc.sauce_or_condiment || ingredient.sauce_or_condiment;
+                acc.deli_meat = acc.deli_meat || ingredient.deli_meat;
+                acc.bread_or_toast = acc.bread_or_toast || ingredient.bread_or_toast;
+                acc.egg = acc.egg || ingredient.egg;
+                acc.special_drink_or_supplement = acc.special_drink_or_supplement || ingredient.special_drink_or_supplement;
+                acc.tuber = acc.tuber || ingredient.tuber;
+                acc.other = acc.other || ingredient.other;
+            }
+            return acc;
+        }, initialTotals);
+    
+        setNutritionTotals(totals);
+    }, [selectedIngredients, ingredients]);
+    
 
+    const handleIngredientChange = (index, field, value) => {
+        const updatedIngredients = selectedIngredients.map((ingredient, i) => {
+            if (i === index) {
+                return { ...ingredient, [field]: field === 'quantity' ? parseFloat(value) : value };
+            }
+            return ingredient;
+        });
+        setSelectedIngredients(updatedIngredients);
+    };
+
+    const addIngredientField = () => {
+        setSelectedIngredients([...selectedIngredients, { ingredientId: '', quantity: 0 }]);
+    };
+
+    const removeIngredientField = (index) => {
+        setSelectedIngredients(selectedIngredients.filter((_, i) => i !== index));
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        
+        // Preparar los datos del formulario para el envío
+        const dishData = {
+            name,
+            user: selectedUser,
+            ingredients: selectedIngredients.filter(si => si.ingredientId && si.quantity).map(si => ({
+                ingredient: si.ingredientId,
+                quantity: parseFloat(si.quantity), // Asegúrate de enviar la cantidad como un número
+            })),
+        };
+        
+        console.log("Enviando datos del plato:", dishData);
+        
+        try {
+            const response = await fetch('http://127.0.0.1:8000/nutrition/dishes/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dishData),
+            });
+            
+            if (!response.ok) {
+                // Manejar posibles errores de respuesta HTTP
+                const message = `Error en la respuesta: ${response.status}`;
+                throw new Error(message);
+            }
+            
+            const data = await response.json();
+            console.log('Plato creado con éxito:', data);
+            // Manejo post-creación: mostrar mensaje de éxito, resetear formulario, etc.
+            setDishCreated(true);
+            setCreatedDishId(data.id); // Suponiendo que la API retorna el ID del plato creado
+            setName('');
+            setSelectedUser('');
+            setSelectedIngredients([{ ingredientId: '', quantity: 0 }]);
+        } catch (error) {
+            console.error('Error al crear el plato:', error);
+            // Manejar UI de error, mostrar mensaje al usuario, etc.
+        }
+    };
+
+    return (
+      <div className="container mt-4">
+          <h2 className="mb-4">Crear Plato</h2>
+          {dishCreated && (
+              <div className="alert alert-success" role="alert">
+                  El Plato ha sido creado con éxito. ID: {createdDishId}
+                  <button onClick={() => setDishCreated(false)} className="btn btn-outline-secondary ml-2">Crear otro plato</button>
+              </div>
+          )}
+
+          {!dishCreated && (
+              <form onSubmit={handleSubmit} className="needs-validation" novalidate>
+                  <div className="form-group mb-3">
+                      <label htmlFor="dishName">Nombre del Plato:</label>
+                      <input type="text" className="form-control" id="dishName" value={name} onChange={(e) => setName(e.target.value)} required />
+                      <div className="invalid-feedback">Por favor, ingrese un nombre para el plato.</div>
+                  </div>
+
+                  <div className="form-group mb-3">
+                      <label htmlFor="userSelect">Usuario:</label>
+                      <select className="form-control" id="userSelect" value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)} required>
+                          <option value="">Seleccione un usuario</option>
+                          {users.map((user) => (
+                              <option key={user.id} value={user.id}>{user.username}</option>
+                          ))}
+                      </select>
+                  </div>
+
+                  {selectedIngredients.map((ingredient, index) => (
+                      <div key={index} className="input-group mb-3">
+                          <select className="form-select" value={ingredient.ingredientId} onChange={(e) => handleIngredientChange(index, 'ingredientId', e.target.value)} required>
+                              <option value="">Seleccione un ingrediente</option>
+                              {ingredients.map((ing) => (
+                                  <option key={ing.id} value={ing.id}>{ing.name}</option>
+                              ))}
+                          </select>
+                          <input type="number" className="form-control" placeholder="Cantidad" value={ingredient.quantity} onChange={(e) => handleIngredientChange(index, 'quantity', e.target.value)} />
+                          <div className="input-group-append">
+                              <button type="button" className="btn btn-outline-danger" onClick={() => removeIngredientField(index)}>Eliminar</button>
+                          </div>
+                      </div>
+                  ))}
+
+                  <div className="d-flex justify-content-between">
+                      <button type="button" className="btn btn-outline-info mb-3" onClick={addIngredientField}>Añadir Ingrediente</button>
+                      <button type="submit" className="btn btn-primary">Crear Plato</button>
+                  </div>
+              </form>
+          )}
+
+<div className="card mt-4">
+    <div className="card-header">
+        Totales Nutricionales
+    </div>
+    <ul className="list-group list-group-flush">
+        <li className="list-group-item">Calorías: {nutritionTotals.calories.toFixed(2)}</li>
+        <li className="list-group-item">Proteínas: {nutritionTotals.protein.toFixed(2)}g</li>
+        <li className="list-group-item">Carbohidratos: {nutritionTotals.carbohydrates.toFixed(2)}g</li>
+        <li className="list-group-item">Grasas: {nutritionTotals.fat.toFixed(2)}g</li>
+        <li className="list-group-item">Azúcares: {nutritionTotals.sugar.toFixed(2)}g</li>
+        <li className="list-group-item">Fibra: {nutritionTotals.fiber.toFixed(2)}g</li>
+        <li className="list-group-item">Grasas Saturadas: {nutritionTotals.saturated_fat.toFixed(2)}g</li>
+        <li className="list-group-item">Libre de Gluten: {nutritionTotals.gluten_free ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Libre de Lactosa: {nutritionTotals.lactose_free ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Vegano: {nutritionTotals.vegan ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Vegetariano: {nutritionTotals.vegetarian ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Pescetariano: {nutritionTotals.pescetarian ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Contiene Carne: {nutritionTotals.contains_meat ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Contiene Vegetales: {nutritionTotals.contains_vegetables ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Contiene Pescado/Mariscos: {nutritionTotals.contains_fish_shellfish_canned_preserved ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Cereal: {nutritionTotals.cereal ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Pasta o Arroz: {nutritionTotals.pasta_or_rice ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Lácteos (Yogur, Queso): {nutritionTotals.dairy_yogurt_cheese ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Fruta: {nutritionTotals.fruit ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Frutos Secos: {nutritionTotals.nuts ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Legumbres: {nutritionTotals.legume ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Salsa o Condimento: {nutritionTotals.sauce_or_condiment ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Fiambre: {nutritionTotals.deli_meat ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Pan o Tostadas: {nutritionTotals.bread_or_toast ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Huevo: {nutritionTotals.egg ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Bebida Especial o Suplemento: {nutritionTotals.special_drink_or_supplement ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Tubérculo: {nutritionTotals.tuber ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Otro: {nutritionTotals.other ? 'Sí' : 'No'}</li>
+            </ul>
+            </div>
+        </div>
+    );
+}
+        
 export default CreateDish;

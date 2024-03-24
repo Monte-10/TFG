@@ -18,15 +18,19 @@ const UploadFood = () => {
         body: formData,
       })
       .then(response => {
+        console.log('Response:', response);
+        console.log('Body:', response.body);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         return response.json();
       })
       .then(result => {
+        console.log('Success:', result);
         alert('Foods imported successfully!');
       })
       .catch(error => {
+        console.error('Error:', error);
         alert('Error importing foods: ' + error.message);
       });
     } else {
@@ -35,13 +39,11 @@ const UploadFood = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <h1 className="mb-4">Upload Food Data</h1>
-      <form onSubmit={handleFormSubmit} className="mb-3">
-        <div className="mb-3">
-          <input type="file" className="form-control" name="file" accept=".csv" onChange={handleFileChange} required />
-        </div>
-        <button type="submit" className="btn btn-primary">Upload CSV</button>
+    <div>
+      <h1>Upload Food Data</h1>
+      <form onSubmit={handleFormSubmit}>
+        <input type="file" name="file" accept=".csv" onChange={handleFileChange} required />
+        <button type="submit">Upload CSV</button>
       </form>
     </div>
   );
