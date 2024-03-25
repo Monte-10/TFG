@@ -29,18 +29,18 @@ function EditExercise() {
     formData.append('name', name);
     formData.append('description', description);
     formData.append('type', type);
-    if (image) formData.append('image', image);
     formData.append('video_url', videoUrl);
+    if (image) formData.append('image', image);
 
     fetch(`http://127.0.0.1:8000/sport/exercises/${id}/`, {
-      method: 'PUT', // or PATCH depending on your API
+      method: 'PUT', // o PATCH dependiendo de cómo tu API maneje las actualizaciones
       body: formData,
     })
     .then(response => {
       if (response.ok) {
-        navigate(`/sport/exercise/${id}`); // Redirect the user to the updated exercise details
+        navigate(`/sport/exercise/${id}`); // Redirigir al usuario a los detalles del ejercicio actualizado
       } else {
-        throw new Error('Error updating the exercise');
+        throw new Error('Error al actualizar el ejercicio');
       }
     })
     .catch(error => console.error('Error:', error));
@@ -51,62 +51,53 @@ function EditExercise() {
   };
 
   return (
-    <div className="container mt-4">
-      <h2>Edit Exercise</h2>
+    <div>
+      <h2>Editar Ejercicio</h2>
       <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="exerciseName" className="form-label">Exercise Name:</label>
+        <label>
+          Nombre del Ejercicio:
           <input
             type="text"
-            className="form-control"
-            id="exerciseName"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="exerciseDescription" className="form-label">Description:</label>
+        </label>
+        <label>
+          Descripción:
           <textarea
-            className="form-control"
-            id="exerciseDescription"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="exerciseType" className="form-label">Type:</label>
-          <select className="form-select" id="exerciseType" value={type} onChange={(e) => setType(e.target.value)}>
-            <option value="">Select a type</option>
-            {/* List of exercise types */}
+        </label>
+        <label>
+          Tipo:
+          <select value={type} onChange={(e) => setType(e.target.value)}>
+            <option value="">Seleccione un tipo</option>
             <option value="FUERZA">Fuerza</option>
-              <option value="CARDIO">Cardio</option>
-              <option value="FLEXIBILIDAD">Flexibilidad</option>
-              <option value="BALANCE">Balance</option>
-              <option value="RESISTENCIA">Resistencia</option>
-              <option value="HIIT">HIIT</option>
-              <option value="FUNCIONAL">Funcional</option>
+            <option value="CARDIO">Cardio</option>
+            <option value="FLEXIBILIDAD">Flexibilidad</option>
+            <option value="BALANCE">Balance</option>
+            <option value="RESISTENCIA">Resistencia</option>
+            <option value="HIIT">HIIT</option>
+            <option value="FUNCIONAL">Funcional</option>
           </select>
-        </div>
-        <div className="mb-3">
-          <label htmlFor="exerciseImage" className="form-label">Image (optional):</label>
+        </label>
+        <label>
+          Imagen (opcional):
           <input
             type="file"
-            className="form-control"
-            id="exerciseImage"
             onChange={handleImageChange}
           />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="videoUrl" className="form-label">Video URL (optional):</label>
+        </label>
+        <label>
+          URL del Video (opcional):
           <input
             type="text"
-            className="form-control"
-            id="videoUrl"
             value={videoUrl}
             onChange={(e) => setVideoUrl(e.target.value)}
           />
-        </div>
-        <button type="submit" className="btn btn-primary">Update Exercise</button>
+        </label>
+        <button type="submit">Actualizar Ejercicio</button>
       </form>
     </div>
   );

@@ -5,7 +5,7 @@ function CreateDish() {
     const [ingredients, setIngredients] = useState([]);
     const [selectedIngredients, setSelectedIngredients] = useState([]);
     const [nutritionTotals, setNutritionTotals] = useState({
-        calories: 0, protein: 0, carbs: 0, fat: 0, sugar: 0, fiber: 0, saturated_fat: 0,
+        calories: 0, protein: 0, carbohydrates: 0, fat: 0, sugar: 0, fiber: 0, saturated_fat: 0,
         gluten_free: true, lactose_free: true, vegan: true, vegetarian: true, pescetarian: true,
         contains_meat: false, contains_vegetables: false, contains_fish_shellfish_canned_preserved: false,
         cereal: false, pasta_or_rice: false, dairy_yogurt_cheese: false, fruit: false, nuts: false,

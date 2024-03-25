@@ -15,7 +15,6 @@ function CreateTraining() {
       .then(data => setExercises(data))
       .catch(error => console.error('Error:', error));
 
-    // Obtener lista de usuarios para asignar el entrenamiento
     fetch('http://127.0.0.1:8000/user/regularusers/')
       .then(response => response.json())
       .then(data => setUsers(data))
@@ -28,13 +27,7 @@ function CreateTraining() {
 
   const handleChange = (index, field, value) => {
     const updatedExercises = [...selectedExercises];
-    updatedExercises[index][field] = value === '' && field === 'time' ? null : value;
-    setSelectedExercises(updatedExercises);
-  };
-
-  const handleSetTime = (index, value) => {
-    const updatedExercises = [...selectedExercises];
-    updatedExercises[index].time = value;
+    updatedExercises[index][field] = value;
     setSelectedExercises(updatedExercises);
   };
 
@@ -51,7 +44,7 @@ function CreateTraining() {
         repetitions: exercise.repetitions,
         sets: exercise.sets,
         weight: exercise.weight,
-        time: exercise.time === '' ? null : exercise.time
+        time: exercise.time || null // Use null for time if it's not set
       }))
     };
 
@@ -82,57 +75,52 @@ function CreateTraining() {
   };
 
   return (
-    <div>
+    <div className="container mt-5">
       <h2>Crear Entrenamiento</h2>
+      {error && <div className="alert alert-danger">{error}</div>}
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>
-            Nombre del Entrenamiento:
-            <input type="text" value={trainingName} onChange={(e) => setTrainingName(e.target.value)} />
-          </label>
+        <div className="mb-3">
+          <label htmlFor="trainingName" className="form-label">Nombre del Entrenamiento:</label>
+          <input type="text" className="form-control" id="trainingName" value={trainingName} onChange={(e) => setTrainingName(e.target.value)} />
         </div>
-        <div>
-          <label>
-            Fecha del Entrenamiento:
-            <input type="date" value={trainingDate} onChange={(e) => setTrainingDate(e.target.value)} />
-          </label>
+        <div className="mb-3">
+          <label htmlFor="trainingDate" className="form-label">Fecha del Entrenamiento:</label>
+          <input type="date" className="form-control" id="trainingDate" value={trainingDate} onChange={(e) => setTrainingDate(e.target.value)} />
         </div>
-        <div>
-          <label>
-            Usuario:
-            <select value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)}>
-              <option value="">Selecciona un usuario</option>
-              {users.map(user => (
-                <option key={user.id} value={user.id}>{user.username}</option>
-              ))}
-            </select>
-          </label>
+        <div className="mb-3">
+          <label htmlFor="userSelect" className="form-label">Usuario:</label>
+          <select className="form-select" id="userSelect" value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)}>
+            <option value="">Selecciona un usuario</option>
+            {users.map(user => (
+              <option key={user.id} value={user.id}>{user.username}</option>
+            ))}
+          </select>
         </div>
         {selectedExercises.map((exercise, index) => (
-          <div key={index}>
-            <select value={exercise.exerciseId} onChange={(e) => handleChange(index, 'exerciseId', e.target.value)}>
-              <option value="">Selecciona un ejercicio</option>
-              {exercises.map(ex => (
-                <option key={ex.id} value={ex.id}>{ex.name}</option>
-              ))}
-            </select>
-            <input type="number" placeholder="Repeticiones" value={exercise.repetitions} onChange={(e) => handleChange(index, 'repetitions', e.target.value)} />
-            <input type="number" placeholder="Series" value={exercise.sets} onChange={(e) => handleChange(index, 'sets', e.target.value)} />
-            <input type="text" placeholder="Peso (opcional)" value={exercise.weight} onChange={(e) => handleChange(index, 'weight', e.target.value)} />
-            <input type="number" placeholder="Tiempo en segundos (opcional)" value={exercise.time === null ? '' : exercise.time} onChange={(e) => handleChange(index, 'time', e.target.value)} />
-            {exercise.time === null ? (
-              <button type="button" onClick={() => handleSetTime(index, 0)}>Añadir Tiempo</button>
-            ) : (
-              <button type="button" onClick={() => handleSetTime(index, null)}>Quitar Tiempo</button>
-            )}
+          <div key={index} className="mb-3">
+            <div className="input-group">
+              <select className="form-select" value={exercise.exerciseId} onChange={(e) => handleChange(index, 'exerciseId', e.target.value)}>
+                <option value="">Selecciona un ejercicio</option>
+                {exercises.map(ex => (
+                  <option key={ex.id}
+                  value={ex.id}>{ex.name}</option>
+                  ))}
+                </select>
+                <input type="number" className="form-control" placeholder="Repeticiones" value={exercise.repetitions} onChange={(e) => handleChange(index, 'repetitions', e.target.value)} />
+                <input type="number" className="form-control" placeholder="Series" value={exercise.sets} onChange={(e) => handleChange(index, 'sets', e.target.value)} />
+                <input type="text" className="form-control" placeholder="Peso (opcional)" value={exercise.weight} onChange={(e) => handleChange(index, 'weight', e.target.value)} />
+                <input type="number" className="form-control" placeholder="Tiempo en segundos (opcional)" value={exercise.time || ''} onChange={(e) => handleChange(index, 'time', e.target.value)} />
+              </div>
+            </div>
+          ))}
+          <div className="d-grid gap-2 d-md-flex justify-content-md-start mb-3">
+            <button type="button" className="btn btn-outline-primary" onClick={handleAddExercise}>Añadir Ejercicio</button>
+            <button type="submit" className="btn btn-success">Guardar Entrenamiento</button>
           </div>
-        ))}
-        <button type="button" onClick={handleAddExercise}>Añadir Ejercicio</button>
-        <button type="submit">Guardar Entrenamiento</button>
-      </form>
-      {error && <p>{error}</p>}
-    </div>
-  );
-}
-
-export default CreateTraining;
+        </form>
+      </div>
+    );
+  }
+  
+  export default CreateTraining;
+  

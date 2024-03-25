@@ -4,25 +4,25 @@ function CreateExercise() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [type, setType] = useState('');
-  const [image, setImage] = useState(null);
-  const [videoUrl, setVideoUrl] = useState('');
+  const [image, setImage] = useState(null); // Para manejar la imagen
+  const [videoUrl, setVideoUrl] = useState(''); // Estado para manejar la URL del video
   const [exerciseCreated, setExerciseCreated] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const formData = new FormData();
+    const formData = new FormData(); // Usar FormData para manejar archivos de imagen y datos
     formData.append('name', name);
     formData.append('description', description);
     formData.append('type', type);
     if (image) formData.append('image', image, image.name);
-    formData.append('video_url', videoUrl);
+    formData.append('video_url', videoUrl); // Añade la URL del video al FormData
 
     console.log("Sending exercise data");
 
     fetch('http://127.0.0.1:8000/sport/exercises/', {
       method: 'POST',
-      body: formData,
+      body: formData, // No se establecen headers porque FormData establece el 'Content-Type' automáticamente
     })
     .then(response => {
       if (response.ok) {
@@ -40,42 +40,38 @@ function CreateExercise() {
   };
 
   const handleImageChange = (event) => {
-    setImage(event.target.files[0]);
+    setImage(event.target.files[0]); // Asumiendo que solo se sube una imagen
   };
 
   return (
-    <div className="container mt-4">
-      <h2>Crear Ejercicio</h2>
+    <div>
       {exerciseCreated ? (
-        <div className="alert alert-success">
+        <div>
           <p>El ejercicio se ha creado correctamente.</p>
-          <button className="btn btn-primary" onClick={() => setExerciseCreated(false)}>Crear otro Ejercicio</button>
+          <button onClick={() => setExerciseCreated(false)}>Crear otro Ejercicio</button>
         </div>
       ) : (
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="exerciseName" className="form-label">Nombre del Ejercicio:</label>
+          <label>
+            Nombre del Ejercicio:
             <input
               type="text"
-              className="form-control"
-              id="exerciseName"
               value={name}
               onChange={e => setName(e.target.value)}
             />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="exerciseDescription" className="form-label">Descripción:</label>
+          </label>
+          <label>
+            Descripción:
             <textarea
-              className="form-control"
-              id="exerciseDescription"
               value={description}
               onChange={e => setDescription(e.target.value)}
             />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="exerciseType" className="form-label">Tipo:</label>
-            <select className="form-select" id="exerciseType" value={type} onChange={e => setType(e.target.value)}>
+          </label>
+          <label>
+            Tipo:
+            <select value={type} onChange={e => setType(e.target.value)}>
               <option value="">Seleccione un tipo</option>
+              {/* Tipos de ejercicio */}
               <option value="FUERZA">Fuerza</option>
               <option value="CARDIO">Cardio</option>
               <option value="FLEXIBILIDAD">Flexibilidad</option>
@@ -83,28 +79,25 @@ function CreateExercise() {
               <option value="RESISTENCIA">Resistencia</option>
               <option value="HIIT">HIIT</option>
               <option value="FUNCIONAL">Funcional</option>
+              {/* etc. */}
             </select>
-          </div>
-          <div className="mb-3">
-            <label htmlFor="exerciseImage" className="form-label">Imagen (opcional):</label>
+          </label>
+          <label>
+            Imagen (opcional):
             <input
               type="file"
-              className="form-control"
-              id="exerciseImage"
               onChange={handleImageChange}
             />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="exerciseVideoUrl" className="form-label">URL del Video (opcional):</label>
+          </label>
+          <label>
+            URL del Video (opcional):
             <input
               type="text"
-              className="form-control"
-              id="exerciseVideoUrl"
               value={videoUrl}
               onChange={(e) => setVideoUrl(e.target.value)}
             />
-          </div>
-          <button type="submit" className="btn btn-success">Crear Ejercicio</button>
+          </label>
+          <button type="submit">Crear Ejercicio</button>
         </form>
       )}
     </div>

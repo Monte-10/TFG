@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import './App.css';
+import './css/style.css';
+import './vendor/bootstrap/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import CreateIngredient from './components/nutrition/CreateIngredient';
 import CreateFood from './components/nutrition/CreateFood';
@@ -14,6 +15,11 @@ import CreateTraining from './components/sport/CreateTraining';
 import Login from './components/user/Login';
 import RegularUserSignUp from './components/user/RegularSignUp';
 import TrainerSignUp from './components/user/TrainerSignUp';
+import UploadFood from './components/nutrition/UploadFood';
+import CreateDayOption from './components/nutrition/CreateDayOption';
+import CreateWeekOption from './components/nutrition/CreateWeekOption';
+import CreateOption from './components/nutrition/CreateOption';
+import AssignOptionToUser from './components/nutrition/AssignOptionToUser';
 
 function App() {
   const [authToken, setAuthToken] = useState(localStorage.getItem('authToken') || '');
@@ -62,10 +68,15 @@ function App() {
                 <Route path="/nutrition/create-meal" element={<CreateMeal />} />
                 <Route path="/nutrition/create-diet" element={<CreateDiet />} />
                 <Route path="/edit-dailydiet/:dietId" element={<ManageDailyDiet />} />
+                <Route path="/nutrition/upload-food" element={<UploadFood />} />
                 <Route path="/sport/create-exercise" element={<CreateExercise />} />
                 <Route path="/sport/exercise/:id" element={<ExerciseDetails />} />
                 <Route path="/sport/edit-exercise/:id" element={<EditExercise />} />
                 <Route path="/sport/create-training" element={<CreateTraining />} />
+                <Route path="/nutrition/create-dayoption" element={<CreateDayOption />} />
+                <Route path="/nutrition/create-weekoption" element={<CreateWeekOption />} />
+                <Route path="/nutrition/create-option" element={<CreateOption />} />
+                <Route path="/nutrition/assign-option" element={<AssignOptionToUser />} />
                 <Route path="*" element={<Navigate replace to="/nutrition" />} />
               </>
             ) : (
@@ -93,7 +104,12 @@ function Nutrition() {
       <Link to="/nutrition/create-dish">Create Dish</Link><br />
       <Link to="/nutrition/create-meal">Create Meal</Link><br />
       <Link to="/nutrition/create-diet">Create Diet</Link><br />
-      <Link to="/edit-dailydiet/:dietId">Edit Daily Diet</Link>
+      <Link to="/edit-dailydiet/:dietId">Edit Daily Diet</Link><br />
+      <Link to="/nutrition/upload-food">Upload Food</Link><br />
+      <Link to="/nutrition/create-dayoption">Create Day Option</Link><br />
+      <Link to="/nutrition/create-weekoption">Create Week Option</Link><br />
+      <Link to="/nutrition/create-option">Create Option</Link><br />
+      <Link to="/nutrition/assign-option">Assign Option</Link><br />
     </div>
   );
 }
@@ -105,7 +121,7 @@ function Sport() {
       <Link to="/sport/create-exercise">Create Exercise</Link><br />
       <Link to="/sport/exercise/:id">Exercise Details</Link><br />
       <Link to="/sport/edit-exercise/:id">Edit Exercise</Link><br />
-      <Link to="/sport/create-training">Create Training</Link>
+      <Link to="/sport/create-training">Create Training</Link><br />
     </div>
   );
 }

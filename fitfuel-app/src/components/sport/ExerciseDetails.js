@@ -1,54 +1,52 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 function ExerciseDetails() {
-  const { id } = useParams(); // Usar useParams para obtener el ID del ejercicio
+  const { id } = useParams();
   const [exercise, setExercise] = useState(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    fetch(`http://127.0.0.1:8000/sport/exercises/${id}/`)
+      .then(response => response.json())
+      .then(data => setExercise(data))
+      .catch(error => console.error('Error:', error));
+  }, [id]);
+
   const handleEdit = () => {
-    navigate(`/sport/edit-exercise/${id}`); // Redirigir al usuario a la pantalla de edición del ejercicio
+    navigate(`/sport/edit-exercise/${id}`);
   }
 
-  useEffect(() => {
-    fetch(`http://127.0.0.1:8000/sport/exercises/${id}/`) // Usar el ID del ejercicio para la petición
-      .then(response => response.json())
-      .then(data => {
-        setExercise(data);
-      })
-      .catch(error => console.error('Error:', error));
-  }, [id]); // Dependencia de useEffect basada en el ID para recargar cuando cambie
-
   if (!exercise) {
-    return <div>Cargando...</div>;
+    return <div className="container text-center"><div className="spinner-border text-primary" role="status"><span className="visually-hidden">Loading...</span></div></div>;
   }
 
   return (
-    <div>
-      <h1>{exercise.name}</h1>
+    <div className="container mt-4">
+      <h1 className="mb-3">{exercise.name}</h1>
       <p>{exercise.description}</p>
-      <p>Tipo: {exercise.type}</p>
+      <p><strong>Type:</strong> {exercise.type}</p>
       {exercise.image && (
-        <div>
-          <h3>Imagen</h3>
-          <img src={exercise.image} alt={exercise.name} style={{ maxWidth: '500px' }} />
+        <div className="mb-3">
+          <h3>Image</h3>
+          <img src={exercise.image} alt={exercise.name} className="img-fluid" />
         </div>
       )}
       {exercise.video_url && (
-        <div>
+        <div className="mb-3">
           <h3>Video</h3>
-          <iframe
-            src={exercise.video_url.replace("watch?v=", "embed/")}
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            title={exercise.name}
-            style={{ maxWidth: '500px', height: '300px' }}
-          ></iframe>
+          <div className="ratio ratio-16x9">
+            <iframe
+              src={exercise.video_url.replace("watch?v=", "embed/")}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              title={exercise.name}
+            ></iframe>
+          </div>
         </div>
       )}
-      <button onClick={handleEdit}>Editar Ejercicio</button>
+      <button onClick={handleEdit} className="btn btn-primary">Edit Exercise</button>
     </div>
   );
 }
