@@ -6,10 +6,26 @@ function ManageDailyDiet() {
   const [dailyDiets, setDailyDiets] = useState([]);
   const [meals, setMeals] = useState([]);
   const [selectedMeals, setSelectedMeals] = useState({});
-  const [nutritionTotals, setNutritionTotals] = useState({}); // Almacenará los totales nutricionales por fecha
+  const [nutritionTotals, setNutritionTotals] = useState({});
+  const [mealFilters, setMealFilters] = useState({
+    name: '',
+    minCalories: { value: '', active: false },
+    maxCalories: { value: '', active: false },
+    minProtein: { value: '', active: false },
+    maxProtein: { value: '', active: false },
+    minCarbohydrates: { value: '', active: false },
+    maxCarbohydrates: { value: '', active: false },
+    minFat: { value: '', active: false },
+    maxFat: { value: '', active: false },
+    minSugar: { value: '', active: false },
+    maxSugar: { value: '', active: false },
+    minFiber: { value: '', active: false },
+    maxFiber: { value: '', active: false },
+    minSaturatedFat: { value: '', active: false },
+    maxSaturatedFat: { value: '', active: false },
+  })
 
   useEffect(() => {
-    // Cargar los DailyDiets para la Dieta actual y las comidas disponibles
     const fetchDailyDiets = async () => {
       try {
         const response = await fetch(`http://127.0.0.1:8000/nutrition/diet/${dietId}/`);
@@ -26,21 +42,45 @@ function ManageDailyDiet() {
         console.error('Error loading daily diets:', error);
       }
     };
-
+  
     const fetchMeals = async () => {
       try {
         const response = await fetch('http://127.0.0.1:8000/nutrition/meals/');
         if (!response.ok) throw new Error('Meals fetch failed');
-        const data = await response.json();
+        let data = await response.json();
+  
+        // Aplicar los filtros a las comidas
+        data = data.filter(meal => {
+          let matchesFilter = true;
+          if (mealFilters.name && !meal.name.toLowerCase().includes(mealFilters.name.toLowerCase())) matchesFilter = false;
+          if (mealFilters.caloriesMin && meal.calories < mealFilters.caloriesMin) matchesFilter = false;
+          if (mealFilters.caloriesMax && meal.calories > mealFilters.caloriesMax) matchesFilter = false;
+          if (mealFilters.proteinMin && meal.protein < mealFilters.proteinMin) matchesFilter = false;
+          if (mealFilters.proteinMax && meal.protein > mealFilters.proteinMax) matchesFilter = false;
+          if (mealFilters.carbohydratesMin && meal.carbohydrates < mealFilters.carbohydratesMin) matchesFilter = false;
+          if (mealFilters.carbohydratesMax && meal.carbohydrates > mealFilters.carbohydratesMax) matchesFilter = false;
+          if (mealFilters.fatMin && meal.fat < mealFilters.fatMin) matchesFilter = false;
+          if (mealFilters.fatMax && meal.fat > mealFilters.fatMax) matchesFilter = false;
+          if (mealFilters.sugarMin && meal.sugar < mealFilters.sugarMin) matchesFilter = false;
+          if (mealFilters.sugarMax && meal.sugar > mealFilters.sugarMax) matchesFilter = false;
+          if (mealFilters.fiberMin && meal.fiber < mealFilters.fiberMin) matchesFilter = false;
+          if (mealFilters.fiberMax && meal.fiber > mealFilters.fiberMax) matchesFilter = false;
+          if (mealFilters.saturatedFatMin && meal.saturated_fat < mealFilters.saturatedFatMin) matchesFilter = false;
+          if (mealFilters.saturatedFatMax && meal.saturated_fat > mealFilters.saturatedFatMax) matchesFilter = false;
+  
+          return matchesFilter;
+        });
+  
         setMeals(data);
       } catch (error) {
         console.error('Error loading meals:', error);
       }
     };
-
+  
+    // Asegurarse de que fetchMeals se llama cada vez que los filtros cambian, además de en el montaje del componente
     fetchDailyDiets();
     fetchMeals();
-  }, [dietId]);
+  }, [dietId, mealFilters]); // Agregar mealFilters a las dependencias de useEffect
 
   useEffect(() => {
     // Función para calcular los totales nutricionales
@@ -116,6 +156,57 @@ function ManageDailyDiet() {
     calculateNutritionTotals();
   }, [selectedMeals, meals]);
 
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    if (name.startsWith("min") || name.startsWith("max")) {
+        // Para los filtros numéricos
+        setMealFilters((prev) => ({
+            ...prev,
+            [name]: { value: value, active: value !== "" },
+        }));
+    } else {
+        // Para el filtro de texto
+        setMealFilters((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    }
+  };
+
+  const removeMealFromDailyDiet = (mealId, date) => {
+    setSelectedMeals(prev => ({
+        ...prev,
+        [date]: prev[date].filter(id => id !== mealId),
+    }));
+  };
+
+  const addMealToDailyDiet = (mealId, date) => {
+    setSelectedMeals(prev => ({
+      ...prev,
+      [date]: prev[date] ? [...prev[date], mealId] : [mealId],
+    }));
+  };
+
+  const filteredMeals = meals.filter(meal => {
+    let matchesFilter = true;
+    if (mealFilters.name && !meal.name.toLowerCase().includes(mealFilters.name.toLowerCase())) matchesFilter = false;
+    if (mealFilters.minCalories.active && meal.calories < mealFilters.minCalories.value) matchesFilter = false;
+    if (mealFilters.maxCalories.active && meal.calories > mealFilters.maxCalories.value) matchesFilter = false;
+    if (mealFilters.minProtein.active && meal.protein < mealFilters.minProtein.value) matchesFilter = false;
+    if (mealFilters.maxProtein.active && meal.protein > mealFilters.maxProtein.value) matchesFilter = false;
+    if (mealFilters.minCarbohydrates.active && meal.carbohydrates < mealFilters.minCarbohydrates.value) matchesFilter = false;
+    if (mealFilters.maxCarbohydrates.active && meal.carbohydrates > mealFilters.maxCarbohydrates.value) matchesFilter = false;
+    if (mealFilters.minFat.active && meal.fat < mealFilters.minFat.value) matchesFilter = false;
+    if (mealFilters.maxFat.active && meal.fat > mealFilters.maxFat.value) matchesFilter = false;
+    if (mealFilters.minSugar.active && meal.sugar < mealFilters.minSugar.value) matchesFilter = false;
+    if (mealFilters.maxSugar.active && meal.sugar > mealFilters.maxSugar.value) matchesFilter = false;
+    if (mealFilters.minFiber.active && meal.fiber < mealFilters.minFiber.value) matchesFilter = false;
+    if (mealFilters.maxFiber.active && meal.fiber > mealFilters.maxFiber.value) matchesFilter = false;
+    if (mealFilters.minSaturatedFat.active && meal.saturated_fat < mealFilters.minSaturatedFat.value) matchesFilter = false;
+      
+    return matchesFilter;
+  });
+
   const handleMealSelection = (mealId, date) => {
     setSelectedMeals(prevSelectedMeals => {
       const newSelectedMeals = { ...prevSelectedMeals };
@@ -150,27 +241,241 @@ function ManageDailyDiet() {
   return (
     <div className="container mt-4">
       <h2>Administrar Dieta Diaria para la Dieta ID: {dietId}</h2>
-      {dailyDiets.map(dailyDiet => (
+  
+      {/* Controles para filtrar comidas */}
+      <div>
+        <input
+          type="text"
+          placeholder="Buscar por nombre..."
+          value={mealFilters.name.value}
+          onChange={(e) => handleFilterChange({ ...e, name: 'name' })}
+        />
+      </div>
+      <div>
+      <label htmlFor="filterMinCalories">Calorías Mínimas:</label>
+          <input
+            type="number"
+            className="form-control"
+            id="filterMinCalories"
+            name="minCalories"
+            value={mealFilters.minCalories}
+            onChange={handleFilterChange}
+            placeholder="0"
+          />
+        </div>
+        <div>
+          <label htmlFor="filterMaxCalories">Calorías Máximas:</label>
+          <input
+            type="number"
+            className="form-control"
+            id="filterMaxCalories"
+            name="maxCalories"
+            value={mealFilters.maxCalories}
+            onChange={handleFilterChange}
+            placeholder="0"
+          />
+        </div>
+        <div>
+          <label htmlFor="filterMinProtein">Proteínas Mínimas:</label>
+          <input
+            type="number"
+            className="form-control"
+            id="filterMinProtein"
+            name="minProtein"
+            value={mealFilters.minProtein}
+            onChange={handleFilterChange}
+            placeholder="0"
+          />
+        </div>
+        <div>
+          <label htmlFor="filterMaxProtein">Proteínas Máximas:</label>
+          <input
+            type="number"
+            className="form-control"
+            id="filterMaxProtein"
+            name="maxProtein"
+            value={mealFilters.maxProtein}
+            onChange={handleFilterChange}
+            placeholder="0"
+          />
+        </div>
+        <div>
+          <label htmlFor="filterMinCarbohydrates">Carbohidratos Mínimos:</label>
+          <input
+            type="number"
+            className="form-control"
+            id="filterMinCarbohydrates"
+            name="minCarbohydrates"
+            value={mealFilters.minCarbohydrates}
+            onChange={handleFilterChange}
+            placeholder="0"
+          />
+        </div>
+        <div>
+          <label htmlFor="filterMaxCarbohydrates">Carbohidratos Máximos:</label>
+          <input
+            type="number"
+            className="form-control"
+            id="filterMaxCarbohydrates"
+            name="maxCarbohydrates"
+            value={mealFilters.maxCarbohydrates}
+            onChange={handleFilterChange}
+            placeholder="0"
+          />
+        </div>
+        <div>
+          <label htmlFor="filterMinFat">Grasas Mínimas:</label>
+          <input
+            type="number"
+            className="form-control"
+            id="filterMinFat"
+            name="minFat"
+            value={mealFilters.minFat}
+            onChange={handleFilterChange}
+            placeholder="0"
+          />
+        </div>
+        <div>
+          <label htmlFor="filterMaxFat">Grasas Máximas:</label>
+          <input
+            type="number"
+            className="form-control"
+            id="filterMaxFat"
+            name="maxFat"
+            value={mealFilters.maxFat}
+            onChange={handleFilterChange}
+            placeholder="0"
+          />
+        </div>
+        <div>
+          <label htmlFor="filterMinSugar">Azúcar Mínimo:</label>
+          <input
+            type="number"
+            className="form-control"
+            id="filterMinSugar"
+            name="minSugar"
+            value={mealFilters.minSugar}
+            onChange={handleFilterChange}
+            placeholder="0"
+          />
+        </div>
+        <div>
+          <label htmlFor="filterMaxSugar">Azúcar Máximo:</label>
+          <input
+            type="number"
+            className="form-control"
+            id="filterMaxSugar"
+            name="maxSugar"
+            value={mealFilters.maxSugar}
+            onChange={handleFilterChange}
+            placeholder="0"
+          />
+        </div>
+        <div>
+          <label htmlFor="filterMinFiber">Fibra Mínima:</label>
+          <input
+            type="number"
+            className="form-control"
+            id="filterMinFiber"
+            name="minFiber"
+            value={mealFilters.minFiber}
+            onChange={handleFilterChange}
+            placeholder="0"
+          />
+        </div>
+        <div>
+          <label htmlFor="filterMaxFiber">Fibra Máxima:</label> 
+          <input
+            type="number"
+            className="form-control"
+            id="filterMaxFiber"
+            name="maxFiber"
+            value={mealFilters.maxFiber}
+            onChange={handleFilterChange}
+            placeholder="0"
+          />
+        </div>
+        <div>
+          <label htmlFor="filterMinSaturatedFat">Grasas Saturadas Mínimas:</label>
+          <input
+            type="number"
+            className="form-control"
+            id="filterMinSaturatedFat"
+            name="minSaturatedFat"
+            value={mealFilters.minSaturatedFat}
+            onChange={handleFilterChange}
+            placeholder="0"
+          />
+        </div>
+        <div>
+          <label htmlFor="filterMaxSaturatedFat">Grasas Saturadas Máximas:</label>
+          <input
+            type="number"
+            className="form-control"
+            id="filterMaxSaturatedFat"
+            name="maxSaturatedFat"
+            value={mealFilters.maxSaturatedFat}
+            onChange={handleFilterChange}
+            placeholder="0"
+          />
+        </div>
+
+      {/* Lista de comidas filtradas */}
+      <div>
+        {filteredMeals.map((meal) => (
+          <div key={meal.id} className="card my-3">
+            <div className="card-body">
+              <h5>{meal.name}</h5>
+              <p>Calorías: {meal.calories}</p>
+              <p>Proteínas: {meal.protein}g</p>
+              <p>Carbohidratos: {meal.carbohydrates}g</p>
+              <p>Grasas: {meal.fat}g</p>
+              <p>Azúcar: {meal.sugar}g</p>
+              <p>Fibra: {meal.fiber}g</p>
+              <p>Grasas Saturadas: {meal.saturated_fat}g</p>
+              <button onClick={() => handleMealSelection(meal.id, meal.date)}>
+                {selectedMeals[meal.date]?.includes(meal.id) ? 'Quitar de' : 'Añadir a'} {meal.date}
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+
+    
+  
+      {dailyDiets.map((dailyDiet) => (
         <div key={dailyDiet.id} className="card my-3">
           <div className="card-body">
-            <h5 className="card-title">Dieta Diaria para la Fecha: {dailyDiet.date}</h5>
+            <h5>Dieta Diaria para {dailyDiet.date}</h5>
+            
+            {/* Lista de comidas filtradas para añadir */}
             <div>
-              {meals.map(meal => (
-                <div key={meal.id} className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    checked={selectedMeals[dailyDiet.date]?.includes(meal.id)}
-                    onChange={() => handleMealSelection(meal.id, dailyDiet.date)}
-                    id={`meal-${meal.id}`}
-                  />
-                  <label className="form-check-label" htmlFor={`meal-${meal.id}`}>
-                    {meal.name}
-                  </label>
-                </div>
+              {filteredMeals.map((meal) => (
+                <button
+                  key={meal.id}
+                  onClick={() => addMealToDailyDiet(meal.id, dailyDiet.date)}
+                >
+                  Añadir {meal.name}
+                </button>
               ))}
-              <button className="btn btn-primary mt-2" onClick={() => saveDailyDietMeals(dailyDiet.date)}>Guardar Comidas para {dailyDiet.date}</button>
             </div>
+  
+            {/* Mostrar comidas seleccionadas para esta fecha */}
+            <h6>Comidas seleccionadas:</h6>
+            <ul>
+              {selectedMeals[dailyDiet.date]?.map(mealId => {
+                const meal = meals.find(m => m.id === mealId);
+                return <li key={mealId}>{meal?.name}</li>;
+              })}
+            </ul>
+  
+            <button
+              onClick={() => saveDailyDietMeals(dailyDiet.date)}
+              className="btn btn-primary"
+            >
+              Guardar Comidas para {dailyDiet.date}
+            </button>
             <div className="nutrition-summary mt-3">
               <h6>Resumen Nutricional:</h6>
               <p>Calorías: {nutritionTotals[dailyDiet.date]?.calories || 0}</p>

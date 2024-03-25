@@ -44,7 +44,8 @@ function CreateDiet() {
         return response.json();
     })
     .then(data => {
-        navigate(`/edit-dailydiet/${data.id}`);
+      console.log('Redirecting to:', `nutrition/edit-dailydiet/${data.id}`)
+        navigate(`/nutrition/edit-dailydiet/${data.id}`);
     })
     .catch(error => {
         console.error('Error:', error);

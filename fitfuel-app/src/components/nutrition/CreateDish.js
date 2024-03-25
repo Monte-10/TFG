@@ -17,12 +17,96 @@ function CreateDish() {
     const [name, setName] = useState('');
     const [dishCreated, setDishCreated] = useState(false);
     const [createdDishId, setCreatedDishId] = useState(null);
+    const [filter, setFilter] = useState({
+        name: '',
+        minCalories: { value: '', active: false },
+        maxCalories: { value: '', active: false },
+        minProtein: { value: '', active: false },
+        maxProtein: { value: '', active: false },
+        minCarbohydrates: { value: '', active: false },
+        maxCarbohydrates: { value: '', active: false },
+        minFat: { value: '', active: false },
+        maxFat: { value: '', active: false },
+        minSugar: { value: '', active: false },
+        maxSugar: { value: '', active: false },
+        minFiber: { value: '', active: false },
+        maxFiber: { value: '', active: false },
+        minSaturatedFat: { value: '', active: false },
+        maxSaturatedFat: { value: '', active: false },
+    })
 
     useEffect(() => {
         fetch('http://127.0.0.1:8000/nutrition/ingredients/')
             .then(response => response.json())
-            .then(data => setIngredients(data));
+            .then(data => {
+                const filteredData = data.filter(ingredient => {
+                    let isValid = true;
+            
+                    if (filter.name && !ingredient.name.toLowerCase().includes(filter.name.toLowerCase().trim())) {
+                        return false;
+                    }
+            
+                    if (filter.minCalories && Number(filter.minCalories) > ingredient.calories) {
+                        isValid = false;
+                    }
 
+                    if (filter.maxCalories && Number(filter.maxCalories) < ingredient.calories) {
+                        isValid = false;
+                    }
+
+                    if (filter.minProtein && Number(filter.minProtein) > ingredient.protein) {
+                        isValid = false;
+                    }
+
+                    if (filter.maxProtein && Number(filter.maxProtein) < ingredient.protein) {
+                        isValid = false;
+                    }
+
+                    if (filter.minCarbohydrates && Number(filter.minCarbohydrates) > ingredient.carbohydrates) {
+                        isValid = false;
+                    }
+
+                    if (filter.maxCarbohydrates && Number(filter.maxCarbohydrates) < ingredient.carbohydrates) {
+                        isValid = false;
+                    }
+
+                    if (filter.minFat && Number(filter.minFat) > ingredient.fat) {
+                        isValid = false;
+                    }
+
+                    if (filter.maxFat && Number(filter.maxFat) < ingredient.fat) {
+                        isValid = false;
+                    }
+
+                    if (filter.minSugar && Number(filter.minSugar) > ingredient.sugar) {
+                        isValid = false;
+                    }
+
+                    if (filter.maxSugar && Number(filter.maxSugar) < ingredient.sugar) {
+                        isValid = false;
+                    }
+
+                    if (filter.minFiber && Number(filter.minFiber) > ingredient.fiber) {
+                        isValid = false;
+                    }
+
+                    if (filter.maxFiber && Number(filter.maxFiber) < ingredient.fiber) {
+                        isValid = false;
+                    }
+
+                    if (filter.minSaturatedFat && Number(filter.minSaturatedFat) > ingredient.saturated_fat) {
+                        isValid = false;
+                    }
+
+                    if (filter.maxSaturatedFat && Number(filter.maxSaturatedFat) < ingredient.saturated_fat) {
+                        isValid = false;
+                    }
+
+                    return isValid;
+                });
+                setIngredients(filteredData);
+            });
+    
         fetch('http://127.0.0.1:8000/user/regularusers/')
             .then(response => response.json())
             .then(data => {
@@ -31,9 +115,10 @@ function CreateDish() {
                     setSelectedUser(data[0].id.toString());
                 }
             });
-    }, []);
+    }, [filter]);
 
     useEffect(() => {
+
         const initialTotals = {
             calories: 0,
             protein: 0,
@@ -102,8 +187,15 @@ function CreateDish() {
     
         setNutritionTotals(totals);
     }, [selectedIngredients, ingredients]);
-    
 
+    const handleFilterChange = (e) => {
+        const { name, value } = e.target;
+        setFilter(prev => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+    
     const handleIngredientChange = (index, field, value) => {
         const updatedIngredients = selectedIngredients.map((ingredient, i) => {
             if (i === index) {
@@ -135,8 +227,6 @@ function CreateDish() {
             })),
         };
         
-        console.log("Enviando datos del plato:", dishData);
-        
         try {
             const response = await fetch('http://127.0.0.1:8000/nutrition/dishes/', {
                 method: 'POST',
@@ -167,32 +257,228 @@ function CreateDish() {
     };
 
     return (
-      <div className="container mt-4">
+        <div className="container mt-4">
           <h2 className="mb-4">Crear Plato</h2>
           {dishCreated && (
-              <div className="alert alert-success" role="alert">
-                  El Plato ha sido creado con éxito. ID: {createdDishId}
-                  <button onClick={() => setDishCreated(false)} className="btn btn-outline-secondary ml-2">Crear otro plato</button>
-              </div>
+            <div className="alert alert-success" role="alert">
+                Plato creado con éxito. ID: {createdDishId}
+            </div>
           )}
-
+      
           {!dishCreated && (
-              <form onSubmit={handleSubmit} className="needs-validation" novalidate>
-                  <div className="form-group mb-3">
-                      <label htmlFor="dishName">Nombre del Plato:</label>
-                      <input type="text" className="form-control" id="dishName" value={name} onChange={(e) => setName(e.target.value)} required />
-                      <div className="invalid-feedback">Por favor, ingrese un nombre para el plato.</div>
-                  </div>
-
-                  <div className="form-group mb-3">
-                      <label htmlFor="userSelect">Usuario:</label>
-                      <select className="form-control" id="userSelect" value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)} required>
-                          <option value="">Seleccione un usuario</option>
-                          {users.map((user) => (
-                              <option key={user.id} value={user.id}>{user.username}</option>
-                          ))}
-                      </select>
-                  </div>
+            <form onSubmit={handleSubmit} className="needs-validation" noValidate>
+              <div className="form-group mb-3">
+                <label htmlFor="name">Nombre del Plato:</label>
+                <input
+                    type="text"
+                    className="form-control"
+                    id="name"
+                    name="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                />
+              </div>
+      
+              <div className="form-group mb-3">
+                <label htmlFor="user">Usuario:</label>
+                <select
+                    className="form-select"
+                    id="user"
+                    name="user"
+                    value={selectedUser}
+                    onChange={(e) => setSelectedUser(e.target.value)}
+                    required
+                >
+                    {users.map(user => (
+                        <option key={user.id} value={user.id}>{user.username}</option>
+                    ))}
+                </select>
+              </div>
+      
+              {/* Sección de Filtros para Ingredientes */}
+              <h3>Filtros para Ingredientes</h3>
+              <div className="mb-3">
+                <label htmlFor="filterName">Nombre del Ingrediente:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="filterName"
+                  name="name"
+                  value={filter.name}
+                  onChange={handleFilterChange}
+                  placeholder="Buscar por nombre"
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="filterMinCalories">Calorías Mínimas:</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  id="filterMinCalories"
+                  name="minCalories"
+                  value={filter.minCalories}
+                  onChange={handleFilterChange}
+                  placeholder="0"
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="filterMaxCalories">Calorías Máximas:</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  id="filterMaxCalories"
+                  name="maxCalories"
+                  value={filter.maxCalories}
+                  onChange={handleFilterChange}
+                  placeholder="10000"
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="filterMinProtein">Proteínas Mínimas:</label>
+                <input
+                    type="number"
+                    className="form-control"
+                    id="filterMinProtein"
+                    name="minProtein"
+                    value={filter.minProtein}
+                    onChange={handleFilterChange}
+                    placeholder="0"
+                />
+                </div>
+                <div className="mb-3">
+                <label htmlFor="filterMaxProtein">Proteínas Máximas:</label>
+                <input
+                    type="number"
+                    className="form-control"
+                    id="filterMaxProtein"
+                    name="maxProtein"
+                    value={filter.maxProtein}
+                    onChange={handleFilterChange}
+                    placeholder="10000"
+                />
+                </div>
+                <div className="mb-3">
+                <label htmlFor="filterMinCarbohydrates">Carbohidratos Mínimos:</label>
+                <input
+                    type="number"
+                    className="form-control"
+                    id="filterMinCarbohydrates"
+                    name="minCarbohydrates"
+                    value={filter.minCarbohydrates}
+                    onChange={handleFilterChange}
+                    placeholder="0"
+                />
+                </div>
+                <div className="mb-3">
+                <label htmlFor="filterMaxCarbohydrates">Carbohidratos Máximos:</label>
+                <input
+                    type="number"
+                    className="form-control"
+                    id="filterMaxCarbohydrates"
+                    name="maxCarbohydrates"
+                    value={filter.maxCarbohydrates}
+                    onChange={handleFilterChange}
+                    placeholder="10000"
+                />
+                </div>
+                <div className="mb-3">
+                <label htmlFor="filterMinFat">Grasas Mínimas:</label>
+                <input
+                    type="number"
+                    className="form-control"
+                    id="filterMinFat"
+                    name="minFat"
+                    value={filter.minFat}
+                    onChange={handleFilterChange}
+                    placeholder="0"
+                />
+                </div>
+                <div className="mb-3">
+                <label htmlFor="filterMaxFat">Grasas Máximas:</label>
+                <input
+                    type="number"
+                    className="form-control"
+                    id="filterMaxFat"
+                    name="maxFat"
+                    value={filter.maxFat}
+                    onChange={handleFilterChange}
+                    placeholder="10000"
+                />
+                </div>
+                <div className="mb-3">
+                <label htmlFor="filterMinSugar">Azúcares Mínimos:</label>
+                <input
+                    type="number"
+                    className="form-control"
+                    id="filterMinSugar"
+                    name="minSugar"
+                    value={filter.minSugar}
+                    onChange={handleFilterChange}
+                    placeholder="0"
+                />
+                </div>
+                <div className="mb-3">
+                <label htmlFor="filterMaxSugar">Azúcares Máximos:</label>
+                <input
+                    type="number"
+                    className="form-control"
+                    id="filterMaxSugar"
+                    name="maxSugar"
+                    value={filter.maxSugar}
+                    onChange={handleFilterChange}
+                    placeholder="10000"
+                />
+                </div>
+                <div className="mb-3">
+                <label htmlFor="filterMinFiber">Fibra Mínima:</label>
+                <input
+                    type="number"
+                    className="form-control"
+                    id="filterMinFiber"
+                    name="minFiber"
+                    value={filter.minFiber}
+                    onChange={handleFilterChange}
+                    placeholder="0"
+                />
+                </div>
+                <div className="mb-3">
+                <label htmlFor="filterMaxFiber">Fibra Máxima:</label>
+                <input
+                    type="number"
+                    className="form-control"
+                    id="filterMaxFiber"
+                    name="maxFiber"
+                    value={filter.maxFiber}
+                    onChange={handleFilterChange}
+                    placeholder="10000"
+                />
+                </div>
+                <div className="mb-3">
+                <label htmlFor="filterMinSaturatedFat">Grasas Saturadas Mínimas:</label>
+                <input
+                    type="number"
+                    className="form-control"
+                    id="filterMinSaturatedFat"
+                    name="minSaturatedFat"
+                    value={filter.minSaturatedFat}
+                    onChange={handleFilterChange}
+                    placeholder="0"
+                />
+                </div>
+                <div className="mb-3">
+                <label htmlFor="filterMaxSaturatedFat">Grasas Saturadas Máximas:</label>
+                <input
+                    type="number"
+                    className="form-control"
+                    id="filterMaxSaturatedFat"
+                    name="maxSaturatedFat"
+                    value={filter.maxSaturatedFat}
+                    onChange={handleFilterChange}
+                    placeholder="10000"
+                />
+                </div>
+                <h3>Ingredientes</h3>
 
                   {selectedIngredients.map((ingredient, index) => (
                       <div key={index} className="input-group mb-3">

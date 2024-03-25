@@ -6,6 +6,7 @@ import { Container, Navbar, Nav, Offcanvas } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Accordion from 'react-bootstrap/Accordion';
+import axios from 'axios';
 
 import CreateIngredient from './components/nutrition/CreateIngredient';
 import CreateFood from './components/nutrition/CreateFood';
@@ -25,9 +26,14 @@ import CreateDayOption from './components/nutrition/CreateDayOption';
 import CreateWeekOption from './components/nutrition/CreateWeekOption';
 import CreateOption from './components/nutrition/CreateOption';
 import AssignOptionToUser from './components/nutrition/AssignOptionToUser';
+import FoodDetails from './components/nutrition/FoodDetails';
+import ManageDailyDiet from './components/nutrition/ManageDailyDiet';
+import SearchTrainer from './components/user/SearchTrainer';
+import TrainerList from './components/user/TrainerList';
 
 function App() {
     const [authToken, setAuthToken] = useState(localStorage.getItem('authToken') || '');
+    const [trainers, setTrainers] = useState([]);
 
     const handleLoginSuccess = (token) => {
         localStorage.setItem('authToken', token); // Almacenar el token en localStorage para persistencia
@@ -37,6 +43,28 @@ function App() {
     const handleLogout = () => {
         localStorage.removeItem('authToken'); // Borrar el token de localStorage
         setAuthToken('');
+    };
+
+    const handleSearchTrainers = async (specialty, trainerType) => {
+        try {
+            const response = await axios.get('/api/trainers/search', { 
+                params: { specialty, trainerType }
+            });
+            setTrainers(response.data); // Suponiendo que el backend devuelve una lista de entrenadores
+        } catch (error) {
+            console.error("Error al buscar entrenadores:", error);
+        }
+    };
+
+    // Función para enviar solicitud a un entrenador
+    const handleSendRequest = async (trainerId) => {
+        try {
+            const response = await axios.post('/api/requests/send', { trainerId });
+            // Actualiza la UI o muestra un mensaje según necesites
+            console.log("Solicitud enviada con éxito", response.data);
+        } catch (error) {
+            console.error("Error al enviar solicitud:", error);
+        }
     };
 
     return (
@@ -185,17 +213,26 @@ function App() {
                                 <Route path="/nutrition/create-option" element={<CreateOption />} />
                                 <Route path="/nutrition/assign-option" element={<AssignOptionToUser />} />
                                 <Route path="/nutrition/list-food" element={<ListFood />} />
-                                <Route path="*" element={<Navigate replace to="/nutrition" />} />
-                            </>
-                        ) : (
-                            // Rutas accesibles sin autenticación
-                            <>
-                                <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
-                                <Route path="/signup/regularuser" element={<RegularUserSignUp onSignUpSuccess={handleLoginSuccess} />} />
-                                <Route path="/signup/trainer" element={<TrainerSignUp onSignUpSuccess={handleLoginSuccess} />} />
-                                <Route path="*" element={<Navigate replace to="/login" />} />
-                            </>
-                        )}
+                                <Route path="/nutrition/foods/:foodId" element={<FoodDetails />} />
+                                <Route path="/nutrition/edit-dailydiet/:dietId" element={<ManageDailyDiet />} />
+                                <Route path="/search-trainer" element={
+                                <SearchTrainer onSearch={handleSearchTrainers} />
+                            } />
+                            {/* Ruta para listar entrenadores y enviar solicitudes */}
+                            <Route path="/trainers" element={
+                                <TrainerList trainers={trainers} onSendRequest={handleSendRequest} />
+                            } />
+                                        <Route path="*" element={<Navigate replace to="/nutrition" />} />
+                                    </>
+                                ) : (
+                                    // Rutas accesibles sin autenticación
+                                    <>
+                                        <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
+                                        <Route path="/signup/regularuser" element={<RegularUserSignUp onSignUpSuccess={handleLoginSuccess} />} />
+                                        <Route path="/signup/trainer" element={<TrainerSignUp onSignUpSuccess={handleLoginSuccess} />} />
+                                        <Route path="*" element={<Navigate replace to="/login" />} />
+                                    </>
+                                )}
                     </Routes>
                     </div>
             </div>
