@@ -30,6 +30,10 @@ import FoodDetails from './components/nutrition/FoodDetails';
 import ManageDailyDiet from './components/nutrition/ManageDailyDiet';
 import SearchTrainer from './components/user/SearchTrainer';
 import TrainerList from './components/user/TrainerList';
+import ListIngredient from './components/nutrition/ListIngredient';
+import IngredientDetails from './components/nutrition/IngredientDetails';
+import ListDish from './components/nutrition/ListDish';
+import ListMeal from './components/nutrition/ListMeal';
 
 function App() {
     const [authToken, setAuthToken] = useState(localStorage.getItem('authToken') || '');
@@ -74,7 +78,7 @@ function App() {
                     <Container fluid>
                         <Navbar.Toggle aria-controls="offcanvasNavbar" />
                         <Navbar.Brand as={NavLink} to="/">
-                            Inicio
+                            FitFuelBalance
                         </Navbar.Brand>
                         {authToken ? (
                                     <Dropdown className="mb-3">
@@ -137,10 +141,7 @@ function App() {
                                                 <Nav.Item>
                                                 <Nav.Link as={Link} to="/nutrition/upload-food">Subir Alimento</Nav.Link>
                                                 </Nav.Item>
-                                                <Nav.Item>
-                                                    <Nav.Link as={Link} to="/nutrition/list-food">Listar Alimentos</Nav.Link>
-                                                </Nav.Item>
-                                                {/* Espaciador o título para la sección de creación de opciones */}
+                                                {/* Título para la sección de creación de opciones */}
                                                 <p className="mt-2 mb-1"><strong>Creación de Opciones</strong></p>
                                                 <Nav.Item>
                                                 <Nav.Link as={Link} to="/nutrition/create-dayoption">Crear Opción Diaria</Nav.Link>
@@ -153,6 +154,19 @@ function App() {
                                                 </Nav.Item>
                                                 <Nav.Item>
                                                 <Nav.Link as={Link} to="/nutrition/assign-option">Asignar Opción</Nav.Link>
+                                                </Nav.Item>
+                                                <p className="mt-2 mb-1"><strong>Listado</strong></p>
+                                                <Nav.Item>
+                                                    <Nav.Link as={Link} to="/nutrition/list-food">Listar Alimentos</Nav.Link>
+                                                </Nav.Item>
+                                                <Nav.Item>
+                                                    <Nav.Link as={Link} to="/nutrition/list-ingredient">Listar Ingredientes</Nav.Link>
+                                                </Nav.Item>
+                                                <Nav.Item>
+                                                    <Nav.Link as={Link} to="/nutrition/list-dish">Listar Platos</Nav.Link>
+                                                </Nav.Item>
+                                                <Nav.Item>
+                                                    <Nav.Link as={Link} to="/nutrition/list-meal">Listar Comidas</Nav.Link>
                                                 </Nav.Item>
                                             </Nav>
                                             </Accordion.Body>
@@ -215,8 +229,12 @@ function App() {
                                 <Route path="/nutrition/list-food" element={<ListFood />} />
                                 <Route path="/nutrition/foods/:foodId" element={<FoodDetails />} />
                                 <Route path="/nutrition/edit-dailydiet/:dietId" element={<ManageDailyDiet />} />
+                                <Route path="/nutrition/list-ingredient" element={<ListIngredient />} />
+                                <Route path="/nutrition/ingredients/:ingredientId" element={<IngredientDetails />} />
+                                <Route path="/nutrition/list-dish" element={<ListDish />} />
+                                <Route path="/nutrition/list-meal" element={<ListMeal />} />
                                 <Route path="/search-trainer" element={
-                                <SearchTrainer onSearch={handleSearchTrainers} />
+                                <SearchTrainer onSearch={handleSearchTrainers} />                                
                             } />
                             {/* Ruta para listar entrenadores y enviar solicitudes */}
                             <Route path="/trainers" element={
@@ -254,7 +272,8 @@ function Nutrition() {
       <Link to="/nutrition/create-weekoption">Create Week Option</Link><br />
       <Link to="/nutrition/create-option">Create Option</Link><br />
       <Link to="/nutrition/assign-option">Assign Option</Link><br />
-    <Link to="/nutrition/list-food">List Food</Link><br />
+      <Link to="/nutrition/list-ingredient">List Ingredient</Link><br />
+      <Link to="/nutrition/list-food">List Food</Link><br />
     </div>
   );
 }

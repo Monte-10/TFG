@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function ListFood() {
-    const [foods, setFoods] = useState([]);
-    const [filteredFoods, setFilteredFoods] = useState([]);
+function ListIngredients() {
+    const [ingredients, setIngredients] = useState([]);
+    const [filteredIngredients, setFilteredIngredients] = useState([]);
     const [filters, setFilters] = useState({
         name: { value: '', active: false },
         minCalories: { value: '', active: false },
@@ -46,66 +46,67 @@ function ListFood() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/nutrition/foods/', {
+        // Aquí debes reemplazar con la URL de tu API para obtener los ingredientes
+        fetch('http://127.0.0.1:8000/nutrition/ingredients/', {
             headers: {
                 'Authorization': `Token ${localStorage.getItem('authToken')}`,
             },
         })
         .then(response => response.json())
         .then(data => {
-            setFoods(data);
-            setFilteredFoods(data);
+            setIngredients(data);
+            setFilteredIngredients(data); // Inicializar los ingredientes filtrados con todos los ingredientes
         })
-        .catch(error => console.error('Error fetching foods:', error));
+        .catch(error => console.error('Error fetching ingredients:', error));
     }, []);
 
     useEffect(() => {
         // Función para aplicar los filtros
         const applyFilters = () => {
-            let updatedFoods = foods.filter(food => {
+            let updatedIngredients = ingredients.filter(ingredient => {
                 return Object.entries(filters).every(([key, filter]) => {
                     if (!filter.active) return true;
                     if (key === 'name') {
-                        return food.name.toLowerCase().includes(filter.value.toLowerCase());
+                        return ingredient.name.toLowerCase().includes(filter.value.toLowerCase());
                     } else if (['glutenFree', 'lactoseFree', 'vegan', 'vegetarian', 'pescetarian', 'contains_meat', 'contains_vegetables', 'contains_fish_shellfish_canned_preserved', 'cereal', 'pasta_or_rice', 'dairy_yogurt_cheese', 'fruit', 'nuts', 'legume', 'sauce_or_condiment', 'deli_meat', 'bread_or_toast', 'egg', 'special_drink_or_supplement', 'tuber', 'other'].includes(key)) {
-                        return filter.value === '' || food[key] === (filter.value === 'true');
+                        return filter.value === '' || ingredient[key] === (filter.value === 'true');
                     } else if (key === 'minCalories') {
-                        return parseInt(food.calories, 10) >= parseInt(filter.value, 10);
+                        return parseInt(ingredient.calories, 10) >= parseInt(filter.value, 10);
                     } else if (key === 'maxCalories') {
-                        return parseInt(food.calories, 10) <= parseInt(filter.value, 10);
+                        return parseInt(ingredient.calories, 10) <= parseInt(filter.value, 10);
                     } else if (key === 'minProtein') {
-                        return parseInt(food.protein, 10) >= parseInt(filter.value, 10);
+                        return parseInt(ingredient.protein, 10) >= parseInt(filter.value, 10);
                     } else if (key === 'maxProtein') {
-                        return parseInt(food.protein, 10) <= parseInt(filter.value, 10);
+                        return parseInt(ingredient.protein, 10) <= parseInt(filter.value, 10);
                     } else if (key === 'minCarbohydrates') {
-                        return parseInt(food.carbohydrates, 10) >= parseInt(filter.value, 10);
+                        return parseInt(ingredient.carbohydrates, 10) >= parseInt(filter.value, 10);
                     } else if (key === 'maxCarbohydrates') {
-                        return parseInt(food.carbohydrates, 10) <= parseInt(filter.value, 10);
+                        return parseInt(ingredient.carbohydrates, 10) <= parseInt(filter.value, 10);
                     } else if (key === 'minFat') {
-                        return parseInt(food.fat, 10) >= parseInt(filter.value, 10);
+                        return parseInt(ingredient.fat, 10) >= parseInt(filter.value, 10);
                     } else if (key === 'maxFat') {
-                        return parseInt(food.fat, 10) <= parseInt(filter.value, 10);
+                        return parseInt(ingredient.fat, 10) <= parseInt(filter.value, 10);
                     } else if (key === 'minSugar') {
-                        return parseInt(food.sugar, 10) >= parseInt(filter.value, 10);
+                        return parseInt(ingredient.sugar, 10) >= parseInt(filter.value, 10);
                     } else if (key === 'maxSugar') {
-                        return parseInt(food.sugar, 10) <= parseInt(filter.value, 10);
+                        return parseInt(ingredient.sugar, 10) <= parseInt(filter.value, 10);
                     } else if (key === 'minFiber') {
-                        return parseInt(food.fiber, 10) >= parseInt(filter.value, 10);
+                        return parseInt(ingredient.fiber, 10) >= parseInt(filter.value, 10);
                     } else if (key === 'maxFiber') {
-                        return parseInt(food.fiber, 10) <= parseInt(filter.value, 10);
+                        return parseInt(ingredient.fiber, 10) <= parseInt(filter.value, 10);
                     } else if (key === 'minSaturatedFat') {
-                        return parseInt(food.saturated_fat, 10) >= parseInt(filter.value, 10);
+                        return parseInt(ingredient.saturated_fat, 10) >= parseInt(filter.value, 10);
                     } else if (key === 'maxSaturatedFat') {
-                        return parseInt(food.saturated_fat, 10) <= parseInt(filter.value, 10);
+                        return parseInt(ingredient.saturated_fat, 10) <= parseInt(filter.value, 10);
                     }
                     return true;
                 });
             });
-                setFilteredFoods(updatedFoods);
+                setFilteredIngredients(updatedIngredients);
             };
 
         applyFilters();
-    }, [filters, foods]);
+    }, [filters, ingredients]);
 
     const handleFilterChange = (e) => {
         const { name, value, checked } = e.target;
@@ -158,7 +159,7 @@ function ListFood() {
 
     return (
         <div className="container">
-            <h1>Lista de Alimentos</h1>
+            <h1>Lista de Ingredientes</h1>
             <div className="mb-3">
             <div className="filters mb-3">
                 {/* Filtro de nombre */}
@@ -601,36 +602,34 @@ function ListFood() {
                         <th>Proteínas</th>
                         <th>Carbohidratos</th>
                         <th>Grasas</th>
-                        <th>Azúcar</th>
+                        <th>Azúcares</th>
                         <th>Fibra</th>
                         <th>Grasas Saturadas</th>
-                        {/* Agrega más columnas según necesites */}
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredFoods.map((food) => (
-                        <tr key={food.id} onClick={() => navigate(`/nutrition/foods/${food.id}`)} style={{cursor: 'pointer'}}>
-                            <td>{food.name}</td>
-                            <td>{food.calories}</td>
-                            <td>{food.protein}</td>
-                            <td>{food.carbohydrates}</td>
-                            <td>{food.fat}</td>
-                            <td>{food.sugar}</td>
-                            <td>{food.fiber}</td>
-                            <td>{food.saturated_fat}</td>
-                            {/* Añade más datos según los campos de tu modelo */}
+                    {filteredIngredients.map(ingredient => (
+                        <tr key={ingredient.id} onClick={() => navigate(`/nutrition/ingredients/${ingredient.id}`)} style={{cursor: 'pointer'}}>
+                            <td>{ingredient.name}</td>
+                            <td>{ingredient.calories}</td>
+                            <td>{ingredient.protein}</td>
+                            <td>{ingredient.carbohydrates}</td>
+                            <td>{ingredient.fat}</td>
+                            <td>{ingredient.sugar}</td>
+                            <td>{ingredient.fiber}</td>
+                            <td>{ingredient.saturatedFat}</td>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
-            {filteredFoods.length === 0 && (
-                <div className="alert alert-info" role="alert">
-                    No se encontraron alimentos que coincidan con los filtros seleccionados.
-                </div>
-            )}
-        </div>
-    );
+                ))}
+            </tbody>
+        </table>
+
+        {filteredIngredients.length === 0 && (
+            <div className="alert alert-info" role="alert">
+                No se encontraron ingredientes que coincidan con los filtros seleccionados.
+            </div>
+        )}
+    </div>
+);
 };
 
-export default ListFood;
-
+export default ListIngredients;

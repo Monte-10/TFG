@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function ListFood() {
-    const [foods, setFoods] = useState([]);
-    const [filteredFoods, setFilteredFoods] = useState([]);
+function ListDish() {
+    const [dishes, setDishes] = useState([]);
+    const [filteredDishes, setFilteredDishes] = useState([]);
     const [filters, setFilters] = useState({
         name: { value: '', active: false },
         minCalories: { value: '', active: false },
@@ -46,66 +46,67 @@ function ListFood() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/nutrition/foods/', {
+        // URL para obtener los platos
+        fetch('http://127.0.0.1:8000/nutrition/dishes/', {
             headers: {
                 'Authorization': `Token ${localStorage.getItem('authToken')}`,
             },
         })
         .then(response => response.json())
         .then(data => {
-            setFoods(data);
-            setFilteredFoods(data);
+            setDishes(data);
+            setFilteredDishes(data); // Inicializar los platos filtrados con todos los platos
         })
-        .catch(error => console.error('Error fetching foods:', error));
+        .catch(error => console.error('Error fetching dishes:', error));
     }, []);
 
     useEffect(() => {
         // Función para aplicar los filtros
         const applyFilters = () => {
-            let updatedFoods = foods.filter(food => {
+            let updatedDishes = dishes.filter(dish => {
                 return Object.entries(filters).every(([key, filter]) => {
                     if (!filter.active) return true;
                     if (key === 'name') {
-                        return food.name.toLowerCase().includes(filter.value.toLowerCase());
+                        return dish.name.toLowerCase().includes(filter.value.toLowerCase());
                     } else if (['glutenFree', 'lactoseFree', 'vegan', 'vegetarian', 'pescetarian', 'contains_meat', 'contains_vegetables', 'contains_fish_shellfish_canned_preserved', 'cereal', 'pasta_or_rice', 'dairy_yogurt_cheese', 'fruit', 'nuts', 'legume', 'sauce_or_condiment', 'deli_meat', 'bread_or_toast', 'egg', 'special_drink_or_supplement', 'tuber', 'other'].includes(key)) {
-                        return filter.value === '' || food[key] === (filter.value === 'true');
+                        return filter.value === '' || dish[key] === (filter.value === 'true');
                     } else if (key === 'minCalories') {
-                        return parseInt(food.calories, 10) >= parseInt(filter.value, 10);
+                        return parseInt(dish.calories, 10) >= parseInt(filter.value, 10);
                     } else if (key === 'maxCalories') {
-                        return parseInt(food.calories, 10) <= parseInt(filter.value, 10);
+                        return parseInt(dish.calories, 10) <= parseInt(filter.value, 10);
                     } else if (key === 'minProtein') {
-                        return parseInt(food.protein, 10) >= parseInt(filter.value, 10);
+                        return parseInt(dish.protein, 10) >= parseInt(filter.value, 10);
                     } else if (key === 'maxProtein') {
-                        return parseInt(food.protein, 10) <= parseInt(filter.value, 10);
+                        return parseInt(dish.protein, 10) <= parseInt(filter.value, 10);
                     } else if (key === 'minCarbohydrates') {
-                        return parseInt(food.carbohydrates, 10) >= parseInt(filter.value, 10);
+                        return parseInt(dish.carbohydrates, 10) >= parseInt(filter.value, 10);
                     } else if (key === 'maxCarbohydrates') {
-                        return parseInt(food.carbohydrates, 10) <= parseInt(filter.value, 10);
+                        return parseInt(dish.carbohydrates, 10) <= parseInt(filter.value, 10);
                     } else if (key === 'minFat') {
-                        return parseInt(food.fat, 10) >= parseInt(filter.value, 10);
+                        return parseInt(dish.fat, 10) >= parseInt(filter.value, 10);
                     } else if (key === 'maxFat') {
-                        return parseInt(food.fat, 10) <= parseInt(filter.value, 10);
+                        return parseInt(dish.fat, 10) <= parseInt(filter.value, 10);
                     } else if (key === 'minSugar') {
-                        return parseInt(food.sugar, 10) >= parseInt(filter.value, 10);
+                        return parseInt(dish.sugar, 10) >= parseInt(filter.value, 10);
                     } else if (key === 'maxSugar') {
-                        return parseInt(food.sugar, 10) <= parseInt(filter.value, 10);
+                        return parseInt(dish.sugar, 10) <= parseInt(filter.value, 10);
                     } else if (key === 'minFiber') {
-                        return parseInt(food.fiber, 10) >= parseInt(filter.value, 10);
+                        return parseInt(dish.fiber, 10) >= parseInt(filter.value, 10);
                     } else if (key === 'maxFiber') {
-                        return parseInt(food.fiber, 10) <= parseInt(filter.value, 10);
+                        return parseInt(dish.fiber, 10) <= parseInt(filter.value, 10);
                     } else if (key === 'minSaturatedFat') {
-                        return parseInt(food.saturated_fat, 10) >= parseInt(filter.value, 10);
+                        return parseInt(dish.saturated_fat, 10) >= parseInt(filter.value, 10);
                     } else if (key === 'maxSaturatedFat') {
-                        return parseInt(food.saturated_fat, 10) <= parseInt(filter.value, 10);
+                        return parseInt(dish.saturated_fat, 10) <= parseInt(filter.value, 10);
                     }
                     return true;
                 });
             });
-                setFilteredFoods(updatedFoods);
+                setFilteredDishes(updatedDishes);
             };
 
         applyFilters();
-    }, [filters, foods]);
+    }, [filters, dishes]);
 
     const handleFilterChange = (e) => {
         const { name, value, checked } = e.target;
@@ -158,7 +159,7 @@ function ListFood() {
 
     return (
         <div className="container">
-            <h1>Lista de Alimentos</h1>
+            <h1>Lista de Platos</h1>
             <div className="mb-3">
             <div className="filters mb-3">
                 {/* Filtro de nombre */}
@@ -601,36 +602,33 @@ function ListFood() {
                         <th>Proteínas</th>
                         <th>Carbohidratos</th>
                         <th>Grasas</th>
-                        <th>Azúcar</th>
+                        <th>Azúcares</th>
                         <th>Fibra</th>
                         <th>Grasas Saturadas</th>
-                        {/* Agrega más columnas según necesites */}
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredFoods.map((food) => (
-                        <tr key={food.id} onClick={() => navigate(`/nutrition/foods/${food.id}`)} style={{cursor: 'pointer'}}>
-                            <td>{food.name}</td>
-                            <td>{food.calories}</td>
-                            <td>{food.protein}</td>
-                            <td>{food.carbohydrates}</td>
-                            <td>{food.fat}</td>
-                            <td>{food.sugar}</td>
-                            <td>{food.fiber}</td>
-                            <td>{food.saturated_fat}</td>
-                            {/* Añade más datos según los campos de tu modelo */}
+                    {filteredDishes.map(dish => (
+                       <tr key={dish.id} onClick={() => navigate(`/nutrition/dishes/${dish.id}`)} style={{cursor: 'pointer'}}>
+                            <td>{dish.name}</td>
+                            <td>{dish.calories}</td>
+                            <td>{dish.protein}</td>
+                            <td>{dish.carbohydrates}</td>
+                            <td>{dish.fat}</td>
+                            <td>{dish.sugar}</td>
+                            <td>{dish.fiber}</td>
+                            <td>{dish.saturatedFat}</td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            {filteredFoods.length === 0 && (
+            {filteredDishes.length === 0 && (
                 <div className="alert alert-info" role="alert">
-                    No se encontraron alimentos que coincidan con los filtros seleccionados.
+                    No se encontraron platos que coincidan con los filtros seleccionados.
                 </div>
             )}
         </div>
     );
-};
+}
 
-export default ListFood;
-
+export default ListDish;
