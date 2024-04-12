@@ -275,6 +275,8 @@ function CreateMeal() {
           </div>
 
           <h3>Filtros para Platos</h3>
+              <div className="row">
+              <div className="col-md-4">
               <div className="mb-3">
                 <label htmlFor="filterDishName">Nombre del Plato:</label>
                 <input
@@ -337,6 +339,8 @@ function CreateMeal() {
                   placeholder="10000"
                 />
               </div>
+              </div>
+              <div className="col-md-4">
 
               <div className="mb-3">
                 <label htmlFor="filterMinCarbohydrates">Carbohidratos Mínimos:</label>
@@ -400,6 +404,8 @@ function CreateMeal() {
                   placeholder="0"
                 />
               </div>
+              </div>
+              <div className="col-md-4">
               <div className="mb-3">
                 <label htmlFor="filterMaxSugar">Azúcar Máximo:</label>
                 <input
@@ -462,6 +468,8 @@ function CreateMeal() {
                   placeholder="10000"
                 />
               </div>
+              </div>
+              </div>
 
             <h3>Platos</h3>
                 {selectedDishes.map((dish, index) => (
@@ -488,38 +496,50 @@ function CreateMeal() {
         )}
 
         {/* Totales Nutricionales */}
-        <div className="card mt-3">
-            <div className="card-body">
-                <h5 className="card-title">Totales Nutricionales</h5>
-                <p className="card-text">Calorías: {nutritionTotals.calories}</p>
-                <p className="card-text">Proteína: {nutritionTotals.protein}</p>
-                <p className="card-text">Carbohidratos: {nutritionTotals.carbohydrates}</p>
-                <p className="card-text">Grasas: {nutritionTotals.fat}</p>
-                <p className="card-text">Azúcar: {nutritionTotals.sugar}</p>
-                <p className="card-text">Fibra: {nutritionTotals.fiber}</p>
-                <p className="card-text">Grasas Saturadas: {nutritionTotals.saturated_fat}</p>
-                <p className="card-text">Libre de Gluten: {nutritionTotals.gluten_free ? 'Sí' : 'No'}</p>
-                <p className="card-text">Libre de Lactosa: {nutritionTotals.lactose_free ? 'Sí' : 'No'}</p>
-                <p className="card-text">Vegano: {nutritionTotals.vegan ? 'Sí' : 'No'}</p>
-                <p className="card-text">Vegetariano: {nutritionTotals.vegetarian ? 'Sí' : 'No'}</p>
-                <p className="card-text">Pescetariano: {nutritionTotals.pescetarian ? 'Sí' : 'No'}</p>
-                <p className="card-text">Contiene Carne: {nutritionTotals.contains_meat ? 'Sí' : 'No'}</p>
-                <p className="card-text">Contiene Vegetales: {nutritionTotals.contains_vegetables ? 'Sí' : 'No'}</p>
-                <p className="card-text">Contiene Pescado/Mariscos/Enlatados/Conservas: {nutritionTotals.contains_fish_shellfish_canned_preserved ? 'Sí' : 'No'}</p>
-                <p className="card-text">Cereal: {nutritionTotals.cereal ? 'Sí' : 'No'}</p>
-                <p className="card-text">Pasta o Arroz: {nutritionTotals.pasta_or_rice ? 'Sí' : 'No'}</p>
-                <p className="card-text">Lácteos (Yogur, Queso): {nutritionTotals.dairy_yogurt_cheese ? 'Sí' : 'No'}</p>
-                <p className="card-text">Fruta: {nutritionTotals.fruit ? 'Sí' : 'No'}</p>
-                <p className="card-text">Nueces: {nutritionTotals.nuts ? 'Sí' : 'No'}</p>
-                <p className="card-text">Legumbres: {nutritionTotals.legume ? 'Sí' : 'No'}</p>
-                <p className="card-text">Salsas o Condimentos: {nutritionTotals.sauce_or_condiment ? 'Sí' : 'No'}</p>
-                <p className="card-text">Embutidos: {nutritionTotals.deli_meat ? 'Sí' : 'No'}</p>
-                <p className="card-text">Pan o Tostadas: {nutritionTotals.bread_or_toast ? 'Sí' : 'No'}</p>
-                <p className="card-text">Huevo: {nutritionTotals.egg ? 'Sí' : 'No'}</p>
-                <p className="card-text">Bebida Especial o Suplemento: {nutritionTotals.special_drink_or_supplement ? 'Sí' : 'No'}</p>
-                <p className="card-text">Tubérculo: {nutritionTotals.tuber ? 'Sí' : 'No'}</p>
-                <p className="card-text">Otro: {nutritionTotals.other ? 'Sí' : 'No'}</p>
-            </div>
+        <div className="card mt-4">
+  <div className="card-header">
+    Totales Nutricionales
+  </div>
+  <div className="row">
+    {/* Columna 1 */}
+    <div className="col-md-4">
+      <ul className="list-group list-group-flush">
+        <li className="list-group-item">Calorías: {nutritionTotals.calories.toFixed(2)}</li>
+        <li className="list-group-item">Proteínas: {nutritionTotals.protein.toFixed(2)}g</li>
+        <li className="list-group-item">Carbohidratos: {nutritionTotals.carbohydrates.toFixed(2)}g</li>
+        <li className="list-group-item">Grasas: {nutritionTotals.fat.toFixed(2)}g</li>
+        <li className="list-group-item">Azúcares: {nutritionTotals.sugar.toFixed(2)}g</li>
+        <li className="list-group-item">Fibra: {nutritionTotals.fiber.toFixed(2)}g</li>
+        <li className="list-group-item">Grasas Saturadas: {nutritionTotals.saturated_fat.toFixed(2)}g</li>
+      </ul>
+    </div>
+
+    {/* Columna 2 */}
+    <div className="col-md-4">
+      <ul className="list-group list-group-flush">
+        <li className="list-group-item">Libre de Gluten: {nutritionTotals.gluten_free ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Libre de Lactosa: {nutritionTotals.lactose_free ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Vegano: {nutritionTotals.vegan ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Vegetariano: {nutritionTotals.vegetarian ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Pescetariano: {nutritionTotals.pescetarian ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Contiene Carne: {nutritionTotals.contains_meat ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Contiene Vegetales: {nutritionTotals.contains_vegetables ? 'Sí' : 'No'}</li>
+      </ul>
+    </div>
+
+    {/* Columna 3 */}
+    <div className="col-md-4">
+      <ul className="list-group list-group-flush">
+        <li className="list-group-item">Contiene Pescado/Mariscos: {nutritionTotals.contains_fish_shellfish_canned_preserved ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Cereal: {nutritionTotals.cereal ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Pasta o Arroz: {nutritionTotals.pasta_or_rice ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Lácteos (Yogur, Queso): {nutritionTotals.dairy_yogurt_cheese ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Fruta: {nutritionTotals.fruit ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Frutos Secos: {nutritionTotals.nuts ? 'Sí' : 'No'}</li>
+        <li className="list-group-item">Legumbres: {nutritionTotals.legume ? 'Sí' : 'No'}</li>
+      </ul>
+    </div>
+  </div>
         </div>
     </div>
   );
