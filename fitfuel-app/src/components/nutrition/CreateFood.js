@@ -35,28 +35,36 @@ function CreateFood() {
     };
 
     const [foodData, setFoodData] = useState(initialState);
+    const [image, setImage] = useState(null);
     const [creationSuccess, setCreationSuccess] = useState(false);
     const [error, setError] = useState("");
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setFoodData({
-            ...foodData,
-            [name]: type === 'checkbox' ? checked : value
-        });
+        if (type === 'file') {
+            setImage(e.target.files[0]);
+        } else {
+            setFoodData({
+                ...foodData,
+                [name]: type === 'checkbox' ? checked : value
+            });
+        }
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         setError("");
-        console.log('Submitting food data:', foodData);
+        const formData = new FormData();
+        Object.keys(foodData).forEach(key => formData.append(key, foodData[key]));
+        if (image) {
+            formData.append('image', image);
+        }
+
+        console.log('Submitting food data with image:', formData);
 
         fetch('http://127.0.0.1:8000/nutrition/foods/', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(foodData),
+            body: formData,
         })
         .then(response => {
             if (!response.ok) {
@@ -68,6 +76,7 @@ function CreateFood() {
             console.log('Food created successfully:', data);
             setCreationSuccess(true);
             setFoodData(initialState);
+            setImage(null);
         })
         .catch((error) => {
             console.error('Error creating food:', error);
@@ -78,8 +87,8 @@ function CreateFood() {
     if (creationSuccess) {
         return (
             <div>
-                <p>La Comida se ha creado correctamente.</p>
-                <a href="/nutrition/foods">Volver a lista de Comidas</a><br />
+                <p>El alimento se ha creado correctamente.</p>
+                <a href="/nutrition/foods">Volver a lista de alimentos</a><br />
                 <button onClick={() => setCreationSuccess(false)}>Crear una nueva</button>
             </div>
         );
@@ -87,9 +96,9 @@ function CreateFood() {
 
     return (
         <div className="container mt-5">
-            <h2>Create Food</h2>
+            <h2>Crear Alimento</h2>
             {error && <div className="alert alert-danger" role="alert">{error}</div>}
-            {creationSuccess && <div className="alert alert-success" role="alert">La comida ha sido creada correctamente.</div>}
+            {creationSuccess && <div className="alert alert-success" role="alert">El alimento ha sido creado correctamente.</div>}
 
             <div className="row">
                 <div className="col-md-6">
@@ -453,6 +462,17 @@ function CreateFood() {
                     </div>
 
                 </div>
+
+                <div className="mb-3">
+                    <label htmlFor="image" className="form-label">Image:</label>
+                    <input
+                        type="file"
+                        className="form-control"
+                        id="image"
+                        onChange={handleChange}
+                    />
+                </div>
+
             </div>
 
             <form onSubmit={handleSubmit}>

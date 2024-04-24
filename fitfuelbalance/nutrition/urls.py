@@ -24,4 +24,5 @@ urlpatterns = [
     path('dailydiets/today', TodayDailyDietView.as_view(), name='today-dailydiets'),
     path('dailydiets/date/<str:date>', DailyDietByDateView.as_view(), name='dailydiet-by-date'),
     path('assignOption/', views.assignOption, name='assignOption'),
+    path('options/<int:option_id>/pdf/', generate_option_pdf, name='generate_option_pdf'),
 ]

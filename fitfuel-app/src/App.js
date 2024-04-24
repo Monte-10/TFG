@@ -34,6 +34,15 @@ import ListIngredient from './components/nutrition/ListIngredient';
 import IngredientDetails from './components/nutrition/IngredientDetails';
 import ListDish from './components/nutrition/ListDish';
 import ListMeal from './components/nutrition/ListMeal';
+import EditFood from './components/nutrition/EditFood';
+import EditIngredient from './components/nutrition/EditIngredient';
+import EditDish from './components/nutrition/EditDish';
+import EditMeal from './components/nutrition/EditMeal';
+import EditDiet from './components/nutrition/EditDiet';
+import ListExercise from './components/sport/ListExercise';
+import EditTraining from './components/sport/EditTraining';
+import ListTraining from './components/sport/ListTraining';
+import TrainingDetails from './components/sport/TrainingDetails';
 
 function App() {
     const [authToken, setAuthToken] = useState(localStorage.getItem('authToken') || '');
@@ -181,18 +190,18 @@ function App() {
                                         </LinkContainer>
                                         </Nav.Item>
                                         <Nav.Item>
-                                        <LinkContainer to="/sport/exercise/:id">
-                                            <Nav.Link>Detalles de Ejercicio</Nav.Link>
-                                        </LinkContainer>
-                                        </Nav.Item>
-                                        <Nav.Item>
-                                        <LinkContainer to="/sport/edit-exercise/:id">
-                                            <Nav.Link>Editar Ejercicio</Nav.Link>
+                                        <LinkContainer to="/sport/list-exercise">
+                                            <Nav.Link>Lista de Ejercicios</Nav.Link>
                                         </LinkContainer>
                                         </Nav.Item>
                                         <Nav.Item>
                                         <LinkContainer to="/sport/create-training">
                                             <Nav.Link>Crear Entrenamiento</Nav.Link>
+                                        </LinkContainer>
+                                        </Nav.Item>
+                                        <Nav.Item>
+                                        <LinkContainer to="/sport/list-training">
+                                            <Nav.Link>Listar Entrenamiento</Nav.Link>
                                         </LinkContainer>
                                         </Nav.Item>
                                     </Nav>
@@ -233,6 +242,15 @@ function App() {
                                 <Route path="/nutrition/ingredients/:ingredientId" element={<IngredientDetails />} />
                                 <Route path="/nutrition/list-dish" element={<ListDish />} />
                                 <Route path="/nutrition/list-meal" element={<ListMeal />} />
+                                <Route path="/nutrition/edit-food/:foodId" element={<EditFood />} />
+                                <Route path="/nutrition/edit-ingredient/:ingredientId" element={<EditIngredient />} />
+                                <Route path="/nutrition/edit-dish/:dishId" element={<EditDish />} />
+                                <Route path="/nutrition/edit-meal/:mealId" element={<EditMeal />} />
+                                <Route path="/nutrition/edit-diet/:dietId" element={<EditDiet />} />
+                                <Route path="/sport/list-exercise" element={<ListExercise />} />
+                                <Route path="/sport/edit-training/:id" element={<EditTraining />} />
+                                <Route path="/sport/list-training" element={<ListTraining />} />
+                                <Route path="/sport/training/:id" element={<TrainingDetails />} />
                                 <Route path="/search-trainer" element={
                                 <SearchTrainer onSearch={handleSearchTrainers} />                                
                             } />
@@ -274,6 +292,11 @@ function Nutrition() {
       <Link to="/nutrition/assign-option">Assign Option</Link><br />
       <Link to="/nutrition/list-ingredient">List Ingredient</Link><br />
       <Link to="/nutrition/list-food">List Food</Link><br />
+      <Link to="/nutrition/edit-food/:id">Edit Food</Link><br />
+      <Link to="/nutrition/edit-ingredient/:id">Edit Ingredient</Link><br />
+      <Link to="/nutrition/edit-dish/:id">Edit Dish</Link><br />
+      <Link to="/nutrition/edit-meal/:id">Edit Meal</Link><br />
+      <Link to="/nutrition/edit-diet/:id">Edit Diet</Link><br />
     </div>
   );
 }
@@ -286,6 +309,10 @@ function Sport() {
       <Link to="/sport/exercise/:id">Exercise Details</Link><br />
       <Link to="/sport/edit-exercise/:id">Edit Exercise</Link><br />
       <Link to="/sport/create-training">Create Training</Link><br />
+      <Link to="/sport/list-exercise">List Exercise</Link><br />
+      <Link to="/sport/edit-training/:id">Edit Training</Link><br />
+      <Link to="/sport/list-training">List Training</Link><br />
+      <Link to="/sport/training/:id">Training Details</Link><br />
     </div>
   );
 }

@@ -33,6 +33,7 @@ class Food(models.Model):
     special_drink_or_supplement = models.BooleanField(default=False)
     tuber = models.BooleanField(default=False)
     other = models.BooleanField(default=False)
+    image = models.ImageField(upload_to='foods/images/', null=True, blank=True)
 
     def __str__(self):
         return self.name

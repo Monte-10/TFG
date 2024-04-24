@@ -8,6 +8,7 @@ function AssignOptionToUser() {
   const [selectedDate, setSelectedDate] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [pdfDownloadUrl, setPdfDownloadUrl] = useState('');
 
   useEffect(() => {
     const fetchUsersAndOptions = async () => {
@@ -32,42 +33,82 @@ function AssignOptionToUser() {
     fetchUsersAndOptions();
   }, []);
 
-  const handleSubmit = async (event) => {
+  const handleDownloadPdf = async (optionId) => {
+    const authToken = localStorage.getItem('authToken');
+    const response = await fetch(`http://127.0.0.1:8000/nutrition/options/${optionId}/pdf/`, {
+        headers: {
+            'Authorization': `Token ${authToken}`,
+        },
+    });
+
+    if (response.ok) {
+        const blob = await response.blob();
+        const downloadUrl = window.URL.createObjectURL(blob);
+        setPdfDownloadUrl(downloadUrl); // Guardamos la URL para descargar luego
+    } else {
+        // Manejar el caso de que la respuesta no esté bien
+        console.error('Error downloading PDF:', await response.text());
+    }
+};
+
+const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/nutrition/assignOption/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Token ${localStorage.getItem('authToken')}`,
-        },
-        body: JSON.stringify({
-          userId: selectedUser,
-          optionId: selectedOption,
-          startDate: selectedDate,
-        }),
-      });
+        const response = await fetch('http://127.0.0.1:8000/nutrition/assignOption/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${localStorage.getItem('authToken')}`,
+            },
+            body: JSON.stringify({
+                userId: selectedUser,
+                optionId: selectedOption,
+                startDate: selectedDate,
+            }),
+        });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Failed to assign option: ${errorText}`);
-      }
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Failed to assign option: ${errorText}`);
+        }
 
-      setSuccess(true); // Establecer el éxito de la operación
-      setError('');
+        const responseData = await response.json();
+        setSuccess(true);
+        setError('');
+
+        // Suponiendo que el ID de la opción se devuelva bajo una clave 'optionId'
+        const optionId = responseData.optionId;
+        if (optionId) {
+            handleDownloadPdf(optionId);
+        } else {
+            console.error('Option ID not found in response:', responseData);
+            setError('Failed to get the option ID. PDF download is not available.');
+        }
 
     } catch (error) {
-      setError(`Failed to assign option. Please try again. Error: ${error.message}`);
-      setSuccess(false);
+        console.error('Error while assigning option:', error);
+        setError(`Failed to assign option. Please try again. Error: ${error.toString()}`);
+        setSuccess(false);
     }
-  };
-
+};
+  
   return (
     <div className="container mt-4">
       <h2>Assign Option to User</h2>
       {error && <div className="alert alert-danger" role="alert">{error}</div>}
-      {success && <div className="alert alert-success" role="alert">Option assigned successfully!</div>}
+      {success && (
+        <>
+          <div className="alert alert-success" role="alert">
+            Option assigned successfully!
+            {pdfDownloadUrl && (
+              <a href={pdfDownloadUrl} download={`assigned_option.pdf`} className="btn btn-success">
+                Download PDF
+              </a>
+            )}
+          </div>
+        </>
+      )}
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="userSelect" className="form-label">User:</label>

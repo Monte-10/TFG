@@ -246,7 +246,7 @@ function CreateDish() {
             console.log('Plato creado con éxito:', data);
             // Manejo post-creación: mostrar mensaje de éxito, resetear formulario, etc.
             setDishCreated(true);
-            setCreatedDishId(data.id); // Suponiendo que la API retorna el ID del plato creado
+            setCreatedDishId(data.id);
             setName('');
             setSelectedUser('');
             setSelectedIngredients([{ ingredientId: '', quantity: 0 }]);

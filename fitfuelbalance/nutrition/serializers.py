@@ -37,6 +37,7 @@ class IngredientSerializer(serializers.ModelSerializer):
     special_drink_or_supplement = serializers.SerializerMethodField()
     tuber = serializers.SerializerMethodField()
     other = serializers.SerializerMethodField()
+    food_image = serializers.ImageField(source='food.image', read_only=True)
     
     class Meta:
         model = Ingredient

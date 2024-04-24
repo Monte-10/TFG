@@ -25,6 +25,10 @@ function FoodDetails() {
         <div className="container mt-5">
             <h1>Detalles del Alimento</h1>
             <div className="card">
+                {foodDetails.image && (
+                    <img src={foodDetails
+                        .image} className="card-img-top" alt={foodDetails.name} />
+                )}
                 <div className="card-header">
                     {foodDetails.name}
                 </div>
