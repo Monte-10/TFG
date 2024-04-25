@@ -1,4 +1,7 @@
 {
+  "engines": {
+    "node": "16"
+  },
   "name": "fitfuel-app",
   "version": "0.1.0",
   "private": true,
