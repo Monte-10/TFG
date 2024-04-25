@@ -8,9 +8,10 @@ function CreateDiet() {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/user/regularusers/')
+    fetch(`${apiUrl}/user/regularusers/`)
       .then(response => response.json())
       .then(data => {
         setUsers(data);
@@ -18,7 +19,7 @@ function CreateDiet() {
           setSelectedUser(data[0].id.toString());
         }
       });
-  }, []);
+  }, [apiUrl]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -30,7 +31,7 @@ function CreateDiet() {
     };
 
     console.log("Sending diet data", dietData);
-    fetch('http://127.0.0.1:8000/nutrition/diet/', {
+    fetch(`${apiUrl}/nutrition/diet/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

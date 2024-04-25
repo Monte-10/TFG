@@ -4,6 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 function ListMeal() {
     const [meals, setMeals] = useState([]);
     const [filteredMeals, setFilteredMeals] = useState([]);
+    const apiUrl = process.env.REACT_APP_API_URL;
     const [filters, setFilters] = useState({
         name: '',
         minCalories: '',
@@ -96,7 +97,7 @@ function ListMeal() {
     const handleDeleteMeal = (mealId) => {
         if (window.confirm('¿Estás seguro de que quieres eliminar esta comida?')) {
             // Aquí debes reemplazar con la URL de tu API para eliminar una comida
-            fetch(`http://127.0.0.1:8000/nutrition/meals/${mealId}/`, {
+            fetch(`${apiUrl}/nutrition/meals/${mealId}/`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Token ${localStorage.getItem('authToken')}`,
@@ -165,7 +166,7 @@ function ListMeal() {
 
     useEffect(() => {
         // Reemplaza con la URL de tu API para obtener las comidas
-        fetch('http://127.0.0.1:8000/nutrition/meals/', {
+        fetch(`${apiUrl}/nutrition/meals/`, {
             headers: {
                 'Authorization': `Token ${localStorage.getItem('authToken')}`,
             },
@@ -176,7 +177,7 @@ function ListMeal() {
             setFilteredMeals(data); // Inicializar las comidas filtradas con todas las comidas
         })
         .catch(error => console.error('Error fetching meals:', error));
-    }, []);
+    }, [apiUrl]);
 
     return (
         <div className="container">

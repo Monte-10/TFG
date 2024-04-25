@@ -6,6 +6,7 @@ function ManageDailyDiet() {
 const [dietName, setDietName] = useState('');
 const [dailyDiets, setDailyDiets] = useState([]);
 const [currentPage, setCurrentPage] = useState(0);
+const apiUrl = process.env.REACT_APP_API_URL;
 const [meals, setMeals] = useState([]);
 const [selectedMeals, setSelectedMeals] = useState({});
 const [mealFilters, setMealFilters] = useState({
@@ -29,7 +30,7 @@ const [mealFilters, setMealFilters] = useState({
 useEffect(() => {
     const fetchDailyDiets = async () => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/nutrition/diet/${dietId}/`);
+            const response = await fetch(`${apiUrl}/nutrition/diet/${dietId}/`);
             if (!response.ok) throw new Error('Failed to fetch daily diets');
             const data = await response.json();
             setDailyDiets(data.daily_diets || []);
@@ -50,7 +51,7 @@ useEffect(() => {
   useEffect(() => {
     const fetchMeals = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/nutrition/meals/');
+        const response = await fetch(`${apiUrl}/nutrition/meals/`);
         if (!response.ok) throw new Error('Failed to fetch meals');
         const data = await response.json();
         setMeals(data);
@@ -118,7 +119,7 @@ const handleMealRemoval = (mealId, date) => {
     const mealIds = selectedMeals[dailyDiet.date] || [];
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/nutrition/daily_diets/${dailyDiet.id}/`, {
+      const response = await fetch(`${apiUrl}/nutrition/daily_diets/${dailyDiet.id}/`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

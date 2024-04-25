@@ -12,10 +12,10 @@ function AssignOptionToUser() {
   useEffect(() => {
     const fetchUsersAndOptions = async () => {
       try {
-        const usersResponse = await fetch('http://127.0.0.1:8000/user/regularusers/', {
+        const usersResponse = await fetch('${apiUrl}/user/regularusers/', {
           headers: { 'Authorization': `Token ${localStorage.getItem('authToken')}` },
         });
-        const optionsResponse = await fetch('http://127.0.0.1:8000/nutrition/options/', {
+        const optionsResponse = await fetch('${apiUrl}/nutrition/options/', {
           headers: { 'Authorization': `Token ${localStorage.getItem('authToken')}` },
         });
         if (!usersResponse.ok || !optionsResponse.ok) throw new Error('Failed to fetch data');
@@ -36,7 +36,7 @@ function AssignOptionToUser() {
     event.preventDefault();
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/nutrition/assignOption/', {
+      const response = await fetch('${apiUrl}/nutrition/assignOption/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

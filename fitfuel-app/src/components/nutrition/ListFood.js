@@ -4,6 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 function ListFood() {
     const [foods, setFoods] = useState([]);
     const [filteredFoods, setFilteredFoods] = useState([]);
+    const apiUrl = process.env.REACT_APP_API_URL;
     const [filters, setFilters] = useState({
         name: '',
         minCalories: '',
@@ -47,7 +48,7 @@ function ListFood() {
 
     const handleDeleteFood = (foodId) => {
         if (window.confirm('¿Estás seguro de que quieres eliminar este alimento?')) {
-            fetch(`http://127.0.0.1:8000/nutrition/foods/${foodId}/`, {
+            fetch(`${apiUrl}/nutrition/foods/${foodId}/`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Token ${localStorage.getItem('authToken')}`,
@@ -65,7 +66,7 @@ function ListFood() {
     };
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/nutrition/foods/', {
+        fetch(`${apiUrl}/nutrition/foods/`, {
             headers: {
                 'Authorization': `Token ${localStorage.getItem('authToken')}`,
             },

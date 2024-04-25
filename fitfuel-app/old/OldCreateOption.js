@@ -12,7 +12,7 @@ function CreateOption() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/nutrition/weekoptions/', {
+    fetch('${apiUrl}/nutrition/weekoptions/', {
       headers: {
         'Authorization': `Token ${localStorage.getItem('authToken')}`,
       },
@@ -40,7 +40,7 @@ function CreateOption() {
 
     console.log("Sending option data", optionData);
 
-    fetch('http://127.0.0.1:8000/nutrition/options/', {
+    fetch('${apiUrl}/nutrition/options/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

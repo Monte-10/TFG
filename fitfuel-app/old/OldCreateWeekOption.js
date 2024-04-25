@@ -16,7 +16,7 @@ function CreateWeekOption() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/nutrition/dayoptions/', {
+    fetch('${apiUrl}/nutrition/dayoptions/', {
       headers: {
         'Authorization': `Token ${localStorage.getItem('authToken')}`,
       },
@@ -50,7 +50,7 @@ function CreateWeekOption() {
 
     console.log("Sending week option data", weekOptionData);
 
-    fetch('http://127.0.0.1:8000/nutrition/weekoptions/', {
+    fetch('${apiUrl}/nutrition/weekoptions/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -38,6 +38,7 @@ function CreateFood() {
     const [image, setImage] = useState(null);
     const [creationSuccess, setCreationSuccess] = useState(false);
     const [error, setError] = useState("");
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -62,7 +63,7 @@ function CreateFood() {
 
         console.log('Submitting food data with image:', formData);
 
-        fetch('http://127.0.0.1:8000/nutrition/foods/', {
+        fetch(`${apiUrl}/nutrition/foods/`, {
             method: 'POST',
             body: formData,
         })

@@ -9,10 +9,11 @@ function EditExercise() {
   const [type, setType] = useState('');
   const [image, setImage] = useState(null);
   const [videoUrl, setVideoUrl] = useState('');
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     // Cargar los datos existentes del ejercicio
-    fetch(`http://127.0.0.1:8000/sport/exercises/${id}/`)
+    fetch(`${apiUrl}/sport/exercises/${id}/`)
       .then(response => response.json())
       .then(data => {
         setName(data.name);
@@ -21,7 +22,7 @@ function EditExercise() {
         setVideoUrl(data.video_url);
       })
       .catch(error => console.error('Error:', error));
-  }, [id]);
+  }, [id, apiUrl]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -32,7 +33,7 @@ function EditExercise() {
     if (image) formData.append('image', image);
     formData.append('video_url', videoUrl);
 
-    fetch(`http://127.0.0.1:8000/sport/exercises/${id}/`, {
+    fetch(`${apiUrl}/sport/exercises/${id}/`, {
       method: 'PUT', // or PATCH depending on your API
       body: formData,
     })

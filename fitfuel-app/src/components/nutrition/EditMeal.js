@@ -10,9 +10,10 @@ function EditMeal() {
   const [selectedUser, setSelectedUser] = useState('');
   const [name, setName] = useState('');
   const [mealUpdated, setMealUpdated] = useState(false);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/nutrition/meals/${mealId}/`)
+    fetch(`${apiUrl}/nutrition/meals/${mealId}/`)
       .then(response => response.json())
       .then(data => {
         setName(data.name);
@@ -21,12 +22,12 @@ function EditMeal() {
       })
       .catch(error => console.error('Error fetching meal details:', error));
 
-    fetch('http://127.0.0.1:8000/nutrition/dishes/')
+    fetch(`${apiUrl}/nutrition/dishes/`)
       .then(response => response.json())
       .then(setDishes)
       .catch(error => console.error('Error fetching dishes:', error));
 
-    fetch('http://127.0.0.1:8000/user/regularusers/')
+    fetch(`${apiUrl}/user/regularusers/`)
       .then(response => response.json())
       .then(data => {
         setUsers(data);
@@ -139,7 +140,7 @@ function EditMeal() {
     };
   
     try {
-      const response = await fetch(`http://127.0.0.1:8000/nutrition/meals/${mealId}/`, {
+      const response = await fetch(`${apiUrl}/nutrition/meals/${mealId}/`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

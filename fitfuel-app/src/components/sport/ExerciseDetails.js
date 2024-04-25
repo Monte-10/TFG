@@ -5,13 +5,14 @@ function ExerciseDetails() {
   const { id } = useParams();
   const [exercise, setExercise] = useState(null);
   const navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/sport/exercises/${id}/`)
+    fetch(`${apiUrl}/sport/exercises/${id}/`)
       .then(response => response.json())
       .then(data => setExercise(data))
       .catch(error => console.error('Error:', error));
-  }, [id]);
+  }, [id, apiUrl]);
 
   const handleEdit = () => {
     navigate(`/sport/edit-exercise/${id}`);

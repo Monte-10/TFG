@@ -6,9 +6,10 @@ function TrainingDetails() {
   const [training, setTraining] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/sport/trainings/${id}/`, {
+    fetch(`${apiUrl}/sport/trainings/${id}/`, {
       headers: {
         'Authorization': `Token ${localStorage.getItem('authToken')}`
       }

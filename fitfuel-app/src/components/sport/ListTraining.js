@@ -4,9 +4,10 @@ import { useNavigate, Link } from 'react-router-dom';
 function ListTraining() {
     const [trainings, setTrainings] = useState([]);
     const navigate = useNavigate();
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/sport/trainings/', {
+        fetch(`${apiUrl}/sport/trainings/`, {
             headers: {
                 'Authorization': `Token ${localStorage.getItem('authToken')}`
             }
@@ -20,7 +21,7 @@ function ListTraining() {
 
     const handleDeleteTraining = (trainingId) => {
         if (window.confirm('¿Estás seguro de que quieres eliminar este entrenamiento?')) {
-            fetch(`http://127.0.0.1:8000/sport/trainings/${trainingId}/`, {
+            fetch(`${apiUrl}/sport/trainings/${trainingId}/`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Token ${localStorage.getItem('authToken')}`

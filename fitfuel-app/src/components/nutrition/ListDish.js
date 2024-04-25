@@ -42,13 +42,14 @@ function ListDish() {
         tuber: false,
         other: false
     });
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const navigate = useNavigate();
 
     const handleDeleteDish = (dishId) => {
         if (window.confirm('¿Estás seguro de que quieres eliminar esta comida?')) {
             // Aquí debes reemplazar con la URL de tu API para eliminar una comida
-            fetch(`http://127.0.0.1:8000/nutrition/dishes/${dishId}/`, {
+            fetch(`${apiUrl}/nutrition/dishes/${dishId}/`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Token ${localStorage.getItem('authToken')}`,
@@ -68,7 +69,7 @@ function ListDish() {
 
     useEffect(() => {
         // URL para obtener los platos
-        fetch('http://127.0.0.1:8000/nutrition/dishes/', {
+        fetch(`${apiUrl}/nutrition/dishes/`, {
             headers: {
                 'Authorization': `Token ${localStorage.getItem('authToken')}`,
             },

@@ -7,13 +7,15 @@ const UploadFood = () => {
     setFile(event.target.files[0]);
   };
 
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   const handleFormSubmit = (event) => {
     event.preventDefault();
     if (file) {
       const formData = new FormData();
       formData.append('csv_file', file);
 
-      fetch('http://127.0.0.1:8000/nutrition/food_upload/', {
+      fetch(`${apiUrl}/nutrition/food_upload/`, {
         method: 'POST',
         body: formData,
       })

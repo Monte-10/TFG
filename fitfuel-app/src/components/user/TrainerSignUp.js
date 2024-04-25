@@ -6,6 +6,7 @@ function TrainerSignUp({ onSignUpSuccess }) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -16,7 +17,7 @@ function TrainerSignUp({ onSignUpSuccess }) {
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/user/signup/trainer/', {
+      const response = await fetch(`${apiUrl}/user/signup/trainer/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -48,7 +48,7 @@ function CreateFood() {
         setError("");
         console.log('Submitting food data:', foodData);
 
-        fetch('http://127.0.0.1:8000/nutrition/foods/', {
+        fetch('${apiUrl}/nutrition/foods/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

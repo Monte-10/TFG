@@ -12,7 +12,7 @@ function EditExercise() {
 
   useEffect(() => {
     // Cargar los datos existentes del ejercicio
-    fetch(`http://127.0.0.1:8000/sport/exercises/${id}/`)
+    fetch(`${apiUrl}/sport/exercises/${id}/`)
       .then(response => response.json())
       .then(data => {
         setName(data.name);
@@ -32,7 +32,7 @@ function EditExercise() {
     formData.append('video_url', videoUrl);
     if (image) formData.append('image', image);
 
-    fetch(`http://127.0.0.1:8000/sport/exercises/${id}/`, {
+    fetch(`${apiUrl}/sport/exercises/${id}/`, {
       method: 'PUT', // o PATCH dependiendo de cómo tu API maneje las actualizaciones
       body: formData,
     })

@@ -8,18 +8,19 @@ function CreateTraining() {
   const [selectedUser, setSelectedUser] = useState('');
   const [users, setUsers] = useState([]);
   const [error, setError] = useState('');
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/sport/exercises/')
+    fetch(`${apiUrl}/sport/exercises/`)
       .then(response => response.json())
       .then(data => setExercises(data))
       .catch(error => console.error('Error:', error));
 
-    fetch('http://127.0.0.1:8000/user/regularusers/')
+    fetch(`${apiUrl}/user/regularusers/`)
       .then(response => response.json())
       .then(data => setUsers(data))
       .catch(error => console.error('Error al obtener usuarios:', error));
-  }, []);
+  }, [apiUrl]);
 
   const handleAddExercise = () => {
     setSelectedExercises([...selectedExercises, { exerciseId: '', repetitions: '', sets: '', weight: '', time: null }]);
@@ -48,7 +49,7 @@ function CreateTraining() {
       }))
     };
 
-    fetch('http://127.0.0.1:8000/sport/trainings/', {
+    fetch(`${apiUrl}/sport/trainings/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

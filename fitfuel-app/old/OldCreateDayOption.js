@@ -15,7 +15,7 @@ function CreateDayOption() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/nutrition/meals/', {
+    fetch('${apiUrl}/nutrition/meals/', {
       headers: {
         'Authorization': `Token ${localStorage.getItem('authToken')}`,
       },
@@ -48,7 +48,7 @@ function CreateDayOption() {
 
     console.log("Sending option day data", optionData);
 
-    fetch('http://127.0.0.1:8000/nutrition/dayoptions/', {
+    fetch('${apiUrl}/nutrition/dayoptions/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

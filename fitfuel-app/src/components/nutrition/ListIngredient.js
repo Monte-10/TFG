@@ -4,6 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 function ListIngredients() {
     const [ingredients, setIngredients] = useState([]);
     const [filteredIngredients, setFilteredIngredients] = useState([]);
+    const apiUrl = process.env.REACT_APP_API_URL;
     const [filters, setFilters] = useState({
         name: '',
         minCalories: '',
@@ -47,7 +48,7 @@ function ListIngredients() {
 
     const handleDeleteIngredient = (ingredientId) => {
         if (window.confirm('¿Estás seguro de que quieres eliminar este ingrediente?')) {
-            fetch(`http://127.0.0.1:8000/nutrition/ingredients/${ingredientId}/`, {
+            fetch(`${apiUrl}/nutrition/ingredients/${ingredientId}/`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Token ${localStorage.getItem('authToken')}`,
@@ -65,7 +66,7 @@ function ListIngredients() {
     };
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/nutrition/ingredients/', {
+        fetch(`${apiUrl}/nutrition/ingredients/`, {
             headers: {
                 'Authorization': `Token ${localStorage.getItem('authToken')}`,
             },

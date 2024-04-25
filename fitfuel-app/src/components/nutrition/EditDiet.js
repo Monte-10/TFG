@@ -10,9 +10,10 @@ function EditDiet() {
   const [startDate, setStartDate] = useState(new Date().toISOString().slice(0, 10));
   const [endDate, setEndDate] = useState(new Date().toISOString().slice(0, 10));
   const [loadingError, setLoadingError] = useState(false);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/nutrition/diet/${dietId}/`)
+    fetch(`${apiUrl}/nutrition/diet/${dietId}/`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Failed to fetch diet details');
@@ -34,7 +35,7 @@ function EditDiet() {
         setLoadingError(true);
       });
 
-    fetch('http://127.0.0.1:8000/user/regularusers/')
+    fetch(`${apiUrl}/user/regularusers/`)
       .then(response => response.json())
       .then(data => setUsers(data));
   }, [dietId]);
@@ -48,7 +49,7 @@ function EditDiet() {
       end_date: endDate,
     };
 
-    fetch(`http://127.0.0.1:8000/nutrition/diet/${dietId}/`, {
+    fetch(`${apiUrl}/nutrition/diet/${dietId}/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

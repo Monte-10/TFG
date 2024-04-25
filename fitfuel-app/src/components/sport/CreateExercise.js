@@ -7,6 +7,7 @@ function CreateExercise() {
   const [image, setImage] = useState(null);
   const [videoUrl, setVideoUrl] = useState('');
   const [exerciseCreated, setExerciseCreated] = useState(false);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -20,7 +21,7 @@ function CreateExercise() {
 
     console.log("Sending exercise data");
 
-    fetch('http://127.0.0.1:8000/sport/exercises/', {
+    fetch(`${apiUrl}/sport/exercises/`, {
       method: 'POST',
       body: formData,
     })

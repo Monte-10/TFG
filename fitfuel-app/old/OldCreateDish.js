@@ -13,13 +13,13 @@ function CreateDish() {
   const [createdDishId, setCreatedDishId] = useState(null);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/nutrition/ingredients/')
+    fetch('${apiUrl}/nutrition/ingredients/')
       .then(response => response.json())
       .then(data => {
         setIngredients(data);
       });
 
-  fetch('http://127.0.0.1:8000/user/regularusers/')
+  fetch('${apiUrl}/user/regularusers/')
       .then(response => response.json())
       .then(data => {
         setUsers(data);
@@ -59,7 +59,7 @@ function CreateDish() {
 
     console.log("Sending dish data", dishData);
 
-    fetch('http://127.0.0.1:8000/nutrition/dishes/', {
+    fetch('${apiUrl}/nutrition/dishes/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -14,9 +14,10 @@ function CreateDayOption() {
   const [meals, setMeals] = useState([]);
   const [optionCreated, setOptionCreated] = useState(false);
   const [error, setError] = useState('');
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/nutrition/meals/', {
+    fetch(`${apiUrl}/nutrition/meals/`, {
       headers: {
         'Authorization': `Token ${localStorage.getItem('authToken')}`,
       },
@@ -169,7 +170,7 @@ function CreateDayOption() {
 
     // Enviando la solicitud al servidor
     try {
-      const response = await fetch('http://127.0.0.1:8000/nutrition/dayoptions/', {
+      const response = await fetch(`${apiUrl}/nutrition/dayoptions/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

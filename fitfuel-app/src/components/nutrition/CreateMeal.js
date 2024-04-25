@@ -12,6 +12,7 @@ function CreateMeal() {
   const [name, setName] = useState('');
   const [mealCreated, setMealCreated] = useState(false);
   const [createdMealId, setCreatedMealId] = useState(null);
+  const apiUrl = process.env.REACT_APP_API_URL;
   const [filter, setFilter] = useState({
     name: '',
     minCalories: { value: '', active: false },
@@ -31,7 +32,7 @@ function CreateMeal() {
 })
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/nutrition/dishes/')
+    fetch(`${apiUrl}/nutrition/dishes/`)
     .then(response => response.json())
     .then(data => {
       const filteredDishes = data.filter(dish => {
@@ -103,7 +104,7 @@ function CreateMeal() {
       setDishes(filteredDishes);
     });    
 
-    fetch('http://127.0.0.1:8000/user/regularusers/')
+    fetch(`${apiUrl}/user/regularusers/`)
       .then(response => response.json())
       .then(data => {
         setUsers(data);
@@ -111,7 +112,7 @@ function CreateMeal() {
           setSelectedUser(data[0].id.toString()); // Inicializa con el primer usuario, si existe
         }
       });
-  }, [filter]);
+  }, [filter, apiUrl]);
 
   const calculateNutritionTotals = () => {
     let totals = {
@@ -225,7 +226,7 @@ function CreateMeal() {
     };
   
     try {
-      const response = await fetch('http://127.0.0.1:8000/nutrition/meals/', {
+      const response = await fetch(`${apiUrl}/nutrition/meals/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

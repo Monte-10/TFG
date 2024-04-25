@@ -4,9 +4,10 @@ import { useNavigate, Link } from 'react-router-dom';
 function ListExercise() {
     const [exercises, setExercises] = useState([]);
     const navigate = useNavigate();
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/sport/exercises/', {
+        fetch(`${apiUrl}/sport/exercises/`, {
             method: 'GET', // Asegúrate de que este es el método correcto para tu API
             headers: {
                 'Authorization': `Token ${localStorage.getItem('authToken')}`,
@@ -17,11 +18,11 @@ function ListExercise() {
             setExercises(data);
         })
         .catch(error => console.error('Error fetching exercises:', error));
-    }, []);
+    }, [apiUrl]);
 
     const handleDeleteExercise = (exerciseId) => {
         if (window.confirm('¿Estás seguro de que quieres eliminar este ejercicio?')) {
-            fetch(`http://127.0.0.1:8000/sport/exercises/${exerciseId}/`, {
+            fetch(`${apiUrl}/sport/exercises/${exerciseId}/`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Token ${localStorage.getItem('authToken')}`,

@@ -10,13 +10,13 @@ function CreateTraining() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/sport/exercises/')
+    fetch('${apiUrl}/sport/exercises/')
       .then(response => response.json())
       .then(data => setExercises(data))
       .catch(error => console.error('Error:', error));
 
     // Obtener lista de usuarios para asignar el entrenamiento
-    fetch('http://127.0.0.1:8000/user/regularusers/')
+    fetch('${apiUrl}/user/regularusers/')
       .then(response => response.json())
       .then(data => setUsers(data))
       .catch(error => console.error('Error al obtener usuarios:', error));
@@ -55,7 +55,7 @@ function CreateTraining() {
       }))
     };
 
-    fetch('http://127.0.0.1:8000/sport/trainings/', {
+    fetch('${apiUrl}/sport/trainings/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -20,7 +20,7 @@ function CreateExercise() {
 
     console.log("Sending exercise data");
 
-    fetch('http://127.0.0.1:8000/sport/exercises/', {
+    fetch('${apiUrl}/sport/exercises/', {
       method: 'POST',
       body: formData, // No se establecen headers porque FormData establece el 'Content-Type' automáticamente
     })

@@ -11,9 +11,10 @@ function CreateOption() {
   });
   const [optionCreated, setOptionCreated] = useState(false);
   const [error, setError] = useState('');
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/nutrition/weekoptions/', {
+    fetch(`${apiUrl}/nutrition/weekoptions/`, {
       headers: {
         'Authorization': `Token ${localStorage.getItem('authToken')}`,
       },
@@ -32,7 +33,7 @@ function CreateOption() {
 
   const handleDownloadPdf = async (optionId) => {
     const authToken = localStorage.getItem('authToken');
-    const response = await fetch(`http://127.0.0.1:8000/nutrition/options/${optionId}/pdf/`, {
+    const response = await fetch(`${apiUrl}/nutrition/options/${optionId}/pdf/`, {
       headers: {
         'Authorization': `Token ${authToken}`,
       },
@@ -66,7 +67,7 @@ function CreateOption() {
     console.log("Sending option data", optionData);
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/nutrition/options/', {
+      const response = await fetch(`${apiUrl}/nutrition/options/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

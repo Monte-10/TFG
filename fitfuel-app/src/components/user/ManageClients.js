@@ -7,7 +7,8 @@ function ManageClients() {
     useEffect(() => {
         const trainerId = localStorage.getItem('userId');
         const authToken = localStorage.getItem('authToken');
-        fetch(`http://127.0.0.1:8000/user/trainers/${trainerId}/clients`, {
+        const apiUrl = process.env.REACT_APP_API_URL;
+        fetch(`${apiUrl}/user/trainers/${trainerId}/clients`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 function EditFood() {
   const { foodId } = useParams();
   const navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_URL;
   const [foodData, setFoodData] = useState({
     name: '',
         unit_weight: 0,
@@ -40,7 +41,7 @@ function EditFood() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/nutrition/foods/${foodId}/`)
+    fetch(`${apiUrl}/nutrition/foods/${foodId}/`)
       .then(response => response.json())
       .then(data => {
         setFoodData(data);
@@ -77,7 +78,7 @@ function EditFood() {
         formData.append('image', image);
     }
 
-    fetch(`http://127.0.0.1:8000/nutrition/foods/`, { // Asegúrate que este es el endpoint correcto para crear un nuevo objeto
+    fetch(`${apiUrl}/nutrition/foods/`, { // Asegúrate que este es el endpoint correcto para crear un nuevo objeto
         method: 'POST',
         body: formData,
     })
@@ -114,7 +115,7 @@ function EditFood() {
         formData.append('image', image);
     }
 
-    fetch(`http://127.0.0.1:8000/nutrition/foods/${foodId}/`, {
+    fetch(`${apiUrl}/nutrition/foods/${foodId}/`, {
         method: 'PATCH',
         body: formData,
     })

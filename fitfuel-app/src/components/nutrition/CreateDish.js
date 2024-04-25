@@ -34,9 +34,10 @@ function CreateDish() {
         minSaturatedFat: { value: '', active: false },
         maxSaturatedFat: { value: '', active: false },
     })
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/nutrition/ingredients/')
+        fetch(`${apiUrl}/nutrition/ingredients/`)
             .then(response => response.json())
             .then(data => {
                 const filteredData = data.filter(ingredient => {
@@ -107,7 +108,7 @@ function CreateDish() {
                 setIngredients(filteredData);
             });
     
-        fetch('http://127.0.0.1:8000/user/regularusers/')
+        fetch(`${apiUrl}/user/regularusers/`)
             .then(response => response.json())
             .then(data => {
                 setUsers(data);
@@ -115,7 +116,7 @@ function CreateDish() {
                     setSelectedUser(data[0].id.toString());
                 }
             });
-    }, [filter]);
+    }, [filter, apiUrl]);
 
     useEffect(() => {
 
@@ -228,7 +229,7 @@ function CreateDish() {
         };
         
         try {
-            const response = await fetch('http://127.0.0.1:8000/nutrition/dishes/', {
+            const response = await fetch(`${apiUrl}/nutrition/dishes/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -5,9 +5,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function FoodDetails() {
     const [foodDetails, setFoodDetails] = useState(null);
     const { foodId } = useParams();
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/nutrition/foods/${foodId}`, {
+        fetch(`${apiUrl}/nutrition/foods/${foodId}`, {
             headers: {
                 'Authorization': `Token ${localStorage.getItem('authToken')}`,
             },

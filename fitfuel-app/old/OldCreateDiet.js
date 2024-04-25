@@ -12,7 +12,7 @@ function CreateDiet() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/user/regularusers/')
+    fetch('${apiUrl}/user/regularusers/')
       .then(response => response.json())
       .then(data => {
         setUsers(data);
@@ -31,7 +31,7 @@ function CreateDiet() {
       end_date: endDate,
     };
     console.log("Sending diet data", dietData);
-    fetch('http://127.0.0.1:8000/nutrition/diet/', {
+    fetch('${apiUrl}/nutrition/diet/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

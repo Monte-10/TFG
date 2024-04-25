@@ -25,9 +25,10 @@ function CreateIngredient() {
     minSaturatedFat: { value: '', active: false },
     maxSaturatedFat: { value: '', active: false },
   });
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/nutrition/foods/')
+    fetch(`${apiUrl}/nutrition/foods/`)
       .then(response => response.json())
       .then(data => {
         setFoods(data);
@@ -135,7 +136,7 @@ function CreateIngredient() {
     console.log("Submitting ingredient data:", ingredientData);
 
     // Aquí deberías reemplazar la URL por la de tu API real y ajustar el manejo según tu API
-    fetch('http://127.0.0.1:8000/nutrition/ingredients/', {
+    fetch(`${apiUrl}/nutrition/ingredients/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

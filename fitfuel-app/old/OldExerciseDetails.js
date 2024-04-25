@@ -12,7 +12,7 @@ function ExerciseDetails() {
   }
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/sport/exercises/${id}/`) // Usar el ID del ejercicio para la petición
+    fetch(`${apiUrl}/sport/exercises/${id}/`) // Usar el ID del ejercicio para la petición
       .then(response => response.json())
       .then(data => {
         setExercise(data);

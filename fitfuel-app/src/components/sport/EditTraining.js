@@ -11,20 +11,21 @@ function EditTraining() {
     const [trainingDate, setTrainingDate] = useState('');
     const [selectedUser, setSelectedUser] = useState('');
     const [error, setError] = useState('');
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/sport/exercises/')
+        fetch(`${apiUrl}/sport/exercises/`)
             .then(response => response.json())
             .then(data => setExercises(data))
             .catch(error => console.error('Error:', error));
 
-        fetch('http://127.0.0.1:8000/user/regularusers/')
+        fetch(`${apiUrl}/user/regularusers/`)
             .then(response => response.json())
             .then(data => setUsers(data))
             .catch(error => console.error('Error al obtener usuarios:', error));
 
         // Cargar datos existentes del entrenamiento
-        fetch(`http://127.0.0.1:8000/sport/trainings/${id}/`)
+        fetch(`${apiUrl}/sport/trainings/${id}/`)
             .then(response => response.json())
             .then(data => {
                 setTrainingName(data.name);
@@ -62,7 +63,7 @@ function EditTraining() {
             }))
         };
 
-        fetch(`http://127.0.0.1:8000/sport/trainings/${id}/`, {
+        fetch(`${apiUrl}/sport/trainings/${id}/`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

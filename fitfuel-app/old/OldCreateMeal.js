@@ -14,13 +14,13 @@ function CreateMeal() {
   const [createdMealId, setCreatedMealId] = useState(null);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/nutrition/dishes/')
+    fetch('${apiUrl}/nutrition/dishes/')
       .then(response => response.json())
       .then(data => {
         setDishes(data);
       });
 
-    fetch('http://127.0.0.1:8000/user/regularusers/')
+    fetch('${apiUrl}/user/regularusers/')
       .then(response => response.json())
       .then(data => {
         setUsers(data);
@@ -61,7 +61,7 @@ function CreateMeal() {
 
     console.log("Sending meal data", mealData);
 
-    fetch('http://127.0.0.1:8000/nutrition/meals/', {
+    fetch('${apiUrl}/nutrition/meals/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -14,9 +14,10 @@ function CreateWeekOption() {
   const [dayOptions, setDayOptions] = useState([]);
   const [optionCreated, setOptionCreated] = useState(false);
   const [error, setError] = useState('');
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/nutrition/dayoptions/', {
+    fetch(`${apiUrl}/nutrition/dayoptions/`, {
       headers: {
         'Authorization': `Token ${localStorage.getItem('authToken')}`,
       },
@@ -48,7 +49,7 @@ function CreateWeekOption() {
     console.log("Sending week option data", weekOptionData);
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/nutrition/weekoptions/', {
+      const response = await fetch(`${apiUrl}/nutrition/weekoptions/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

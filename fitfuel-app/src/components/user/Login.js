@@ -7,13 +7,14 @@ function Login({ onLoginSuccess }) {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const apiUrl = process.env.REACT_APP_API_URL;
   
     const handleSubmit = async (event) => {
       event.preventDefault();
       setError('');
   
       try {
-        const response = await fetch('http://127.0.0.1:8000/user/frontlogin/', {
+        const response = await fetch(`${apiUrl}/user/frontlogin/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

@@ -17,11 +17,12 @@ function EditDish() {
         legume: false, sauce_or_condiment: false, deli_meat: false, bread_or_toast: false, egg: false,
         special_drink_or_supplement: false, tuber: false, other: false
     });
+    const apiUrl = process.env.REACT_APP_API_URL;
     const [name, setName] = useState('');
     const [dishUpdated, setDishUpdated] = useState(false);
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/nutrition/dishes/${dishId}/`)
+        fetch(`${apiUrl}/nutrition/dishes/${dishId}/`)
             .then(response => response.json())
             .then(data => {
                 setName(data.name);
@@ -32,12 +33,12 @@ function EditDish() {
             })
             .catch(error => console.error('Error fetching dish details:', error));
 
-        fetch('http://127.0.0.1:8000/nutrition/ingredients/')
+        fetch(`${apiUrl}/nutrition/ingredients/`)
             .then(response => response.json())
             .then(data => setIngredients(data))
             .catch(error => console.error('Error fetching ingredients:', error));
 
-            fetch('http://127.0.0.1:8000/user/regularusers/')
+            fetch(`${apiUrl}/user/regularusers/`)
             .then(response => response.json())
             .then(data => {
                 setUsers(data);
@@ -123,7 +124,7 @@ function EditDish() {
         };
     
         try {
-            const response = await fetch(`http://127.0.0.1:8000/nutrition/dishes/`, {
+            const response = await fetch(`${apiUrl}/nutrition/dishes/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -158,7 +159,7 @@ function EditDish() {
         };
 
         try {
-            const response = await fetch(`http://127.0.0.1:8000/nutrition/dishes/${dishId}/`, {
+            const response = await fetch(`${apiUrl}/nutrition/dishes/${dishId}/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

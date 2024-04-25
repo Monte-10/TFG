@@ -5,9 +5,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function IngredientDetails() {
     const [ingredientDetails, setIngredientDetails] = useState(null);
     const { ingredientId } = useParams();
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/nutrition/ingredients/${ingredientId}`, {
+        fetch(`${apiUrl}/nutrition/ingredients/${ingredientId}`, {
             headers: {
                 'Authorization': `Token ${localStorage.getItem('authToken')}`,
             },
@@ -15,7 +16,7 @@ function IngredientDetails() {
         .then(response => response.json())
         .then(data => setIngredientDetails(data))
         .catch(error => console.error('Error fetching ingredient details:', error));
-    }, [ingredientId]);
+    }, [ingredientId, apiUrl]);
 
     if (!ingredientDetails) {
         return <div className="text-center">Cargando detalles del ingrediente...</div>;

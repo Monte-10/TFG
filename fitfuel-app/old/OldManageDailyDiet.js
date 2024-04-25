@@ -11,7 +11,7 @@ function ManageDailyDiet() {
     // Cargar los DailyDiets para la Dieta actual y las comidas disponibles
     const fetchDailyDiets = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/nutrition/diet/${dietId}/`);
+        const response = await fetch(`${apiUrl}/nutrition/diet/${dietId}/`);
         if (!response.ok) throw new Error('DailyDiets fetch failed');
         const data = await response.json();
         setDailyDiets(data.daily_diets || []);
@@ -28,7 +28,7 @@ function ManageDailyDiet() {
 
     const fetchMeals = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/nutrition/meals/');
+        const response = await fetch('${apiUrl}/nutrition/meals/');
         if (!response.ok) throw new Error('Meals fetch failed');
         const data = await response.json();
         setMeals(data);
@@ -58,7 +58,7 @@ function ManageDailyDiet() {
       const dailyDietId = dailyDiets.find(dd => dd.date === date).id;
       const mealsToSave = selectedMeals[date];
       console.log('Saving meals:', mealsToSave);
-      const response = await fetch(`http://127.0.0.1:8000/nutrition/daily_diets/${dailyDietId}/`, {
+      const response = await fetch(`${apiUrl}/nutrition/daily_diets/${dailyDietId}/`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
