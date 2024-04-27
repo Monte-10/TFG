@@ -16,6 +16,10 @@ from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from rest_framework import status
 from rest_framework.authtoken.models import Token
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
+from sport.models import Training
+from sport.serializers import TrainingSerializer
 # Vistas del usuario
 
 class RegularUserSignUpView(generic.CreateView):
@@ -175,6 +179,20 @@ class RegularUserViewSet(viewsets.ModelViewSet):
 class TrainerViewSet(viewsets.ModelViewSet):
     queryset = Trainer.objects.all()
     serializer_class = TrainerSerializer
+    
+    @action(detail=True, methods=['get'], permission_classes=[IsAuthenticated])
+    def clients(self, request, pk=None):
+        trainer = self.get_object()
+        clients = trainer.clients.all()
+        serializer = CustomUserSerializer(clients, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
+    def by_client(self, request):
+        client_id = request.query_params.get('client_id')
+        trainings = Training.objects.filter(user_id=client_id)
+        serializer = TrainingSerializer(trainings, many=True)
+        return Response(serializer.data)
     
 class CustomUserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()

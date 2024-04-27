@@ -27,4 +27,6 @@ urlpatterns += [
     path('reject_request/<int:request_id>/', views.reject_request, name='reject_request'),
     path('cancel_request/<int:request_id>/', views.cancel_request, name='cancel_request'),
     path('requests_page/', views.requests, name='requests_page'),
+    path('trainers/<int:pk>/clients/', views.TrainerViewSet.as_view({'get': 'clients'}), name='trainer-clients'),
+    path('trainers/by_client/', views.TrainerViewSet.as_view({'get': 'by_client'}), name='trainings-by-client'),
 ]
