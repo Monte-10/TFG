@@ -35,7 +35,7 @@ function EditMeal() {
           setSelectedUser(data[0].id.toString());
         }
       });
-  }, [mealId]);
+  }, [mealId, apiUrl, selectedUser]);
 
   const calculateNutritionTotals = () => {
     let totals = {

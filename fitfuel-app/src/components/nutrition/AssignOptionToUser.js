@@ -21,7 +21,6 @@ function AssignOptionToUser() {
           headers: { 'Authorization': `Token ${localStorage.getItem('authToken')}` },
         });
         if (!usersResponse.ok || !optionsResponse.ok) throw new Error('Failed to fetch data');
-
         const usersData = await usersResponse.json();
         const optionsData = await optionsResponse.json();
         setUsers(usersData);

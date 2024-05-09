@@ -34,7 +34,7 @@ function EditTraining() {
                 setSelectedExercises(data.exercises_details);
             })
             .catch(error => console.error('Error:', error));
-    }, [id]);
+    }, [id, apiUrl]);
 
     const handleAddExercise = () => {
         setSelectedExercises([...selectedExercises, { exerciseId: '', repetitions: '', sets: '', weight: '', time: null }]);

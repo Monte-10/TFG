@@ -28,7 +28,7 @@ function CreateDayOption() {
       console.error('Error fetching meals:', error);
       setError('Failed to fetch meals. Please refresh the page.');
     });
-  }, []);
+  }, [apiUrl]);
 
   useEffect(() => {
     calculateNutritionTotals();

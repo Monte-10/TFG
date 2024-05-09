@@ -46,7 +46,7 @@ useEffect(() => {
     };
 
     fetchDailyDiets();
-}, [dietId]);
+}, [dietId, apiUrl]);
 
   useEffect(() => {
     const fetchMeals = async () => {
@@ -61,7 +61,7 @@ useEffect(() => {
     };
 
     fetchMeals();
-  }, []);
+  }, [apiUrl]);
 
   const applyFilters = () => {
     return meals.filter(meal => {

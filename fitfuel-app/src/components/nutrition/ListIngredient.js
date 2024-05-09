@@ -77,7 +77,7 @@ function ListIngredients() {
             setFilteredIngredients(data);
         })
         .catch(error => console.error('Error fetching ingredients:', error));
-    }, []);
+    }, [apiUrl]);
 
     useEffect(() => {
         const applyFilters = () => {

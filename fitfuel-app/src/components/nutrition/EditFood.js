@@ -50,7 +50,7 @@ function EditFood() {
         console.error('Error fetching food details:', error);
         setError("Error cargando los detalles del alimento.");
       });
-  }, [foodId]);
+  }, [foodId, apiUrl]);
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;

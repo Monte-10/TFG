@@ -46,7 +46,7 @@ function EditDish() {
                     setSelectedUser(data[0].id.toString());
                 }
             });
-    }, [dishId]);
+    }, [dishId, apiUrl]);
 
     useEffect(() => {
         const totals = selectedIngredients.reduce((acc, { ingredientId, quantity }) => {

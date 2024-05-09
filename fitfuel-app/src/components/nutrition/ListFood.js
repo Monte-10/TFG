@@ -77,7 +77,7 @@ function ListFood() {
             setFilteredFoods(data);
         })
         .catch(error => console.error('Error fetching foods:', error));
-    }, []);
+    }, [apiUrl]);
 
     useEffect(() => {
         const applyFilters = () => {

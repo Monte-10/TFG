@@ -38,7 +38,7 @@ function EditDiet() {
     fetch(`${apiUrl}/user/regularusers/`)
       .then(response => response.json())
       .then(data => setUsers(data));
-  }, [dietId]);
+  }, [dietId, apiUrl]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -67,7 +67,7 @@ function EditDiet() {
     })
     .catch(error => {
       console.error('Error updating diet:', error);
-    });
+    }, [apiUrl]);
   };
 
   if (loadingError) {

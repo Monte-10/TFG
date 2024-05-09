@@ -43,7 +43,6 @@ import ListExercise from './components/sport/ListExercise';
 import EditTraining from './components/sport/EditTraining';
 import ListTraining from './components/sport/ListTraining';
 import TrainingDetails from './components/sport/TrainingDetails';
-import TrainerClientList from './components/user/TrainerClientList';
 
 function App() {
     const [authToken, setAuthToken] = useState(localStorage.getItem('authToken') || '');
@@ -80,13 +79,6 @@ function App() {
             console.error("Error al enviar solicitud:", error);
         }
     };
-
-    useEffect(() => {
-        if (authToken && userRole === 'trainer') {
-            // Navegar al componente TrainerClientsList si el usuario es un entrenador
-            <Navigate replace to="/trainer-clients" />
-        }
-    }, [authToken, userRole]);
 
     return (
         <Router>
@@ -259,7 +251,6 @@ function App() {
                                 <Route path="/sport/edit-training/:id" element={<EditTraining />} />
                                 <Route path="/sport/list-training" element={<ListTraining />} />
                                 <Route path="/sport/training/:id" element={<TrainingDetails />} />
-                                <Route path="/trainer-clients" element={<TrainerClientList />} />
                                 <Route path="/search-trainer" element={
                                 <SearchTrainer onSearch={handleSearchTrainers} />                                
                             } />
@@ -271,7 +262,7 @@ function App() {
                                     </>
                                 ) : (
                                     // Rutas accesibles sin autenticación
-                                    <>-
+                                    <>
                                         <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
                                         <Route path="/signup/regularuser" element={<RegularUserSignUp onSignUpSuccess={handleLoginSuccess} />} />
                                         <Route path="/signup/trainer" element={<TrainerSignUp onSignUpSuccess={handleLoginSuccess} />} />

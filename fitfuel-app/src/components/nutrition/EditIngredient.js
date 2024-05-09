@@ -28,7 +28,7 @@ function EditIngredient() {
       .catch(error => {
         console.error('Error fetching foods:', error);
       });
-  }, [ingredientId]);
+  }, [ingredientId, apiUrl]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;

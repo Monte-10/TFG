@@ -80,7 +80,7 @@ function ListDish() {
             setFilteredDishes(data); // Inicializar los platos filtrados con todos los platos
         })
         .catch(error => console.error('Error fetching dishes:', error));
-    }, []);
+    }, [apiUrl]);
 
     useEffect(() => {
         // Función para aplicar los filtros
