@@ -4,6 +4,9 @@ import { useNavigate, Link } from 'react-router-dom';
 function ListFood() {
     const [foods, setFoods] = useState([]);
     const [filteredFoods, setFilteredFoods] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [itemsPerPage] = useState(10); // Adjust this number as needed
+    const [totalPages, setTotalPages] = useState(0);
     const apiUrl = process.env.REACT_APP_API_URL;
     const [filters, setFilters] = useState({
         name: '',
@@ -75,9 +78,10 @@ function ListFood() {
         .then(data => {
             setFoods(data);
             setFilteredFoods(data);
+            setTotalPages(Math.ceil(data.length / itemsPerPage));
         })
         .catch(error => console.error('Error fetching foods:', error));
-    }, [apiUrl]);
+    }, [apiUrl, itemsPerPage]);
 
     useEffect(() => {
         const applyFilters = () => {
@@ -99,10 +103,11 @@ function ListFood() {
                 });
             });
             setFilteredFoods(updatedFoods);
+            setTotalPages(Math.ceil(updatedFoods.length / itemsPerPage));
         };
 
         applyFilters();
-    }, [filters, foods]);
+    }, [filters, foods, itemsPerPage]);
 
     const handleFilterChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -159,6 +164,8 @@ function ListFood() {
             other: false
         });
     };
+
+    const currentFoods = filteredFoods.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
     return (
         <div className="container">
@@ -269,7 +276,7 @@ function ListFood() {
                 </div>
                 <button className="btn btn-secondary mt-3" onClick={resetFilters}>Limpiar Filtros</button>
             </div>
-    
+
             <table className="table">
                 <thead>
                     <tr>
@@ -286,8 +293,8 @@ function ListFood() {
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredFoods.map((food) => (
-                        <tr key={food.id} onClick={() => navigate(`/nutrition/foods/${food.id}`)} style={{cursor: 'pointer'}}>
+                    {currentFoods.map((food) => (
+                        <tr key={food.id} onClick={() => navigate(`/nutrition/foods/${food.id}`)} style={{ cursor: 'pointer' }}>
                             <td>{food.name}</td>
                             <td>{food.calories}</td>
                             <td>{food.protein}</td>
@@ -300,7 +307,7 @@ function ListFood() {
                                 <Link to={`/nutrition/edit-food/${food.id}`} className="btn btn-primary me-2">Editar</Link>
                             </td>
                             <td>
-                                <button onClick={() => handleDeleteFood(food.id)} className="btn btn-danger">Eliminar</button>
+                                <button onClick={(e) => { e.stopPropagation(); handleDeleteFood(food.id); }} className="btn btn-danger">Eliminar</button>
                             </td>
                         </tr>
                     ))}
@@ -311,10 +318,26 @@ function ListFood() {
                     No se encontraron alimentos que coincidan con los filtros seleccionados.
                 </div>
             )}
+
+            <div className="pagination">
+                <button
+                    disabled={currentPage === 0}
+                    onClick={() => setCurrentPage(currentPage - 1)}
+                    className="btn btn-secondary"
+                >
+                    Anterior
+                </button>
+                <span> Página {currentPage + 1} de {totalPages} </span>
+                <button
+                    disabled={currentPage >= totalPages - 1}
+                    onClick={() => setCurrentPage(currentPage + 1)}
+                    className="btn btn-secondary"
+                >
+                    Siguiente
+                </button>
+            </div>
         </div>
     );
-    
-};
+}
 
 export default ListFood;
-

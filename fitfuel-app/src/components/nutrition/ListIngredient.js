@@ -4,6 +4,9 @@ import { useNavigate, Link } from 'react-router-dom';
 function ListIngredients() {
     const [ingredients, setIngredients] = useState([]);
     const [filteredIngredients, setFilteredIngredients] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [itemsPerPage] = useState(10); // Adjust this number as needed
+    const [totalPages, setTotalPages] = useState(0);
     const apiUrl = process.env.REACT_APP_API_URL;
     const [filters, setFilters] = useState({
         name: '',
@@ -75,9 +78,10 @@ function ListIngredients() {
         .then(data => {
             setIngredients(data);
             setFilteredIngredients(data);
+            setTotalPages(Math.ceil(data.length / itemsPerPage));
         })
         .catch(error => console.error('Error fetching ingredients:', error));
-    }, [apiUrl]);
+    }, [apiUrl, itemsPerPage]);
 
     useEffect(() => {
         const applyFilters = () => {
@@ -99,10 +103,11 @@ function ListIngredients() {
                 });
             });
             setFilteredIngredients(updatedIngredients);
+            setTotalPages(Math.ceil(updatedIngredients.length / itemsPerPage));
         };
 
         applyFilters();
-    }, [filters, ingredients]);
+    }, [filters, ingredients, itemsPerPage]);
 
     const handleFilterChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -152,6 +157,8 @@ function ListIngredients() {
             other: false
         });
     };
+
+    const currentIngredients = filteredIngredients.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
     return (
         <div className="container">
@@ -274,11 +281,13 @@ function ListIngredients() {
                         <th>Azúcares</th>
                         <th>Fibra</th>
                         <th>Grasas Saturadas</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredIngredients.map(ingredient => (
-                        <tr key={ingredient.id} onClick={() => navigate(`/nutrition/ingredients/${ingredient.id}`)} style={{cursor: 'pointer'}}>
+                    {currentIngredients.map(ingredient => (
+                        <tr key={ingredient.id} onClick={() => navigate(`/nutrition/ingredients/${ingredient.id}`)} style={{ cursor: 'pointer' }}>
                             <td>{ingredient.name}</td>
                             <td>{ingredient.calories}</td>
                             <td>{ingredient.protein}</td>
@@ -286,25 +295,43 @@ function ListIngredients() {
                             <td>{ingredient.fat}</td>
                             <td>{ingredient.sugar}</td>
                             <td>{ingredient.fiber}</td>
-                            <td>{ingredient.saturatedFat}</td>
+                            <td>{ingredient.saturated_fat}</td>
                             <td>
                                 <Link to={`/nutrition/edit-ingredient/${ingredient.id}`} className="btn btn-primary me-2">Editar</Link>
                             </td>
                             <td>
-                                <button onClick={() => handleDeleteIngredient(ingredient.id)} className="btn btn-danger">Eliminar</button>
+                                <button onClick={(e) => { e.stopPropagation(); handleDeleteIngredient(ingredient.id); }} className="btn btn-danger">Eliminar</button>
                             </td>
                         </tr>
-                ))}
-            </tbody>
-        </table>
+                    ))}
+                </tbody>
+            </table>
 
-        {filteredIngredients.length === 0 && (
-            <div className="alert alert-info" role="alert">
-                No se encontraron ingredientes que coincidan con los filtros seleccionados.
+            {filteredIngredients.length === 0 && (
+                <div className="alert alert-info" role="alert">
+                    No se encontraron ingredientes que coincidan con los filtros seleccionados.
+                </div>
+            )}
+
+            <div className="pagination">
+                <button
+                    disabled={currentPage === 0}
+                    onClick={() => setCurrentPage(currentPage - 1)}
+                    className="btn btn-secondary"
+                >
+                    Anterior
+                </button>
+                <span> Página {currentPage + 1} de {totalPages} </span>
+                <button
+                    disabled={currentPage >= totalPages - 1}
+                    onClick={() => setCurrentPage(currentPage + 1)}
+                    className="btn btn-secondary"
+                >
+                    Siguiente
+                </button>
             </div>
-        )}
-    </div>
-);
-};
+        </div>
+    );
+}
 
 export default ListIngredients;
