@@ -20,6 +20,10 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from sport.models import Training
 from sport.serializers import TrainingSerializer
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
 # Vistas del usuario
 
 class RegularUserSignUpView(generic.CreateView):
@@ -48,6 +52,7 @@ class TrainerSignUpView(generic.CreateView):
         login(self.request, user)
         return valid
 
+"""
 class ProfileView(TemplateView):
     template_name = 'profile.html'
 
@@ -90,8 +95,38 @@ class ProfileView(TemplateView):
                 user_form.save_m2m()  # Para campos ManyToMany
 
         return redirect('profile')
+"""
+from rest_framework import generics, permissions
+from rest_framework.parsers import MultiPartParser, FormParser
 
+class ProfileView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
 
+    def get(self, request):
+        user = request.user
+        if hasattr(user, 'trainer'):
+            serializer = TrainerSerializer(user.trainer)
+        else:
+            serializer = ProfileSerializer(user.profile)
+        return Response(serializer.data)
+
+    def put(self, request):
+        user = request.user
+        if hasattr(user, 'trainer'):
+            serializer = TrainerSerializer(user.trainer, data=request.data, partial=True)
+        else:
+            serializer = ProfileSerializer(user.profile, data=request.data, partial=True)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+
+class SpecialtyListView(generics.ListAPIView):
+    queryset = Specialty.objects.all()
+    serializer_class = SpecialtySerializer
+"""
 @login_required  # Asegura que el usuario esté autenticado
 def search_trainer(request):
     if not request.user.is_regular_user():
@@ -125,6 +160,66 @@ def send_request(request, trainer_id):
     TrainingRequest.objects.create(regular_user=regular_user, trainer=trainer)
     
     return redirect('profile')
+"""
+from django.http import JsonResponse
+
+@login_required
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def list_trainers(request):
+    if not request.user.is_regular_user:
+        return HttpResponseBadRequest("Solo los usuarios regulares pueden enviar solicitudes.")
+    
+    trainers = Trainer.objects.all()
+    serializer = TrainerSerializer(trainers, many=True)
+    return Response(serializer.data)
+
+@login_required
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def search_trainer(request):
+    if not request.user.is_regular_user:
+        return HttpResponseBadRequest("Solo los usuarios regulares pueden enviar solicitudes.")
+    
+    specialty = request.GET.get('specialty', None)
+    trainer_type = request.GET.get('trainer_type', None)
+    
+    trainers = Trainer.objects.all()
+    
+    if specialty:
+        trainers = trainers.filter(specialties__name__icontains=specialty)
+    if trainer_type:
+        trainers = trainers.filter(trainer_type__icontains=trainer_type)
+    
+    serializer = TrainerSerializer(trainers, many=True)
+    return JsonResponse(serializer.data, safe=False)
+
+@login_required
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def send_request(request):
+    if not request.user.is_regular_user:
+        return HttpResponseBadRequest("Solo los usuarios regulares pueden enviar solicitudes.")
+    
+    trainer_id = request.data.get('trainerId')
+    trainer = get_object_or_404(Trainer, id=trainer_id)
+    regular_user = RegularUser.objects.get(id=request.user.id)
+    
+    if regular_user.has_personal_trainer():
+        return HttpResponseBadRequest("Ya tienes un entrenador.")
+    
+    TrainingRequest.objects.create(regular_user=regular_user, trainer=trainer)
+    return Response({"message": "Solicitud enviada con éxito"}, status=status.HTTP_201_CREATED)
+
+@login_required
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def trainer_clients(request):
+    trainer = get_object_or_404(Trainer, id=request.user.id)
+    clients = trainer.clients.all()
+    serializer = RegularUserSerializer(clients, many=True)
+    return Response(serializer.data)
+
 
 @login_required
 def requests(request):
@@ -199,17 +294,19 @@ class CustomUserViewSet(viewsets.ModelViewSet):
     serializer_class = CustomUserSerializer
 
 class LoginView(APIView):
+    authentication_classes = []  # No authentication required
+    permission_classes = []  # No permission required
+
     def post(self, request, *args, **kwargs):
         username = request.data.get('username')
         password = request.data.get('password')
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(username=username, password=password)
         if user is not None:
             token, created = Token.objects.get_or_create(user=user)
-            # Incluye el userId en la respuesta
             return Response({'token': token.key, 'userId': user.id}, status=status.HTTP_200_OK)
         else:
             return Response({'detail': 'Invalid Credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-        
+
 class RegularUserSignUpAPIView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = RegularUserSignUpSerializer(data=request.data)

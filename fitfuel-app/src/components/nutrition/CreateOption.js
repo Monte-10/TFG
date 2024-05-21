@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 function CreateOption() {
   const [name, setName] = useState('');
   const [weekOptions, setWeekOptions] = useState([]);
-  const [pdfDownloadUrl, setPdfDownloadUrl] = useState('');
   const [selectedWeekOptions, setSelectedWeekOptions] = useState({
     week_option_one: '',
     week_option_two: '',
@@ -25,7 +24,7 @@ function CreateOption() {
       console.error('Error fetching week options:', error);
       setError('Failed to fetch week options. Please refresh the page.');
     });
-  }, []);
+  }, [apiUrl]);
 
   const handleWeekOptionChange = (weekOptionType, value) => {
     setSelectedWeekOptions({ ...selectedWeekOptions, [weekOptionType]: value });
@@ -38,7 +37,7 @@ function CreateOption() {
         'Authorization': `Token ${authToken}`,
       },
     });
-  
+
     if (response.ok) {
       const blob = await response.blob();
       const downloadUrl = window.URL.createObjectURL(blob);
@@ -75,16 +74,16 @@ function CreateOption() {
         },
         body: JSON.stringify(optionData),
       });
-  
+
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(errorText);
       }
-  
+
       const data = await response.json();
       console.log('Success:', data);
       setOptionCreated(true);
-  
+
       // Aquí llamamos a la función para manejar la descarga del PDF
       handleDownloadPdf(data.id);
     } catch (error) {
@@ -126,12 +125,6 @@ function CreateOption() {
         <>
           <div className="alert alert-success" role="alert">
             Option created successfully!
-            {/* Opcional: Agregar botón para descargar PDF */}
-            {pdfDownloadUrl && (
-              <a href={pdfDownloadUrl} download={`${name}_option.pdf`} className="btn btn-success">
-                Download PDF
-              </a>
-            )}
           </div>
         </>
       )}

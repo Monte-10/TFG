@@ -14,7 +14,6 @@ function CreateDish() {
     legume: false, sauce_or_condiment: false, deli_meat: false, bread_or_toast: false, egg: false,
     special_drink_or_supplement: false, tuber: false, other: false
   });
-  const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState('');
   const [name, setName] = useState('');
   const [dishCreated, setDishCreated] = useState(false);
@@ -39,27 +38,6 @@ function CreateDish() {
   });
   const apiUrl = process.env.REACT_APP_API_URL;
 
-  const resetFilters = () => {
-    setFilters({
-      name: { value: '', active: true },
-      minCalories: { value: '', active: false },
-      maxCalories: { value: '', active: false },
-      minProtein: { value: '', active: false },
-      maxProtein: { value: '', active: false },
-      minCarbohydrates: { value: '', active: false },
-      maxCarbohydrates: { value: '', active: false },
-      minFat: { value: '', active: false },
-      maxFat: { value: '', active: false },
-      minSugar: { value: '', active: false },
-      maxSugar: { value: '', active: false },
-      minFiber: { value: '', active: false },
-      maxFiber: { value: '', active: false },
-      minSaturatedFat: { value: '', active: false },
-      maxSaturatedFat: { value: '', active: false },
-    });
-    setShowAdvancedFilters(false);  // Optionally reset the visibility
-  };
-
   useEffect(() => {
     fetch(`${apiUrl}/nutrition/ingredients/`)
       .then(response => response.json())
@@ -71,7 +49,6 @@ function CreateDish() {
     fetch(`${apiUrl}/user/regularusers/`)
       .then(response => response.json())
       .then(data => {
-        setUsers(data);
         if (data.length > 0) {
           setSelectedUser(data[0].id.toString());
         }
@@ -166,10 +143,6 @@ function CreateDish() {
   const handleRemoveIngredient = (index) => {
     const updatedIngredients = selectedIngredients.filter((_, idx) => idx !== index);
     setSelectedIngredients(updatedIngredients);
-  };
-
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
   };
 
   const filteredIngredients = ingredients.filter(ingredient => {

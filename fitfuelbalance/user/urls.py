@@ -21,6 +21,7 @@ urlpatterns = [
 ]
 
 urlpatterns += [
+    path('trainers/', views.list_trainers, name='list_trainers'),
     path('search_trainer/', views.search_trainer, name='search_trainer'),
     path('send_request/<int:trainer_id>/', views.send_request, name='send_request'),
     path('accept_request/<int:request_id>/', views.accept_request, name='accept_request'),
@@ -29,4 +30,6 @@ urlpatterns += [
     path('requests_page/', views.requests, name='requests_page'),
     path('trainers/<int:pk>/clients/', views.TrainerViewSet.as_view({'get': 'clients'}), name='trainer-clients'),
     path('trainers/by_client/', views.TrainerViewSet.as_view({'get': 'by_client'}), name='trainings-by-client'),
+    path('profile/', views.ProfileView.as_view(), name='profile'),
+    path('specialties/', views.SpecialtyListView.as_view(), name='specialties'),
 ]
