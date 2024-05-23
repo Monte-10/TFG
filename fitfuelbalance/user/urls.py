@@ -7,6 +7,7 @@ router = DefaultRouter()
 router.register(r'regularusers', views.RegularUserViewSet)
 router.register(r'trainers', views.TrainerViewSet)
 router.register(r'customusers', views.CustomUserViewSet)
+router.register(r'specialties', views.SpecialtyView)
 
 urlpatterns = [
     path('', include(router.urls)),
@@ -17,7 +18,7 @@ urlpatterns = [
     path('trainersignup/', views.TrainerSignUpView.as_view(), name='trainersignup'),
     path('signup/regularuser/', views.RegularUserSignUpAPIView.as_view(), name='regularuser_signup'),
     path('signup/trainer/', views.TrainerSignUpAPIView.as_view(), name='trainer_signup'),
-    path('profile/', views.ProfileView.as_view(), name='profile'),
+    path('profile/', views.ProfileView.as_view({'get': 'list', 'put': 'update'}), name='profile'),
 ]
 
 urlpatterns += [
@@ -30,6 +31,4 @@ urlpatterns += [
     path('requests_page/', views.requests, name='requests_page'),
     path('trainers/<int:pk>/clients/', views.TrainerViewSet.as_view({'get': 'clients'}), name='trainer-clients'),
     path('trainers/by_client/', views.TrainerViewSet.as_view({'get': 'by_client'}), name='trainings-by-client'),
-    path('profile/', views.ProfileView.as_view(), name='profile'),
-    path('specialties/', views.SpecialtyListView.as_view(), name='specialties'),
 ]

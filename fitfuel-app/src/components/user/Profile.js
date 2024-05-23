@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Profile = () => {
-    const [profile, setProfile] = useState({});
+    const [profile, setProfile] = useState({ bio: '', age: '', gender: '', image: '', specialties: [], trainer_type: '' });
     const [specialties, setSpecialties] = useState([]);
     const [error, setError] = useState('');
 
@@ -16,7 +16,9 @@ const Profile = () => {
                         'Authorization': `Token ${localStorage.getItem('authToken')}`
                     }
                 });
-                setProfile(response.data);
+                const profileData = response.data.profile || {};
+                const trainerData = response.data.trainer || {};
+                setProfile({ ...profileData, ...trainerData });
             } catch (error) {
                 setError("Error al cargar el perfil");
             }
@@ -60,15 +62,18 @@ const Profile = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         const formData = new FormData();
-        Object.keys(profile).forEach(key => {
-            if (key === 'specialties') {
-                profile[key].forEach(specialty => formData.append(key, specialty));
-            } else {
-                formData.append(key, profile[key]);
-            }
-        });
+        formData.append('profile', JSON.stringify({
+            bio: profile.bio,
+            age: profile.age,
+            gender: profile.gender,
+            image: profile.image
+        }));
+        formData.append('trainer', JSON.stringify({
+            specialties: profile.specialties,
+            trainer_type: profile.trainer_type
+        }));
 
         try {
             const response = await axios.put(`${apiUrl}/user/profile/`, formData, {
@@ -77,9 +82,10 @@ const Profile = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            setProfile(response.data);
+            setProfile(response.data.profile);
         } catch (error) {
-            setError("Error al actualizar el perfil");
+            setError(`Error al actualizar el perfil: ${error.response.data}`);
+            console.error("Error al actualizar el perfil:", error.response.data);
         }
     };
 
@@ -124,12 +130,12 @@ const Profile = () => {
                     </select>
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="trainerType" className="form-label">Tipo de Entrenador</label>
+                    <label htmlFor="trainer_type" className="form-label">Tipo de Entrenador</label>
                     <select
-                        id="trainerType"
-                        name="trainerType"
+                        id="trainer_type"
+                        name="trainer_type"
                         className="form-select"
-                        value={profile.trainerType || ''}
+                        value={profile.trainer_type || ''}
                         onChange={handleChange}
                     >
                         <option value="trainer">Entrenador</option>
@@ -138,25 +144,22 @@ const Profile = () => {
                     </select>
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="specialties" className="form-label">Especialidades</label>
-                    <div id="specialties">
-                        {specialties.map((specialty) => (
-                            <div key={specialty.id} className="form-check">
-                                <input
-                                    type="checkbox"
-                                    id={`specialty-${specialty.id}`}
-                                    name="specialties"
-                                    value={specialty.id}
-                                    className="form-check-input"
-                                    checked={profile.specialties?.includes(specialty.id) || false}
-                                    onChange={handleSpecialtyChange}
-                                />
-                                <label htmlFor={`specialty-${specialty.id}`} className="form-check-label">
-                                    {specialty.name}
-                                </label>
-                            </div>
-                        ))}
-                    </div>
+                    <label className="form-label">Especialidades</label>
+                    {specialties.map(specialty => (
+                        <div key={specialty.id} className="form-check">
+                            <input
+                                className="form-check-input"
+                                type="checkbox"
+                                id={`specialty-${specialty.id}`}
+                                value={specialty.id}
+                                checked={profile.specialties.includes(specialty.id)}
+                                onChange={handleSpecialtyChange}
+                            />
+                            <label className="form-check-label" htmlFor={`specialty-${specialty.id}`}>
+                                {specialty.name}
+                            </label>
+                        </div>
+                    ))}
                 </div>
                 <div className="mb-3">
                     <label htmlFor="image" className="form-label">Imagen de Perfil</label>

@@ -98,34 +98,66 @@ class ProfileView(TemplateView):
 """
 from rest_framework import generics, permissions
 from rest_framework.parsers import MultiPartParser, FormParser
+class ProfileView(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
 
-class ProfileView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-    parser_classes = [MultiPartParser, FormParser]
+    def list(self, request):
+        try:
+            user = request.user
+            profile = Profile.objects.get(user=user)
+            profile_serializer = ProfileSerializer(profile)
 
-    def get(self, request):
-        user = request.user
-        if hasattr(user, 'trainer'):
-            serializer = TrainerSerializer(user.trainer)
-        else:
-            serializer = ProfileSerializer(user.profile)
-        return Response(serializer.data)
+            if hasattr(user, 'trainer'):
+                trainer = Trainer.objects.get(user=user)
+                trainer_serializer = TrainerSerializer(trainer)
+                return Response({
+                    "profile": profile_serializer.data,
+                    "trainer": trainer_serializer.data
+                }, status=status.HTTP_200_OK)
 
-    def put(self, request):
-        user = request.user
-        if hasattr(user, 'trainer'):
-            serializer = TrainerSerializer(user.trainer, data=request.data, partial=True)
-        else:
-            serializer = ProfileSerializer(user.profile, data=request.data, partial=True)
-        
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=400)
+            return Response({
+                "profile": profile_serializer.data
+            }, status=status.HTTP_200_OK)
+        except Profile.DoesNotExist:
+            return Response({"error": "Profile not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-class SpecialtyListView(generics.ListAPIView):
+    def update(self, request, *args, **kwargs):
+        try:
+            user = request.user
+            profile = Profile.objects.get(user=user)
+            profile_data = request.data.get('profile', {})
+            trainer_data = request.data.get('trainer', {})
+
+            profile_serializer = ProfileSerializer(profile, data=profile_data, partial=True)
+            if profile_serializer.is_valid():
+                profile_serializer.save()
+            else:
+                return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+            if hasattr(user, 'trainer'):
+                trainer = Trainer.objects.get(user=user)
+                trainer_serializer = TrainerSerializer(trainer, data=trainer_data, partial=True)
+                if trainer_serializer.is_valid():
+                    trainer_serializer.save()
+                else:
+                    return Response(trainer_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+            return Response({
+                "profile": profile_serializer.data,
+                "trainer": trainer_serializer.data if hasattr(user, 'trainer') else None
+            }, status=status.HTTP_200_OK)
+        except Profile.DoesNotExist:
+            return Response({"error": "Profile not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class SpecialtyView(viewsets.ModelViewSet):
     queryset = Specialty.objects.all()
     serializer_class = SpecialtySerializer
+    permission_classes = [IsAuthenticated]
+    
 """
 @login_required  # Asegura que el usuario esté autenticado
 def search_trainer(request):

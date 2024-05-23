@@ -38,10 +38,8 @@ class Specialty(models.Model):
         return self.get_name_display()
 
 class Trainer(CustomUser):
-    clients = models.ManyToManyField(RegularUser, related_name='clients', blank=True)
-    
+    clients = models.ManyToManyField('RegularUser', related_name='clients', blank=True)
     specialties = models.ManyToManyField(Specialty, related_name='specialties', blank=True)
-    
     TRAINER_TYPE = [
         ('trainer', 'Trainer'),
         ('nutritionist', 'Nutritionist'),
@@ -49,15 +47,17 @@ class Trainer(CustomUser):
     ]
     trainer_type = models.CharField(max_length=12, choices=TRAINER_TYPE, null=True, blank=True)
 
+
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    image = models.ImageField(default='default.jpg', upload_to='profile_pics')
     bio = models.TextField(null=True, blank=True)
     age = models.IntegerField(null=True, blank=True)
     gender = models.CharField(max_length=10, choices=[('male', 'Male'), ('female', 'Female'), ('other', 'Other')], null=True, blank=True)
-    
+    image = models.ImageField(upload_to='profile_pics', null=True, blank=True)
+
     def __str__(self):
         return f'{self.user.username} Profile'
+    
 class TrainingRequest(models.Model):
     regular_user = models.ForeignKey(RegularUser, on_delete=models.CASCADE)
     trainer = models.ForeignKey(Trainer, on_delete=models.CASCADE)
