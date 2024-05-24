@@ -120,7 +120,7 @@ if not DEBUG:
 
 AUTH_USER_MODEL = 'user.CustomUser'
 
-LOGIN_REDIRECT_URL = "http://127.0.0.1:3000"
+LOGIN_REDIRECT_URL = "https://tfg-691w.onrender.com"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
