@@ -18,6 +18,9 @@ const UploadFood = () => {
       fetch(`${apiUrl}/nutrition/food_upload/`, {
         method: 'POST',
         body: formData,
+        headers: {
+          'Authorization': `Token ${localStorage.getItem('authToken')}`
+        }
       })
       .then(response => {
         if (!response.ok) {

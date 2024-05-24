@@ -13,7 +13,11 @@ function EditMeal() {
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch(`${apiUrl}/nutrition/meals/${mealId}/`)
+    fetch(`${apiUrl}/nutrition/meals/${mealId}/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
+    })
       .then(response => response.json())
       .then(data => {
         setName(data.name);
@@ -22,12 +26,20 @@ function EditMeal() {
       })
       .catch(error => console.error('Error fetching meal details:', error));
 
-    fetch(`${apiUrl}/nutrition/dishes/`)
+    fetch(`${apiUrl}/nutrition/dishes/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
+    })
       .then(response => response.json())
       .then(setDishes)
       .catch(error => console.error('Error fetching dishes:', error));
 
-    fetch(`${apiUrl}/user/regularusers/`)
+    fetch(`${apiUrl}/user/regularusers/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
+    })
       .then(response => response.json())
       .then(data => {
         setUsers(data);
@@ -144,6 +156,7 @@ function EditMeal() {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Token ${localStorage.getItem('authToken')}`
         },
         body: JSON.stringify(mealData),
       });

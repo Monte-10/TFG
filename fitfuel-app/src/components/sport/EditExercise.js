@@ -13,7 +13,11 @@ function EditExercise() {
 
   useEffect(() => {
     // Cargar los datos existentes del ejercicio
-    fetch(`${apiUrl}/sport/exercises/${id}/`)
+    fetch(`${apiUrl}/sport/exercises/${id}/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
+    })
       .then(response => response.json())
       .then(data => {
         setName(data.name);

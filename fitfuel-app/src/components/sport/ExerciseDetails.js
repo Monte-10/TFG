@@ -8,7 +8,11 @@ function ExerciseDetails() {
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch(`${apiUrl}/sport/exercises/${id}/`)
+    fetch(`${apiUrl}/sport/exercises/${id}/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
+    })
       .then(response => response.json())
       .then(data => setExercise(data))
       .catch(error => console.error('Error:', error));

@@ -29,7 +29,11 @@ function CreateIngredient() {
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch(`${apiUrl}/nutrition/foods/`)
+    fetch(`${apiUrl}/nutrition/foods/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
+    })
       .then(response => response.json())
       .then(data => {
         setFoods(data);

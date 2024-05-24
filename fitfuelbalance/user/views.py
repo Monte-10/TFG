@@ -96,8 +96,14 @@ class ProfileView(TemplateView):
 
         return redirect('profile')
 """
-from rest_framework import generics, permissions
-from rest_framework.parsers import MultiPartParser, FormParser
+
+import json
+from rest_framework import viewsets, status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from .models import Profile, Trainer
+from .serializers import ProfileSerializer, TrainerSerializer
+
 class ProfileView(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
 
@@ -107,17 +113,24 @@ class ProfileView(viewsets.ViewSet):
             profile = Profile.objects.get(user=user)
             profile_serializer = ProfileSerializer(profile)
 
+            trainer_data = {}
             if hasattr(user, 'trainer'):
-                trainer = Trainer.objects.get(user=user)
+                trainer = user.trainer
                 trainer_serializer = TrainerSerializer(trainer)
-                return Response({
-                    "profile": profile_serializer.data,
-                    "trainer": trainer_serializer.data
-                }, status=status.HTTP_200_OK)
+                trainer_data = trainer_serializer.data
+
+            regular_user_data = {}
+            if hasattr(user, 'regularuser'):
+                regular_user = user.regularuser
+                regular_user_serializer = RegularUserSerializer(regular_user)
+                regular_user_data = regular_user_serializer.data
 
             return Response({
-                "profile": profile_serializer.data
+                "profile": profile_serializer.data,
+                "trainer": trainer_data,
+                "regular_user": regular_user_data
             }, status=status.HTTP_200_OK)
+
         except Profile.DoesNotExist:
             return Response({"error": "Profile not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
@@ -127,9 +140,12 @@ class ProfileView(viewsets.ViewSet):
         try:
             user = request.user
             profile = Profile.objects.get(user=user)
-            profile_data = request.data.get('profile', {})
-            trainer_data = request.data.get('trainer', {})
-
+            profile_data = {
+                'bio': request.data.get('bio'),
+                'age': request.data.get('age'),
+                'gender': request.data.get('gender'),
+                'image': request.FILES.get('image')
+            }
             profile_serializer = ProfileSerializer(profile, data=profile_data, partial=True)
             if profile_serializer.is_valid():
                 profile_serializer.save()
@@ -137,21 +153,49 @@ class ProfileView(viewsets.ViewSet):
                 return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
             if hasattr(user, 'trainer'):
-                trainer = Trainer.objects.get(user=user)
+                trainer = user.trainer
+                trainer_data = {
+                    'trainer_type': request.data.get('trainer_type'),
+                    'specialties': request.data.get('specialties')
+                }
                 trainer_serializer = TrainerSerializer(trainer, data=trainer_data, partial=True)
                 if trainer_serializer.is_valid():
                     trainer_serializer.save()
                 else:
                     return Response(trainer_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+            if hasattr(user, 'regularuser'):
+                regular_user = user.regularuser
+                regular_user_data = {
+                    'weight': request.data.get('weight'),
+                    'height': request.data.get('height'),
+                    'neck': request.data.get('neck'),
+                    'shoulder': request.data.get('shoulder'),
+                    'chest': request.data.get('chest'),
+                    'waist': request.data.get('waist'),
+                    'hip': request.data.get('hip'),
+                    'arm': request.data.get('arm'),
+                    'glute': request.data.get('glute'),
+                    'upper_leg': request.data.get('upper_leg'),
+                    'middle_leg': request.data.get('middle_leg'),
+                    'lower_leg': request.data.get('lower_leg')
+                }
+                regular_user_serializer = RegularUserSerializer(regular_user, data=regular_user_data, partial=True)
+                if regular_user_serializer.is_valid():
+                    regular_user_serializer.save()
+                else:
+                    return Response(regular_user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
             return Response({
                 "profile": profile_serializer.data,
-                "trainer": trainer_serializer.data if hasattr(user, 'trainer') else None
+                "trainer": trainer_serializer.data if hasattr(user, 'trainer') else None,
+                "regular_user": regular_user_serializer.data if hasattr(user, 'regularuser') else None
             }, status=status.HTTP_200_OK)
         except Profile.DoesNotExist:
             return Response({"error": "Profile not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class SpecialtyView(viewsets.ModelViewSet):
     queryset = Specialty.objects.all()

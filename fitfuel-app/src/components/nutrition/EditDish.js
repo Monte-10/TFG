@@ -22,7 +22,11 @@ function EditDish() {
     const [dishUpdated, setDishUpdated] = useState(false);
 
     useEffect(() => {
-        fetch(`${apiUrl}/nutrition/dishes/${dishId}/`)
+        fetch(`${apiUrl}/nutrition/dishes/${dishId}/`, {
+            headers: {
+              'Authorization': `Token ${localStorage.getItem('authToken')}`
+            }
+          })
             .then(response => response.json())
             .then(data => {
                 setName(data.name);
@@ -33,12 +37,20 @@ function EditDish() {
             })
             .catch(error => console.error('Error fetching dish details:', error));
 
-        fetch(`${apiUrl}/nutrition/ingredients/`)
+        fetch(`${apiUrl}/nutrition/ingredients/`, {
+            headers: {
+              'Authorization': `Token ${localStorage.getItem('authToken')}`
+            }
+          })
             .then(response => response.json())
             .then(data => setIngredients(data))
             .catch(error => console.error('Error fetching ingredients:', error));
 
-            fetch(`${apiUrl}/user/regularusers/`)
+            fetch(`${apiUrl}/user/regularusers/`, {
+                headers: {
+                  'Authorization': `Token ${localStorage.getItem('authToken')}`
+                }
+              })
             .then(response => response.json())
             .then(data => {
                 setUsers(data);
@@ -128,6 +140,7 @@ function EditDish() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Token ${localStorage.getItem('authToken')}`
                 },
                 body: JSON.stringify(dishData),
             });
@@ -163,6 +176,7 @@ function EditDish() {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Token ${localStorage.getItem('authToken')}`
                 },
                 body: JSON.stringify(dishData),
             });

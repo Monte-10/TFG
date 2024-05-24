@@ -39,14 +39,22 @@ function CreateDish() {
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch(`${apiUrl}/nutrition/ingredients/`)
+    fetch(`${apiUrl}/nutrition/ingredients/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
+    })
       .then(response => response.json())
       .then(data => {
         setIngredients(data);
         setTotalPages(Math.ceil(data.length / itemsPerPage));
       });
 
-    fetch(`${apiUrl}/user/regularusers/`)
+    fetch(`${apiUrl}/user/regularusers/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
+    })
       .then(response => response.json())
       .then(data => {
         if (data.length > 0) {
@@ -186,6 +194,7 @@ function CreateDish() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Token ${localStorage.getItem('authToken')}`
         },
         body: JSON.stringify(dishData),
       });

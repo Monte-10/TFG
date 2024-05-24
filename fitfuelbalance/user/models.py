@@ -19,8 +19,21 @@ class RegularUser(CustomUser):
     weight = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     height = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     
+    # Campos de medidas
+    neck = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    shoulder = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    chest = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    waist = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    hip = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    arm = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    glute = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    upper_leg = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    middle_leg = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    lower_leg = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+
     def has_personal_trainer(self):
         return self.personal_trainer is not None
+
 
 class Specialty(models.Model):
     SPECIALTY_CHOICES = [

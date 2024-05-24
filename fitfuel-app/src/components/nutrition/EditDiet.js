@@ -13,7 +13,11 @@ function EditDiet() {
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch(`${apiUrl}/nutrition/diet/${dietId}/`)
+    fetch(`${apiUrl}/nutrition/diet/${dietId}/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
+    })
       .then(response => {
         if (!response.ok) {
           throw new Error('Failed to fetch diet details');
@@ -35,7 +39,11 @@ function EditDiet() {
         setLoadingError(true);
       });
 
-    fetch(`${apiUrl}/user/regularusers/`)
+    fetch(`${apiUrl}/user/regularusers/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
+    })
       .then(response => response.json())
       .then(data => setUsers(data));
   }, [dietId, apiUrl]);
@@ -53,6 +61,7 @@ function EditDiet() {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
       },
       body: JSON.stringify(dietData),
     })

@@ -17,6 +17,7 @@ function Login({ onLoginSuccess }) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Token ${localStorage.getItem('authToken')}`
                 },
                 body: JSON.stringify({ username, password }),
             });

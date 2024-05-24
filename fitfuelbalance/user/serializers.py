@@ -22,7 +22,8 @@ class SpecialtySerializer(serializers.ModelSerializer):
 class RegularUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = RegularUser
-        fields = '__all__'
+        fields = ['weight', 'height', 'neck', 'shoulder', 'chest', 'waist', 'hip', 'arm', 'glute', 'upper_leg', 'middle_leg', 'lower_leg']
+
         
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:

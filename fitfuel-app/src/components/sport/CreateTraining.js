@@ -11,12 +11,20 @@ function CreateTraining() {
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch(`${apiUrl}/sport/exercises/`)
+    fetch(`${apiUrl}/sport/exercises/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
+    })
       .then(response => response.json())
       .then(data => setExercises(data))
       .catch(error => console.error('Error:', error));
 
-    fetch(`${apiUrl}/user/regularusers/`)
+    fetch(`${apiUrl}/user/regularusers/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
+    })
       .then(response => response.json())
       .then(data => setUsers(data))
       .catch(error => console.error('Error al obtener usuarios:', error));

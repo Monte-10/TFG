@@ -34,7 +34,11 @@ function CreateMeal() {
   const currentDishes = dishes.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
   useEffect(() => {
-    fetch(`${apiUrl}/nutrition/dishes/`)
+    fetch(`${apiUrl}/nutrition/dishes/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
+    })
       .then(response => response.json())
       .then(data => {
         const filteredDishes = data.filter(dish => {
@@ -107,7 +111,11 @@ function CreateMeal() {
         setTotalPages(Math.ceil(filteredDishes.length / itemsPerPage));
       });
 
-    fetch(`${apiUrl}/user/regularusers/`)
+    fetch(`${apiUrl}/user/regularusers/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
+    })
       .then(response => response.json())
       .then(data => {
         setUsers(data);
@@ -175,7 +183,9 @@ function CreateMeal() {
     try {
       const response = await fetch(`${apiUrl}/nutrition/meals/`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json',
+          'Authorization': `Token ${localStorage.getItem('authToken')}`
+         },
         body: JSON.stringify(mealData),
       });
       if (response.ok) {
