@@ -16,7 +16,7 @@ function FoodDetails() {
         .then(response => response.json())
         .then(data => setFoodDetails(data))
         .catch(error => console.error('Error fetching food details:', error));
-    }, [foodId]);
+    }, [foodId, apiUrl]);
 
     if (!foodDetails) {
         return <div className="text-center">Cargando detalles del alimento...</div>;

@@ -19,8 +19,21 @@ class RegularUser(CustomUser):
     weight = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     height = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     
+    # Campos de medidas
+    neck = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    shoulder = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    chest = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    waist = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    hip = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    arm = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    glute = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    upper_leg = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    middle_leg = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    lower_leg = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+
     def has_personal_trainer(self):
         return self.personal_trainer is not None
+
 
 class Specialty(models.Model):
     SPECIALTY_CHOICES = [
@@ -38,10 +51,8 @@ class Specialty(models.Model):
         return self.get_name_display()
 
 class Trainer(CustomUser):
-    clients = models.ManyToManyField(RegularUser, related_name='clients', blank=True)
-    
+    clients = models.ManyToManyField('RegularUser', related_name='clients', blank=True)
     specialties = models.ManyToManyField(Specialty, related_name='specialties', blank=True)
-    
     TRAINER_TYPE = [
         ('trainer', 'Trainer'),
         ('nutritionist', 'Nutritionist'),
@@ -49,13 +60,14 @@ class Trainer(CustomUser):
     ]
     trainer_type = models.CharField(max_length=12, choices=TRAINER_TYPE, null=True, blank=True)
 
+
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    #image = models.ImageField(default='default.jpg', upload_to='profile_pics')
     bio = models.TextField(null=True, blank=True)
     age = models.IntegerField(null=True, blank=True)
     gender = models.CharField(max_length=10, choices=[('male', 'Male'), ('female', 'Female'), ('other', 'Other')], null=True, blank=True)
-    
+    image = models.ImageField(upload_to='profile_pics', null=True, blank=True)
+
     def __str__(self):
         return f'{self.user.username} Profile'
     

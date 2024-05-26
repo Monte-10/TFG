@@ -17,9 +17,10 @@ function ListTraining() {
             setTrainings(data);
         })
         .catch(error => console.error('Error fetching trainings:', error));
-    }, []);
+    }, [apiUrl]);
 
-    const handleDeleteTraining = (trainingId) => {
+    const handleDeleteTraining = (trainingId, event) => {
+        event.stopPropagation(); // Prevenir la navegación al hacer clic en Eliminar
         if (window.confirm('¿Estás seguro de que quieres eliminar este entrenamiento?')) {
             fetch(`${apiUrl}/sport/trainings/${trainingId}/`, {
                 method: 'DELETE',
@@ -52,14 +53,14 @@ function ListTraining() {
                 </thead>
                 <tbody>
                     {trainings.map(training => (
-                        <tr key={training.id}>
+                        <tr key={training.id} onClick={() => navigate(`/sport/training/${training.id}`)} style={{ cursor: 'pointer' }}>
                             <td>{training.name}</td>
                             <td>{training.date}</td>
-                            <td>{training.user.username}</td>
-                            <td>
+                            <td>{training.user}</td>
+                            <td onClick={(e) => e.stopPropagation()}>
                                 <Link to={`/sport/training/${training.id}`} className="btn btn-info me-2">Detalles</Link>
                                 <Link to={`/sport/edit-training/${training.id}`} className="btn btn-primary me-2">Editar</Link>
-                                <button onClick={() => handleDeleteTraining(training.id)} className="btn btn-danger">Eliminar</button>
+                                <button onClick={(e) => handleDeleteTraining(training.id, e)} className="btn btn-danger">Eliminar</button>
                             </td>
                         </tr>
                     ))}

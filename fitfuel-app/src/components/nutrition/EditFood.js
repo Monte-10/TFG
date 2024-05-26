@@ -41,7 +41,11 @@ function EditFood() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch(`${apiUrl}/nutrition/foods/${foodId}/`)
+    fetch(`${apiUrl}/nutrition/foods/${foodId}/`, {
+        headers: {
+          'Authorization': `Token ${localStorage.getItem('authToken')}`
+        }
+      })
       .then(response => response.json())
       .then(data => {
         setFoodData(data);
@@ -50,7 +54,7 @@ function EditFood() {
         console.error('Error fetching food details:', error);
         setError("Error cargando los detalles del alimento.");
       });
-  }, [foodId]);
+  }, [foodId, apiUrl]);
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -81,6 +85,9 @@ function EditFood() {
     fetch(`${apiUrl}/nutrition/foods/`, { // Asegúrate que este es el endpoint correcto para crear un nuevo objeto
         method: 'POST',
         body: formData,
+        headers: {
+            'Authorization': `Token ${localStorage.getItem('authToken')}`
+        }
     })
     .then(response => {
         if (!response.ok) {
@@ -118,6 +125,9 @@ function EditFood() {
     fetch(`${apiUrl}/nutrition/foods/${foodId}/`, {
         method: 'PATCH',
         body: formData,
+        headers: {
+            'Authorization': `Token ${localStorage.getItem('authToken')}`
+        }
     })
     .then(response => {
         if (!response.ok) {

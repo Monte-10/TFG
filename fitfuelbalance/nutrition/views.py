@@ -234,3 +234,67 @@ def generate_meal_data(meal, styles):
         dish_text = f'<b>{dish.name}</b>: ' + ', '.join(f"{di.ingredient.food.name} ({di.quantity} porciones)" for di in ingredients)
         ingredients_text.append(dish_text)
     return '<br/>'.join(ingredients_text)
+
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
+from decimal import Decimal, ROUND_HALF_UP
+from .models import Diet, Option
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def adapt_diet_or_option(request):
+    user_id = request.data.get('user_id')
+    plan_id = request.data.get('plan_id')
+    plan_type = request.data.get('plan_type')
+    calories = request.data.get('calories')
+
+    try:
+        calories = Decimal(calories)
+    except Exception as e:
+        return Response({"error": "Invalid calories value"}, status=status.HTTP_400_BAD_REQUEST)
+
+    if plan_type == 'diet':
+        try:
+            plan = Diet.objects.get(id=plan_id, user_id=user_id)
+            adapted_plan = adapt_diet_to_calories(plan, calories)
+        except Diet.DoesNotExist:
+            return Response({"error": "Diet not found"}, status=status.HTTP_404_NOT_FOUND)
+    elif plan_type == 'option':
+        try:
+            plan = Option.objects.get(id=plan_id, user_id=user_id)
+            adapted_plan = adapt_option_to_calories(plan, calories)
+        except Option.DoesNotExist:
+            return Response({"error": "Option not found"}, status=status.HTTP_404_NOT_FOUND)
+    else:
+        return Response({"error": "Invalid plan type"}, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response({"adapted_plan": adapted_plan}, status=status.HTTP_200_OK)
+
+def adapt_meals(daily_diet, factor):
+    factor = Decimal(factor)
+    for meal in daily_diet.meals.all():
+        for meal_dish in meal.mealdish_set.all():
+            meal_dish.portion = (Decimal(meal_dish.portion) * factor).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+            meal_dish.save()
+
+def adapt_diet_to_calories(diet, calories):
+    total_calories = sum(daily_diet.calories for daily_diet in diet.dailydiet_set.all())
+    factor = calories / Decimal(total_calories)
+    for daily_diet in diet.dailydiet_set.all():
+        adapt_meals(daily_diet, factor)
+    return diet
+
+def adapt_option_to_calories(option, calories):
+    total_calories = sum(day_option.calories for day_option in [
+        option.monday_option, option.tuesday_option, option.wednesday_option,
+        option.thursday_option, option.friday_option, option.saturday_option, option.sunday_option
+    ])
+    factor = calories / Decimal(total_calories)
+    for day_option in [
+        option.monday_option, option.tuesday_option, option.wednesday_option,
+        option.thursday_option, option.friday_option, option.saturday_option, option.sunday_option
+    ]:
+        adapt_meals(day_option, factor)
+    return option

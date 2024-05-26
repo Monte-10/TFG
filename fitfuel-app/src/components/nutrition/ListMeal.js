@@ -4,6 +4,9 @@ import { useNavigate, Link } from 'react-router-dom';
 function ListMeal() {
     const [meals, setMeals] = useState([]);
     const [filteredMeals, setFilteredMeals] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [itemsPerPage] = useState(10); // Ajusta este número según sea necesario
+    const [totalPages, setTotalPages] = useState(0);
     const apiUrl = process.env.REACT_APP_API_URL;
     const [filters, setFilters] = useState({
         name: '',
@@ -47,56 +50,33 @@ function ListMeal() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Función para aplicar los filtros
         const applyFilters = () => {
             let updatedMeals = meals.filter(meal => {
-                return Object.entries(filters).every(([key, filter]) => {
-                    if (!filter.active) return true;
-                    if (key === 'name') {
-                        return meal.name.toLowerCase().includes(filter.value.toLowerCase());
-                    } else if (['glutenFree', 'lactoseFree', 'vegan', 'vegetarian', 'pescetarian', 'contains_meat', 'contains_vegetables', 'contains_fish_shellfish_canned_preserved', 'cereal', 'pasta_or_rice', 'dairy_yogurt_cheese', 'fruit', 'nuts', 'legume', 'sauce_or_condiment', 'deli_meat', 'bread_or_toast', 'egg', 'special_drink_or_supplement', 'tuber', 'other'].includes(key)) {
-                        return filter.value === '' || meal[key] === (filter.value === 'true');
-                    } else if (key === 'minCalories') {
-                        return parseInt(meal.calories, 10) >= parseInt(filter.value, 10);
-                    } else if (key === 'maxCalories') {
-                        return parseInt(meal.calories, 10) <= parseInt(filter.value, 10);
-                    } else if (key === 'minProtein') {
-                        return parseInt(meal.protein, 10) >= parseInt(filter.value, 10);
-                    } else if (key === 'maxProtein') {
-                        return parseInt(meal.protein, 10) <= parseInt(filter.value, 10);
-                    } else if (key === 'minCarbohydrates') {
-                        return parseInt(meal.carbohydrates, 10) >= parseInt(filter.value, 10);
-                    } else if (key === 'maxCarbohydrates') {
-                        return parseInt(meal.carbohydrates, 10) <= parseInt(filter.value, 10);
-                    } else if (key === 'minFat') {
-                        return parseInt(meal.fat, 10) >= parseInt(filter.value, 10);
-                    } else if (key === 'maxFat') {
-                        return parseInt(meal.fat, 10) <= parseInt(filter.value, 10);
-                    } else if (key === 'minSugar') {
-                        return parseInt(meal.sugar, 10) >= parseInt(filter.value, 10);
-                    } else if (key === 'maxSugar') {
-                        return parseInt(meal.sugar, 10) <= parseInt(filter.value, 10);
-                    } else if (key === 'minFiber') {
-                        return parseInt(meal.fiber, 10) >= parseInt(filter.value, 10);
-                    } else if (key === 'maxFiber') {
-                        return parseInt(meal.fiber, 10) <= parseInt(filter.value, 10);
-                    } else if (key === 'minSaturatedFat') {
-                        return parseInt(meal.saturated_fat, 10) >= parseInt(filter.value, 10);
-                    } else if (key === 'maxSaturatedFat') {
-                        return parseInt(meal.saturated_fat, 10) <= parseInt(filter.value, 10);
+                return Object.entries(filters).every(([key, value]) => {
+                    if (value === '' || value === false) return true; // Ignore filter if empty or false
+                    if (typeof value === 'boolean') {
+                        return meal[key] === value;
+                    } else if (key.includes('min') || key.includes('max')) {
+                        const field = key.replace('min', '').replace('max', '').toLowerCase();
+                        if (key.startsWith('min')) {
+                            return parseFloat(meal[field]) >= parseFloat(value);
+                        } else {
+                            return parseFloat(meal[field]) <= parseFloat(value);
+                        }
+                    } else {
+                        return meal[key].toLowerCase().includes(value.toLowerCase());
                     }
-                    return true;
                 });
             });
-                setFilteredMeals(updatedMeals);
-            };
+            setFilteredMeals(updatedMeals);
+            setTotalPages(Math.ceil(updatedMeals.length / itemsPerPage));
+        };
 
         applyFilters();
-    }, [filters, meals]);
+    }, [filters, meals, itemsPerPage]);
 
     const handleDeleteMeal = (mealId) => {
         if (window.confirm('¿Estás seguro de que quieres eliminar esta comida?')) {
-            // Aquí debes reemplazar con la URL de tu API para eliminar una comida
             fetch(`${apiUrl}/nutrition/meals/${mealId}/`, {
                 method: 'DELETE',
                 headers: {
@@ -105,7 +85,6 @@ function ListMeal() {
             })
             .then(response => {
                 if (response.ok) {
-                    // Actualizar el estado para reflejar la comida eliminada
                     setMeals(meals.filter(meal => meal.id !== mealId));
                 } else {
                     console.error('Error al eliminar la comida');
@@ -116,10 +95,10 @@ function ListMeal() {
     };
 
     const handleFilterChange = (e) => {
-        const { name, value, checked } = e.target;
+        const { name, value, type, checked } = e.target;
         setFilters(prevFilters => ({
             ...prevFilters,
-            [name]: { ...prevFilters[name], value: value, active: checked }
+            [name]: type === 'checkbox' ? checked : value
         }));
     };
 
@@ -165,7 +144,6 @@ function ListMeal() {
     };
 
     useEffect(() => {
-        // Reemplaza con la URL de tu API para obtener las comidas
         fetch(`${apiUrl}/nutrition/meals/`, {
             headers: {
                 'Authorization': `Token ${localStorage.getItem('authToken')}`,
@@ -175,9 +153,12 @@ function ListMeal() {
         .then(data => {
             setMeals(data);
             setFilteredMeals(data); // Inicializar las comidas filtradas con todas las comidas
+            setTotalPages(Math.ceil(data.length / itemsPerPage));
         })
         .catch(error => console.error('Error fetching meals:', error));
-    }, [apiUrl]);
+    }, [apiUrl, itemsPerPage]);
+
+    const currentMeals = filteredMeals.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
     return (
         <div className="container">
@@ -189,21 +170,24 @@ function ListMeal() {
                         className="form-control mb-2"
                         placeholder="Filtrar por nombre..."
                         value={filters.name}
-                        onChange={(e) => handleFilterChange({ target: { name: 'name', value: e.target.value } })}
+                        onChange={handleFilterChange}
+                        name="name"
                     />
                     <input
                         type="number"
                         className="form-control mb-2"
                         placeholder="Calorías mínimas"
                         value={filters.minCalories}
-                        onChange={(e) => handleFilterChange({ target: { name: 'minCalories', value: e.target.value } })}
+                        onChange={handleFilterChange}
+                        name="minCalories"
                     />
                     <input
                         type="number"
                         className="form-control"
                         placeholder="Calorías máximas"
                         value={filters.maxCalories}
-                        onChange={(e) => handleFilterChange({ target: { name: 'maxCalories', value: e.target.value } })}
+                        onChange={handleFilterChange}
+                        name="maxCalories"
                     />
                 </div>
                 <div className="col-md-2 mb-3">
@@ -212,14 +196,16 @@ function ListMeal() {
                         className="form-control mb-2"
                         placeholder="Proteínas mínimas"
                         value={filters.minProtein}
-                        onChange={(e) => handleFilterChange({ target: { name: 'minProtein', value: e.target.value } })}
+                        onChange={handleFilterChange}
+                        name="minProtein"
                     />
                     <input
                         type="number"
                         className="form-control mb-2"
                         placeholder="Proteínas máximas"
                         value={filters.maxProtein}
-                        onChange={(e) => handleFilterChange({ target: { name: 'maxProtein', value: e.target.value } })}
+                        onChange={handleFilterChange}
+                        name="maxProtein"
                     />
                 </div>
                 <div className="col-md-2 mb-3">
@@ -228,14 +214,16 @@ function ListMeal() {
                         className="form-control mb-2"
                         placeholder="Carbohidratos mínimos"
                         value={filters.minCarbohydrates}
-                        onChange={(e) => handleFilterChange({ target: { name: 'minCarbohydrates', value: e.target.value } })}
+                        onChange={handleFilterChange}
+                        name="minCarbohydrates"
                     />
                     <input
                         type="number"
                         className="form-control mb-2"
                         placeholder="Carbohidratos máximos"
                         value={filters.maxCarbohydrates}
-                        onChange={(e) => handleFilterChange({ target: { name: 'maxCarbohydrates', value: e.target.value } })}
+                        onChange={handleFilterChange}
+                        name="maxCarbohydrates"
                     />
                 </div>
                 <div className="col-md-2 mb-3">
@@ -244,14 +232,16 @@ function ListMeal() {
                         className="form-control mb-2"
                         placeholder="Grasas mínimas"
                         value={filters.minFat}
-                        onChange={(e) => handleFilterChange({ target: { name: 'minFat', value: e.target.value } })}
+                        onChange={handleFilterChange}
+                        name="minFat"
                     />
                     <input
                         type="number"
                         className="form-control mb-2"
                         placeholder="Grasas máximas"
                         value={filters.maxFat}
-                        onChange={(e) => handleFilterChange({ target: { name: 'maxFat', value: e.target.value } })}
+                        onChange={handleFilterChange}
+                        name="maxFat"
                     />
                 </div>
                 <div className="col-md-2 mb-3">
@@ -260,14 +250,16 @@ function ListMeal() {
                         className="form-control mb-2"
                         placeholder="Azúcar mínimo"
                         value={filters.minSugar}
-                        onChange={(e) => handleFilterChange({ target: { name: 'minSugar', value: e.target.value } })}
+                        onChange={handleFilterChange}
+                        name="minSugar"
                     />
                     <input
                         type="number"
                         className="form-control"
                         placeholder="Azúcar máximo"
                         value={filters.maxSugar}
-                        onChange={(e) => handleFilterChange({ target: { name: 'maxSugar', value: e.target.value } })}
+                        onChange={handleFilterChange}
+                        name="maxSugar"
                     />
                 </div>
                 <div className="col-md-2 mb-3">
@@ -276,14 +268,16 @@ function ListMeal() {
                         className="form-control mb-2"
                         placeholder="Fibra mínima"
                         value={filters.minFiber}
-                        onChange={(e) => handleFilterChange({ target: { name: 'minFiber', value: e.target.value } })}
+                        onChange={handleFilterChange}
+                        name="minFiber"
                     />
                     <input
                         type="number"
                         className="form-control"
                         placeholder="Fibra máxima"
                         value={filters.maxFiber}
-                        onChange={(e) => handleFilterChange({ target: { name: 'maxFiber', value: e.target.value } })}
+                        onChange={handleFilterChange}
+                        name="maxFiber"
                     />
                 </div>
                 <button className="btn btn-secondary mt-3" onClick={resetFilters}>Limpiar Filtros</button>
@@ -300,12 +294,13 @@ function ListMeal() {
                         <th>Azúcares</th>
                         <th>Fibra</th>
                         <th>Grasas Saturadas</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredMeals.map(meal => (
-                        <tr key={meal.id} onClick={() => navigate(`/nutrition/meals/${meal.id}`)} style={{cursor: 'pointer'}}>
-                            <td>{meal.name}</td>
+                    {currentMeals.map(meal => (
+                        <tr key={meal.id} onClick={() => navigate(`/nutrition/meals/${meal.id}`)} style={{ cursor: 'pointer' }}>
                             <td>{meal.name}</td>
                             <td>{meal.calories}</td>
                             <td>{meal.protein}</td>
@@ -313,12 +308,12 @@ function ListMeal() {
                             <td>{meal.fat}</td>
                             <td>{meal.sugar}</td>
                             <td>{meal.fiber}</td>
-                            <td>{meal.saturatedFat}</td>
+                            <td>{meal.saturated_fat}</td>
                             <td>
                                 <Link to={`/nutrition/edit-meal/${meal.id}`} className="btn btn-primary me-2">Editar</Link>
                             </td>
                             <td>
-                                <button onClick={() => handleDeleteMeal(meal.id)} className="btn btn-danger">Eliminar</button>
+                                <button onClick={(e) => { e.stopPropagation(); handleDeleteMeal(meal.id); }} className="btn btn-danger">Eliminar</button>
                             </td>
                         </tr>
                     ))}
@@ -329,6 +324,24 @@ function ListMeal() {
                     No se encontraron comidas que coincidan con los filtros seleccionados.
                 </div>
             )}
+
+            <div className="pagination">
+                <button
+                    disabled={currentPage === 0}
+                    onClick={() => setCurrentPage(currentPage - 1)}
+                    className="btn btn-secondary"
+                >
+                    Anterior
+                </button>
+                <span> Página {currentPage + 1} de {totalPages} </span>
+                <button
+                    disabled={currentPage >= totalPages - 1}
+                    onClick={() => setCurrentPage(currentPage + 1)}
+                    className="btn btn-secondary"
+                >
+                    Siguiente
+                </button>
+            </div>
         </div>
     );
 }

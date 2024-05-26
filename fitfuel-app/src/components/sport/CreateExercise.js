@@ -24,6 +24,9 @@ function CreateExercise() {
     fetch(`${apiUrl}/sport/exercises/`, {
       method: 'POST',
       body: formData,
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
     })
     .then(response => {
       if (response.ok) {

@@ -14,18 +14,30 @@ function EditTraining() {
     const apiUrl = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
-        fetch(`${apiUrl}/sport/exercises/`)
+        fetch(`${apiUrl}/sport/exercises/`, {
+            headers: {
+              'Authorization': `Token ${localStorage.getItem('authToken')}`
+            }
+          })
             .then(response => response.json())
             .then(data => setExercises(data))
             .catch(error => console.error('Error:', error));
 
-        fetch(`${apiUrl}/user/regularusers/`)
+        fetch(`${apiUrl}/user/regularusers/`, {
+            headers: {
+              'Authorization': `Token ${localStorage.getItem('authToken')}`
+            }
+          })
             .then(response => response.json())
             .then(data => setUsers(data))
             .catch(error => console.error('Error al obtener usuarios:', error));
 
         // Cargar datos existentes del entrenamiento
-        fetch(`${apiUrl}/sport/trainings/${id}/`)
+        fetch(`${apiUrl}/sport/trainings/${id}/`, {
+            headers: {
+              'Authorization': `Token ${localStorage.getItem('authToken')}`
+            }
+          })
             .then(response => response.json())
             .then(data => {
                 setTrainingName(data.name);
@@ -34,7 +46,7 @@ function EditTraining() {
                 setSelectedExercises(data.exercises_details);
             })
             .catch(error => console.error('Error:', error));
-    }, [id]);
+    }, [id, apiUrl]);
 
     const handleAddExercise = () => {
         setSelectedExercises([...selectedExercises, { exerciseId: '', repetitions: '', sets: '', weight: '', time: null }]);

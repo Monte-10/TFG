@@ -8,8 +8,9 @@ function CreateIngredient() {
   const [name, setName] = useState('');
   const [ingredientCreated, setIngredientCreated] = useState(false);
   const [nutritionalInfo, setNutritionalInfo] = useState({});
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [filters, setFilters] = useState({
-    name: { value: '', active: false },
+    name: { value: '', active: true },
     minCalories: { value: '', active: false },
     maxCalories: { value: '', active: false },
     minProtein: { value: '', active: false },
@@ -28,15 +29,16 @@ function CreateIngredient() {
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch(`${apiUrl}/nutrition/foods/`)
+    fetch(`${apiUrl}/nutrition/foods/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
+    })
       .then(response => response.json())
       .then(data => {
         setFoods(data);
       });
-  }, []);
-
-  useEffect(() => {
-  }, [filters]);
+  }, [apiUrl]);
 
   useEffect(() => {
     const updatedFoods = foods.filter(food => {
@@ -86,13 +88,17 @@ function CreateIngredient() {
     const isActive = value !== '';
     setFilters(prevFilters => ({
       ...prevFilters,
-      [name]: { value: value, active: isActive }
+      [name]: { value, active: isActive }
     }));
+  };
+
+  const toggleAdvancedFilters = () => {
+    setShowAdvancedFilters(!showAdvancedFilters);
   };
 
   const resetFilters = () => {
     setFilters({
-      name: { value: '', active: false },
+      name: { value: '', active: true },
       minCalories: { value: '', active: false },
       maxCalories: { value: '', active: false },
       minProtein: { value: '', active: false },
@@ -108,6 +114,7 @@ function CreateIngredient() {
       minSaturatedFat: { value: '', active: false },
       maxSaturatedFat: { value: '', active: false },
     });
+    setShowAdvancedFilters(false);  // Optionally reset the visibility
   };
 
   const handleSelectChange = (event) => {
@@ -135,7 +142,6 @@ function CreateIngredient() {
     };
     console.log("Submitting ingredient data:", ingredientData);
 
-    // Aquí deberías reemplazar la URL por la de tu API real y ajustar el manejo según tu API
     fetch(`${apiUrl}/nutrition/ingredients/`, {
       method: 'POST',
       headers: {
@@ -155,156 +161,160 @@ function CreateIngredient() {
 
   return (
     <div className="container mt-4">
-    <h2>Crear Ingrediente</h2>
-    {ingredientCreated && <div className="alert alert-success" role="alert">El Ingrediente ha sido creado con éxito.</div>}
-    <form onSubmit={handleSubmit}>
-        {/* Inputs de filtros */}
+      <h2>Crear Ingrediente</h2>
+      {ingredientCreated && <div className="alert alert-success" role="alert">El Ingrediente ha sido creado con éxito.</div>}
+      <form onSubmit={handleSubmit}>
         <h3>Filtros para Ingredientes</h3>
         <div className="row">
-            <div className="mb-3">
-                    <label htmlFor="filterName" className="form-label">Nombre del Alimento</label>
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        id="filterName" 
-                        value={filters.name.value} 
-                        onChange={e => handleFilterChange('name', e.target.value)} 
-                    />
-            </div>
-            <div className="col-md-4">
+          <div className="mb-3">
+            <label htmlFor="filterName" className="form-label">Nombre del Alimento</label>
+            <input 
+              type="text" 
+              className="form-control" 
+              id="filterName" 
+              value={filters.name.value} 
+              onChange={e => handleFilterChange('name', e.target.value)} 
+            />
+          </div>
+          <button type="button" className="btn btn-info mb-3" onClick={toggleAdvancedFilters}>
+            {showAdvancedFilters ? 'Ocultar Filtros Avanzados' : 'Mostrar Filtros Avanzados'}
+          </button>
+          {showAdvancedFilters && (
+            <>
+              <div className="col-md-4">
                 <div className="mb-3">
-                    <label htmlFor="filterMinCalories" className="form-label">Mínimo de Calorías</label>
-                    <input
-                        type="number"
-                        className="form-control"
-                        id="filterMinCalories"
-                        value={filters.minCalories.value}
-                        onChange={e => handleFilterChange('minCalories', e.target.value)}
-                    />
+                  <label htmlFor="filterMinCalories" className="form-label">Mínimo de Calorías</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="filterMinCalories"
+                    value={filters.minCalories.value}
+                    onChange={e => handleFilterChange('minCalories', e.target.value)}
+                  />
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="filterMaxCalories" className="form-label">Máximo de Calorías</label>
-                    <input
-                        type="number"
-                        className="form-control"
-                        id="filterMaxCalories"
-                        value={filters.maxCalories.value}
-                        onChange={e => handleFilterChange('maxCalories', e.target.value)}
-                    />
+                  <label htmlFor="filterMaxCalories" className="form-label">Máximo de Calorías</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="filterMaxCalories"
+                    value={filters.maxCalories.value}
+                    onChange={e => handleFilterChange('maxCalories', e.target.value)}
+                  />
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="filterMinProtein" className="form-label">Mínimo de Proteínas</label>
-                    <input
-                        type="number"
-                        className="form-control"
-                        id="filterMinProtein"
-                        value={filters.minProtein.value}
-                        onChange={e => handleFilterChange('minProtein', e.target.value)}
-                    />
+                  <label htmlFor="filterMinProtein" className="form-label">Mínimo de Proteínas</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="filterMinProtein"
+                    value={filters.minProtein.value}
+                    onChange={e => handleFilterChange('minProtein', e.target.value)}
+                  />
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="filterMaxProtein" className="form-label">Máximo de Proteínas</label>
-                    <input
-                        type="number"
-                        className="form-control"
-                        id="filterMaxProtein"
-                        value={filters.maxProtein.value}
-                        onChange={e => handleFilterChange('maxProtein', e.target.value)}
-                    />
+                  <label htmlFor="filterMaxProtein" className="form-label">Máximo de Proteínas</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="filterMaxProtein"
+                    value={filters.maxProtein.value}
+                    onChange={e => handleFilterChange('maxProtein', e.target.value)}
+                  />
                 </div>
-            </div>
-            <div className="col-md-4">
+              </div>
+              <div className="col-md-4">
                 <div className="mb-3">
-                    <label htmlFor="filterMinCarbohydrates" className="form-label">Mínimo de Carbohidratos</label>
-                    <input
-                        type="number"
-                        className="form-control"
-                        id="filterMinCarbohydrates"
-                        value={filters.minCarbohydrates.value}
-                        onChange={e => handleFilterChange('minCarbohydrates', e.target.value)}
-                    />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="filterMaxCarbohydrates" className="form-label">Máximo de Carbohidratos</label>
-                    <input
-                        type="number"
-                        className="form-control"
-                        id="filterMaxCarbohydrates"
-                        value={filters.maxCarbohydrates.value}
-                        onChange={e => handleFilterChange('maxCarbohydrates', e.target.value)}
-                    />
+                  <label htmlFor="filterMinCarbohydrates" className="form-label">Mínimo de Carbohidratos</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="filterMinCarbohydrates"
+                    value={filters.minCarbohydrates.value}
+                    onChange={e => handleFilterChange('minCarbohydrates', e.target.value)}
+                  />
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="filterMinFat" className="form-label">Mínimo de Grasas</label>
-                    <input
-                        type="number"
-                        className="form-control"
-                        id="filterMinFat"
-                        value={filters.minFat.value}
-                        onChange={e => handleFilterChange('minFat', e.target.value)}
-                    />
+                  <label htmlFor="filterMaxCarbohydrates" className="form-label">Máximo de Carbohidratos</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="filterMaxCarbohydrates"
+                    value={filters.maxCarbohydrates.value}
+                    onChange={e => handleFilterChange('maxCarbohydrates', e.target.value)}
+                  />
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="filterMaxFat" className="form-label">Máximo de Grasas</label>
-                    <input
-                        type="number"
-                        className="form-control"
-                        id="filterMaxFat"
-                        value={filters.maxFat.value}
-                        onChange={e => handleFilterChange('maxFat', e.target.value)}
-                    />
-                </div>
-            </div>
-            <div className="col-md-4">
-                <div className="mb-3">
-                    <label htmlFor="filterMinSugar" className="form-label">Mínimo de Azúcares</label>
-                    <input
-                        type="number"
-                        className="form-control"
-                        id="filterMinSugar"
-                        value={filters.minSugar.value}
-                        onChange={e => handleFilterChange('minSugar', e.target.value)}
-                    />
+                  <label htmlFor="filterMinFat" className="form-label">Mínimo de Grasas</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="filterMinFat"
+                    value={filters.minFat.value}
+                    onChange={e => handleFilterChange('minFat', e.target.value)}
+                  />
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="filterMaxSugar" className="form-label">Máximo de Azúcares</label>
-                    <input
-                        type="number"
-                        className="form-control"
-                        id="filterMaxSugar"
-                        value={filters.maxSugar.value}
-                        onChange={e => handleFilterChange('maxSugar', e.target.value)}
-                    />
+                  <label htmlFor="filterMaxFat" className="form-label">Máximo de Grasas</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="filterMaxFat"
+                    value={filters.maxFat.value}
+                    onChange={e => handleFilterChange('maxFat', e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="col-md-4">
+                <div className="mb-3">
+                  <label htmlFor="filterMinSugar" className="form-label">Mínimo de Azúcares</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="filterMinSugar"
+                    value={filters.minSugar.value}
+                    onChange={e => handleFilterChange('minSugar', e.target.value)}
+                  />
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="filterMinFiber" className="form-label">Mínimo de Fibra</label>
-                    <input
-                        type="number"
-                        className="form-control"
-                        id="filterMinFiber"
-                        value={filters.minFiber.value}
-                        onChange={e => handleFilterChange('minFiber', e.target.value)}
-                    />
+                  <label htmlFor="filterMaxSugar" className="form-label">Máximo de Azúcares</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="filterMaxSugar"
+                    value={filters.maxSugar.value}
+                    onChange={e => handleFilterChange('maxSugar', e.target.value)}
+                  />
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="filterMaxFiber" className="form-label">Máximo de Fibra</label>
-                    <input
-                        type="number"
-                        className="form-control"
-                        id="filterMaxFiber"
-                        value={filters.maxFiber.value}
-                        onChange={e => handleFilterChange('maxFiber', e.target.value)}
-                    />
+                  <label htmlFor="filterMinFiber" className="form-label">Mínimo de Fibra</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="filterMinFiber"
+                    value={filters.minFiber.value}
+                    onChange={e => handleFilterChange('minFiber', e.target.value)}
+                  />
                 </div>
-            </div>
+                <div className="mb-3">
+                  <label htmlFor="filterMaxFiber" className="form-label">Máximo de Fibra</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="filterMaxFiber"
+                    value={filters.maxFiber.value}
+                    onChange={e => handleFilterChange('maxFiber', e.target.value)}
+                  />
+                </div>
+              </div>
+            </>
+          )}
         </div>
 
         <button type="button" className="btn btn-secondary" onClick={resetFilters}>Limpiar Filtros</button>
 
-        {/* Inputs para crear ingrediente */}
         <hr />
         <h3>Crear Ingrediente</h3>
-
         <div className="mb-3">
           <label htmlFor="name" className="form-label">Nombre del Ingrediente</label>
           <input 
@@ -336,14 +346,12 @@ function CreateIngredient() {
             value={quantity} 
             onChange={handleQuantityChange}
           />
-
         </div>
         <button type="submit" className="btn btn-primary">Crear Ingrediente</button>
 
         <div className="card mt-4">
           <h3>Información Nutricional</h3>
           <div className="row">
-            {/* Columna 1 */}
             <div className="col-md-4">
               <ul className="list-group list-group-flush">
                 <li className="list-group-item">Calorías: {calculateNutritionalValues(nutritionalInfo.calories, quantity)} kcal</li>
@@ -357,8 +365,6 @@ function CreateIngredient() {
                 <li className="list-group-item">Lactose Free: {nutritionalInfo.lactose_free ? 'Sí' : 'No'}</li>
               </ul>
             </div>
-
-            {/* Columna 2 */}
             <div className="col-md-4">
               <ul className="list-group list-group-flush">
                 <li className="list-group-item">Vegan: {nutritionalInfo.vegan ? 'Sí' : 'No'}</li>
@@ -370,14 +376,11 @@ function CreateIngredient() {
                 <li className="list-group-item">Cereal: {nutritionalInfo.cereal ? 'Sí' : 'No'}</li>
                 <li className="list-group-item">Pasta or Rice: {nutritionalInfo.pasta_or_rice ? 'Sí' : 'No'}</li>
                 <li className="list-group-item">Dairy/Yogurt/Cheese: {nutritionalInfo.dairy_yogurt_cheese ? 'Sí' : 'No'}</li>
-                
               </ul>
             </div>
-
-            {/* Columna 3 */}
             <div className="col-md-4">
               <ul className="list-group list-group-flush">
-              <li className="list-group-item">Fruit: {nutritionalInfo.fruit ? 'Sí' : 'No'}</li>
+                <li className="list-group-item">Fruit: {nutritionalInfo.fruit ? 'Sí' : 'No'}</li>
                 <li className="list-group-item">Nuts: {nutritionalInfo.nuts ? 'Sí' : 'No'}</li>
                 <li className="list-group-item">Legume: {nutritionalInfo.legume ? 'Sí' : 'No'}</li>
                 <li className="list-group-item">Sauce or Condiment: {nutritionalInfo.sauce_or_condiment ? 'Sí' : 'No'}</li>

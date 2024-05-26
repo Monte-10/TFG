@@ -28,7 +28,7 @@ function CreateWeekOption() {
       console.error('Error fetching day options:', error);
       setError('Failed to fetch day options. Please refresh the page.');
     });
-  }, []);
+  }, [apiUrl]);
 
   const handleDayOptionChange = (day, value) => {
     setSelectedDayOptions({ ...selectedDayOptions, [day]: value });

@@ -1,32 +1,21 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
 const SearchTrainer = ({ onSearch }) => {
     const [specialty, setSpecialty] = useState('');
     const [trainerType, setTrainerType] = useState('');
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
         onSearch(specialty, trainerType);
     };
 
-    const searchTrainers = async (criteria) => {
-        try {
-            const response = await axios.get('/api/trainers/search', { params: criteria });
-            return response.data;
-        } catch (error) {
-            console.error("Error al buscar entrenadores:", error);
-            return [];
-        }
-    };
-
     return (
-        <div>
+        <div className="container mt-4">
             <h2>Buscar Entrenador</h2>
             <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Especialidad:</label>
-                    <select value={specialty} onChange={(e) => setSpecialty(e.target.value)}>
+                <div className="mb-3">
+                    <label className="form-label">Especialidad:</label>
+                    <select className="form-select" value={specialty} onChange={(e) => setSpecialty(e.target.value)}>
                         <option value="">Seleccionar</option>
                         <option value="weight_loss">Pérdida de peso</option>
                         <option value="muscle_gain">Ganancia muscular</option>
@@ -36,16 +25,16 @@ const SearchTrainer = ({ onSearch }) => {
                         <option value="other">Otro</option>
                     </select>
                 </div>
-                <div>
-                    <label>Tipo de Entrenador:</label>
-                    <select value={trainerType} onChange={(e) => setTrainerType(e.target.value)}>
+                <div className="mb-3">
+                    <label className="form-label">Tipo de Entrenador:</label>
+                    <select className="form-select" value={trainerType} onChange={(e) => setTrainerType(e.target.value)}>
                         <option value="">Seleccionar</option>
                         <option value="trainer">Entrenador</option>
                         <option value="nutritionist">Nutricionista</option>
                         <option value="both">Ambos</option>
                     </select>
                 </div>
-                <button type="submit">Buscar</button>
+                <button type="submit" className="btn btn-primary">Buscar</button>
             </form>
         </div>
     );

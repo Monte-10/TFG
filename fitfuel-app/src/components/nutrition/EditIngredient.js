@@ -11,7 +11,11 @@ function EditIngredient() {
 
   useEffect(() => {
     // Cargar la información existente del ingrediente
-    fetch(`${apiUrl}/nutrition/ingredients/${ingredientId}/`)
+    fetch(`${apiUrl}/nutrition/ingredients/${ingredientId}/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
+    })
       .then(response => response.json())
       .then(data => {
         setIngredient(data);
@@ -22,13 +26,17 @@ function EditIngredient() {
       });
 
     // Cargar lista de alimentos para el selector
-    fetch(`${apiUrl}/nutrition/foods/`)
+    fetch(`${apiUrl}/nutrition/foods/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
+    })
       .then(response => response.json())
       .then(setFoods)
       .catch(error => {
         console.error('Error fetching foods:', error);
       });
-  }, [ingredientId]);
+  }, [ingredientId, apiUrl]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -44,6 +52,7 @@ function EditIngredient() {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
       },
       body: JSON.stringify(ingredient)
     })
@@ -64,6 +73,7 @@ function EditIngredient() {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Token ${localStorage.getItem('authToken')}`
         },
         body: JSON.stringify({
           name: ingredient.name,

@@ -4,75 +4,92 @@
 \contentsline {section}{\numberline {1.2}Gama de colores}{1}{section.1.2}%
 \contentsline {section}{\numberline {1.3}Colores}{2}{section.1.3}%
 \contentsline {section}{\numberline {1.4}Uso de los colores}{2}{section.1.4}%
-\contentsline {chapter}{\numberline {2}Estructura}{7}{chapter.2}%
-\contentsline {section}{\numberline {2.1}T\IeC {\'\i }tulo, autor, tutor y otras variables}{7}{section.2.1}%
-\contentsline {section}{\numberline {2.2}\IeC {\'I}ndices}{8}{section.2.2}%
-\contentsline {section}{\numberline {2.3}Copyright, dedicatoria y cita inicial}{8}{section.2.3}%
-\contentsline {section}{\numberline {2.4}Prefacio, resumen ...}{9}{section.2.4}%
-\contentsline {section}{\numberline {2.5}Partes, cap\IeC {\'\i }tulos ...}{9}{section.2.5}%
-\contentsline {section}{\numberline {2.6}Glosario, acr\IeC {\'o}nimos y definiciones}{10}{section.2.6}%
-\contentsline {subsection}{\numberline {2.6.1}Glosario}{10}{subsection.2.6.1}%
-\contentsline {subsection}{\numberline {2.6.2}Acronimos}{11}{subsection.2.6.2}%
-\contentsline {subsection}{\numberline {2.6.3}Definiciones}{11}{subsection.2.6.3}%
-\contentsline {section}{\numberline {2.7}Referencias}{12}{section.2.7}%
-\contentsline {section}{\numberline {2.8}Bibliograf\IeC {\'\i }a}{12}{section.2.8}%
-\contentsline {chapter}{\numberline {3}Primeros pasos}{13}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Estructurar el documento}{13}{section.3.1}%
-\contentsline {subsection}{\numberline {3.1.1}Organizaci\IeC {\'o}n de \LaTeXe }{13}{subsection.3.1.1}%
-\contentsline {subsection}{\numberline {3.1.2}Organizaci\IeC {\'o}n de la documentaci\IeC {\'o}n}{13}{subsection.3.1.2}%
-\contentsline {subsection}{\numberline {3.1.3}Otros elementos de la estructura del documento}{14}{subsection.3.1.3}%
-\contentsline {section}{\numberline {3.2}Enlazar la bibliograf\IeC {\'\i }a}{15}{section.3.2}%
-\contentsline {chapter}{\numberline {4}Elementos internos}{17}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Figuras}{17}{section.4.1}%
-\contentsline {subsection}{\numberline {4.1.1}Gr\IeC {\'a}ficas}{18}{subsection.4.1.1}%
-\contentsline {subsection}{\numberline {4.1.2}Gr\IeC {\'a}ficas con pgfplots}{18}{subsection.4.1.2}%
-\contentsline {subsubsection}{Gr\IeC {\'a}ficas xy}{18}{section*.20}%
-\contentsline {paragraph}{Tipo de gr\IeC {\'a}fica}{18}{section*.21}%
-\contentsline {paragraph}{Datos}{19}{section*.23}%
-\contentsline {paragraph}{Expresiones matem\IeC {\'a}ticas}{20}{section*.24}%
-\contentsline {subsection}{\numberline {4.1.3}Gr\IeC {\'a}ficas con gnuplot}{21}{subsection.4.1.3}%
-\contentsline {subsection}{\numberline {4.1.4}Im\IeC {\'a}genes}{21}{subsection.4.1.4}%
-\contentsline {subsection}{\numberline {4.1.5}Diagramas de Gantt}{22}{subsection.4.1.5}%
-\contentsline {section}{\numberline {4.2}Tablas}{23}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}Presupuestos}{24}{subsection.4.2.1}%
-\contentsline {section}{\numberline {4.3}Cuadros de texto}{26}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Ecuaciones}{26}{section.4.4}%
-\contentsline {section}{\numberline {4.5}C\IeC {\'o}digo}{27}{section.4.5}%
-\contentsline {section}{\numberline {4.6}Algoritmos}{29}{section.4.6}%
-\contentsline {section}{\numberline {4.7}Listas}{30}{section.4.7}%
-\contentsline {subsection}{\numberline {4.7.1}Listas tradicionales de \LaTeXe }{30}{subsection.4.7.1}%
-\contentsline {paragraph}{Punteado con anidaci\IeC {\'o}n}{30}{section*.30}%
-\contentsline {paragraph}{Enumerado con anidaci\IeC {\'o}n}{31}{section*.31}%
-\contentsline {paragraph}{Definiciones con anidaci\IeC {\'o}n}{31}{section*.32}%
-\contentsline {subsection}{\numberline {4.7.2}Nuevos tipos de listas}{31}{subsection.4.7.2}%
-\contentsline {paragraph}{Simplelist con anidaci\IeC {\'o}n}{31}{section*.33}%
-\contentsline {paragraph}{Functional con anidaci\IeC {\'o}n}{31}{section*.34}%
-\contentsline {paragraph}{Nonfunctional con anidaci\IeC {\'o}n}{32}{section*.35}%
-\contentsline {paragraph}{Functionality con anidaci\IeC {\'o}n}{32}{section*.36}%
-\contentsline {paragraph}{Objetive con anidaci\IeC {\'o}n}{32}{section*.37}%
-\contentsline {section}{\numberline {4.8}Referencias internas e hiperenlaces}{32}{section.4.8}%
-\contentsline {chapter}{\numberline {5}Compilaci\IeC {\'o}n}{33}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Pdflatex}{33}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Arara}{34}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Overleaf}{35}{section.5.3}%
-\contentsline {section}{\numberline {5.4}Permitir el uso de la shell al compilador}{35}{section.5.4}%
-\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{37}{chapter*.38}%
-\contentsline {part}{Ap\IeC {\'e}ndices}{39}{part.1}%
-\contentsline {chapter}{\numberline {A}Word\textsuperscript {\textregistered } vs. \LaTeXe }{41}{appendix.Alph1}%
-\contentsline {section}{\numberline {A.1}Ventajas e inconvenientes de \LaTeXe }{41}{section.Alph1.1}%
-\contentsline {section}{\numberline {A.2}Ventajas e inconvenientes de Word\textsuperscript {\textregistered }}{41}{section.Alph1.2}%
-\contentsline {section}{\numberline {A.3}\IeC {\textquestiondown }Cu\IeC {\'a}l elijo?}{42}{section.Alph1.3}%
-\contentsline {chapter}{\numberline {B}Instalaci\IeC {\'o}n}{43}{appendix.Alph2}%
-\contentsline {section}{\numberline {B.1}Linux}{43}{section.Alph2.1}%
-\contentsline {section}{\numberline {B.2}Windows\textsuperscript {\texttrademark }}{44}{section.Alph2.2}%
-\contentsline {section}{\numberline {B.3}Mac OS X}{44}{section.Alph2.3}%
-\contentsline {section}{\numberline {B.4}Overleaf o ShareLatex}{45}{section.Alph2.4}%
-\contentsline {section}{\numberline {B.5}\IeC {\textquestiondown }D\IeC {\'o}nde est\IeC {\'a} el manual?}{45}{section.Alph2.5}%
-\contentsline {section}{\numberline {B.6}Correcci\IeC {\'o}n ortogr\IeC {\'a}fica y codificaci\IeC {\'o}n de caracteres}{45}{section.Alph2.6}%
-\contentsline {section}{\numberline {B.7}\IeC {\textquestiondown }Qu\IeC {\'e} editor utilizo?}{45}{section.Alph2.7}%
-\contentsline {chapter}{\numberline {C}Packetes incluidos}{47}{appendix.Alph3}%
-\contentsline {chapter}{\numberline {D}Resumen de opciones del estilo}{49}{appendix.Alph4}%
-\contentsline {chapter}{\numberline {E}Funciones y entornos}{53}{appendix.Alph5}%
-\contentsline {section}{\numberline {E.1}Comandos en el pre\IeC {\'a}mbulo}{53}{section.Alph5.1}%
-\contentsline {section}{\numberline {E.2}Commandos en el cuerpo del texto}{55}{section.Alph5.2}%
-\contentsline {section}{\numberline {E.3}Entornos}{56}{section.Alph5.3}%
+\contentsline {chapter}{\numberline {2}Estado del arte}{7}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Contexto y Necesidad}{7}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Importancia de la Nutrici\IeC {\'o}n y el Ejercicio}{7}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Desaf\IeC {\'\i }os Comunes}{7}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.3}Necesidad de Informaci\IeC {\'o}n Relevante y Accesible}{8}{subsection.2.1.3}%
+\contentsline {section}{\numberline {2.2}Soluciones Existentes}{8}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Aplicaciones de Nutrici\IeC {\'o}n}{8}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Aplicaciones de Ejercicio}{9}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Plataformas Combinadas}{10}{subsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.2.4}Limitaciones de las Soluciones Actuales}{11}{subsection.2.2.4}%
+\contentsline {section}{\numberline {2.3}Plataformas Personalizadas para la Nutrici\IeC {\'o}n y el Ejercicio}{11}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Plataformas de Nutrici\IeC {\'o}n Personalizada}{11}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Plataformas de Ejercicio Personalizado}{12}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Plataformas Combinadas}{12}{subsection.2.3.3}%
+\contentsline {subsection}{\numberline {2.3.4}Limitaciones y Oportunidades de Mejora}{13}{subsection.2.3.4}%
+\contentsline {section}{\numberline {2.4}Tecnolog\IeC {\'\i }as Utilizadas.}{13}{section.2.4}%
+\contentsline {subsubsection}{Django}{13}{section*.18}%
+\contentsline {subsubsection}{React}{14}{section*.19}%
+\contentsline {subsubsection}{React Native}{14}{section*.20}%
+\contentsline {subsubsection}{PostgreSQL}{14}{section*.21}%
+\contentsline {subsubsection}{Python}{15}{section*.22}%
+\contentsline {subsubsection}{JavaScript}{15}{section*.23}%
+\contentsline {subsubsection}{Bootstrap y CSS}{15}{section*.24}%
+\contentsline {chapter}{\numberline {3}Dise\IeC {\~n}o}{17}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Definici\IeC {\'o}n del proyecto y alcance}{17}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Metodolog\IeC {\'\i }a}{18}{section.3.2}%
+\contentsline {subsubsection}{Fases del proyecto}{18}{section*.25}%
+\contentsline {subsubsection}{Herramientas y t\IeC {\'e}cnicas}{18}{section*.26}%
+\contentsline {section}{\numberline {3.3}Arquitectura}{19}{section.3.3}%
+\contentsline {subsubsection}{Diagrama de Arquitectura}{19}{section*.27}%
+\contentsline {subsubsection}{Descripci\IeC {\'o}n de Componentes}{19}{section*.29}%
+\contentsline {subsubsection}{Despliegue y Infraestructura}{20}{section*.30}%
+\contentsline {section}{\numberline {3.4}Roles}{20}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Requisitos Funcionales y No Funcionales}{20}{section.3.5}%
+\contentsline {section}{\numberline {3.6}Incrementos}{20}{section.3.6}%
+\contentsline {chapter}{\numberline {4}Elementos internos}{21}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Figuras}{21}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Gr\IeC {\'a}ficas}{22}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Gr\IeC {\'a}ficas con pgfplots}{22}{subsection.4.1.2}%
+\contentsline {subsubsection}{Gr\IeC {\'a}ficas xy}{22}{section*.33}%
+\contentsline {paragraph}{Tipo de gr\IeC {\'a}fica}{22}{section*.34}%
+\contentsline {paragraph}{Datos}{23}{section*.36}%
+\contentsline {paragraph}{Expresiones matem\IeC {\'a}ticas}{24}{section*.37}%
+\contentsline {subsection}{\numberline {4.1.3}Gr\IeC {\'a}ficas con gnuplot}{24}{subsection.4.1.3}%
+\contentsline {subsection}{\numberline {4.1.4}Im\IeC {\'a}genes}{25}{subsection.4.1.4}%
+\contentsline {subsection}{\numberline {4.1.5}Diagramas de Gantt}{26}{subsection.4.1.5}%
+\contentsline {section}{\numberline {4.2}Tablas}{27}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Presupuestos}{28}{subsection.4.2.1}%
+\contentsline {section}{\numberline {4.3}Cuadros de texto}{30}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Ecuaciones}{30}{section.4.4}%
+\contentsline {section}{\numberline {4.5}C\IeC {\'o}digo}{31}{section.4.5}%
+\contentsline {section}{\numberline {4.6}Algoritmos}{33}{section.4.6}%
+\contentsline {section}{\numberline {4.7}Listas}{34}{section.4.7}%
+\contentsline {subsection}{\numberline {4.7.1}Listas tradicionales de \LaTeXe }{34}{subsection.4.7.1}%
+\contentsline {paragraph}{Punteado con anidaci\IeC {\'o}n}{34}{section*.43}%
+\contentsline {paragraph}{Enumerado con anidaci\IeC {\'o}n}{35}{section*.44}%
+\contentsline {paragraph}{Definiciones con anidaci\IeC {\'o}n}{35}{section*.45}%
+\contentsline {subsection}{\numberline {4.7.2}Nuevos tipos de listas}{35}{subsection.4.7.2}%
+\contentsline {paragraph}{Simplelist con anidaci\IeC {\'o}n}{35}{section*.46}%
+\contentsline {paragraph}{Functional con anidaci\IeC {\'o}n}{35}{section*.47}%
+\contentsline {paragraph}{Nonfunctional con anidaci\IeC {\'o}n}{36}{section*.48}%
+\contentsline {paragraph}{Functionality con anidaci\IeC {\'o}n}{36}{section*.49}%
+\contentsline {paragraph}{Objetive con anidaci\IeC {\'o}n}{36}{section*.50}%
+\contentsline {section}{\numberline {4.8}Referencias internas e hiperenlaces}{36}{section.4.8}%
+\contentsline {chapter}{\numberline {5}Compilaci\IeC {\'o}n}{37}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Pdflatex}{37}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Arara}{38}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Overleaf}{39}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Permitir el uso de la shell al compilador}{39}{section.5.4}%
+\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{41}{chapter*.51}%
+\contentsline {part}{Ap\IeC {\'e}ndices}{43}{part.1}%
+\contentsline {chapter}{\numberline {A}Word\textsuperscript {\textregistered } vs. \LaTeXe }{45}{appendix.Alph1}%
+\contentsline {section}{\numberline {A.1}Ventajas e inconvenientes de \LaTeXe }{45}{section.Alph1.1}%
+\contentsline {section}{\numberline {A.2}Ventajas e inconvenientes de Word\textsuperscript {\textregistered }}{45}{section.Alph1.2}%
+\contentsline {section}{\numberline {A.3}\IeC {\textquestiondown }Cu\IeC {\'a}l elijo?}{46}{section.Alph1.3}%
+\contentsline {chapter}{\numberline {B}Instalaci\IeC {\'o}n}{47}{appendix.Alph2}%
+\contentsline {section}{\numberline {B.1}Linux}{47}{section.Alph2.1}%
+\contentsline {section}{\numberline {B.2}Windows\textsuperscript {\texttrademark }}{48}{section.Alph2.2}%
+\contentsline {section}{\numberline {B.3}Mac OS X}{48}{section.Alph2.3}%
+\contentsline {section}{\numberline {B.4}Overleaf o ShareLatex}{49}{section.Alph2.4}%
+\contentsline {section}{\numberline {B.5}\IeC {\textquestiondown }D\IeC {\'o}nde est\IeC {\'a} el manual?}{49}{section.Alph2.5}%
+\contentsline {section}{\numberline {B.6}Correcci\IeC {\'o}n ortogr\IeC {\'a}fica y codificaci\IeC {\'o}n de caracteres}{49}{section.Alph2.6}%
+\contentsline {section}{\numberline {B.7}\IeC {\textquestiondown }Qu\IeC {\'e} editor utilizo?}{49}{section.Alph2.7}%
+\contentsline {chapter}{\numberline {C}Packetes incluidos}{51}{appendix.Alph3}%
+\contentsline {chapter}{\numberline {D}Resumen de opciones del estilo}{53}{appendix.Alph4}%
+\contentsline {chapter}{\numberline {E}Funciones y entornos}{57}{appendix.Alph5}%
+\contentsline {section}{\numberline {E.1}Comandos en el pre\IeC {\'a}mbulo}{57}{section.Alph5.1}%
+\contentsline {section}{\numberline {E.2}Commandos en el cuerpo del texto}{59}{section.Alph5.2}%
+\contentsline {section}{\numberline {E.3}Entornos}{60}{section.Alph5.3}%

@@ -30,7 +30,11 @@ const [mealFilters, setMealFilters] = useState({
 useEffect(() => {
     const fetchDailyDiets = async () => {
         try {
-            const response = await fetch(`${apiUrl}/nutrition/diet/${dietId}/`);
+            const response = await fetch(`${apiUrl}/nutrition/diet/${dietId}/`, {
+              headers: {
+                'Authorization': `Token ${localStorage.getItem('authToken')}`
+              }
+            });
             if (!response.ok) throw new Error('Failed to fetch daily diets');
             const data = await response.json();
             setDailyDiets(data.daily_diets || []);
@@ -46,12 +50,16 @@ useEffect(() => {
     };
 
     fetchDailyDiets();
-}, [dietId]);
+}, [dietId, apiUrl]);
 
   useEffect(() => {
     const fetchMeals = async () => {
       try {
-        const response = await fetch(`${apiUrl}/nutrition/meals/`);
+        const response = await fetch(`${apiUrl}/nutrition/meals/`, {
+          headers: {
+            'Authorization': `Token ${localStorage.getItem('authToken')}`
+          }
+        });
         if (!response.ok) throw new Error('Failed to fetch meals');
         const data = await response.json();
         setMeals(data);
@@ -61,7 +69,7 @@ useEffect(() => {
     };
 
     fetchMeals();
-  }, []);
+  }, [apiUrl]);
 
   const applyFilters = () => {
     return meals.filter(meal => {
@@ -123,6 +131,7 @@ const handleMealRemoval = (mealId, date) => {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': 'Token ' + localStorage.getItem('authToken') || '',
         },
         body: JSON.stringify({ meals: mealIds }),
       });

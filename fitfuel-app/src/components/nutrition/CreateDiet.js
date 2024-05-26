@@ -11,7 +11,11 @@ function CreateDiet() {
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch(`${apiUrl}/user/regularusers/`)
+    fetch(`${apiUrl}/user/regularusers/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
+    })
       .then(response => response.json())
       .then(data => {
         setUsers(data);
@@ -35,6 +39,7 @@ function CreateDiet() {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Token ${localStorage.getItem('authToken')}`
         },
         body: JSON.stringify(dietData),
     })
