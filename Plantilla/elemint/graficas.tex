@@ -1,9 +1,40 @@
-La creación de gráficas científicas es uno de ls elementos más complejos a la hora de crear un documento científico. Utilizando el paquete de \LaTeXe\ \textbf{pgfplots} es relativamente sencillo. Sin embargo, aún así este paquete es demasiado complejo. Para simplificar su uso se han creado un conjunto de entornos y funciones con el fin de facilitar esta tarea en la mayoría de los casos.
+El servidor se ha desarrollado utilizando el framework Django, que proporciona una estructura modular y reutilizable, facilitando el desarrollo y mantenimiento de la aplicación. A continuación, se describen los componentes principales de la estructura del servidor:
 
-Otro paquete de gráficas disponible es el \textbf{gnuplottex} que permite diseñar gráficas utilizando gnuplot. En este caso también se aportan algunos entornos y funciones para simplificar su uso.
+\begin{itemize}
+    \item \textbf{Configuración del Proyecto:} El proyecto está configurado con un archivo \texttt{settings.py} que gestiona las configuraciones globales, incluyendo la base de datos, aplicaciones instaladas, middleware y otros ajustes importantes.
 
-En cualquier caso el autor puede acudir a estos paquetes directamente si esta clase no le aporta la funcionalidad necesaria. Este es un elemento que permanece en desarrollo y el autor debería estar atento a los cambios en futuras versiones.
+    \item \textbf{Aplicaciones Django:} Como se ha dicho anteriormente el servidor está dividido en varias aplicaciones Django, cada una responsable de una parte específica de la funcionalidad del sistema. Las aplicaciones principales incluyen:
+    \begin{itemize}
+        \item \textbf{Usuarios:} Maneja el registro, autenticación y gestión de perfiles de los usuarios.
+        \item \textbf{Entrenamientos:} Gestiona la creación, actualización y seguimiento de los planes de entrenamiento.
+        \item \textbf{Nutrición:} Administra los planes de nutrición y el seguimiento de la dieta de los usuarios.
+    \end{itemize}
 
-\subsection{Gráficas con pgfplots}{elemint/pgfplots}
+    \item \textbf{Modelos:} Los modelos de Django definen la estructura de la base de datos. Cada modelo se traduce en una tabla de la base de datos y define los campos y las relaciones entre ellos. Algunos de los modelos clave incluyen:
+    \begin{itemize}
+        \item \textbf{CustomUser:} Define la información básica del usuario, este modelo deriva en Trainer y RegularUser, que son los modelos que representan a los entrenadores y nutricionistas y usuarios normales respectivamente.
+        \item \textbf{Diet:} Contiene todas las comidas, alimentos, y recetas que se pueden utilizar en los planes de nutrición.
+        \item \textbf{Option:} Contiene un plan de 3 opciones de comidas distintas para cada día durante una semana.
+        \item \textbf{Training:} Se encarga de crear un entrenamiento con todos sus ejercicios correspondientes y sus series y repeticiones.
+    \end{itemize}
 
-\subsection{Gráficas con gnuplot}{elemint/gnuplots}
+    \item \textbf{Vistas:} Las vistas en Django son responsables de manejar las solicitudes HTTP y devolver las respuestas adecuadas. Utilizando Django REST Framework, las vistas se han estructurado como vistas basadas en clases (Class-Based Views), facilitando la reutilización y el manejo de lógica compleja. Las principales vistas incluyen:
+    \begin{itemize}
+        \item \textbf{Registro y Autenticación:} Maneja el registro de nuevos usuarios y la autenticación mediante JWT.
+        \item \textbf{Gestión de Planes:} Permite a los entrenadores y nutricionistas crear, actualizar y eliminar planes de entrenamiento y nutrición.
+        \item \textbf{Seguimiento de Progreso:} Controlar la actualización de comidas y entrenamientos creados por los usuarios.
+    \end{itemize}
+
+    \item \textbf{Serializadores:} Los serializadores de Django REST Framework se utilizan para convertir instancias de modelos Django a formatos JSON y viceversa. Esto es esencial para la comunicación entre el servidor y los clientes (aplicaciones web y móvil). Los serializadores principales incluyen:
+    \begin{itemize}
+        \item \textbf{Serializadores de Usuario:} Convierte las instancias de los modelos de usuario.
+        \item \textbf{Serializadores de Deporte:} Convierte las instancias del los modelos de la parte deportiva de la aplicación.
+        \item \textbf{Seralizadores de Nutrición:} Convierte las instancias del los modelos de la parte nutritiva de la aplicación.
+    \end{itemize}
+
+    \item \textbf{URLs:} Las rutas URL definen cómo se mapean las solicitudes HTTP a las vistas correspondientes. En el archivo \texttt{urls.py}, se han definido las rutas principales de la API, organizadas por aplicación.
+\end{itemize}
+
+El siguiente diagrama ilustra la estructura general del servidor y la interacción entre sus componentes:
+
+IMAGEN DE ESTRUCTURA DEL SERVIDOR.

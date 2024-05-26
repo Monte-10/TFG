@@ -1,35 +1,50 @@
-Se han diseñado una serie de comandos sencillos para la creación de presupuestos. Si se necesita un diseño de presupuestos más complejo puede ser creado por el autor manteniendo una estética similar a la de los presupuestos creados con estos comandos. Normalmente esta tabla no será indexada como una tabla del documento aunque si se considera conveniente puede ser introducida dento del entorno table explicado en la sección \ref{SEC:TABLAS}.
+La aplicación web de FitFuelBalance ha sido construida utilizando React.js, una biblioteca de JavaScript para construir interfaces de usuario. React permite crear aplicaciones web rápidas y eficientes, gracias a su enfoque en componentes reutilizables y su capacidad de manejar cambios de estado de manera eficiente.
 
-Los comandos para diseñar un presupuesto deben utilizarse dentro del entorno diseñado para el presupuesto que es el entorno \textbf{budget}. En ningún caso es necesario indicar la unidad monetaria ya que ya la añade internamente. Se dispone de los siguientes comandos:
-  \begin{description}
-    \item[{\textbackslash}\Index{budgettitle}\{titulo\}] cada una de las secciones en las que está dividido un presupuesto tiene su título y debe indicarse con este comando. El final de cada sección deberá acabar con un comando \textbf{subtotal}.
-    \item[{\textbackslash}concept\{nombre\}\{unitario\}\{cantidad\}\{total\}] permite definir cada uno de los conceptos con el texto indicado en el primer parámetro, el precio unitario en el segundo y el total en el tercero. Pueden dejarse elementos vacíos si se desea y es necesario dejar los tres últimos vacíos si el concepto está dividido en subconceptos
-    \item[{\textbackslash}subconcept\{nombre\}\{unitario\}\{cantidad\}\{total\}] funciona exactamente igual que el comando concepto pero se expresa de forma distinta en el presupuesto.
-    \item[{\textbackslash}subtotal\{valor\}] valor del subtotal.
-    \item[{\textbackslash}separator] añade una separación por motivos estéticos.
-    \item[]{\textbackslash}total\{valor\}] valor total del presupuesto.
-  \end{description}
+\begin{itemize}
+    \item \textbf{Estructura del Proyecto:} La estructura del proyecto React.js se ha organizado de la siguiente manera, destacando los directorios y archivos más importantes:
+    \begin{itemize}
+        \item \texttt{src/} - Directorio principal del código fuente.
+        \begin{itemize}
+            \item \texttt{components/} - Contiene los componentes reutilizables de la UI.
+            \begin{itemize}
+              \item \texttt{nutrition/} - Componentes relacionados con la nutrición.
+              \item \texttt{training/} - Componentes relacionados con el entrenamiento.
+              \item \texttt{user/} - Componentes relacionados con el usuario.
+              \item \texttt{HomePage.js} - Componente principal de la página de inicio.
+            \end{itemize}
+            \item \texttt{front/} - Contiene los componentes usados en la página principal.
+            \item \texttt{css/} - Contiene los archivos CSS y de estilos.
+            \item \texttt{App.js} - Archivo principal de la aplicación.
+            \item \texttt{index.js} - Punto de entrada de la aplicación.
+        \end{itemize}
+    \end{itemize}
 
-Un ejemplo de cómo puede quedar un presupuesto es el siguiente y cuyo código puede verse en los fuentes de este documento:
+    \item \textbf{Componentes Principales:} Se han definido varios componentes clave que se utilizan en diferentes partes de la aplicación:
+    \begin{itemize}
+        \item \textbf{Header:} El componente de encabezado que incluye la navegación principal.
+        \item \textbf{HomePage.js:} Se encarga de la navegación a todos los componentes principales.
+        \item \textbf{App.js:} Componente principal de la aplicación que define las rutas y la estructura general.
+    \end{itemize}
 
-\begin{budget}
-  \budgettitle{Materiales}
-  \concept{Hierro}{12.00}{1}{12.00}
-  \concept{Derivados del cobre}{}{}{}
-  \subconcept{Laton}{12.00}{2}{24.00}
-  \subconcept{Bronce}{12.15}{3}{36.45}
-  \concept{Estaño}{10.11}{2}{20.22}
-  \subtotal{82.67}
-  \separator
-  \budgettitle{Personal}
-  \concept{Ingenieros}{}{}{}
-  \subconcept{Informático}{45,000.00}{3}{135,000.00}
-  \subconcept{Telecomunicaciones}{45,000.00}{3}{135,000.00}
-  \concept{Técnicos}{}{}{}
-  \subconcept{Telecomunicaciones}{28,000.00}{3}{84,000.00}
-  \subconcept{Informática}{28,000.00}{3}{84,000.00}
-  \concept{Administrador}{50,000.00}{1}{50,000.00}
-  \subtotal{488,000.00}
-  \separator
-  \total{488,082.67}
-\end{budget}
+    \item \textbf{Estilos:} Se ha utilizado Bootstrap junto con CSS personalizado para asegurar una apariencia moderna y responsiva en toda la aplicación. Bootstrap proporciona una base sólida de componentes y utilidades que aceleran el desarrollo y aseguran la consistencia visual.
+
+    \item \textbf{Integración con Backend:} La aplicación web se comunica con el backend de Django a través de una serie de servicios definidos en la carpeta \texttt{components/}. Estos servicios utilizan \texttt{fetch} para realizar solicitudes HTTP y manejar las respuestas. A continuación, se muestra un ejemplo de un servicio para obtener los planes de entrenamiento:
+    \begin{verbatim}
+        const apiUrl = process.env.REACT_APP_API_URL;
+
+        export const getTrainingPlans = async () => {
+            const response = await fetch(`${apiUrl}/sport/trainings/` {
+                headers: {
+                  'Authorization': `Token ${localStorage.getItem('token')}`
+                }
+            });
+            const data = await response.json();
+            return data;
+        };
+    \end{verbatim}
+
+    \item \textbf{Manejo de Estado:} Para el manejo del estado global de la aplicación se ha utilizado \texttt{Context API} de React. Esto permite compartir datos y estados entre componentes sin necesidad de pasar props manualmente en múltiples niveles de la jerarquía de componentes.
+
+    \item \textbf{Autenticación y Autorización:} La autenticación de usuarios se maneja mediante JWT (JSON Web Tokens). Al iniciar sesión, el backend proporciona un token que se almacena en el almacenamiento local del navegador. Este token se adjunta a las cabeceras de las solicitudes HTTP subsecuentes para validar la identidad del usuario.
+
+\end{itemize}

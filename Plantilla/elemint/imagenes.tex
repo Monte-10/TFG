@@ -1,5 +1,39 @@
-  Como elemento previo es interesante recordar la resolución mínima necesaria de una imagen para ser impresa correctamente. Una resolución mínima implica 120 puntos por centímetro (o los que es lo mismo 300 ppp). Es decir, si vamos a presentar una imagen con pixel cuadrado con un ancho de 12 cm en el papel deberá tener como mínimo 120 $\times$ 12 = 1440 puntos. Cualquier imágenes con una resolución inferior no se verá con la nitidez adecuada. Por otro lado, para una resolución de impresión con calidad fotográfica de 1200 ppp, o lo que es lo mismo 480 puntos por centímetro la resolución necesaria para el caso anterior sería 480 $\times$ 12 = 5760 puntos, sin embargo resoluciones tan altas si se tienen muchas imágenes se puede relentizar mucho la compilación del documento.
+Para la persistencia de datos en el proyecto FitFuelBalance, se ha utilizado PostgreSQL, un sistema de gestión de bases de datos relacional conocido por su robustez, flexibilidad y soporte para tipos de datos avanzados. A continuación, se describen los aspectos clave de la estructura de la base de datos y su integración con Django.
 
- 	Para introducir una imagen se utiliza la función \textbf{{\textbackslash}image} que tiene tres parámetros obligatorios de los cuales los dos primeros se pueden dejar vacíos. el primer parámetro es el ancho de la imagen; el segundo es la altura de la imagen y el tercero es el nombre de la imagen sin extensión. Se admiten múltiples formatos de ficheros entre los que se incluyen JPG, GIF y PNG. Si se deja vacío el ancho o el alto, la dimensión no definida se calcula internamente para mantener la relación de aspecto original. Si se dejan los dos vacíos la imagen utiliza el 90\% del ancho del texto y la altura se calcula para mantener la relación de aspecto. Un del uso de este comando puede verse en el código de las figuras \ref{FIG:EJEMPLO} y \ref{FIG:SUBFIGURAS}.
+\begin{itemize}
+    \item \textbf{Diseño de la Base de Datos:} El diseño de la base de datos ha sido cuidadosamente planificado para asegurar la eficiencia y escalabilidad. Los principales esquemas de la base de datos incluyen las siguientes tablas:
+    \begin{itemize}
+        \item \textbf{CustomUser:} Almacena información de los usuarios, incluyendo su nombre, correo electrónico, contraseña (hasheada), rol (usuario normal, entrenador/nutricionista, administrador) y otros detalles relevantes.
+        \item \textbf{Training:} Registra los planes de entrenamiento creados por los entrenadores, incluyendo el nombre del plan, la descripción y los ejercicios asociados.
+        \item \textbf{Diet:} Almacena los planes de dietas desarrollados por los nutricionistas, con detalles sobre las comidas, porciones, asi como su duración.
+        \item \textbf{Option:} Registra las opciones de comidas para cada día de la semana, permitiendo a los usuarios seleccionar entre diferentes alternativas.
+    \end{itemize}
 
-  Además se dispone de un comando para introducir imágenes \textit{in line} que van a ser rodeadas por el texto. Este comando es el \textbf{{\textbackslash}imageIL} que tiene dos parámetros, el primero es el nombre de la imagen y el segundo es su anchura en cualquier unidad permitida por \LaTeXe.
+    \item \textbf{Migraciones:} Django facilita la gestión de cambios en la estructura de la base de datos a través del sistema de migraciones. Cada vez que se realiza un cambio en los modelos, se crea una migración que, al aplicarse, sincroniza la base de datos con los nuevos cambios. Esto asegura que la base de datos esté siempre en línea con el código del proyecto.
+
+    \item \textbf{ORM de Django:} Para interactuar con la base de datos, se utiliza el Object-Relational Mapping (ORM) de Django, que permite trabajar con la base de datos utilizando objetos Python en lugar de escribir consultas SQL directamente. Esto no solo simplifica el código sino que también mejora la portabilidad y mantenimiento del mismo. Por ejemplo, una consulta para obtener todos los planes de entrenamiento podría verse así:
+    \begin{verbatim}
+        trainings = Training.objects.all()
+    \end{verbatim}
+
+    \item \textbf{Conexión a la Base de Datos:} La configuración de la conexión a la base de datos se encuentra en el archivo \texttt{settings.py} del proyecto Django, donde se especifican los detalles necesarios para conectarse a PostgreSQL:
+    \begin{verbatim}
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': 'fitfuelbalance_db',
+                'USER': 'dbuser',
+                'PASSWORD': 'password',
+                'HOST': 'localhost',
+                'PORT': '5432',
+            }
+        }
+    \end{verbatim}
+
+    \item \textbf{Gestión de Datos:} Para la administración y gestión de la base de datos, se ha utilizado Neon, una herramienta que facilita la visualización y manipulación de datos de PostgreSQL. Neon ofrece una interfaz gráfica intuitiva que permite realizar consultas, revisar tablas y gestionar esquemas de manera eficiente.
+
+    \item \textbf{Seguridad y Copias de Seguridad:} Se han implementado medidas de seguridad para proteger los datos almacenados. Esto incluye la encriptación de contraseñas de usuarios utilizando el sistema de hash de Django y la realización periódica de copias de seguridad de la base de datos para prevenir pérdidas de datos.
+
+\end{itemize}
+
+La elección de PostgreSQL y la integración con Django ha permitido una gestión de datos eficiente y segura, asegurando que la aplicación pueda escalar y manejar grandes volúmenes de datos de manera efectiva.

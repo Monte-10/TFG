@@ -1,5 +1,47 @@
-Para poner un texto dentro de un cuadro de texto se dispone del entorno \textbf{textbox{[short]} \{label\}\{caption\}}. El primer parámetro es opcional y por tanto, si aparece, debe ir entre corchetes siendo texto corto que aparecerá en la lista de cuadros de texto; el segundo parámetro es una etiqueta para ser referenciado y no es opcional aunque puede dejarse en blanco; y el tercero es el texto que aparecerá bajo el cuadro. Los cuadros de texto son elementos flotantes. Ejemplo de un cuadro de texto es el que puede verse en el cuadro \ref{TB:LOREMIPSUM}.
+El desarrollo de FitFuelBalance ha requerido el uso de diversas herramientas y entornos para facilitar el proceso de programación y despliegue. A continuación, se describen las principales herramientas y entornos utilizados:
 
-\begin{textbox}[Lorem ipsum]{TB:LOREMIPSUM}{Este es un cuadro de texto en el que usando el paquete lipsum se genera el texto internamente}
-  \lipsum[1]
-\end{textbox}
+\subsubsection{Control de Versiones}
+
+Para el control de versiones se ha utilizado Git junto con la plataforma GitHub. Git es un sistema de control de versiones distribuido que permite a los desarrolladores realizar un seguimiento de los cambios en el código fuente y colaborar de manera eficiente. GitHub, por su parte, proporciona un entorno de alojamiento de repositorios Git con características adicionales como la gestión de issues, pull requests y la integración continua.
+
+\begin{itemize}
+    \item \textbf{Repositorio Git:} El código fuente del proyecto se encuentra alojado en un repositorio privado en GitHub. Esto permite realizar un seguimiento detallado de los cambios, gestionar versiones y colaborar con otros desarrolladores de manera eficiente.
+    \item \textbf{Branching:} Se han utilizado ramas (branches) para organizar el desarrollo de nuevas funcionalidades y la corrección de errores. La rama \texttt{main} contiene la versión estable del proyecto, mientras que las ramas que contienen la aplicación en producción (\texttt{primer-deploy/}), versiones anteriores estables (\texttt{beforeRemake/}) y versiones para probar funcionalidades nuevas (\texttt{modelos-unicos/}) se utilizan para trabajar en paralelo sin afectar la versión principal.
+\end{itemize}
+
+\subsubsection{Entorno de Desarrollo}
+
+Para el desarrollo del proyecto se ha utilizado el editor de código Visual Studio Code, una herramienta potente y versátil que ofrece una amplia gama de extensiones y características para facilitar la programación.
+
+\subsubsection{Diseño de la Interfaz de Usuario}
+
+Para el diseño de la interfaz de usuario se ha utilizado Figma, una herramienta de diseño colaborativa que permite crear prototipos y diseños de alta fidelidad.
+
+\subsubsection{Base de Datos}
+
+Para la gestión de la base de datos se ha utilizado Neon, una plataforma basada en PostgreSQL que facilita la creación y administración de bases de datos en la nube.
+
+\subsubsection{Despliegue}
+
+El despliegue de las aplicaciones web y backend se ha realizado utilizando Render, una plataforma de despliegue en la nube que facilita el proceso de publicación de aplicaciones.
+Esta plataforma ha sido seleccionada por su simplicidad y eficiencia en el despliegue de aplicaciones. Render permite automatizar el despliegue a partir del código fuente alojado en GitHub, asegurando que las últimas versiones del proyecto estén siempre disponibles en producción.
+
+
+\subsubsection{Testing y Depuración}
+
+Durante el desarrollo del proyecto, se han utilizado diversas herramientas y técnicas para realizar pruebas y depuración de código.
+
+\begin{itemize}
+    \item \textbf{React Native Debugger:} Utilizado para depurar la aplicación móvil desarrollada en React Native.
+    \item \textbf{Postman:} Herramienta utilizada para probar las API desarrolladas en Django y asegurarse de que respondan correctamente a las solicitudes.
+    \item \textbf{Pytest:} Framework de pruebas para Python, utilizado para crear y ejecutar pruebas automatizadas del backend.
+\end{itemize}
+
+\subsubsection{Gestión de Dependencias}
+
+Para gestionar las dependencias del proyecto se han utilizado herramientas específicas para cada entorno de desarrollo.
+
+\begin{itemize}
+    \item \textbf{pip:} Utilizado para gestionar las dependencias del backend desarrollado en Python y Django.
+    \item \textbf{npm:} Utilizado para gestionar las dependencias del frontend desarrollado en React y React Native.
+\end{itemize}

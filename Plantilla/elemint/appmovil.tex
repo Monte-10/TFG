@@ -1,0 +1,77 @@
+La aplicación móvil de FitFuelBalance ha sido desarrollada utilizando React Native, un framework que permite crear aplicaciones móviles nativas para iOS y Android utilizando JavaScript y React. Esta tecnología ha sido seleccionada por su capacidad de compartir código entre plataformas y su excelente rendimiento en dispositivos móviles.
+
+\begin{itemize}
+    \item \textbf{Estructura del Proyecto:} La estructura del proyecto React Native se ha organizado de la siguiente manera:
+    \begin{itemize}
+        \item \texttt{src/} - Directorio principal del código fuente.
+        \begin{itemize}
+            \item \texttt{api/} - Contiene los archivos relacionados con la API.
+            \begin{itemize}
+                \item \texttt{trainingApi.js} - Archivo para las llamadas a la API relacionadas con los entrenamientos.
+            \end{itemize}
+            \item \texttt{AuthContext.js} - Contexto de autenticación.
+            \item \texttt{components/} - Contiene los componentes reutilizables de la UI.
+            \begin{itemize}
+                \item \texttt{CountdownTimer.js} - Componente para un temporizador de cuenta regresiva.
+            \end{itemize}
+            \item \texttt{navigation/} - Configuración de la navegación de la aplicación.
+            \begin{itemize}
+                \item \texttt{AppNavigator.js} - Archivo de configuración del navegador de la aplicación.
+            \end{itemize}
+            \item \texttt{screens/} - Contiene las diferentes pantallas de la aplicación, la más importantes son:
+            \begin{itemize}
+                \item \texttt{ActiveTrainingScreen.js} - Pantalla de entrenamiento activo.
+                \item \texttt{CalendarScreen.js} - Pantalla del calendario.
+                \item \texttt{FoodDetailsScreen.js} - Pantalla de detalles de alimentos.
+                \item \texttt{HomeScreen.js} - Pantalla de inicio.
+                \item \texttt{LoginScreen.js} - Pantalla de inicio de sesión.
+                \item \texttt{TodayScreen.js} - Muestra los entrenamientos y comidas del día.
+                \item \texttt{TrainingDetailsScreen.js} - Pantalla de detalles del entrenamiento.
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+
+    \item \textbf{Navegación:} La navegación en la aplicación móvil se ha implementado utilizando React Navigation. Esta biblioteca facilita la gestión de la navegación entre pantallas y la organización de la estructura de navegación de la aplicación. A continuación se muestra un ejemplo de configuración de navegación:
+    \begin{verbatim}
+        const AppNavigator = () => {
+            return (
+                <Stack.Navigator initialRouteName="LoginScreen">
+                    <Stack.Screen name="HomeScreen" component={HomeScreen} />
+                    <Stack.Screen name="LoginScreen" component={LoginScreen} />
+                    <Stack.Screen name="TrainingDetailsScreen" component={TrainingDetailsScreen} />
+                    <Stack.Screen name="ActiveTrainingScreen" component={ActiveTrainingScreen} />
+                    <Stack.Screen name="RestTimeConfigScreen" component={RestTimeConfigScreen} />
+                    <Stack.Screen name="TrainingFeedbackScreen" component={TrainingFeedbackScreen} />
+                    <Stack.Screen name="TrainingHistoryScreen" component={TrainingHistoryScreen} />
+                    <Stack.Screen name="DailyDietDetailsScreen" component={DailyDietDetailsScreen} />
+                    <Stack.Screen name="DishDetailsScreen" component={DishDetailsScreen} />
+                    <Stack.Screen name="IngredientDetailsScreen" component={IngredientDetailsScreen} />
+                    <Stack.Screen name="FoodDetailsScreen" component={FoodDetailsScreen} />
+                    <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
+                </Stack.Navigator>
+            );
+        }
+
+        export default AppNavigator;
+    \end{verbatim}
+
+    \item \textbf{Estilos:} Para los estilos de la aplicación móvil se ha utilizado una combinación de hojas de estilo en JavaScript y StyleSheet de React Native. Esto permite definir estilos que se aplican de manera consistente en toda la aplicación y aprovechar características específicas de la plataforma.
+
+    \item \textbf{Integración con Backend:} Similar a la aplicación web, la aplicación móvil se comunica con el backend de Django a través de servicios definidos en la carpeta \texttt{api/}. Estos servicios utilizan \texttt{fetch} para realizar solicitudes HTTP y manejar las respuestas. A continuación, se muestra un ejemplo de un servicio para obtener los planes de entrenamiento:
+    \begin{verbatim}
+        import { API_URL } from '../config';
+
+        export const fetchTrainingPlans = async () => {
+            try {
+                const response = await fetch(`${API_URL}/training-plans/`);
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching training plans:', error);
+                return [];
+            }
+        };
+    \end{verbatim}
+
+\end{itemize}
