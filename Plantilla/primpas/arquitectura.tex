@@ -1,0 +1,69 @@
+La arquitectura de FitFuelBalance se ha diseñado para ser modular, escalable y mantener una separación clara entre las distintas capas del sistema. A continuación, se describen los principales componentes de la arquitectura y sus interacciones.
+
+El sistema está estructurado en tres capas principales: 
+
+\begin{itemize}
+    \item \textbf{Capa de Presentación:} 
+    \begin{itemize}
+        \item \textbf{Frontend Web:} Desarrollado utilizando React, el frontend web se encarga de la interacción con el usuario a través de una interfaz intuitiva y responsive. Utiliza Bootstrap y CSS para el diseño y estilo visual.
+        \item \textbf{Aplicación Móvil:} Desarrollada con React Native, esta aplicación permite a los usuarios acceder a los servicios de FitFuelBalance desde dispositivos móviles iOS y Android. La interfaz móvil está diseñada para ser amigable y fácil de usar.
+    \end{itemize}
+    
+    \item \textbf{Capa de Lógica de Negocio:} 
+    \begin{itemize}
+        \item \textbf{Backend:} Desarrollado con Django, el backend maneja la lógica de negocio de la aplicación, las reglas de negocio y la gestión de datos. Implementa APIs RESTful para la comunicación con el frontend y la aplicación móvil.
+    \end{itemize}
+    
+    \item \textbf{Capa de Datos:} 
+    \begin{itemize}
+        \item \textbf{Base de Datos:} Se utiliza PostgreSQL para almacenar y gestionar los datos de la aplicación. Neon gestiona la base de datos, proporcionando alta disponibilidad y escalabilidad.
+    \end{itemize}
+    
+\end{itemize}
+
+\subsubsection{Diagrama de Arquitectura}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{FUTURA_IMAGEN_ARQUITECTURA.png}
+    \caption{Diagrama de Arquitectura de FitFuelBalance}
+    \label{fig:arquitectura}
+\end{figure}
+
+\subsubsection{Descripción de Componentes}
+
+\begin{itemize}
+    \item \textbf{Frontend Web:} 
+    \begin{itemize}
+        \item \textbf{React:} Utilizado para construir una interfaz de usuario dinámica y eficiente. React permite la creación de componentes reutilizables y un manejo eficiente del estado de la aplicación.
+        \item \textbf{Bootstrap y CSS:} Utilizados para estilizar la aplicación y asegurar una presentación visual consistente y atractiva.
+    \end{itemize}
+    
+    \item \textbf{Aplicación Móvil:} 
+    \begin{itemize}
+        \item \textbf{React Native:} Permite el desarrollo de aplicaciones móviles multiplataforma con una única base de código. Proporciona una experiencia de usuario nativa y acceso a funcionalidades específicas del dispositivo.
+    \end{itemize}
+    
+    \item \textbf{Backend:} 
+    \begin{itemize}
+        \item \textbf{Django:} Framework de alto nivel que facilita el desarrollo rápido y limpio de aplicaciones web. Proporciona una estructura robusta y una gran cantidad de funcionalidades integradas.
+        \item \textbf{APIs RESTful:} Utilizadas para la comunicación entre el frontend, la aplicación móvil y el backend. Permiten un intercambio de datos eficiente y seguro.
+    \end{itemize}
+    
+    \item \textbf{Base de Datos:} 
+    \begin{itemize}
+        \item \textbf{PostgreSQL:} Base de datos relacional utilizada para almacenar datos estructurados de manera eficiente. Neon gestiona la base de datos proporcionando capacidades avanzadas de administración y escalabilidad.
+    \end{itemize}
+    
+\end{itemize}
+
+\subsubsection{Despliegue y Infraestructura}
+
+El despliegue de FitFuelBalance se ha realizado utilizando Render, que facilita la gestión y el despliegue continuo tanto del frontend como del backend. La infraestructura está diseñada para ser escalable y manejar un alto volumen de usuarios y datos.
+
+\begin{itemize}
+    \item \textbf{Render:} Plataforma utilizada para el despliegue y alojamiento de la aplicación. Permite gestionar el frontend y backend de manera eficiente, asegurando una alta disponibilidad y rendimiento.
+    \item \textbf{CI/CD:} Se han implementado pipelines de Integración Continua y Despliegue Continuo para automatizar las pruebas y el despliegue, garantizando que las nuevas versiones del software se lancen de manera rápida y segura.
+\end{itemize}
+
+En resumen, la arquitectura de FitFuelBalance está diseñada para ser modular, escalable y altamente eficiente, utilizando tecnologías modernas y probadas para asegurar un rendimiento óptimo y una experiencia de usuario superior.
