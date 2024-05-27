@@ -29,74 +29,91 @@
 \contentsline {chapter}{\numberline {3}Dise\IeC {\~n}o}{13}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Definici\IeC {\'o}n del proyecto y alcance}{13}{section.3.1}%
 \contentsline {section}{\numberline {3.2}Metodolog\IeC {\'\i }a}{14}{section.3.2}%
-\contentsline {subsubsection}{Fases del proyecto}{14}{section*.21}%
-\contentsline {subsubsection}{Herramientas y t\IeC {\'e}cnicas}{14}{section*.22}%
+\contentsline {subsubsection}{Fases del proyecto}{14}{section*.22}%
+\contentsline {subsubsection}{Herramientas y t\IeC {\'e}cnicas}{15}{section*.23}%
 \contentsline {section}{\numberline {3.3}Arquitectura}{15}{section.3.3}%
-\contentsline {subsubsection}{Diagrama de Arquitectura}{15}{section*.23}%
-\contentsline {subsubsection}{Descripci\IeC {\'o}n de Componentes}{15}{section*.24}%
-\contentsline {subsubsection}{Despliegue y Infraestructura}{16}{section*.25}%
-\contentsline {section}{\numberline {3.4}Roles}{16}{section.3.4}%
-\contentsline {subsubsection}{Usuarios Normales}{16}{section*.26}%
-\contentsline {subsubsection}{Entrenadores y/o Nutricionistas}{16}{section*.27}%
-\contentsline {subsubsection}{Administradores}{17}{section*.28}%
-\contentsline {section}{\numberline {3.5}Requisitos Funcionales y No Funcionales}{17}{section.3.5}%
-\contentsline {chapter}{\numberline {4}Desarrollo}{19}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Back-End}{19}{section.4.1}%
-\contentsline {subsection}{\numberline {4.1.1}Back-End}{19}{subsection.4.1.1}%
-\contentsline {subsubsection}{Estructura del Servidor}{19}{section*.29}%
-\contentsline {subsubsection}{Base de Datos}{20}{section*.30}%
-\contentsline {subsubsection}{Despliegue y Gesti\IeC {\'o}n de la Aplicaci\IeC {\'o}n}{20}{section*.31}%
-\contentsline {subsection}{\numberline {4.1.2}Estructura del Servidor}{20}{subsection.4.1.2}%
-\contentsline {subsection}{\numberline {4.1.3}Base de Datos}{22}{subsection.4.1.3}%
-\contentsline {section}{\numberline {4.2}Front-End}{23}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}Aplicaci\IeC {\'o}n Web}{23}{subsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.2.2}Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{24}{subsection.4.2.2}%
-\contentsline {section}{\numberline {4.3}Herramientas y Entorno de Desarrollo}{26}{section.4.3}%
-\contentsline {subsubsection}{Control de Versiones}{26}{section*.32}%
-\contentsline {subsubsection}{Entorno de Desarrollo}{27}{section*.33}%
-\contentsline {subsubsection}{Dise\IeC {\~n}o de la Interfaz de Usuario}{27}{section*.34}%
-\contentsline {subsubsection}{Base de Datos}{27}{section*.35}%
-\contentsline {subsubsection}{Despliegue}{27}{section*.36}%
-\contentsline {subsubsection}{Testing y Depuraci\IeC {\'o}n}{27}{section*.37}%
-\contentsline {subsubsection}{Gesti\IeC {\'o}n de Dependencias}{28}{section*.38}%
-\contentsline {chapter}{\numberline {5}Pruebas e Implementaci\IeC {\'o}n}{29}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Pruebas del Back-End}{29}{section.5.1}%
-\contentsline {subsubsection}{Configuraci\IeC {\'o}n de Pruebas}{29}{section*.39}%
-\contentsline {subsubsection}{Pruebas de Endpoints}{29}{section*.40}%
-\contentsline {section}{\numberline {5.2}Pruebas del Front-End}{30}{section.5.2}%
-\contentsline {subsubsection}{Pruebas de la Aplicaci\IeC {\'o}n Web}{30}{section*.41}%
-\contentsline {paragraph}{Prueba de Componentes}{30}{section*.42}%
-\contentsline {paragraph}{Pruebas de Integraci\IeC {\'o}n}{30}{section*.43}%
-\contentsline {subsubsection}{Pruebas de la Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{30}{section*.44}%
-\contentsline {paragraph}{Prueba de Componentes M\IeC {\'o}viles}{30}{section*.45}%
-\contentsline {paragraph}{Pruebas de Integraci\IeC {\'o}n M\IeC {\'o}viles}{31}{section*.46}%
-\contentsline {section}{\numberline {5.3}Implementaci\IeC {\'o}n}{31}{section.5.3}%
-\contentsline {subsubsection}{Despliegue del Back-End}{31}{section*.47}%
-\contentsline {subsubsection}{Despliegue del Front-End}{31}{section*.48}%
-\contentsline {chapter}{\numberline {6}Conclusiones y Trabajo Futuro}{33}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Conclusiones}{33}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Trabajo Futuro}{33}{section.6.2}%
-\contentsline {subsection}{\numberline {6.2.1}Mejoras en el Front-End}{34}{subsection.6.2.1}%
-\contentsline {subsection}{\numberline {6.2.2}Mejoras en la Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{34}{subsection.6.2.2}%
-\contentsline {subsection}{\numberline {6.2.3}Nuevas Funcionalidades}{34}{subsection.6.2.3}%
-\contentsline {subsection}{\numberline {6.2.4}Integraci\IeC {\'o}n de Inteligencia Artificial}{34}{subsection.6.2.4}%
-\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{35}{chapter*.49}%
-\contentsline {part}{Ap\IeC {\'e}ndices}{37}{part.1}%
-\contentsline {chapter}{\numberline {A}Word\textsuperscript {\textregistered } vs. \LaTeXe }{39}{appendix.Alph1}%
-\contentsline {section}{\numberline {A.1}Ventajas e inconvenientes de \LaTeXe }{39}{section.Alph1.1}%
-\contentsline {section}{\numberline {A.2}Ventajas e inconvenientes de Word\textsuperscript {\textregistered }}{39}{section.Alph1.2}%
-\contentsline {section}{\numberline {A.3}\IeC {\textquestiondown }Cu\IeC {\'a}l elijo?}{40}{section.Alph1.3}%
-\contentsline {chapter}{\numberline {B}Instalaci\IeC {\'o}n}{41}{appendix.Alph2}%
-\contentsline {section}{\numberline {B.1}Linux}{41}{section.Alph2.1}%
-\contentsline {section}{\numberline {B.2}Windows\textsuperscript {\texttrademark }}{42}{section.Alph2.2}%
-\contentsline {section}{\numberline {B.3}Mac OS X}{42}{section.Alph2.3}%
-\contentsline {section}{\numberline {B.4}Overleaf o ShareLatex}{43}{section.Alph2.4}%
-\contentsline {section}{\numberline {B.5}\IeC {\textquestiondown }D\IeC {\'o}nde est\IeC {\'a} el manual?}{43}{section.Alph2.5}%
-\contentsline {section}{\numberline {B.6}Correcci\IeC {\'o}n ortogr\IeC {\'a}fica y codificaci\IeC {\'o}n de caracteres}{43}{section.Alph2.6}%
-\contentsline {section}{\numberline {B.7}\IeC {\textquestiondown }Qu\IeC {\'e} editor utilizo?}{43}{section.Alph2.7}%
-\contentsline {chapter}{\numberline {C}Packetes incluidos}{45}{appendix.Alph3}%
-\contentsline {chapter}{\numberline {D}Resumen de opciones del estilo}{47}{appendix.Alph4}%
-\contentsline {chapter}{\numberline {E}Funciones y entornos}{51}{appendix.Alph5}%
-\contentsline {section}{\numberline {E.1}Comandos en el pre\IeC {\'a}mbulo}{51}{section.Alph5.1}%
-\contentsline {section}{\numberline {E.2}Commandos en el cuerpo del texto}{53}{section.Alph5.2}%
-\contentsline {section}{\numberline {E.3}Entornos}{54}{section.Alph5.3}%
+\contentsline {subsubsection}{Diagrama de Arquitectura}{15}{section*.24}%
+\contentsline {subsubsection}{Descripci\IeC {\'o}n de Componentes}{16}{section*.26}%
+\contentsline {subsubsection}{Despliegue y Infraestructura}{17}{section*.27}%
+\contentsline {section}{\numberline {3.4}Roles}{17}{section.3.4}%
+\contentsline {subsubsection}{Usuarios Normales}{17}{section*.28}%
+\contentsline {subsubsection}{Entrenadores y/o Nutricionistas}{17}{section*.29}%
+\contentsline {subsubsection}{Administradores}{18}{section*.30}%
+\contentsline {section}{\numberline {3.5}Requisitos Funcionales y No Funcionales}{18}{section.3.5}%
+\contentsline {section}{\numberline {3.6}Incrementos}{18}{section.3.6}%
+\contentsline {subsubsection}{Back-end}{18}{section*.31}%
+\contentsline {subsubsection}{Front-end}{19}{section*.32}%
+\contentsline {subsubsection}{Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{19}{section*.33}%
+\contentsline {chapter}{\numberline {4}Desarrollo}{21}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Back-End}{21}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Back-End}{21}{subsection.4.1.1}%
+\contentsline {subsubsection}{Estructura del Servidor}{21}{section*.34}%
+\contentsline {subsubsection}{Base de Datos}{22}{section*.35}%
+\contentsline {subsubsection}{Despliegue y Gesti\IeC {\'o}n de la Aplicaci\IeC {\'o}n}{22}{section*.36}%
+\contentsline {subsection}{\numberline {4.1.2}Estructura del Servidor}{22}{subsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.3}Base de Datos}{24}{subsection.4.1.3}%
+\contentsline {section}{\numberline {4.2}Front-End}{25}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Aplicaci\IeC {\'o}n Web}{25}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{26}{subsection.4.2.2}%
+\contentsline {section}{\numberline {4.3}Herramientas y Entorno de Desarrollo}{28}{section.4.3}%
+\contentsline {subsubsection}{Control de Versiones}{28}{section*.37}%
+\contentsline {subsubsection}{Entorno de Desarrollo}{29}{section*.38}%
+\contentsline {subsubsection}{Dise\IeC {\~n}o de la Interfaz de Usuario}{29}{section*.39}%
+\contentsline {subsubsection}{Base de Datos}{29}{section*.40}%
+\contentsline {subsubsection}{Despliegue}{29}{section*.41}%
+\contentsline {subsubsection}{Testing y Depuraci\IeC {\'o}n}{29}{section*.42}%
+\contentsline {subsubsection}{Gesti\IeC {\'o}n de Dependencias}{30}{section*.43}%
+\contentsline {chapter}{\numberline {5}Pruebas e Implementaci\IeC {\'o}n}{31}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Pruebas del Back-End}{31}{section.5.1}%
+\contentsline {subsubsection}{Configuraci\IeC {\'o}n de Pruebas}{31}{section*.44}%
+\contentsline {subsubsection}{Pruebas de Endpoints}{31}{section*.45}%
+\contentsline {section}{\numberline {5.2}Pruebas del Front-End}{32}{section.5.2}%
+\contentsline {subsubsection}{Pruebas de la Aplicaci\IeC {\'o}n Web}{32}{section*.46}%
+\contentsline {paragraph}{Prueba de Componentes}{32}{section*.47}%
+\contentsline {paragraph}{Pruebas de Integraci\IeC {\'o}n}{32}{section*.48}%
+\contentsline {subsubsection}{Pruebas de la Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{32}{section*.49}%
+\contentsline {paragraph}{Prueba de Componentes M\IeC {\'o}viles}{32}{section*.50}%
+\contentsline {paragraph}{Pruebas de Integraci\IeC {\'o}n M\IeC {\'o}viles}{33}{section*.51}%
+\contentsline {section}{\numberline {5.3}Implementaci\IeC {\'o}n}{33}{section.5.3}%
+\contentsline {subsubsection}{Despliegue del Back-End}{33}{section*.52}%
+\contentsline {subsubsection}{Despliegue del Front-End}{33}{section*.53}%
+\contentsline {chapter}{\numberline {6}Conclusiones y Trabajo Futuro}{35}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Conclusiones}{35}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Trabajo Futuro}{35}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Mejoras en el Front-End}{36}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}Mejoras en la Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{36}{subsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.2.3}Nuevas Funcionalidades}{36}{subsection.6.2.3}%
+\contentsline {subsection}{\numberline {6.2.4}Integraci\IeC {\'o}n de Inteligencia Artificial}{36}{subsection.6.2.4}%
+\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{37}{chapter*.54}%
+\contentsline {part}{Ap\IeC {\'e}ndices}{39}{part.1}%
+\contentsline {chapter}{\numberline {A}Dependecias y librer\IeC {\'\i }as}{41}{appendix.Alph1}%
+\contentsline {section}{\numberline {A.1}Ventajas e inconvenientes de \LaTeXe }{41}{section.Alph1.1}%
+\contentsline {section}{\numberline {A.2}Ventajas e inconvenientes de Word\textsuperscript {\textregistered }}{41}{section.Alph1.2}%
+\contentsline {section}{\numberline {A.3}\IeC {\textquestiondown }Cu\IeC {\'a}l elijo?}{42}{section.Alph1.3}%
+\contentsline {chapter}{\numberline {B}Acceso y Gu\IeC {\'\i }a de Instalaci\IeC {\'o}n}{43}{appendix.Alph2}%
+\contentsline {section}{\numberline {B.1}Linux}{43}{section.Alph2.1}%
+\contentsline {section}{\numberline {B.2}Windows\textsuperscript {\texttrademark }}{44}{section.Alph2.2}%
+\contentsline {section}{\numberline {B.3}Mac OS X}{44}{section.Alph2.3}%
+\contentsline {section}{\numberline {B.4}Overleaf o ShareLatex}{45}{section.Alph2.4}%
+\contentsline {section}{\numberline {B.5}\IeC {\textquestiondown }D\IeC {\'o}nde est\IeC {\'a} el manual?}{45}{section.Alph2.5}%
+\contentsline {section}{\numberline {B.6}Correcci\IeC {\'o}n ortogr\IeC {\'a}fica y codificaci\IeC {\'o}n de caracteres}{45}{section.Alph2.6}%
+\contentsline {section}{\numberline {B.7}\IeC {\textquestiondown }Qu\IeC {\'e} editor utilizo?}{45}{section.Alph2.7}%
+\contentsline {chapter}{\numberline {C}Requisitos}{47}{appendix.Alph3}%
+\contentsline {section}{\numberline {C.1}Requisitos Funcionales}{47}{section.Alph3.1}%
+\contentsline {subsection}{\numberline {C.1.1}Subsistema de Servidor y Comunicaci\IeC {\'o}n con la Base de Datos}{47}{subsection.Alph3.1.1}%
+\contentsline {subsection}{\numberline {C.1.2}Subsistema de Gesti\IeC {\'o}n de Usuarios}{47}{subsection.Alph3.1.2}%
+\contentsline {subsection}{\numberline {C.1.3}Subsistema de Gesti\IeC {\'o}n de Entrenamientos y Nutrici\IeC {\'o}n}{47}{subsection.Alph3.1.3}%
+\contentsline {section}{\numberline {C.2}Requisitos No Funcionales}{47}{section.Alph3.2}%
+\contentsline {subsection}{\numberline {C.2.1}Generales}{48}{subsection.Alph3.2.1}%
+\contentsline {subsection}{\numberline {C.2.2}Errores}{48}{subsection.Alph3.2.2}%
+\contentsline {subsection}{\numberline {C.2.3}Seguridad}{48}{subsection.Alph3.2.3}%
+\contentsline {subsection}{\numberline {C.2.4}Interfaz y Usabilidad}{48}{subsection.Alph3.2.4}%
+\contentsline {subsection}{\numberline {C.2.5}Soporte y Documentaci\IeC {\'o}n}{48}{subsection.Alph3.2.5}%
+\contentsline {subsection}{\numberline {C.2.6}Regulatorio y Legal}{49}{subsection.Alph3.2.6}%
+\contentsline {chapter}{\numberline {D}Diagramas de Flujo}{51}{appendix.Alph4}%
+\contentsline {chapter}{\numberline {E}Estructura del Proyecto}{55}{appendix.Alph5}%
+\contentsline {section}{\numberline {E.1}Comandos en el pre\IeC {\'a}mbulo}{55}{section.Alph5.1}%
+\contentsline {section}{\numberline {E.2}Commandos en el cuerpo del texto}{57}{section.Alph5.2}%
+\contentsline {section}{\numberline {E.3}Entornos}{58}{section.Alph5.3}%
+\contentsline {chapter}{\numberline {F}Capturas de Pantalla}{59}{appendix.Alph6}%
+\contentsline {chapter}{\numberline {G}C\IeC {\'o}digo Fuente}{61}{appendix.Alph7}%

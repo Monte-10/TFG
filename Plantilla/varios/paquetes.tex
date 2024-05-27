@@ -1,41 +1,71 @@
-Este estilo utiliza múltiples paquetes que se indican a continuación con enlaces a sus manuales en la WEB. Estos paquetes se utilizan con ciertos parámetros que se indican a continuación de cada elemento del listado. Para acceder a la documentación pincha en documentación en cada paquete.
+\section{Requisitos Funcionales}
 
-\begin{description}
-\item [algorithm2e] \href{http://osl.ugr.es/CTAN/macros/latex/contrib/algorithm2e/doc/algorithm2e.pdf}{(Documentación)}.
-\item [alltt] \href{http://osl.ugr.es/CTAN/macros/latex/base/alltt.pdf}{(Documentación)}.
-\item [amsmath] \href{http://osl.ugr.es/CTAN/macros/latex/required/amsmath/amsmath.pdf}{(Documentación)}.
-\item [babel] \href{http://osl.ugr.es/CTAN/macros/latex/required/babel/base/babel.pdf}{(Documentación)}.
-\item [calc] \href{http://osl.ugr.es/CTAN/macros/latex/required/tools/calc.pdf}{(Documentación)}.
-\item [caption] small,bf,margin=\{5em,5em\}. \href{http://osl.ugr.es/CTAN/macros/latex/contrib/caption/caption-eng.pdf}{(Documentación)}.
-\item [cite] \href{http://osl.ugr.es/CTAN/macros/latex/contrib/cite/cite.pdf}{(Documentación)}.
-\item [cleveref] \href{http://osl.ugr.es/CTAN/macros/latex/contrib/cleveref/cleveref.pdf}{(Documentación)}.
-\item [etex] \href{http://osl.ugr.es/CTAN/systems/doc/etex/etex_man.pdf}{(Documentación)}.
-\item [etoolbox] \href{http://osl.ugr.es/CTAN/macros/latex/contrib/etoolbox/etoolbox.pdf}{(Documentación)}.
-\item [eurosym] \href{ftp://ftp.dante.de/tex-archive/fonts/eurosym/doc/testeuro.pdf}{(Documentación)}.
-\item [fancyhdr] \href{http://osl.ugr.es/CTAN/macros/latex/contrib/fancyhdr/fancyhdr.pdf}{(Documentación)}.
-\item [fancybox] \href{http://osl.ugr.es/CTAN/macros/latex/contrib/fancybox/fancybox-doc.pdf}{(Documentación)}.
-\item [filecontents] \href{http://osl.ugr.es/CTAN/macros/latex/contrib/filecontents/filecontents.pdf}{(Documentación)}.
-\item [float] \href{http://osl.ugr.es/CTAN/macros/latex/contrib/float/float.pdf}{(Documentación)}.
-\item [gnuplottex] shell,cleanup,subfolder. \href{http://osl.ugr.es/CTAN/macros/latex/contrib/gnuplottex/gnuplottex.pdf}{(Documentación)}.
-\item [glossaries] acronyms,nonumberlist,shortcuts,toc. \href{http://osl.ugr.es/CTAN/macros/latex/contrib/glossaries/glossaries-user.pdf}{(Documentación)}.
-\item [graphicx] \href{http://osl.ugr.es/CTAN/macros/latex/required/graphics/grfguide.pdf}{(Documentación)}.
-\item [hyperref] \href{http://osl.ugr.es/CTAN/macros/latex/contrib/hyperref/doc/manual.pdf}{(Documentación)}.
-\item [ifpdf] \href{http://osl.ugr.es/CTAN/macros/latex/contrib/oberdiek/ifpdf.pdf}{(Documentación)}.
-\item [inputenc] utf8. \href{http://osl.ugr.es/CTAN/macros/latex/base/inputenc.pdf}{(Documentación)}.
-\item [lipsum] \href{http://osl.ugr.es/CTAN/macros/latex/contrib/lipsum/lipsum.pdf}{(Documentación)}.
-\item [listings] \href{http://osl.ugr.es/CTAN/macros/latex/contrib/listings/listings.pdf}{(Documentación)}.
-\item [longtable] \href{http://osl.ugr.es/CTAN/macros/latex/required/tools/longtable.pdf}{(Documentación)}.
-\item [makeidx] \href{http://osl.ugr.es/CTAN/macros/latex/base/makeindx.pdf}{(Documentación)}.
-\item [morewrites] \href{http://osl.ugr.es/CTAN/macros/latex/contrib/morewrites/morewrites.pdf}{(Documentación)}.
-\item [multicol] \href{http://osl.ugr.es/CTAN/macros/latex/required/tools/multicol.pdf}{(Documentación)}.
-\item [multirow] \href{http://osl.ugr.es/CTAN/macros/latex/contrib/multirow/multirow.pdf}{(Documentación)}.
-\item [pgf] \href{http://osl.ugr.es/CTAN/graphics/pgf/base/doc/pgfmanual.pdf}{(Documentación)}.
-\item [pgfgantt] \href{http://osl.ugr.es/CTAN/graphics/pgf/contrib/pgfgantt/pgfgantt.pdf}{(Documentación)}.
-\item [pgfplots] \href{http://osl.ugr.es/CTAN/graphics/pgf/contrib/pgfplots/doc/pgfplots.pdf}{(Documentación)}.
-\item [subfigure] hang,TABBOTCAP. \href{http://osl.ugr.es/CTAN/obsolete/macros/latex/contrib/subfigure/subfigure.pdf}{(Documentación)}.
-\item [tocloft] subfigure. \href{http://osl.ugr.es/CTAN/macros/latex/contrib/tocloft/tocloft.pdf}{(Documentación)}.
-\item [twoopt] \href{http://osl.ugr.es/CTAN/macros/latex/contrib/oberdiek/twoopt.pdf}{(Documentación)}.
-\item [verbatim] \href{http://osl.ugr.es/CTAN/macros/latex/required/tools/verbatim.pdf}{(Documentación)}.
-\item [wrapfig] \href{http://osl.ugr.es/CTAN/macros/latex/contrib/wrapfig/wrapfig-doc.pdf}{(Documentación)}.
-\item [xcolor] \href{http://osl.ugr.es/CTAN/macros/latex/contrib/xcolor/xcolor.pdf}{(Documentación)}.
-\end{description}
+\subsection{Subsistema de Servidor y Comunicación con la Base de Datos}
+\begin{itemize}
+    \item \textbf{RF1} Será posible crear, modificar y eliminar modelos en el servidor que se almacenarán en la base de datos PostgreSQL.
+    \item \textbf{RF2} Será posible crear y eliminar cualquier tabla en la base de datos PostgreSQL.
+    \item \textbf{RF3} Será posible consultar, crear, editar y eliminar cualquier registro de las diferentes tablas en la base de datos mediante llamadas a través de la API REST.
+\end{itemize}
+
+\subsection{Subsistema de Gestión de Usuarios}
+\begin{itemize}
+    \item \textbf{RF4} Un administrador podrá registrar, modificar y eliminar cualquier usuario.
+    \item \textbf{RF5} Un administrador podrá registrar, modificar y eliminar a otros administradores.
+    \item \textbf{RF6} Un usuario/administrador podrá acceder a un panel de administración de Django.
+    \item \textbf{RF7} Un usuario podrá ver su información personal en un panel de usuario.
+    \item \textbf{RF8} Un administrador podrá ver la información de cualquier usuario en su panel de administración.
+\end{itemize}
+
+\subsection{Subsistema de Gestión de Entrenamientos y Nutrición}
+\begin{itemize}
+    \item \textbf{RF9} Un usuario podrá solicitar planes de entrenamiento y nutrición personalizados.
+    \item \textbf{RF10} Un entrenador/nutricionista podrá crear, asignar y modificar planes de entrenamiento y nutrición.
+    \item \textbf{RF11} Un usuario podrá visualizar y seguir los planes asignados por su entrenador/nutricionista.
+    \item \textbf{RF12} Un entrenador/nutricionista podrá hacer seguimiento y ajustes en los planes de los usuarios.
+\end{itemize}
+
+\section{Requisitos No Funcionales}
+
+\subsection{Generales}
+\begin{itemize}
+    \item \textbf{RNF1} La aplicación tendrá una versión de desarrollo en la red local y otra de producción accesible desde cualquier navegador y dispositivo.
+\end{itemize}
+
+\subsection{Errores}
+\begin{itemize}
+    \item \textbf{RNF2} En caso de error en cualquier transacción con la base de datos, se devolverá un error específico que será manejado de manera consistente.
+    \item \textbf{RNF3} La API gestionará y transmitirá los errores de transacciones de la base de datos al cliente.
+    \item \textbf{RNF4} La lógica del front-end manejará estos errores y los mostrará apropiadamente al usuario.
+\end{itemize}
+
+\subsection{Seguridad}
+\begin{itemize}
+    \item \textbf{RNF5} Se implementará un sistema seguro basado en JSON Web Tokens, donde se asignará un token con cierta información a cada usuario.
+    \item \textbf{RNF6} Se garantizará la autenticación basada en tokens para las operaciones de la base de datos solicitadas por la API.
+    \item \textbf{RNF7} Las variables susceptibles se almacenarán de forma segura en variables de entorno.
+    \item \textbf{RNF8} Las contraseñas de los usuarios se cifrarán mediante hashing con SHA256 antes de ser almacenadas en la base de datos.
+    \item \textbf{RNF9} Las contraseñas cifradas nunca se devolverán en ninguna consulta.
+    \item \textbf{RNF10} Ningún error debe conducir a la caída del sistema.
+\end{itemize}
+
+\subsection{Interfaz y Usabilidad}
+\begin{itemize}
+    \item \textbf{RNF11} La aplicación tendrá un alto grado de usabilidad en dispositivos más pequeños como móviles o tabletas.
+    \item \textbf{RNF12} Todas las vistas y componentes se adaptarán al tamaño del dispositivo que los reproduzca.
+    \item \textbf{RNF13} Todas las vistas y componentes seguirán un código de color y forma coherente.
+    \item \textbf{RNF14} Se utilizarán iconos e imágenes de uso libre junto con creaciones propias para proporcionar un mejor diseño.
+    \item \textbf{RNF15} Para generar una notificación de alarma, se abrirá un panel de confirmación basado en texto para evitar "clics erróneos".
+    \item \textbf{RNF16} Todas las acciones críticas como eliminaciones abrirán un panel de confirmación para evitar "clics erróneos".
+    \item \textbf{RNF17} Se mostrarán mensajes de error en texto cuando no se encuentre una página o el acceso esté prohibido/restringido.
+\end{itemize}
+
+\subsection{Soporte y Documentación}
+\begin{itemize}
+    \item \textbf{RNF18} La facilidad de acceso debe ser máxima simplemente ingresando la URL de la aplicación.
+    \item \textbf{RNF19} No se requerirá instalación en la versión de ordenador (excepto para casos de prueba y simulación).
+\end{itemize}
+
+\subsection{Regulatorio y Legal}
+\begin{itemize}
+    \item \textbf{RNF20} Todos los recursos externos utilizados serán de uso libre y estarán debidamente acreditados en la documentación del proyecto.
+\end{itemize}

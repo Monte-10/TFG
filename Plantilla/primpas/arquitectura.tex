@@ -22,6 +22,10 @@ El sistema está estructurado en tres capas principales:
 \end{itemize}
 
 \subsubsection{Diagrama de Arquitectura}
+    A continuación, Figura 3.2 muestra un diagrama de la arquitectura general de FitFuelBalance, que ilustra la interacción entre los distintos componentes del sistema.
+    \begin{figure}[Distribución Arquitectura]{FIG:arquitectura}{Subsistemas del sistema FitFuelBalance}
+        \image{16cm}{}{arquitectura}
+    \end{figure}
 
 \subsubsection{Descripción de Componentes}
 
@@ -39,8 +43,8 @@ El sistema está estructurado en tres capas principales:
     
     \item \textbf{Backend:} 
     \begin{itemize}
-        \item \textbf{Django:} Framework de alto nivel que facilita el desarrollo rápido y limpio de aplicaciones web. Proporciona una estructura robusta y una gran cantidad de funcionalidades integradas.
-        \item \textbf{APIs RESTful:} Utilizadas para la comunicación entre el frontend, la aplicación móvil y el backend. Permiten un intercambio de datos eficiente y seguro.
+        \item \textbf{Django:} Framework de alto nivel que facilita el desarrollo rápido y limpio de aplicaciones web. Proporciona una estructura robusta y una gran cantidad de funcionalidades integradas. Los principales modulos usados para controlar la lógica son los modelos y las vistas.
+        \item \textbf{APIs RESTful:} Utilizadas para la comunicación entre el frontend, la aplicación móvil y el backend. Permiten un intercambio de datos eficiente y seguro. La API se divide en tres módulos principales: usuarios, nutrición y deporte.
     \end{itemize}
     
     \item \textbf{Base de Datos:} 
