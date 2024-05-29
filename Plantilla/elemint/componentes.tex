@@ -1,0 +1,101 @@
+La aplicación web, como se ha dicho anteriormente tiene una estructura formada por distintos componentes que interactúan entre sí para proporcionar la funcionalidad deseada. A continuación, se describen los componentes principales de la aplicación web:
+
+\subsubsection{App.js}
+
+El componente principal \texttt{App.js} es el núcleo de la aplicación web. En este archivo se define la estructura general de la aplicación, incluyendo la barra de navegación, las rutas y la gestión del estado de autenticación del usuario.
+
+\textbf{Funciones Principales de App.js:}
+\begin{itemize}
+    \item \textbf{Manejo del Estado de Autenticación:} Utiliza \texttt{useState} para gestionar el estado de autenticación del usuario, almacenando el token de autenticación en el \texttt{localStorage}.
+    \item \textbf{Obtención del Perfil del Usuario:} Utiliza \texttt{useEffect} para obtener el perfil del usuario desde el backend al cargar el componente si existe un token de autenticación válido.
+    \item \textbf{Manejo de Inicio y Cierre de Sesión:} Funciones para manejar el inicio y cierre de sesión, almacenando y eliminando el token de autenticación en el \texttt{localStorage}.
+    \item \textbf{Búsqueda de Entrenadores:} Funcionalidad para buscar entrenadores basados en especialidades y tipo de entrenador, enviando una solicitud HTTP al backend y actualizando el estado con los resultados.
+    \item \textbf{Envío de Solicitudes a Entrenadores:} Función para enviar solicitudes a entrenadores específicos mediante una solicitud HTTP POST al backend.
+\end{itemize}
+
+\textbf{Estructura del Componente:}
+El componente \texttt{App} se organiza en varias secciones clave:
+\begin{itemize}
+    \item \textbf{Barra de Navegación:} Implementada utilizando componentes de \texttt{react-bootstrap}, la barra de navegación permite al usuario acceder rápidamente a las diferentes secciones de la aplicación, como Nutrición y Deporte. Dependiendo del estado de autenticación del usuario, la barra de navegación mostrará diferentes opciones.
+    \item \textbf{Rutas:} Utiliza \texttt{react-router-dom} para definir las rutas de la aplicación. Cada ruta está asociada a un componente específico que se renderiza cuando el usuario navega a esa ruta.
+    \item \textbf{Vistas y Componentes:} Cada vista principal de la aplicación, como \texttt{HomePage}, \texttt{Login}, \texttt{Profile}, entre otras, se define como un componente separado que se renderiza en función de la ruta actual.
+\end{itemize}
+
+\textbf{Gestión del Estado de Autenticación:}
+\begin{itemize}
+    \item \textbf{handleLoginSuccess:} Función que maneja el éxito del inicio de sesión, almacenando el token de autenticación y el ID del usuario en el \texttt{localStorage}.
+    \item \textbf{handleLogout:} Función que maneja el cierre de sesión, eliminando el token de autenticación y el ID del usuario del \texttt{localStorage}.
+\end{itemize}
+
+\subsubsection{Componentes de Nutrición}
+Los componentes de la sección de nutrición en la aplicación web de FitFuelBalance son fundamentales para gestionar y administrar los planes de nutrición. A continuación, se describen las características más importantes de estos:
+
+\begin{itemize}
+\item \textbf{AdaptDietOrOption.js:} Permite adaptar una dieta existente o una opción de comida específica según las necesidades del usuario. Incluye funcionalidades para ajustar porciones y modificar ingredientes.
+\item \textbf{AssignOptionToUser.js:} Este componente se encarga de asignar opciones de dieta predefinidas a los usuarios. Utiliza filtros avanzados para seleccionar la mejor opción según las preferencias y restricciones dietéticas del usuario.
+\item \textbf{CreateDayOption.js:} Facilita la creación de opciones diarias de comida. Los nutricionistas pueden definir comidas específicas para cada día, incluyendo el desayuno, almuerzo, cena y snacks.
+\item \textbf{CreateDiet.js:} Permite a los nutricionistas crear planes de dieta completos. Incluye funcionalidades para agregar múltiples comidas y definir la duración del plan dietético.
+\item \textbf{CreateDish.js:} Utilizado para crear platos individuales que se pueden incluir en los planes de dieta. Los nutricionistas pueden definir ingredientes, porciones y valores nutricionales.
+\item \textbf{CreateFood.js:} Componente para agregar nuevos alimentos a la base de datos. Incluye campos para especificar el nombre del alimento, valores nutricionales y otros atributos relevantes como si es libre de gluten o lactosa.
+\item \textbf{CreateIngredient.js:} Facilita la creación de ingredientes que se utilizarán en los platos. Permite filtrar alimentos por nombre y valores nutricionales para seleccionar los mejores ingredientes.
+\item \textbf{CreateMeal.js:} Este componente permite la creación de comidas completas, que pueden incluir múltiples platos. Los nutricionistas pueden seleccionar platos existentes y combinarlos en una comida balanceada.
+\item \textbf{CreateOption.js:} Utilizado para definir opciones de comida para días específicos. Incluye funcionalidades para seleccionar y combinar platos y comidas de la base de datos.
+\item \textbf{CreateWeekOption.js:} Permite crear opciones semanales de comidas. Los nutricionistas pueden definir un conjunto de opciones de comida para toda la semana, asegurando variedad y balance nutricional.
+\item \textbf{EditDiet.js:} Facilita la edición de planes de dieta existentes. Los nutricionistas pueden ajustar comidas, ingredientes y porciones según sea necesario.
+\item \textbf{EditDish.js:} Permite editar los detalles de platos específicos, incluyendo ingredientes y valores nutricionales.
+\item \textbf{EditFood.js:} Utilizado para actualizar la información de alimentos existentes en la base de datos.
+\item \textbf{EditIngredient.js:} Facilita la modificación de ingredientes previamente creados, permitiendo ajustar cantidades y valores nutricionales.
+\item \textbf{EditMeal.js:} Componente para editar comidas completas, permitiendo agregar o eliminar platos y ajustar porciones.
+\item \textbf{FoodDetails.js:} Muestra los detalles completos de un alimento específico, incluyendo todos sus valores nutricionales y atributos.
+\item \textbf{IngredientDetails.js:} Proporciona una vista detallada de un ingrediente específico, incluyendo su origen y uso en diferentes platos.
+\item \textbf{ListDish.js:} Muestra una lista de todos los platos disponibles en la base de datos, permitiendo filtrarlos y seleccionarlos para incluirlos en planes de dieta.
+\item \textbf{ListFood.js:} Presenta una lista completa de todos los alimentos en la base de datos, con funcionalidades de búsqueda y filtrado.
+\item \textbf{ListIngredient.js:} Muestra todos los ingredientes disponibles, permitiendo a los nutricionistas seleccionar y utilizar en la creación de nuevos platos y comidas.
+\item \textbf{ListMeal.js:} Proporciona una lista de todas las comidas registradas en la aplicación, con opciones para ver detalles y editar cada comida.
+\item \textbf{ManageDailyDiet.js:} Facilita la gestión de dietas diarias, permitiendo a los usuarios revisar y ajustar sus planes de comida diarios.
+\item \textbf{UploadFood.js:} Permite a los nutricionistas y administradores cargar información de nuevos alimentos a la base de datos mediante archivos CSV u otros formatos compatibles.
+\end{itemize}
+
+\subsubsection{Componentes de Deporte}
+Los componentes de deporte en la aplicación web están diseñados para gestionar y visualizar los diferentes aspectos relacionados con los ejercicios y entrenamientos. A continuación, se describen los componentes principales:
+
+\begin{itemize}
+    \item \textbf{CreateExercise:} Este componente permite a los entrenadores crear nuevos ejercicios. Incluye un formulario para ingresar el nombre del ejercicio, una descripción, el tipo de ejercicio (fuerza, cardio, flexibilidad, balance, resistencia, HIIT, funcional), una imagen opcional y una URL de video opcional. Los datos se envían al servidor mediante una solicitud POST.
+    
+    \item \textbf{CreateTraining:} Utilizado para crear planes de entrenamiento completos. Los entrenadores pueden definir el nombre del entrenamiento, agregar múltiples ejercicios y especificar detalles como el número de series y repeticiones para cada ejercicio.
+    
+    \item \textbf{EditExercise:} Permite a los entrenadores editar los detalles de un ejercicio existente. Similar al componente de creación, pero pre-rellena el formulario con los datos actuales del ejercicio seleccionado.
+    
+    \item \textbf{EditTraining:} Utilizado para modificar los planes de entrenamiento existentes. Los entrenadores pueden actualizar la lista de ejercicios, cambiar series y repeticiones, o ajustar otros detalles del entrenamiento.
+    
+    \item \textbf{ExerciseDetails:} Muestra los detalles completos de un ejercicio específico, incluyendo su nombre, descripción, tipo, imagen y video si están disponibles. Este componente es útil para que los usuarios comprendan cómo realizar un ejercicio correctamente.
+    
+    \item \textbf{ListExercise:} Proporciona una lista de todos los ejercicios disponibles en la base de datos. Los entrenadores pueden navegar por esta lista, seleccionar ejercicios para editarlos o eliminarlos, y los usuarios pueden usarla para ver qué ejercicios están disponibles.
+    
+    \item \textbf{ListTraining:} Muestra una lista de todos los planes de entrenamiento creados. Los usuarios pueden ver los detalles de cada entrenamiento, y los entrenadores pueden seleccionar entrenamientos para editarlos o eliminarlos.
+    
+    \item \textbf{TrainingDetails:} Similar a \textit{ExerciseDetails}, pero enfocado en los planes de entrenamiento. Muestra todos los ejercicios incluidos en un plan, junto con las series, repeticiones y cualquier otra información relevante.
+\end{itemize}
+
+\subsubsection{Componentes de Usuario}
+A continuación, se describen los componentes principales relacionados con la gestión de usuarios en FitFuelBalance, destacando especialmente el componente de inicio de sesión por su papel en la gestión de tokens de autenticación.
+
+\begin{itemize}
+    \item \textbf{Login:} Este componente maneja el inicio de sesión de los usuarios. Los usuarios ingresan su nombre de usuario y contraseña en un formulario de inicio de sesión, que luego se envía al backend para su verificación. Si las credenciales son correctas, el backend genera un token JWT que se devuelve al cliente y se almacena en el almacenamiento local del navegador. Este token se adjunta a todas las solicitudes posteriores al backend para autenticar al usuario. En caso de que las credenciales sean incorrectas, se muestra un mensaje de error al usuario. El componente también maneja la lógica para recordar al usuario y mantener la sesión activa. El manejo seguro de los tokens asegura que solo los usuarios autenticados puedan acceder a recursos protegidos.
+
+    \item \textbf{ManageClients:} Proporciona una interfaz para que los entrenadores gestionen la lista de sus clientes. Los entrenadores pueden ver detalles de sus clientes, actualizar información y asignar planes de entrenamiento o dietas.
+    
+    \item \textbf{Profile:} Permite a los usuarios ver y actualizar su perfil personal. Los entrenadores pueden añadir detalles sobre sus especialidades, y los usuarios normales pueden actualizar sus métricas corporales y otros datos relevantes.
+    
+    \item \textbf{RegularSignUp:} Facilita el registro de nuevos usuarios normales. Los usuarios ingresan sus datos personales y crean una cuenta en la plataforma.
+    
+    \item \textbf{SearchTrainer:} Permite a los usuarios buscar entrenadores y nutricionistas en la plataforma. Los usuarios pueden ver perfiles detallados y seleccionar entrenadores según sus necesidades.
+    
+    \item \textbf{TrainerClientList:} Muestra a los entrenadores una lista de sus clientes actuales, permitiendo gestionar las relaciones y el progreso de cada uno.
+    
+    \item \textbf{TrainerList:} Proporciona una lista de todos los entrenadores disponibles en la plataforma, permitiendo a los usuarios explorar y elegir entrenadores específicos.
+    
+    \item \textbf{TrainerRedirect:} Maneja la redirección de los entrenadores a sus respectivas vistas de gestión y paneles de control.
+    
+    \item \textbf{TrainerSignUp:} Facilita el registro de nuevos entrenadores y nutricionistas en la plataforma. Los profesionales ingresan sus datos y crean un perfil que los usuarios pueden encontrar y contactar.
+\end{itemize}
