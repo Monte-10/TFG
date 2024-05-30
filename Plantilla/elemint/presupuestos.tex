@@ -28,20 +28,23 @@ La aplicación web de FitFuelBalance ha sido construida utilizando React.js, una
 
     \item \textbf{Estilos:} Se ha utilizado Bootstrap junto con CSS personalizado para asegurar una apariencia moderna y responsiva en toda la aplicación. Bootstrap proporciona una base sólida de componentes y utilidades que aceleran el desarrollo y aseguran la consistencia visual.
 
-    \item \textbf{Integración con Backend:} La aplicación web se comunica con el backend de Django a través de una serie de servicios definidos en la carpeta \texttt{components/}. Estos servicios utilizan \texttt{fetch} para realizar solicitudes HTTP y manejar las respuestas. A continuación, se muestra un ejemplo de un servicio para obtener los planes de entrenamiento:
+    \item \textbf{Integración con Backend:} La aplicación web se comunica con el backend de Django a través de una serie de servicios definidos en la carpeta \texttt{components/}. Estos servicios utilizan \texttt{fetch} para realizar solicitudes HTTP y manejar las respuestas. Figura \ref{FIG:reactservice} muestra un ejemplo para obtener planes de entrenamiento.
+    \begin{figure}[Ejemplo Servicio React]{FIG:reactservice}{Ejemplo de servicio en React para obtener planes de entrenamiento}
     \begin{verbatim}
         const apiUrl = process.env.REACT_APP_API_URL;
 
         export const getTrainingPlans = async () => {
             const response = await fetch(`${apiUrl}/sport/trainings/` {
                 headers: {
-                  'Authorization': `Token ${localStorage.getItem('token')}`
+                  'Authorization': `Token ${
+                    localStorage.getItem('token')}`
                 }
             });
             const data = await response.json();
             return data;
         };
     \end{verbatim}
+    \end{figure}
 
     \item \textbf{Manejo de Estado:} Para el manejo del estado global de la aplicación se ha utilizado \texttt{Context API} de React. Esto permite compartir datos y estados entre componentes sin necesidad de pasar props manualmente en múltiples niveles de la jerarquía de componentes.
 

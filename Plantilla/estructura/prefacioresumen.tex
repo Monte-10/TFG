@@ -1,120 +1,155 @@
 En esta sección, se explican los principales frameworks, bibliotecas y tecnologías utilizadas para el desarrollo del proyecto \textit{FitFuelBalance}.
 
-\subsubsection{Django}
+\subsection{Django}
 
-Django es un framework de alto nivel para el desarrollo web en Python que fomenta el desarrollo rápido y un diseño limpio y pragmático. Fue creado en 2005 por Adrian Holovaty y Simon Willison mientras trabajaban en el periódico \textit{Lawrence Journal-World}. Django se basa en la idea de DRY (Don’t Repeat Yourself) y ofrece herramientas poderosas como un ORM (Object-Relational Mapping), un sistema de plantillas y una interfaz administrativa automáticamente generada.
+Django es un framework de alto nivel para el desarrollo web en Python que fomenta el desarrollo rápido y un diseño limpio y pragmático. Fue creado en 2005 por Adrian Holovaty y Simon Willison mientras trabajaban en el periódico \textit{Lawrence Journal-World}. Django se basa en la idea de DRY (Don’t Repeat Yourself) y ofrece herramientas poderosas como un ORM (Object-Relational Mapping), un sistema de plantillas y una interfaz administrativa automáticamente generada. Las ventajas y limitaciones se resumen en la Tabla \ref{TAB:Django}.
 
-\textbf{Ventajas}:
-\begin{itemize}
-  \item Administración automática de la base de datos.
-  \item Sistema de plantillas potente y flexible.
-  \item Gran cantidad de bibliotecas y paquetes disponibles.
-\end{itemize}
+\begin{table}[Django]{TAB:Django}{Ventajas y limitaciones de Django}
+  \begin{tabular}{|p{7cm}|p{7cm}|}
+    \hline
+    \textbf{Ventajas} & \textbf{Limitaciones} \\
+    \hline
+    \begin{itemize}
+      \item Administración automática de la base de datos.
+      \item Sistema de plantillas potente y flexible.
+      \item Gran cantidad de bibliotecas y paquetes disponibles.
+    \end{itemize} &
+    \begin{itemize}
+      \item Puede ser más complejo para proyectos pequeños.
+      \item Requiere familiaridad con Python y el ecosistema de Django.
+    \end{itemize} \\
+    \hline
+  \end{tabular}
+\end{table}
 
-\textbf{Limitaciones}:
-\begin{itemize}
-  \item Puede ser más complejo para proyectos pequeños.
-  \item Requiere familiaridad con Python y el ecosistema de Django.
-\end{itemize}
+\subsection{React}
 
-\subsubsection{React}
+React es una biblioteca de JavaScript para crear interfaces de usuario para sistemas distribuidos, especialmente aquellos que trabajan con datos y actualizaciones en tiempo real. Utiliza JSX, una sintaxis muy similar a HTML, lo que facilita su implementación. El sistema se basa en componentes que contienen su propia lógica y estado. Las ventajas y limitaciones se resumen en la Tabla \ref{TAB:React}.
 
-React es una biblioteca de JavaScript para crear interfaces de usuario para sistemas distribuidos, especialmente aquellos que trabajan con datos y actualizaciones en tiempo real. Utiliza JSX, una sintaxis muy similar a HTML, lo que facilita su implementación. El sistema se basa en componentes que contienen su propia lógica y estado.
+\begin{table}[React]{TAB:React}{Ventajas y limitaciones de React}
+  \begin{tabular}{|p{7cm}|p{7cm}|}
+    \hline
+    \textbf{Ventajas} & \textbf{Limitaciones} \\
+    \hline
+    \begin{itemize}
+      \item Facilita la creación de interfaces de usuario dinámicas y responsivas.
+      \item Gran comunidad y ecosistema de bibliotecas y herramientas.
+      \item Modularización y reutilización de componentes.
+    \end{itemize} &
+    \begin{itemize}
+      \item Requiere un proceso de configuración inicial.
+      \item La gestión del estado en aplicaciones grandes puede ser compleja sin herramientas adicionales.
+    \end{itemize} \\
+    \hline
+  \end{tabular}
+\end{table}
 
-\textbf{Ventajas}:
-\begin{itemize}
-  \item Facilita la creación de interfaces de usuario dinámicas y responsivas.
-  \item Gran comunidad y ecosistema de bibliotecas y herramientas.
-  \item Modularización y reutilización de componentes.
-\end{itemize}
+\subsection{React Native}
 
-\textbf{Limitaciones}:
-\begin{itemize}
-  \item Requiere un proceso de configuración inicial.
-  \item La gestión del estado en aplicaciones grandes puede ser compleja sin herramientas adicionales.
-\end{itemize}
+React Native es un marco de desarrollo de aplicaciones móviles creado por Facebook en 2015. Permite a los desarrolladores construir aplicaciones móviles utilizando JavaScript y React, compilando a código nativo para iOS y Android. Las ventajas y limitaciones se resumen en la Tabla \ref{TAB:React_Native}.
 
-\subsubsection{React Native}
+\begin{table}[React Native]{TAB:React_Native}{Ventajas y limitaciones de React Native}
+  \begin{tabular}{|p{7cm}|p{7cm}|}
+    \hline
+    \textbf{Ventajas} & \textbf{Limitaciones} \\
+    \hline
+    \begin{itemize}
+      \item Reutilización de código entre plataformas iOS y Android.
+      \item Ecosistema robusto y activo.
+      \item Componentes nativos que garantizan un rendimiento óptimo.
+    \end{itemize} &
+    \begin{itemize}
+      \item Algunas funcionalidades nativas pueden requerir desarrollo adicional.
+      \item La actualización de versiones puede requerir ajustes significativos.
+    \end{itemize} \\
+    \hline
+  \end{tabular}
+\end{table}
 
-React Native es un marco de desarrollo de aplicaciones móviles creado por Facebook en 2015. Permite a los desarrolladores construir aplicaciones móviles utilizando JavaScript y React, compilando a código nativo para iOS y Android.
+\subsection{PostgreSQL}
 
-\textbf{Ventajas}:
-\begin{itemize}
-  \item Reutilización de código entre plataformas iOS y Android.
-  \item Ecosistema robusto y activo.
-  \item Componentes nativos que garantizan un rendimiento óptimo.
-\end{itemize}
+PostgreSQL es un sistema de gestión de bases de datos relacional y objeto-relacional, conocido por su estabilidad, extensibilidad y cumplimiento de estándares. Es una elección popular para aplicaciones web y sistemas de información que requieren una base de datos robusta y escalable. Las ventajas y limitaciones se resumen en la Tabla \ref{TAB:PostgreSQL}.
 
-\textbf{Limitaciones}:
-\begin{itemize}
-  \item Algunas funcionalidades nativas pueden requerir desarrollo adicional.
-  \item La actualización de versiones puede requerir ajustes significativos.
-\end{itemize}
+\begin{table}[PostgreSQL]{TAB:PostgreSQL}{Ventajas y limitaciones de PostgreSQL}
+  \begin{tabular}{|p{7cm}|p{7cm}|}
+    \hline
+    \textbf{Ventajas} & \textbf{Limitaciones} \\
+    \hline
+    \begin{itemize}
+      \item Altamente extensible y soporte para tipos de datos avanzados.
+      \item Transacciones ACID completas garantizando la integridad de los datos.
+      \item Amplia comunidad y soporte de herramientas.
+    \end{itemize} &
+    \begin{itemize}
+      \item Puede requerir configuración y ajuste para un rendimiento óptimo.
+      \item Complejidad en la administración para usuarios sin experiencia previa en bases de datos.
+    \end{itemize} \\
+    \hline
+  \end{tabular}
+\end{table}
 
-\subsubsection{PostgreSQL}
+\subsection{Python}
 
-PostgreSQL es un sistema de gestión de bases de datos relacional y objeto-relacional, conocido por su estabilidad, extensibilidad y cumplimiento de estándares. Es una elección popular para aplicaciones web y sistemas de información que requieren una base de datos robusta y escalable.
+Python es un lenguaje de programación de alto nivel, interpretado y de propósito general, conocido por su sintaxis legible y facilidad de uso. En este proyecto, Python se utiliza tanto para el desarrollo de Django como para otras funciones del backend. Las ventajas y limitaciones se resumen en la Tabla \ref{TAB:Python}.
 
-\textbf{Ventajas}:
-\begin{itemize}
-  \item Altamente extensible y soporte para tipos de datos avanzados.
-  \item Transacciones ACID completas garantizando la integridad de los datos.
-  \item Amplia comunidad y soporte de herramientas.
-\end{itemize}
+\begin{table}[Python]{TAB:Python}{Ventajas y limitaciones de Python}
+  \begin{tabular}{|p{7cm}|p{7cm}|}
+    \hline
+    \textbf{Ventajas} & \textbf{Limitaciones} \\
+    \hline
+    \begin{itemize}
+      \item Sintaxis sencilla y clara, ideal para desarrollo rápido.
+      \item Gran cantidad de bibliotecas y frameworks disponibles.
+      \item Comunidad activa y extensa documentación.
+    \end{itemize} &
+    \begin{itemize}
+      \item Puede no ser tan rápido como lenguajes compilados en ciertas tareas.
+      \item Requiere un buen manejo de entornos virtuales para la gestión de dependencias.
+    \end{itemize} \\
+    \hline
+  \end{tabular}
+\end{table}
 
-\textbf{Limitaciones}:
-\begin{itemize}
-  \item Puede requerir configuración y ajuste para un rendimiento óptimo.
-  \item Complejidad en la administración para usuarios sin experiencia previa en bases de datos.
-\end{itemize}
+\subsection{JavaScript}
 
-\subsubsection{Python}
+JavaScript es un lenguaje de programación interpretado que se utiliza principalmente para el desarrollo de aplicaciones web dinámicas. Es el lenguaje más común para el desarrollo frontend y se utiliza en este proyecto junto con React. Las ventajas y limitaciones se resumen en la Tabla \ref{TAB:JavaScript}.
 
-Python es un lenguaje de programación de alto nivel, interpretado y de propósito general, conocido por su sintaxis legible y facilidad de uso. En este proyecto, Python se utiliza tanto para el desarrollo de Django como para otras funciones del backend.
+\begin{table}[JavaScript]{TAB:JavaScript}{Ventajas y limitaciones de JavaScript}
+  \begin{tabular}{|p{7cm}|p{7cm}|}
+    \hline
+    \textbf{Ventajas} & \textbf{Limitaciones} \\
+    \hline
+    \begin{itemize}
+      \item Ampliamente soportado por todos los navegadores web.
+      \item Gran cantidad de frameworks y bibliotecas para desarrollo web.
+      \item Ideal para la creación de aplicaciones web interactivas y dinámicas.
+    \end{itemize} &
+    \begin{itemize}
+      \item Problemas de compatibilidad entre diferentes navegadores.
+      \item Requiere una gestión adecuada del código para evitar problemas de rendimiento.
+    \end{itemize} \\
+    \hline
+  \end{tabular}
+\end{table}
 
-\textbf{Ventajas}:
-\begin{itemize}
-  \item Sintaxis sencilla y clara, ideal para desarrollo rápido.
-  \item Gran cantidad de bibliotecas y frameworks disponibles.
-  \item Comunidad activa y extensa documentación.
-\end{itemize}
+\subsection{Bootstrap y CSS}
 
-\textbf{Limitaciones}:
-\begin{itemize}
-  \item Puede no ser tan rápido como lenguajes compilados en ciertas tareas.
-  \item Requiere un buen manejo de entornos virtuales para la gestión de dependencias.
-\end{itemize}
+Bootstrap es un framework de front-end de código abierto que permite diseñar sitios y aplicaciones web de forma rápida y sencilla. CSS (Cascading Style Sheets) es el lenguaje utilizado para describir la presentación de un documento escrito en HTML o XML. Las ventajas y limitaciones se resumen en la Tabla \ref{TAB:Bootstrap_CSS}.
 
-\subsubsection{JavaScript}
-
-JavaScript es un lenguaje de programación interpretado que se utiliza principalmente para el desarrollo de aplicaciones web dinámicas. Es el lenguaje más común para el desarrollo frontend y se utiliza en este proyecto junto con React.
-
-\textbf{Ventajas}:
-\begin{itemize}
-  \item Ampliamente soportado por todos los navegadores web.
-  \item Gran cantidad de frameworks y bibliotecas para desarrollo web.
-  \item Ideal para la creación de aplicaciones web interactivas y dinámicas.
-\end{itemize}
-
-\textbf{Limitaciones}:
-\begin{itemize}
-  \item Problemas de compatibilidad entre diferentes navegadores.
-  \item Requiere una gestión adecuada del código para evitar problemas de rendimiento.
-\end{itemize}
-
-\subsubsection{Bootstrap y CSS}
-
-Bootstrap es un framework de front-end de código abierto que permite diseñar sitios y aplicaciones web de forma rápida y sencilla. CSS (Cascading Style Sheets) es el lenguaje utilizado para describir la presentación de un documento escrito en HTML o XML.
-
-\textbf{Ventajas}:
-\begin{itemize}
-  \item Facilita la creación de interfaces responsivas y atractivas.
-  \item Gran cantidad de componentes predefinidos.
-  \item Compatible con todos los navegadores modernos.
-\end{itemize}
-
-\textbf{Limitaciones}:
-\begin{itemize}
-  \item Puede resultar en sitios web que se ven similares si no se personaliza adecuadamente.
-  \item Dependencia de archivos externos puede afectar el rendimiento si no se gestiona bien.
-\end{itemize}
+\begin{table}[Bootstrap y CSS]{TAB:Bootstrap_CSS}{Ventajas y limitaciones de Bootstrap y CSS}
+  \begin{tabular}{|p{7cm}|p{7cm}|}
+    \hline
+    \textbf{Ventajas} & \textbf{Limitaciones} \\
+    \hline
+    \begin{itemize}
+      \item Facilita la creación de interfaces responsivas y atractivas.
+      \item Gran cantidad de componentes predefinidos.
+      \item Compatible con todos los navegadores modernos.
+    \end{itemize} &
+    \begin{itemize}
+      \item Puede resultar en sitios web que se ven similares si no se personaliza adecuadamente.
+      \item Dependencia de archivos externos puede afectar el rendimiento si no se gestiona bien.
+    \end{itemize} \\
+    \hline
+  \end{tabular}
+\end{table}

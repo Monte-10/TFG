@@ -2,11 +2,11 @@ This is BibTeX, Version 0.99d (TeX Live 2022/dev/Debian)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: tfgtfmthesisuam.aux
 The style file: ieeetr.bst
-I found no \citation commands---while reading file tfgtfmthesisuam.aux
 Database file #1: tfgtfmthesisuam.bib
+Warning--I didn't find a database entry for "jwtexample"
 You've used 0 entries,
             1876 wiz_defined-function locations,
-            478 strings with 3499 characters,
+            479 strings with 3509 characters,
 and the built_in function-call counts, 20 in all, are:
 = -- 0
 > -- 0
@@ -45,4 +45,4 @@ warning$ -- 0
 while$ -- 0
 width$ -- 0
 write$ -- 2
-(There was 1 error message)
+(There was 1 warning)

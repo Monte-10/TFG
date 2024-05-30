@@ -2,16 +2,23 @@ Para garantizar la seguridad y autenticidad de los usuarios en la plataforma Fit
 
 El proceso de autenticación con JWT en FitFuelBalance sigue los siguientes pasos: primero, el usuario ingresa sus credenciales en el formulario de inicio de sesión del front-end. Al enviar el formulario, se genera una solicitud HTTP POST al login. El controlador de inicio de sesión en el backend verifica las credenciales del usuario. Si son correctas, se genera un token firmado que contiene la identificación del usuario y otros datos relevantes. Este token se envía de vuelta al cliente y se almacena en el almacenamiento local del navegador.
 
-Para cada solicitud posterior realizada por el cliente a recursos protegidos, el token se incluye en el encabezado de la solicitud HTTP. El middleware \texttt{TokenAuthentication} en el backend intercepta la solicitud y verifica la validez del token. Si el token es válido, se permite el acceso al recurso solicitado; de lo contrario, se devuelve una respuesta HTTP 401 Unauthorized.
+Para cada solicitud posterior realizada por el cliente a recursos protegidos, el token se incluye en el encabezado de la solicitud HTTP. El middleware \texttt{TokenAuthentication} en el backend intercepta la solicitud y verifica la validez del token. Si el token es válido, se permite el acceso al recurso solicitado; de lo contrario, se devuelve una respuesta HTTP 401 Unauthorized. Figura \ref{FIG:diagramatokens} muestra un ejemplo de cómo funciona el sistema de verificación de tokens.
 
-A continuación, se muestra un diagrama del sistema de verificación de tokens:
+\begin{figure}[Diagrama Tokens]{FIG:diagramatokens}{Diagrama del sistema de verificación de tokens}{Source: \cite{jwtexample}}
+    \image{16cm}{}{diagramatokens}
+\end{figure}
 
-DIAGRAMA TOKENS
+Figura \ref{FIG:jwtexample} muestra un ejemplo de token JWT y como funciona la codificación de los datos en el token.
+
+\begin{figure}[Ejemplo Token]{FIG:jwtexample}{Ejemplo de token JWT}
+    \image{10cm}{}{jwtexample}
+\end{figure}
 
 \subsubsection{Middleware y Configuración}
 
-El middleware \texttt{TokenAuthentication} es esencial para la autenticación de usuarios en cada solicitud. En el archivo \texttt{settings.py} se define la configuración necesaria para el uso de JWT en el proyecto Django:
+El middleware \texttt{TokenAuthentication} es esencial para la autenticación de usuarios en cada solicitud. En el archivo \texttt{settings.py} se define la configuración necesaria para el uso de JWT en el proyecto Django, Figura \ref{FIG:configjwt} muestra un ejemplo de configuración de JWT en Django.
 
+\begin{figure}[Configuración JWT]{FIG:configjwt}{Configuración de JWT en Django}
 \begin{verbatim}
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
@@ -22,9 +29,11 @@ REST_FRAMEWORK = {
     ],
 }
 \end{verbatim}
+\end{figure}
 
-En el archivo \texttt{views.py}, se define la vista para el manejo de la autenticación utilizando tokens JWT:
+En el archivo \texttt{views.py}, se define la vista para el manejo de la autenticación utilizando tokens JWT, Figura \ref{FIG:authview} muestra un ejemplo de vista de autenticación en Django:
 
+\begin{figure}[Vista Autenticación]{FIG:authview}{Vista de autenticación con JWT en Django}
 \begin{verbatim}
 class LoginView(APIView):
     authentication_classes = []  # No authentication required
@@ -40,34 +49,28 @@ class LoginView(APIView):
         else:
             return Response({'detail': 'Invalid Credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 \end{verbatim}
+\end{figure}
 
 \subsubsection{Uso de Tokens en el Front-End}
 
-En el archivo \texttt{App.js} del Front-end, se maneja el almacenamiento del token y su uso en las solicitudes a la API:
+En el archivo \texttt{App.js} del Front-end, se maneja el almacenamiento del token y su uso en las solicitudes a la API, Figura \ref{FIG:usetokens} muestra un ejemplo de uso de tokens en el Front-end:
 
+\begin{figure}[Uso de Tokens]{FIG:usetokens}{Uso de tokens en el Front-end}
 \begin{verbatim}
-useEffect(() => {
-    if (authToken) {
-        const fetchProfile = async () => {
-            try {
-                const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/profile/`, {
-                    headers: { 'Authorization': `Token ${localStorage.getItem('authToken')}` }
-                });
-                setProfile(response.data);
-            } catch (error) {
-                console.error("Error al cargar el perfil:", error);
-            }
-        };
-
-        fetchProfile();
+    ...
+    try {
+        const response = await axios.get(
+            `${process.env.REACT_APP_API_URL}/user/profile/`, {
+                headers: { 'Authorization': `Token ${localStorage.getItem('authToken')}` }
+        });
+        ...
     }
-}, [authToken]);
-
 const handleLoginSuccess = (token, userId) => {
     localStorage.setItem('authToken', token);
     localStorage.setItem('userId', userId);
     setAuthToken(token);
 };
 \end{verbatim}
+\end{figure}
 
 EJEMPLO TOKEN

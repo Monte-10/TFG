@@ -2,9 +2,26 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Esquema Modelo Incremental}}{14}{figure.caption.20}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Distribuci\IeC {\'o}n Arquitectura}}{16}{figure.caption.24}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Esquema Modelo Incremental}}{16}{figure.caption.27}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Distribuci\IeC {\'o}n Arquitectura}}{18}{figure.caption.31}%
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Distribuci\IeC {\'o}n Estructura Servidor}}{25}{figure.caption.40}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Ejemplo Consulta ORM}}{27}{figure.caption.41}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Configuraci\IeC {\'o}n Base de Datos}}{27}{figure.caption.42}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Estructura Base de Datos}}{28}{figure.caption.43}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Ejemplo C\IeC {\'o}digo Urls}}{29}{figure.caption.45}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Ejemplo C\IeC {\'o}digo Vistas}}{29}{figure.caption.47}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Ejemplo C\IeC {\'o}digo Serializadores}}{30}{figure.caption.49}%
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Ejemplo Solicitud GET}}{30}{figure.caption.52}%
+\contentsline {figure}{\numberline {4.9}{\ignorespaces Ejemplo Respuesta GET}}{30}{figure.caption.53}%
+\contentsline {figure}{\numberline {4.10}{\ignorespaces Diagrama Tokens}}{31}{figure.caption.54}%
+\contentsline {figure}{\numberline {4.11}{\ignorespaces Ejemplo Token}}{32}{figure.caption.55}%
+\contentsline {figure}{\numberline {4.12}{\ignorespaces Configuraci\IeC {\'o}n JWT}}{32}{figure.caption.57}%
+\contentsline {figure}{\numberline {4.13}{\ignorespaces Vista Autenticaci\IeC {\'o}n}}{33}{figure.caption.58}%
+\contentsline {figure}{\numberline {4.14}{\ignorespaces Uso de Tokens}}{33}{figure.caption.60}%
+\contentsline {figure}{\numberline {4.15}{\ignorespaces Ejemplo Servicio React}}{35}{figure.caption.61}%
+\contentsline {figure}{\numberline {4.16}{\ignorespaces Configuraci\IeC {\'o}n de Navegaci\IeC {\'o}n}}{40}{figure.caption.66}%
+\contentsline {figure}{\numberline {4.17}{\ignorespaces Ejemplo Servicio React Native}}{40}{figure.caption.67}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }

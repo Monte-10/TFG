@@ -31,7 +31,8 @@ La aplicación móvil de FitFuelBalance ha sido desarrollada utilizando React Na
         \end{itemize}
     \end{itemize}
 
-    \item \textbf{Navegación:} La navegación en la aplicación móvil se ha implementado utilizando React Navigation. Esta biblioteca facilita la gestión de la navegación entre pantallas y la organización de la estructura de navegación de la aplicación. A continuación se muestra un ejemplo de configuración de navegación:
+    \item \textbf{Navegación:} La navegación en la aplicación móvil se ha implementado utilizando React Navigation. Esta biblioteca facilita la gestión de la navegación entre pantallas y la organización de la estructura de navegación de la aplicación. Figura \ref{FIG:navconfig} muestra un ejemplo de configuración de navegación.
+    \begin{figure}[Configuración de Navegación]{FIG:navconfig}{Configuración de navegación en React Navigation}
     \begin{verbatim}
         const AppNavigator = () => {
             return (
@@ -39,28 +40,19 @@ La aplicación móvil de FitFuelBalance ha sido desarrollada utilizando React Na
                     <Stack.Screen name="HomeScreen" component={HomeScreen} />
                     <Stack.Screen name="LoginScreen" component={LoginScreen} />
                     <Stack.Screen name="TrainingDetailsScreen" component={TrainingDetailsScreen} />
-                    <Stack.Screen name="ActiveTrainingScreen" component={ActiveTrainingScreen} />
-                    <Stack.Screen name="RestTimeConfigScreen" component={RestTimeConfigScreen} />
-                    <Stack.Screen name="TrainingFeedbackScreen" component={TrainingFeedbackScreen} />
-                    <Stack.Screen name="TrainingHistoryScreen" component={TrainingHistoryScreen} />
-                    <Stack.Screen name="DailyDietDetailsScreen" component={DailyDietDetailsScreen} />
-                    <Stack.Screen name="DishDetailsScreen" component={DishDetailsScreen} />
-                    <Stack.Screen name="IngredientDetailsScreen" component={IngredientDetailsScreen} />
-                    <Stack.Screen name="FoodDetailsScreen" component={FoodDetailsScreen} />
-                    <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
                 </Stack.Navigator>
             );
         }
-
         export default AppNavigator;
     \end{verbatim}
+    \end{figure}
 
     \item \textbf{Estilos:} Para los estilos de la aplicación móvil se ha utilizado una combinación de hojas de estilo en JavaScript y StyleSheet de React Native. Esto permite definir estilos que se aplican de manera consistente en toda la aplicación y aprovechar características específicas de la plataforma.
 
-    \item \textbf{Integración con Backend:} Similar a la aplicación web, la aplicación móvil se comunica con el backend de Django a través de servicios definidos en la carpeta \texttt{api/}. Estos servicios utilizan \texttt{fetch} para realizar solicitudes HTTP y manejar las respuestas. A continuación, se muestra un ejemplo de un servicio para obtener los planes de entrenamiento:
+    \item \textbf{Integración con Backend:} Similar a la aplicación web, la aplicación móvil se comunica con el backend de Django a través de servicios definidos en la carpeta \texttt{api/}. Estos servicios utilizan \texttt{fetch} para realizar solicitudes HTTP y manejar las respuestas. Figura \ref{FIG:reactnativeservice} muestra un ejemplo de un servicio para obtener planes de entrenamiento.
+    \begin{figure}[Ejemplo Servicio React Native]{FIG:reactnativeservice}{Ejemplo de servicio en React Native para obtener planes de entrenamiento}
     \begin{verbatim}
         import { API_URL } from '../config';
-
         export const fetchTrainingPlans = async () => {
             try {
                 const response = await fetch(`${API_URL}/training-plans/`);
@@ -73,5 +65,6 @@ La aplicación móvil de FitFuelBalance ha sido desarrollada utilizando React Na
             }
         };
     \end{verbatim}
+    \end{figure}
 
 \end{itemize}

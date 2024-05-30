@@ -69,12 +69,15 @@ Para la persistencia de datos en el proyecto FitFuelBalance, se ha utilizado Pos
 
     \item \textbf{Migraciones:} Django facilita la gestión de cambios en la estructura de la base de datos a través del sistema de migraciones. Cada vez que se realiza un cambio en los modelos, se crea una migración que, al aplicarse, sincroniza la base de datos con los nuevos cambios. Esto asegura que la base de datos esté siempre en línea con el código del proyecto.
 
-    \item \textbf{ORM de Django:} Para interactuar con la base de datos, se utiliza el Object-Relational Mapping (ORM) de Django, que permite trabajar con la base de datos utilizando objetos Python en lugar de escribir consultas SQL directamente. Esto no solo simplifica el código sino que también mejora la portabilidad y mantenimiento del mismo. Por ejemplo, una consulta para obtener todos los planes de entrenamiento podría verse así:
+    \item \textbf{ORM de Django:} Para interactuar con la base de datos, se utiliza el Object-Relational Mapping (ORM) de Django, que permite trabajar con la base de datos utilizando objetos Python en lugar de escribir consultas SQL directamente. Esto no solo simplifica el código sino que también mejora la portabilidad y mantenimiento del mismo. Figura \ref{FIG:consultaorm} muestra un ejemplo de consulta ORM para ver todos los entrenamientos.
+    \begin{figure}[Ejemplo Consulta ORM]{FIG:consultaorm}{Ejemplo de consulta ORM en Django}
     \begin{verbatim}
         trainings = Training.objects.all()
     \end{verbatim}
+    \end{figure}
 
-    \item \textbf{Conexión a la Base de Datos:} La configuración de la conexión a la base de datos se encuentra en el archivo \texttt{settings.py} del proyecto Django, donde se especifican los detalles necesarios para conectarse a PostgreSQL:
+    \item \textbf{Conexión a la Base de Datos:} La configuración de la conexión a la base de datos se encuentra en el archivo \texttt{settings.py} del proyecto Django, donde se especifican los detalles necesarios para conectarse a PostgreSQL, el código de Figura \ref{FIG:basedatos} muestra un ejemplo de configuración de la base de datos en Django.
+    \begin{figure}[Configuración Base de Datos]{FIG:basedatos}{Configuración de la base de datos en Django}
     \begin{verbatim}
         DATABASES = {
             'default': {
@@ -87,8 +90,15 @@ Para la persistencia de datos en el proyecto FitFuelBalance, se ha utilizado Pos
             }
         }
     \end{verbatim}
+    \end{figure}
 
     \item \textbf{Gestión de Datos:} Para la administración y gestión de la base de datos, se ha utilizado Neon, una herramienta que facilita la visualización y manipulación de datos de PostgreSQL. Neon ofrece una interfaz gráfica intuitiva que permite realizar consultas, revisar tablas y gestionar esquemas de manera eficiente.
 
     \item \textbf{Seguridad y Copias de Seguridad:} Se han implementado medidas de seguridad para proteger los datos almacenados. Esto incluye la encriptación de contraseñas de usuarios utilizando el sistema de hash de Django y la realización periódica de copias de seguridad de la base de datos para prevenir pérdidas de datos.
 \end{itemize}
+
+Figura \ref{FIG:basedatos} muestra un diagrama de la estructura general de la base de datos de FitFuelBalance, que ilustra las relaciones entre las tablas principales y sus propiedades.
+
+\begin{figure}[Estructura Base de Datos]{FIG:basedatos}{Estructura de la base de datos de FitFuelBalance}
+    \image{16cm}{}{basededatos}
+\end{figure}

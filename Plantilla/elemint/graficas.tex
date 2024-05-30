@@ -36,13 +36,15 @@ El servidor se ha desarrollado utilizando el framework Django, que proporciona u
     
     \item \textbf{Modelo de Datos:} La base de datos utilizada es PostgreSQL, elegida por su robustez y capacidad para manejar grandes volúmenes de datos de manera eficiente. Las migraciones de base de datos se gestionan mediante las herramientas integradas de Django.
     
-    \item \textbf{API REST:} Se ha utilizado Django REST Framework para construir la API RESTful que permite la comunicación entre el servidor y los clientes (aplicaciones web y móvil). Esta API maneja las solicitudes HTTP y proporciona respuestas en formato JSON.
+    \item \textbf{API REST:} Se ha utilizado Django REST Framework para construir la API RESTful que permite la comunicación entre el servidor y los clientes (aplicaciones web y móvil). Esta API maneja las solicitudes HTTP y proporciona respuestas en formato JSON. Las llamadas a la API se autentican utilizando tokens JWT y la librería Axios en el frontend.
     
     \item \textbf{Autenticación y Autorización:} Se ha implementado un sistema de autenticación basado en tokens utilizando JWT (JSON Web Tokens) para asegurar las comunicaciones y gestionar las sesiones de usuario de manera segura.
     
     \item \textbf{Despliegue:} El servidor se ha desplegado en la plataforma Render, que permite gestionar de manera sencilla la infraestructura necesaria para la aplicación. Render proporciona un entorno de despliegue robusto y escalable, adecuado para las necesidades del proyecto.
 \end{itemize}
 
-El siguiente diagrama ilustra la estructura general del servidor y la interacción entre sus componentes:
+Figura \ref{FIG:estructuraserver} ilustra la estructura general del servidor y la interacción entre sus componentes, así como la conexión con la API REST y los clientes (aplicaciones web y móvil):
 
-DIAGRAMA ESTRUCTURA DEL SERVIDOR
+\begin{figure}[Distribución Estructura Servidor]{FIG:estructuraserver}{Estructura del servidor de FitFuelBalance}
+    \image{16cm}{}{estructuraserver}
+\end{figure}
