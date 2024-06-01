@@ -45,9 +45,13 @@ class LoginView(APIView):
         user = authenticate(username=username, password=password)
         if user is not None:
             token, created = Token.objects.get_or_create(user=user)
-            return Response({'token': token.key, 'userId': user.id}, status=status.HTTP_200_OK)
+            return Response(
+                {'token': token.key, 'userId': user.id}, 
+                status=status.HTTP_200_OK)
         else:
-            return Response({'detail': 'Invalid Credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response(
+                {'detail': 'Invalid Credentials'}, 
+                status=status.HTTP_401_UNAUTHORIZED)
 \end{verbatim}
 \end{figure}
 
@@ -61,7 +65,10 @@ En el archivo \texttt{App.js} del Front-end, se maneja el almacenamiento del tok
     try {
         const response = await axios.get(
             `${process.env.REACT_APP_API_URL}/user/profile/`, {
-                headers: { 'Authorization': `Token ${localStorage.getItem('authToken')}` }
+                headers: { 
+                    'Authorization': `Token ${
+                        localStorage.getItem('authToken')}` 
+                    }
         });
         ...
     }

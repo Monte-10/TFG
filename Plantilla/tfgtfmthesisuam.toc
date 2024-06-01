@@ -97,17 +97,12 @@
 \contentsline {chapter}{Bibliograf\IeC {\'\i }a}{49}{chapter*.85}%
 \contentsline {part}{Ap\IeC {\'e}ndices}{51}{part.1}%
 \contentsline {chapter}{\numberline {A}Dependecias y librer\IeC {\'\i }as}{53}{appendix.Alph1}%
-\contentsline {section}{\numberline {A.1}Ventajas e inconvenientes de \LaTeXe }{53}{section.Alph1.1}%
-\contentsline {section}{\numberline {A.2}Ventajas e inconvenientes de Word\textsuperscript {\textregistered }}{53}{section.Alph1.2}%
-\contentsline {section}{\numberline {A.3}\IeC {\textquestiondown }Cu\IeC {\'a}l elijo?}{54}{section.Alph1.3}%
-\contentsline {chapter}{\numberline {B}Acceso y Gu\IeC {\'\i }a de Instalaci\IeC {\'o}n}{55}{appendix.Alph2}%
-\contentsline {section}{\numberline {B.1}Linux}{55}{section.Alph2.1}%
-\contentsline {section}{\numberline {B.2}Windows\textsuperscript {\texttrademark }}{56}{section.Alph2.2}%
-\contentsline {section}{\numberline {B.3}Mac OS X}{56}{section.Alph2.3}%
-\contentsline {section}{\numberline {B.4}Overleaf o ShareLatex}{57}{section.Alph2.4}%
-\contentsline {section}{\numberline {B.5}\IeC {\textquestiondown }D\IeC {\'o}nde est\IeC {\'a} el manual?}{57}{section.Alph2.5}%
-\contentsline {section}{\numberline {B.6}Correcci\IeC {\'o}n ortogr\IeC {\'a}fica y codificaci\IeC {\'o}n de caracteres}{57}{section.Alph2.6}%
-\contentsline {section}{\numberline {B.7}\IeC {\textquestiondown }Qu\IeC {\'e} editor utilizo?}{57}{section.Alph2.7}%
+\contentsline {section}{\numberline {A.1}Acceso a FitFuelBalance}{53}{section.Alph1.1}%
+\contentsline {section}{\numberline {A.2}Acceso al c\IeC {\'o}digo fuente}{53}{section.Alph1.2}%
+\contentsline {chapter}{\numberline {B}Dependencias}{55}{appendix.Alph2}%
+\contentsline {subsection}{\numberline {B.0.1}Dependencias Back-End}{55}{subsection.Alph2.0.1}%
+\contentsline {subsection}{\numberline {B.0.2}Dependencias Front-End}{57}{subsection.Alph2.0.2}%
+\contentsline {subsection}{\numberline {B.0.3}Dependencias de la Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{58}{subsection.Alph2.0.3}%
 \contentsline {chapter}{\numberline {C}Requisitos}{59}{appendix.Alph3}%
 \contentsline {section}{\numberline {C.1}Requisitos Funcionales}{59}{section.Alph3.1}%
 \contentsline {subsection}{\numberline {C.1.1}Subsistema de Servidor y Comunicaci\IeC {\'o}n con la Base de Datos}{59}{subsection.Alph3.1.1}%

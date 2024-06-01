@@ -57,33 +57,28 @@
 \BOOKMARK [0][-]{chapter*.85}{Bibliograf\355a}{}% 57
 \BOOKMARK [-1][-]{part.1}{Ap\351ndices}{}% 58
 \BOOKMARK [0][-]{appendix.Alph1}{Dependecias y librer\355as}{part.1}% 59
-\BOOKMARK [1][-]{section.Alph1.1}{Ventajas e inconvenientes de LaTeX2e}{appendix.Alph1}% 60
-\BOOKMARK [1][-]{section.Alph1.2}{Ventajas e inconvenientes de Word\256}{appendix.Alph1}% 61
-\BOOKMARK [1][-]{section.Alph1.3}{\277Cu\341l elijo?}{appendix.Alph1}% 62
-\BOOKMARK [0][-]{appendix.Alph2}{Acceso y Gu\355a de Instalaci\363n}{part.1}% 63
-\BOOKMARK [1][-]{section.Alph2.1}{Linux}{appendix.Alph2}% 64
-\BOOKMARK [1][-]{section.Alph2.2}{Windows\222}{appendix.Alph2}% 65
-\BOOKMARK [1][-]{section.Alph2.3}{Mac OS X}{appendix.Alph2}% 66
-\BOOKMARK [1][-]{section.Alph2.4}{Overleaf o ShareLatex}{appendix.Alph2}% 67
-\BOOKMARK [1][-]{section.Alph2.5}{\277D\363nde est\341 el manual?}{appendix.Alph2}% 68
-\BOOKMARK [1][-]{section.Alph2.6}{Correcci\363n ortogr\341fica y codificaci\363n de caracteres}{appendix.Alph2}% 69
-\BOOKMARK [1][-]{section.Alph2.7}{\277Qu\351 editor utilizo?}{appendix.Alph2}% 70
-\BOOKMARK [0][-]{appendix.Alph3}{Requisitos}{part.1}% 71
-\BOOKMARK [1][-]{section.Alph3.1}{Requisitos Funcionales}{appendix.Alph3}% 72
-\BOOKMARK [2][-]{subsection.Alph3.1.1}{Subsistema de Servidor y Comunicaci\363n con la Base de Datos}{section.Alph3.1}% 73
-\BOOKMARK [2][-]{subsection.Alph3.1.2}{Subsistema de Gesti\363n de Usuarios}{section.Alph3.1}% 74
-\BOOKMARK [2][-]{subsection.Alph3.1.3}{Subsistema de Gesti\363n de Entrenamientos y Nutrici\363n}{section.Alph3.1}% 75
-\BOOKMARK [1][-]{section.Alph3.2}{Requisitos No Funcionales}{appendix.Alph3}% 76
-\BOOKMARK [2][-]{subsection.Alph3.2.1}{Generales}{section.Alph3.2}% 77
-\BOOKMARK [2][-]{subsection.Alph3.2.2}{Errores}{section.Alph3.2}% 78
-\BOOKMARK [2][-]{subsection.Alph3.2.3}{Seguridad}{section.Alph3.2}% 79
-\BOOKMARK [2][-]{subsection.Alph3.2.4}{Interfaz y Usabilidad}{section.Alph3.2}% 80
-\BOOKMARK [2][-]{subsection.Alph3.2.5}{Soporte y Documentaci\363n}{section.Alph3.2}% 81
-\BOOKMARK [2][-]{subsection.Alph3.2.6}{Regulatorio y Legal}{section.Alph3.2}% 82
-\BOOKMARK [0][-]{appendix.Alph4}{Diagramas de Flujo}{part.1}% 83
-\BOOKMARK [0][-]{appendix.Alph5}{Estructura del Proyecto}{part.1}% 84
-\BOOKMARK [1][-]{section.Alph5.1}{Comandos en el pre\341mbulo}{appendix.Alph5}% 85
-\BOOKMARK [1][-]{section.Alph5.2}{Commandos en el cuerpo del texto}{appendix.Alph5}% 86
-\BOOKMARK [1][-]{section.Alph5.3}{Entornos}{appendix.Alph5}% 87
-\BOOKMARK [0][-]{appendix.Alph6}{Capturas de Pantalla}{part.1}% 88
-\BOOKMARK [0][-]{appendix.Alph7}{C\363digo Fuente}{part.1}% 89
+\BOOKMARK [1][-]{section.Alph1.1}{Acceso a FitFuelBalance}{appendix.Alph1}% 60
+\BOOKMARK [1][-]{section.Alph1.2}{Acceso al c\363digo fuente}{appendix.Alph1}% 61
+\BOOKMARK [0][-]{appendix.Alph2}{Dependencias}{part.1}% 62
+\BOOKMARK [1][-]{subsection.Alph2.0.1}{Dependencias Back-End}{appendix.Alph2}% 63
+\BOOKMARK [2][-]{subsection.Alph2.0.2}{Dependencias Front-End}{subsection.Alph2.0.1}% 64
+\BOOKMARK [2][-]{subsection.Alph2.0.3}{Dependencias de la Aplicaci\363n M\363vil}{subsection.Alph2.0.1}% 65
+\BOOKMARK [0][-]{appendix.Alph3}{Requisitos}{part.1}% 66
+\BOOKMARK [1][-]{section.Alph3.1}{Requisitos Funcionales}{appendix.Alph3}% 67
+\BOOKMARK [2][-]{subsection.Alph3.1.1}{Subsistema de Servidor y Comunicaci\363n con la Base de Datos}{section.Alph3.1}% 68
+\BOOKMARK [2][-]{subsection.Alph3.1.2}{Subsistema de Gesti\363n de Usuarios}{section.Alph3.1}% 69
+\BOOKMARK [2][-]{subsection.Alph3.1.3}{Subsistema de Gesti\363n de Entrenamientos y Nutrici\363n}{section.Alph3.1}% 70
+\BOOKMARK [1][-]{section.Alph3.2}{Requisitos No Funcionales}{appendix.Alph3}% 71
+\BOOKMARK [2][-]{subsection.Alph3.2.1}{Generales}{section.Alph3.2}% 72
+\BOOKMARK [2][-]{subsection.Alph3.2.2}{Errores}{section.Alph3.2}% 73
+\BOOKMARK [2][-]{subsection.Alph3.2.3}{Seguridad}{section.Alph3.2}% 74
+\BOOKMARK [2][-]{subsection.Alph3.2.4}{Interfaz y Usabilidad}{section.Alph3.2}% 75
+\BOOKMARK [2][-]{subsection.Alph3.2.5}{Soporte y Documentaci\363n}{section.Alph3.2}% 76
+\BOOKMARK [2][-]{subsection.Alph3.2.6}{Regulatorio y Legal}{section.Alph3.2}% 77
+\BOOKMARK [0][-]{appendix.Alph4}{Diagramas de Flujo}{part.1}% 78
+\BOOKMARK [0][-]{appendix.Alph5}{Estructura del Proyecto}{part.1}% 79
+\BOOKMARK [1][-]{section.Alph5.1}{Comandos en el pre\341mbulo}{appendix.Alph5}% 80
+\BOOKMARK [1][-]{section.Alph5.2}{Commandos en el cuerpo del texto}{appendix.Alph5}% 81
+\BOOKMARK [1][-]{section.Alph5.3}{Entornos}{appendix.Alph5}% 82
+\BOOKMARK [0][-]{appendix.Alph6}{Capturas de Pantalla}{part.1}% 83
+\BOOKMARK [0][-]{appendix.Alph7}{C\363digo Fuente}{part.1}% 84
