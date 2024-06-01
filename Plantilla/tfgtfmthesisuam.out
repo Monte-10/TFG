@@ -76,9 +76,12 @@
 \BOOKMARK [2][-]{subsection.Alph3.2.5}{Soporte y Documentaci\363n}{section.Alph3.2}% 76
 \BOOKMARK [2][-]{subsection.Alph3.2.6}{Regulatorio y Legal}{section.Alph3.2}% 77
 \BOOKMARK [0][-]{appendix.Alph4}{Diagramas de Flujo}{part.1}% 78
-\BOOKMARK [0][-]{appendix.Alph5}{Estructura del Proyecto}{part.1}% 79
-\BOOKMARK [1][-]{section.Alph5.1}{Comandos en el pre\341mbulo}{appendix.Alph5}% 80
-\BOOKMARK [1][-]{section.Alph5.2}{Commandos en el cuerpo del texto}{appendix.Alph5}% 81
-\BOOKMARK [1][-]{section.Alph5.3}{Entornos}{appendix.Alph5}% 82
-\BOOKMARK [0][-]{appendix.Alph6}{Capturas de Pantalla}{part.1}% 83
-\BOOKMARK [0][-]{appendix.Alph7}{C\363digo Fuente}{part.1}% 84
+\BOOKMARK [1][-]{subsection.Alph4.0.1}{Creaci\363n de un nuevo usuario}{appendix.Alph4}% 79
+\BOOKMARK [2][-]{subsection.Alph4.0.2}{Creaci\363n de un nuevo entrenamiento}{subsection.Alph4.0.1}% 80
+\BOOKMARK [2][-]{subsection.Alph4.0.3}{Creaci\363n y asignaci\363n de una Opci\363n}{subsection.Alph4.0.1}% 81
+\BOOKMARK [2][-]{subsection.Alph4.0.4}{Asignaci\363n de entrenador}{subsection.Alph4.0.1}% 82
+\BOOKMARK [0][-]{appendix.Alph5}{Estructura del Proyecto}{part.1}% 83
+\BOOKMARK [1][-]{subsection.Alph5.0.1}{Backend}{appendix.Alph5}% 84
+\BOOKMARK [2][-]{subsection.Alph5.0.2}{Frontend}{subsection.Alph5.0.1}% 85
+\BOOKMARK [0][-]{appendix.Alph6}{Capturas de Pantalla}{part.1}% 86
+\BOOKMARK [0][-]{appendix.Alph7}{C\363digo Fuente}{part.1}% 87

@@ -116,9 +116,12 @@
 \contentsline {subsection}{\numberline {C.2.5}Soporte y Documentaci\IeC {\'o}n}{60}{subsection.Alph3.2.5}%
 \contentsline {subsection}{\numberline {C.2.6}Regulatorio y Legal}{61}{subsection.Alph3.2.6}%
 \contentsline {chapter}{\numberline {D}Diagramas de Flujo}{63}{appendix.Alph4}%
-\contentsline {chapter}{\numberline {E}Estructura del Proyecto}{67}{appendix.Alph5}%
-\contentsline {section}{\numberline {E.1}Comandos en el pre\IeC {\'a}mbulo}{67}{section.Alph5.1}%
-\contentsline {section}{\numberline {E.2}Commandos en el cuerpo del texto}{69}{section.Alph5.2}%
-\contentsline {section}{\numberline {E.3}Entornos}{70}{section.Alph5.3}%
-\contentsline {chapter}{\numberline {F}Capturas de Pantalla}{71}{appendix.Alph6}%
-\contentsline {chapter}{\numberline {G}C\IeC {\'o}digo Fuente}{73}{appendix.Alph7}%
+\contentsline {subsection}{\numberline {D.0.1}Creaci\IeC {\'o}n de un nuevo usuario}{63}{subsection.Alph4.0.1}%
+\contentsline {subsection}{\numberline {D.0.2}Creaci\IeC {\'o}n de un nuevo entrenamiento}{63}{subsection.Alph4.0.2}%
+\contentsline {subsection}{\numberline {D.0.3}Creaci\IeC {\'o}n y asignaci\IeC {\'o}n de una Opci\IeC {\'o}n}{64}{subsection.Alph4.0.3}%
+\contentsline {subsection}{\numberline {D.0.4}Asignaci\IeC {\'o}n de entrenador}{64}{subsection.Alph4.0.4}%
+\contentsline {chapter}{\numberline {E}Estructura del Proyecto}{65}{appendix.Alph5}%
+\contentsline {subsection}{\numberline {E.0.1}Backend}{65}{subsection.Alph5.0.1}%
+\contentsline {subsection}{\numberline {E.0.2}Frontend}{65}{subsection.Alph5.0.2}%
+\contentsline {chapter}{\numberline {F}Capturas de Pantalla}{69}{appendix.Alph6}%
+\contentsline {chapter}{\numberline {G}C\IeC {\'o}digo Fuente}{71}{appendix.Alph7}%
