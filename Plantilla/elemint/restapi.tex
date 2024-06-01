@@ -3,47 +3,14 @@ El desarrollo de la API RESTful en FitFuelBalance se ha realizado utilizando Dja
 \subsubsection{Endpoints y Rutas}
 Las rutas de la API están definidas en el archivo \texttt{urls.py} del proyecto. Estas rutas mapean las solicitudes HTTP a las vistas correspondientes, las cuales manejan la lógica de negocio. Figura \ref{FIG:urls} muestra un ejemplo de rutas en Django.
 
-\begin{figure}[Ejemplo Código Urls]{FIG:urls}{Ejemplo de rutas en Django}
-\begin{verbatim}
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
 
-router = DefaultRouter()
-router.register(r'foods', views.FoodViewSet)
-router.register(r'assigned_options', views.AssignedOptionViewSet)
-
-urlpatterns = [
-    path('', include(router.urls)),
-    path('assign_option/', views.assignOption, name='assign_option'),
-]
-\end{verbatim}
-\end{figure}
 
 \subsubsection{Vistas y Controladores}
 Las vistas en Django se encargan de manejar las solicitudes HTTP y devolver las respuestas correspondientes. En FitFuelBalance, las vistas se han implementado utilizando clases basadas en vistas (Class-Based Views) y ViewSets de DRF para facilitar la reutilización y el manejo de lógica compleja. Figura \ref{FIG:views} muestra un fragmento del código la vistas del proyecto en Django.
 
-\begin{figure}[Ejemplo Código Vistas]{FIG:views}{Ejemplo de vistas en Django}
-
-\begin{verbatim}
-class FoodViewSet(viewsets.ModelViewSet):
-    queryset = Food.objects.all()
-    serializer_class = FoodSerializer
-\end{verbatim}
-\end{figure}
-
 \subsubsection{Serializadores}
 Los serializadores de DRF se utilizan para convertir instancias de modelos de Django a formatos JSON y viceversa. Esto es esencial para la comunicación entre el servidor y los clientes. Figura \ref{FIG:serializers} muestra un ejemplo de estos serializadores en Django.
 
-\begin{figure}[Ejemplo Código Serializadores]{FIG:serializers}{Ejemplo de serializadores en Django}
-\begin{verbatim}
-class FoodSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Food
-        fields = '__all__'
-\end{verbatim}
-\end{figure}
-
-\newpage
 \subsubsection{Métodos HTTP}
 La API maneja los siguientes métodos HTTP:
 \begin{itemize}

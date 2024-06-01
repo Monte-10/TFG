@@ -9,31 +9,35 @@
 \contentsline {figure}{\numberline {4.2}{\ignorespaces Ejemplo Consulta ORM}}{27}{figure.caption.41}%
 \contentsline {figure}{\numberline {4.3}{\ignorespaces Configuraci\IeC {\'o}n Base de Datos}}{27}{figure.caption.42}%
 \contentsline {figure}{\numberline {4.4}{\ignorespaces Estructura Base de Datos}}{28}{figure.caption.43}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Ejemplo C\IeC {\'o}digo Urls}}{29}{figure.caption.45}%
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Ejemplo C\IeC {\'o}digo Vistas}}{29}{figure.caption.47}%
-\contentsline {figure}{\numberline {4.7}{\ignorespaces Ejemplo C\IeC {\'o}digo Serializadores}}{30}{figure.caption.49}%
-\contentsline {figure}{\numberline {4.8}{\ignorespaces Ejemplo Solicitud GET}}{30}{figure.caption.52}%
-\contentsline {figure}{\numberline {4.9}{\ignorespaces Ejemplo Respuesta GET}}{30}{figure.caption.53}%
-\contentsline {figure}{\numberline {4.10}{\ignorespaces Diagrama Tokens}}{31}{figure.caption.54}%
-\contentsline {figure}{\numberline {4.11}{\ignorespaces Ejemplo Token}}{32}{figure.caption.55}%
-\contentsline {figure}{\numberline {4.12}{\ignorespaces Configuraci\IeC {\'o}n JWT}}{32}{figure.caption.57}%
-\contentsline {figure}{\numberline {4.13}{\ignorespaces Vista Autenticaci\IeC {\'o}n}}{33}{figure.caption.58}%
-\contentsline {figure}{\numberline {4.14}{\ignorespaces Uso de Tokens}}{33}{figure.caption.60}%
-\contentsline {figure}{\numberline {4.15}{\ignorespaces Ejemplo Servicio React}}{35}{figure.caption.61}%
-\contentsline {figure}{\numberline {4.16}{\ignorespaces Configuraci\IeC {\'o}n de Navegaci\IeC {\'o}n}}{40}{figure.caption.66}%
-\contentsline {figure}{\numberline {4.17}{\ignorespaces Ejemplo Servicio React Native}}{40}{figure.caption.67}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Ejemplo Solicitud GET}}{29}{figure.caption.49}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Ejemplo Respuesta GET}}{30}{figure.caption.50}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Diagrama Tokens}}{31}{figure.caption.51}%
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Ejemplo Token}}{31}{figure.caption.52}%
+\contentsline {figure}{\numberline {4.9}{\ignorespaces Configuraci\IeC {\'o}n JWT}}{32}{figure.caption.54}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {D.1}{\ignorespaces Diagrama de creaci\IeC {\'o}n de un nuevo usuario}}{63}{figure.caption.90}%
-\contentsline {figure}{\numberline {D.2}{\ignorespaces Diagrama de creaci\IeC {\'o}n de un nuevo entrenamiento}}{63}{figure.caption.91}%
-\contentsline {figure}{\numberline {D.3}{\ignorespaces Diagrama de creaci\IeC {\'o}n y asignaci\IeC {\'o}n de una opci\IeC {\'o}n}}{64}{figure.caption.92}%
-\contentsline {figure}{\numberline {D.4}{\ignorespaces Diagrama de asignaci\IeC {\'o}n de entrenador}}{64}{figure.caption.93}%
+\contentsline {figure}{\numberline {D.1}{\ignorespaces Diagrama de creaci\IeC {\'o}n de un nuevo usuario}}{61}{figure.caption.82}%
+\contentsline {figure}{\numberline {D.2}{\ignorespaces Diagrama de creaci\IeC {\'o}n de un nuevo entrenamiento}}{61}{figure.caption.83}%
+\contentsline {figure}{\numberline {D.3}{\ignorespaces Diagrama de creaci\IeC {\'o}n y asignaci\IeC {\'o}n de una opci\IeC {\'o}n}}{62}{figure.caption.84}%
+\contentsline {figure}{\numberline {D.4}{\ignorespaces Diagrama de asignaci\IeC {\'o}n de entrenador}}{62}{figure.caption.85}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {E.1}{\ignorespaces Diagrama de la estructura del backend}}{66}{figure.caption.94}%
-\contentsline {figure}{\numberline {E.2}{\ignorespaces Diagrama de la estructura del frontend}}{68}{figure.caption.95}%
+\contentsline {figure}{\numberline {E.1}{\ignorespaces Diagrama de la estructura del backend}}{64}{figure.caption.86}%
+\contentsline {figure}{\numberline {E.2}{\ignorespaces Diagrama de la estructura del frontend}}{66}{figure.caption.87}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {G.1}{\ignorespaces Ejemplo C\IeC {\'o}digo Urls}}{69}{figure.caption.88}%
+\contentsline {figure}{\numberline {G.2}{\ignorespaces Ejemplo C\IeC {\'o}digo Vistas}}{70}{figure.caption.89}%
+\contentsline {figure}{\numberline {G.3}{\ignorespaces Ejemplo C\IeC {\'o}digo Serializadores}}{71}{figure.caption.90}%
+\contentsline {figure}{\numberline {G.4}{\ignorespaces Vista Autenticaci\IeC {\'o}n}}{72}{figure.caption.91}%
+\contentsline {figure}{\numberline {G.5}{\ignorespaces Modelo de Entrenamiento}}{74}{figure.caption.92}%
+\contentsline {figure}{\numberline {G.6}{\ignorespaces Uso de Tokens}}{76}{figure.caption.93}%
+\contentsline {figure}{\numberline {G.7}{\ignorespaces Ejemplo Servicio React}}{77}{figure.caption.94}%
+\contentsline {figure}{\numberline {G.8}{\ignorespaces Creaci\IeC {\'o}n de Dieta}}{79}{figure.caption.95}%
+\contentsline {figure}{\numberline {G.9}{\ignorespaces Return de Dieta}}{81}{figure.caption.96}%
+\contentsline {figure}{\numberline {G.10}{\ignorespaces Ejemplo Servicio React Native}}{82}{figure.caption.97}%
+\contentsline {figure}{\numberline {G.11}{\ignorespaces Configuraci\IeC {\'o}n de Navegaci\IeC {\'o}n}}{83}{figure.caption.98}%
+\contentsline {figure}{\numberline {G.12}{\ignorespaces Pantalla de Detalles}}{85}{figure.caption.99}%

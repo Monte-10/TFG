@@ -31,53 +31,8 @@ REST_FRAMEWORK = {
 \end{verbatim}
 \end{figure}
 
-En el archivo \texttt{views.py}, se define la vista para el manejo de la autenticación utilizando tokens JWT, Figura \ref{FIG:authview} muestra un ejemplo de vista de autenticación en Django:
-
-\begin{figure}[Vista Autenticación]{FIG:authview}{Vista de autenticación con JWT en Django}
-\begin{verbatim}
-class LoginView(APIView):
-    authentication_classes = []  # No authentication required
-    permission_classes = []  # No permission required
-
-    def post(self, request, *args, **kwargs):
-        username = request.data.get('username')
-        password = request.data.get('password')
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            token, created = Token.objects.get_or_create(user=user)
-            return Response(
-                {'token': token.key, 'userId': user.id}, 
-                status=status.HTTP_200_OK)
-        else:
-            return Response(
-                {'detail': 'Invalid Credentials'}, 
-                status=status.HTTP_401_UNAUTHORIZED)
-\end{verbatim}
-\end{figure}
+En el archivo \texttt{views.py}, se define la vista para el manejo de la autenticación utilizando tokens JWT, Figura \ref{FIG:authview} muestra un ejemplo de vista de autenticación en Django.
 
 \subsubsection{Uso de Tokens en el Front-End}
 
-En el archivo \texttt{App.js} del Front-end, se maneja el almacenamiento del token y su uso en las solicitudes a la API, Figura \ref{FIG:usetokens} muestra un ejemplo de uso de tokens en el Front-end:
-
-\begin{figure}[Uso de Tokens]{FIG:usetokens}{Uso de tokens en el Front-end}
-\begin{verbatim}
-    ...
-    try {
-        const response = await axios.get(
-            `${process.env.REACT_APP_API_URL}/user/profile/`, {
-                headers: { 
-                    'Authorization': `Token ${
-                        localStorage.getItem('authToken')}` 
-                    }
-        });
-        ...
-    }
-const handleLoginSuccess = (token, userId) => {
-    localStorage.setItem('authToken', token);
-    localStorage.setItem('userId', userId);
-    setAuthToken(token);
-};
-\end{verbatim}
-\end{figure}
-
-EJEMPLO TOKEN
+En el archivo \texttt{App.js} del Front-end, se maneja el almacenamiento del token y su uso en las solicitudes a la API, Figura \ref{FIG:usetokens} muestra un ejemplo de uso de tokens en el Front-end.

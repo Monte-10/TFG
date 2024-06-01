@@ -32,42 +32,9 @@ La aplicación móvil de FitFuelBalance ha sido desarrollada utilizando React Na
     \end{itemize}
 
     \item \textbf{Navegación:} La navegación en la aplicación móvil se ha implementado utilizando React Navigation. Esta biblioteca facilita la gestión de la navegación entre pantallas y la organización de la estructura de navegación de la aplicación. Figura \ref{FIG:navconfig} muestra un ejemplo de configuración de navegación.
-    \begin{figure}[Configuración de Navegación]{FIG:navconfig}{Configuración de navegación en React Navigation}
-    \begin{verbatim}
-    const AppNavigator = () => {
-        return (
-            <Stack.Navigator initialRouteName="LoginScreen">
-                <Stack.Screen name="HomeScreen" component={HomeScreen} />
-                <Stack.Screen name="LoginScreen" component={LoginScreen} />
-                <Stack.Screen name="TrainingDetailsScreen" 
-                component={TrainingDetailsScreen} />
-        </Stack.Navigator>
-        );
-    }
-    export default AppNavigator;
-    \end{verbatim}
-    \end{figure}
 
     \item \textbf{Estilos:} Para los estilos de la aplicación móvil se ha utilizado una combinación de hojas de estilo en JavaScript y StyleSheet de React Native. Esto permite definir estilos que se aplican de manera consistente en toda la aplicación y aprovechar características específicas de la plataforma.
 
     \item \textbf{Integración con Backend:} Similar a la aplicación web, la aplicación móvil se comunica con el backend de Django a través de servicios definidos en la carpeta \texttt{api/}. Estos servicios utilizan \texttt{fetch} para realizar solicitudes HTTP y manejar las respuestas. Figura \ref{FIG:reactnativeservice} muestra un ejemplo de un servicio para obtener planes de entrenamiento.
-    \begin{figure}[Ejemplo Servicio React Native]{FIG:reactnativeservice}{Ejemplo de servicio en React Native para obtener planes de entrenamiento}
-    \begin{verbatim}
-        import { API_URL } from '../config';
-        export const fetchTrainingPlans = async () => {
-            try {
-                const response = await fetch(
-                    `${API_URL}/training-plans/`);
-                if (!response.ok) throw new Error(
-                    'Network response was not ok');
-                const data = await response.json();
-                return data;
-            } catch (error) {
-                console.error('Error fetching training plans:', error);
-                return [];
-            }
-        };
-    \end{verbatim}
-    \end{figure}
 
 \end{itemize}

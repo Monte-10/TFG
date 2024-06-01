@@ -1,0 +1,407 @@
+En esta sección se presentan los códigos implementados en el proyecto. Se incluirán los fragmentos de código más relevantes.
+
+\section{Back-End}
+\subsection{Configuración de las Rutas y urls}
+\begin{figure}[Ejemplo Código Urls]{FIG:urls}{Ejemplo de rutas en Django}
+    \begin{verbatim}
+    from django.urls import path, include
+    from rest_framework.routers import DefaultRouter
+    
+    router = DefaultRouter()
+    router.register(r'foods', views.FoodViewSet)
+    router.register(r'assigned_options', views.AssignedOptionViewSet)
+    
+    urlpatterns = [
+        path('', include(router.urls)),
+        path('assign_option/', views.assignOption, name='assign_option'),
+    ]
+    \end{verbatim}
+    \end{figure}
+
+
+\subsection{Vistas y Controladores}
+\begin{figure}[Ejemplo Código Vistas]{FIG:views}{Ejemplo de vistas en Django}
+    \begin{verbatim}
+    class TodayDailyDietView(APIView):
+        def get(self, request, *args, **kwargs):
+            today = timezone.now().date()
+            user = request.user
+            
+            # Filtra las Dietas por el usuario logueado
+            diets = Diet.objects.filter(user=user)
+            
+            # Encuentra las DailyDiet dentro del rango de fechas de las Dietas filtradas que coincidan con 'hoy'
+            today_diets = DailyDiet.objects.filter(diet__in=diets, date=today)
+            
+            # Serializa y devuelve los resultados
+            serializer = DailyDietSerializer(today_diets, many=True)
+            return Response(serializer.data)
+
+    @api_view(['POST'])
+    def assignOption(request):
+        if not request.user.is_trainer:
+            return Response({"error": "Solo los entrenadores pueden crear asignaciones."}, status=status.HTTP_403_FORBIDDEN)
+        
+        user_id = request.data.get('userId')
+        option_id = request.data.get('optionId')
+    
+        user = get_object_or_404(CustomUser, id=user_id)
+        option = get_object_or_404(Option, id=option_id)
+    
+        assignment = AssignedOption.objects.create(
+            user=user,
+            option=option,
+            start_date=timezone.now()
+        )
+    
+        return Response({
+            "message": "Option assigned successfully",
+            "assignedOptionId": assignment.id,  # ID de la asignación
+            "optionId": option.id,
+            "start_date": assignment.start_date.strftime("%Y-%m-%d")
+        }, status=status.HTTP_201_CREATED)
+    \end{verbatim}
+    \end{figure}
+
+\newpage
+
+\subsection{Serializadores}
+\begin{figure}[Ejemplo Código Serializadores]{FIG:serializers}{Ejemplo de serializadores en Django}
+    \begin{verbatim}
+    class FoodSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = Food
+            fields = '__all__'
+
+    class OptionSerializer(serializers.ModelSerializer):
+        week_option_one = serializers.PrimaryKeyRelatedField(queryset=WeekOption.objects.all())
+        week_option_two = serializers.PrimaryKeyRelatedField(queryset=WeekOption.objects.all())
+        week_option_three = serializers.PrimaryKeyRelatedField(queryset=WeekOption.objects.all())
+
+        class Meta:
+            model = Option
+            fields = ['id', 'name', 'week_option_one', 'week_option_two', 'week_option_three']
+            read_only_fields = ['trainer']
+
+        def create(self, validated_data):
+            user = self.context['request'].user
+            if user.is_trainer:
+                trainer = user.trainer
+            else:
+                raise serializers.ValidationError("El usuario no está autorizado para crear opciones.")
+
+            # Crea la instancia de Option incluyendo el trainer obtenido del contexto
+            option = Option.objects.create(**validated_data, trainer=trainer)
+            return option
+            
+    \end{verbatim}
+    \end{figure}
+
+\newpage
+
+\subsection{Autenticación con JWT}
+\begin{figure}[Vista Autenticación]{FIG:authview}{Vista de autenticación con JWT en Django}
+    \begin{verbatim}
+    class LoginView(APIView):
+        authentication_classes = []  # No authentication required
+        permission_classes = []  # No permission required
+    
+        def post(self, request, *args, **kwargs):
+            username = request.data.get('username')
+            password = request.data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                token, created = Token.objects.get_or_create(user=user)
+                return Response(
+                    {'token': token.key, 'userId': user.id}, 
+                    status=status.HTTP_200_OK)
+            else:
+                return Response(
+                    {'detail': 'Invalid Credentials'}, 
+                    status=status.HTTP_401_UNAUTHORIZED)
+    \end{verbatim}
+    \end{figure}
+
+\newpage
+
+\subsection{Ejemplo de Modelo en Django}
+\begin{figure}[Modelo de Entrenamiento]{FIG:trainingmodel}{Modelo de Entrenamiento en Django}
+    \begin{verbatim}
+class Option(models.Model):
+    trainer = models.ForeignKey('user.Trainer',
+     on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    week_option_one = models.ForeignKey(
+        WeekOption, 
+        related_name='week_option_one', on_delete=models.CASCADE)
+    week_option_two = models.ForeignKey(
+        WeekOption, related_name='week_option_two',
+         on_delete=models.CASCADE)
+    week_option_three = models.ForeignKey(
+        WeekOption, related_name='week_option_three',
+         on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.name
+
+class Training(models.Model):
+    trainer = models.ForeignKey(
+        'user.Trainer', on_delete=models.CASCADE,
+         related_name='trainer')
+    name = models.CharField(max_length=255)
+    exercises = models.ManyToManyField(Exercise, through='TrainingExercise')
+    date = models.DateField()
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='user')
+
+    def __str__(self):
+        return self.name
+    \end{verbatim}
+    \end{figure}
+
+\newpage
+
+\section{Front-End}
+
+\subsection{Uso de Tokens en el Front-End}
+\begin{figure}[Uso de Tokens]{FIG:usetokens}{Uso de tokens en el Front-end}
+\begin{verbatim}
+function Login({ onLoginSuccess }) {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
+    const apiUrl = process.env.REACT_APP_API_URL;
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        setError('');
+
+        try {
+            const response = await fetch(`
+                ${apiUrl}/user/frontlogin/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Token ${
+                        localStorage.getItem('authToken')}`
+                },
+                body: JSON.stringify({ username, password }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(
+                    errorData.detail || 'Falló inicio de sesión');
+            }
+
+            const { token, userId } = await response.json();
+            localStorage.setItem('authToken', token);
+            localStorage.setItem('userId', userId);
+            onLoginSuccess(token, userId);
+            navigate('/dashboard');
+        } catch (error) {
+            setError(error.message);
+        }
+    };...}
+\end{verbatim}
+\end{figure}
+
+\newpage
+
+\subsection{Conexión con el Backend desde la Aplicación Web}
+\begin{figure}[Ejemplo Servicio React]{FIG:reactservice}{Ejemplo de servicio en React para obtener planes de entrenamiento}
+    \begin{verbatim}
+        const apiUrl = process.env.REACT_APP_API_URL;
+
+        export const getTrainingPlans = async () => {
+            const response = await fetch(`${apiUrl}/sport/trainings/` {
+                headers: {
+                  'Authorization': `Token ${
+                    localStorage.getItem('token')}`
+                }
+            });
+            const data = await response.json();
+            return data;
+        };
+    \end{verbatim}
+    \end{figure}
+
+\newpage
+
+\subsection{Inicio Creación de una Dieta}
+
+\begin{figure}[Creación de Dieta]{FIG:creatediet}{Creación de una dieta en React}
+    \begin{verbatim}
+function CreateDiet() {
+  ...
+  useEffect(() => {
+    fetch(`${apiUrl}/user/regularusers/`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        setUsers(data);
+        if (data.length > 0) {
+          setSelectedUser(data[0].id.toString());
+        }
+      });
+  }, [apiUrl]);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const dietData = {
+      name,
+      user: selectedUser,
+      start_date: startDate,
+      end_date: endDate,
+    };
+    console.log("Sending diet data", dietData);
+    fetch(`${apiUrl}/nutrition/diet/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${
+                localStorage.getItem('authToken')}`
+        },
+        body: JSON.stringify(dietData),
+    })
+    ...
+    \end{verbatim}
+    \end{figure}
+
+\newpage
+
+\subsection{Return de una Dieta}
+\begin{figure}[Return de Dieta]{FIG:returndiet}{Return de una dieta en React}
+    \begin{verbatim}
+return (
+<div className="container mt-5">
+    <h2 className="mb-4">Crear Nueva Dieta</h2>
+    <form onSubmit={handleSubmit}>
+    <div className="mb-3">
+        <label htmlFor="name" 
+        className="form-label">Nombre de la Dieta:</label>
+        <input type="text" 
+        className="form-control" id="name" value={name} 
+        onChange={e => setName(e.target.value)} required />
+    </div>
+    <div className="mb-3">
+        <label htmlFor="userSelect" 
+        className="form-label">Usuario:</label>
+        <select className="form-select" id="userSelect" 
+        value={selectedUser} onChange={
+            e => setSelectedUser(e.target.value)}
+         required>
+        <option value="">Seleccione un usuario</option>
+        {users.map(user => (
+            <option key={user.id} 
+            value={user.id}>{user.username}</option>
+        ))}
+        </select>
+    </div>
+    <div className="mb-3">
+        <label htmlFor="startDate" 
+        className="form-label">Fecha de Inicio:</label>
+        <input type="date" className="form-control" id="startDate" 
+        value={startDate} onChange={e => setStartDate(e.target.value)}
+         required />
+    </div>
+    ...
+    <button type="submit" className="btn btn-primary">
+    Crear Dieta</button>
+    </form>
+</div>);}
+export default CreateDiet;
+    \end{verbatim}
+    \end{figure}
+
+
+\newpage
+\section{Aplicación Móvil}
+
+\subsection{Conexión con el Backend desde Aplicación Móvil}
+\begin{figure}[Ejemplo Servicio React Native]{FIG:reactnativeservice}{Ejemplo de servicio en React Native para obtener planes de entrenamiento}
+    \begin{verbatim}
+        import { API_URL } from '../config';
+        export const fetchTrainingPlans = async () => {
+            try {
+                const response = await fetch(
+                    `${API_URL}/training-plans/`);
+                if (!response.ok) throw new Error(
+                    'Network response was not ok');
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching training plans:', error);
+                return [];
+            }
+        };
+    \end{verbatim}
+    \end{figure}
+
+\newpage
+
+\subsection{Configuración de la Navegación}
+\begin{figure}[Configuración de Navegación]{FIG:navconfig}{Configuración de navegación en React Navigation}
+    \begin{verbatim}
+    const AppNavigator = () => {
+        return (
+            <Stack.Navigator initialRouteName="LoginScreen">
+                <Stack.Screen name="HomeScreen" component={HomeScreen} />
+                <Stack.Screen name="LoginScreen" component={LoginScreen} />
+                <Stack.Screen name="TrainingDetailsScreen" 
+                component={TrainingDetailsScreen} />
+        </Stack.Navigator>
+        );
+    }
+    export default AppNavigator;
+    \end{verbatim}
+    \end{figure}
+
+\newpage
+
+\subsection{DetailsScreen}
+
+\begin{figure}[Pantalla de Detalles]{FIG:detailscreen}{Pantalla de detalles en React Native}
+    \begin{verbatim}
+const DetailsScreen = ({ route }) => {
+const { date, dietEvents, trainingEvents } = route.params;
+return (
+    ...
+    <Text style={styles.subtitle}>Entrenamientos:</Text>
+    {trainingEvents && trainingEvents.length > 0 ? (
+        trainingEvents.map((training, index) => (
+        <View key={index} style={styles.section}>
+            <Text style={styles.sectionTitle}>{training.name}</Text>
+            {training.exercises_details.map((detail, idx) => (
+            <Text key={idx} style={styles.itemText}>
+                {detail.exercise.name} - 
+                Series: {detail.sets}, ...
+                {detail.weight && `, Peso: ${detail.weight}kg`}
+                {detail.time && `, Tiempo: ${detail.time}min`}
+            </Text>))}</View>))
+    ) : (
+        <Text style={styles.noDataText}>
+        No hay entrenamientos para este día.</Text>
+    )}
+    <Text style={styles.subtitle}>Detalles de la Dieta Diaria:</Text>
+    {dietEvents && dietEvents.length > 0 ? (
+        ...
+            <Text style={styles.sectionTitle}>Nutrientes:</Text>
+            ...
+            <Text style={styles.sectionTitle}>Comidas:</Text>
+            {diet.mealsDetails && diet.mealsDetails.length > 0 ? (
+            diet.mealsDetails.map((meal, mealIndex) => (
+                <Text key={mealIndex} style={styles.itemText}>
+                {meal.name}</Text>
+            ))
+            ) : (
+            <Text style={styles.noDataText}>No hay ...</Text>
+            )}
+        </View>
+    ...
+    \end{verbatim}
+    \end{figure}
