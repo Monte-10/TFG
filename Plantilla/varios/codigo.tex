@@ -405,3 +405,414 @@ return (
     ...
     \end{verbatim}
     \end{figure}
+
+\newpage
+\section{Pruebas del Back-End\label{SEC:PRUEBASBACKEND}}
+
+\subsection{Configuracion de testsettings.py}
+\begin{figure}[Configuración de Pruebas]{FIG:testsettings}{Configuración de pruebas en Django}
+    \begin{verbatim}
+from .settings import *
+# Configuración de la base de datos para pruebas
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': ':memory:',
+        'ATOMIC_REQUESTS': True,
+    }
+}
+# Otros ajustes específicos para pruebas
+SECRET_KEY = 'test-secret-key'
+DEBUG = True
+# Usar el backend de contraseñas de hashing rápido
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.MD5PasswordHasher',
+]
+# Desactivar middleware y aplicaciones en pruebas
+MIDDLEWARE = [mw for mw in MIDDLEWARE if mw not in 
+['debug_toolbar.middleware.DebugToolbarMiddleware']]
+INSTALLED_APPS = [app for 
+app in INSTALLED_APPS if app != 'debug_toolbar']
+
+# Configuración de REST framework para pruebas
+REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] = (
+    'rest_framework.authentication.SessionAuthentication',
+    'rest_framework.authentication.BasicAuthentication',
+)
+# Configuración de CORS para pruebas (si es necesario)
+CORS_ALLOW_ALL_ORIGINS = True
+# Configuración de las rutas de archivos estáticos
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_test')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media_test')
+# Configuración de la caché para pruebas
+CACHES = {
+    'default': {
+    'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',}}
+    \end{verbatim}
+    \end{figure}
+
+\newpage
+
+\subsection{Configuración de Pruebas de Usuario}
+\begin{figure}[Configuración de Pruebas]{FIG:usertestsconfig}{Configuración de pruebas en Django}
+    \begin{verbatim}
+def setUp(self):
+    self.client = APIClient(enforce_csrf_checks=False)
+    self.user_data = {
+        'username': 'testuser',
+        'password': 'TestPassword123',
+        'email': 'testuser@example.com',
+        'first_name': 'Test',
+        'last_name': 'User',
+    }
+    self.trainer_data = {
+        'username': 'testtrainer',
+        'password': 'TestPassword123',
+        'email': 'testtrainer@example.com',
+        'first_name': 'Test',
+        'last_name': 'Trainer',
+        'trainer_type': 'trainer'
+    }
+    \end{verbatim}
+    \end{figure}
+
+\newpage
+\subsection{Pruebas de Usuario}
+En la figura \ref{FIG:usertests} se presentan algunas de las pruebas más relevantes de usuario en Django.
+\begin{figure}[Pruebas de Usuario]{FIG:usertests}{Pruebas de usuario en Django}
+    \begin{verbatim}
+def test_create_regular_user(self):
+    url = reverse('regularuser_signup')
+    response = self.client.post(url, self.user_data, format='json')
+    self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    self.assertEqual(CustomUser.objects.count(), 1)
+    self.assertEqual(CustomUser.objects.get().username, 'testuser')
+
+def test_create_trainer(self):
+    url = reverse('trainer_signup')
+    response = self.client.post(url, self.trainer_data, format='json')
+    self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    self.assertEqual(CustomUser.objects.count(), 1)
+    self.assertEqual(CustomUser.objects.get().username, 'testtrainer')
+
+def test_login_regular_user(self):
+    self.test_create_regular_user()
+    url = reverse('frontlogin')
+    response = self.client.post(url, self.user_data, format='json')
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    self.assertIn('token', response.data)
+
+def test_search_trainer(self):
+    self.test_create_regular_user()
+    self.test_create_trainer()
+    url = reverse('frontlogin')
+    response = self.client.post(url, self.user_data, format='json')
+    token = response.data['token']
+    self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
+    search_url = reverse('search_trainer')
+    response = self.client.get(search_url, {'trainer_type': 'trainer'})
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    self.assertGreaterEqual(len(response.data), 1)
+
+    \end{verbatim}
+    \end{figure}
+
+\newpage
+
+\subsection{Configuración de Pruebas de Deporte}
+\begin{figure}[Configuración de Pruebas]{FIG:sporttestsconfig}{Configuración de pruebas en Django}
+    \begin{verbatim}
+def setUp(self):
+    self.trainer_data = {
+        'username': 'testtrainer',
+        'password': 'TestPassword123',
+        'email': 'testtrainer@example.com',
+        'first_name': 'Test',
+        'last_name': 'Trainer',
+    }
+    self.trainer = Trainer.objects.create_user(**self.trainer_data)
+    self.client.force_authenticate(user=self.trainer)
+
+    self.exercise_data = {
+        'name': 'Push Up',
+        'description': 'Push up exercise',
+        'type': 'FUERZA'
+    }
+
+    self.training_data = {
+        'trainer': self.trainer,
+        'name': 'Morning Workout',
+        'date': date.today(),
+    }
+
+    self.user_data = {
+        'username': 'testuser',
+        'password': 'TestPassword123',
+        'email': 'testuser@example.com',
+        'first_name': 'Test',
+        'last_name': 'User',
+    }
+    self.user = CustomUser.objects.create_user(**self.user_data)
+    \end{verbatim}
+    \end{figure}
+
+\newpage
+\subsection{Pruebas de Deporte}
+En la figura \ref{FIG:sporttests} se presentan algunas de las pruebas más relevantes de deporte en Django.
+\begin{figure}[Pruebas de Deporte]{FIG:sporttests}{Pruebas de deporte en Django}
+    \begin{verbatim}
+def test_create_exercise(self):
+    url = reverse('exercise-list')
+    response = self.client.post(url, self.exercise_data, format='json')
+    self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    self.assertEqual(Exercise.objects.count(), 1)
+    self.assertEqual(Exercise.objects.get().name, 'Push Up')
+
+def test_create_training_exercise(self):
+    exercise = Exercise.objects.create(**self.exercise_data)
+    training = Training.objects.create(trainer=self.trainer,
+     name='Morning Workout', date=date.today(), user=self.user)
+    training_exercise_data = {
+        'training': training.id,
+        'exercise': exercise.id,
+        'repetitions': 10,
+        'sets': 3,
+        'weight': 50,
+    }
+    url = reverse('trainingexercise-list')
+    response = self.client.post(url, training_exercise_data,
+     format='json')
+    self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    self.assertEqual(TrainingExercise.objects.count(), 1)
+    self.assertEqual(TrainingExercise.objects.get().repetitions, 10)
+
+def test_get_today_trainings(self):
+    training = Training.objects.create(trainer=self.trainer,
+     name='Morning Workout', date=date.today(), user=self.user)
+    url = reverse('today-trainings')
+    response = self.client.get(url, {'user': self.user.id})
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    self.assertEqual(len(response.data), 1)
+    self.assertEqual(response.data[0]['name'], 'Morning Workout')
+    \end{verbatim}
+    \end{figure}
+
+\newpage
+
+\subsection{Configuración de Pruebas de Nutrición}
+\begin{figure}[Configuración de Pruebas]{FIG:nutritiontestsconfig}{Configuración de pruebas en Django}
+    \begin{verbatim}
+def setUp(self):
+    self.trainer_data = {
+        'username': 'testtrainer',
+        'password': 'TestPassword123',
+        'email': 'testtrainer@example.com',
+        'first_name': 'Test',
+        'last_name': 'Trainer',
+    }
+    self.trainer = Trainer.objects.create_user(**self.trainer_data)
+    self.client.force_authenticate(user=self.trainer)
+
+    self.food_data = {
+        'name': 'Apple',
+        'unit_weight': 100,
+        'calories': 52,
+        'protein': 0.26,
+        'carbohydrates': 14,
+        'sugar': 10,
+        'fiber': 2.4,
+        'fat': 0.17,
+        'saturated_fat': 0.03,
+    }
+
+    self.ingredient_data = {
+        'name': 'Apple Slice',
+        'food': Food.objects.create(**self.food_data).id,
+        'quantity': 150
+    }
+
+    self.user_data = {
+        'username': 'testuser',
+        'password': 'TestPassword123',
+        'email': 'testuser@example.com',
+        'first_name': 'Test',
+        'last_name': 'User',
+    }
+    self.user = CustomUser.objects.create_user(**self.user_data)
+    \end{verbatim}
+    \end{figure}
+
+\newpage
+\subsection{Pruebas de Nutrición}
+En la figura \ref{FIG:nutritiontests} se presentan algunas de las pruebas más relevantes de nutrición en Django.
+\begin{figure}[Pruebas de Nutrición]{FIG:nutritiontests}{Pruebas de nutrición en Django}
+    \begin{verbatim}
+def test_create_food(self):
+    url = reverse('food-list')
+    response = self.client.post(url, self.food_data, format='json')
+    self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    self.assertEqual(Food.objects.count(), 1)
+    self.assertEqual(Food.objects.get().name, 'Apple')
+
+def test_create_dish(self):
+    ingredient = Ingredient.objects.create(**self.ingredient_data)
+    dish_data = {
+        'user': self.user.id,
+        'name': 'Apple Salad',
+        'ingredients': [ingredient.id]
+    }
+    url = reverse('dish-list')
+    response = self.client.post(url, dish_data, format='json')
+    self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    self.assertEqual(Dish.objects.count(), 1)
+    self.assertEqual(Dish.objects.get().name, 'Apple Salad')
+
+def test_get_today_dailydiets(self):
+    diet = Diet.objects.create(user=self.user, name='Weight Loss', 
+    start_date=timezone.now().date(), 
+    end_date=timezone.now().date() + timedelta(days=7))
+    daily_diet = DailyDiet.objects.create(diet=diet,
+     date=timezone.now().date())
+    daily_diet.meals.add(Meal.objects.create(user=self.user,
+     name='Breakfast'))
+    url = reverse('today-dailydiets')
+    self.client.force_authenticate(user=self.user)
+    response = self.client.get(url)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    self.assertEqual(len(response.data), 1)
+    self.assertEqual(response.data[0]['diet'], diet.id)
+    \end{verbatim}
+    \end{figure}
+
+\newpage
+
+\section{Pruebas del Front-End\label{SEC:PRUEBASFRONTEND}}
+En esta sección se presentan algunas de las pruebas realizadas en el front-end de la aplicación web.
+
+\subsection{Pruebas de la Aplicación Web}
+\subsubsection{Prueba de HomePage}
+\begin{figure}[Prueba de HomePage.js]{FIG:homepagejs}{Prueba de HomePage.js en React}
+    \begin{verbatim}
+import React from 'react';
+import { render } from '@testing-library/react';
+import HomePage from './HomePage';
+
+test('renders HomePage component', () => {
+    const { getByText } = render(<HomePage />);
+    const linkElement = getByText(/Welcome to HomePage/i);
+    expect(linkElement).toBeInTheDocument();
+});
+    \end{verbatim}
+    \end{figure}
+
+\newpage
+
+\subsection{Pruebas de Login}
+
+\begin{figure}[Prueba de Login]{FIG:login}{Prueba de Login en React}
+    \begin{verbatim}
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react';
+import Login from './Login';
+
+test('renders Login component', () => {
+    const { getByLabelText, getByText } = render(<Login />);
+    const usernameInput = getByLabelText(/username/i);
+    const passwordInput = getByLabelText(/password/i);
+    const loginButton = getByText(/login/i);
+
+    expect(usernameInput).toBeInTheDocument();
+    expect(passwordInput).toBeInTheDocument();
+    expect(loginButton).toBeInTheDocument();
+});
+
+test('allows the user to log in', () => {
+    const { getByLabelText, getByText } = render(<Login />);
+    const usernameInput = getByLabelText(/username/i);
+    const passwordInput = getByLabelText(/password/i);
+    const loginButton = getByText(/login/i);
+
+    fireEvent.change(usernameInput, { target: { value: 'testuser' } });
+    fireEvent.change(passwordInput, { target: { value: 'password' } });
+    fireEvent.click(loginButton);
+        });
+    \end{verbatim}
+    \end{figure}
+
+\newpage
+
+\subsection{Pruebas de Profile}
+\begin{figure}[Prueba de Profile.js]{FIG:profilejs}{Prueba de Profile.js en React}
+    \begin{verbatim}
+import React from 'react';
+import { render } from '@testing-library/react';
+import Profile from './Profile';
+
+test('renders Profile component', () => {
+    const { getByText } = render(<Profile />);
+    const headingElement = getByText(/Profile/i);
+    expect(headingElement).toBeInTheDocument();
+});
+    \end{verbatim}
+    \end{figure}
+
+\newpage
+
+\subsection{Pruebas de la Aplicación Móvil\label{SEC:PRUEBASMOVIL}}
+En esta sección se presentan algunas de las pruebas realizadas en la aplicación móvil.
+
+\subsubsection{Prueba de LoginScreen}
+
+\begin{figure}[Prueba de LoginScreen]{FIG:loginscreen}{Prueba de LoginScreen en React Native}
+    \begin{verbatim}
+import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import LoginScreen from './LoginScreen';
+import AuthContext from '../AuthContext';
+
+const mockLogin = jest.fn();
+
+describe('LoginScreen', () => {
+    test('renders LoginScreen and performs login', () => {
+    render(
+        <AuthContext.Provider value={{ login: mockLogin }}>
+        <LoginScreen />
+        </AuthContext.Provider>
+    );
+
+    fireEvent.change(screen.getByPlaceholderText('Username'), {
+        target: { value: 'testuser' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('Password'), {
+        target: { value: 'password123' },
+    });
+    fireEvent.click(screen.getByText('Login'));
+
+    expect(mockLogin).toHaveBeenCalledWith('testuser', 'password123');
+    });
+});
+
+    \end{verbatim}
+    \end{figure}
+
+\newpage
+
+\subsubsection{Prueba de HomeScreen}
+\begin{figure}[Prueba de HomeScreen]{FIG:homescreen}{Prueba de HomeScreen en React Native}
+    \begin{verbatim}
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import HomeScreen from './HomeScreen';
+
+describe('HomeScreen', () => {
+    test('renders HomeScreen with welcome message', () => {
+    render(<HomeScreen />);
+    expect(screen.getByText('Welcome to the Home Screen')).toBeInTheDocument();
+    });
+});
+    \end{verbatim}
+    \end{figure}
+
+\newpage

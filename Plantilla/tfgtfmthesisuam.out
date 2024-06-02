@@ -54,7 +54,7 @@
 \BOOKMARK [2][-]{subsection.6.2.2}{Mejoras en la Aplicaci\363n M\363vil}{section.6.2}% 54
 \BOOKMARK [2][-]{subsection.6.2.3}{Nuevas Funcionalidades}{section.6.2}% 55
 \BOOKMARK [2][-]{subsection.6.2.4}{Integraci\363n de Inteligencia Artificial}{section.6.2}% 56
-\BOOKMARK [0][-]{chapter*.77}{Bibliograf\355a}{}% 57
+\BOOKMARK [0][-]{chapter*.75}{Bibliograf\355a}{}% 57
 \BOOKMARK [-1][-]{part.1}{Ap\351ndices}{}% 58
 \BOOKMARK [0][-]{appendix.Alph1}{Dependecias y librer\355as}{part.1}% 59
 \BOOKMARK [1][-]{section.Alph1.1}{Acceso a FitFuelBalance}{appendix.Alph1}% 60
@@ -100,3 +100,16 @@
 \BOOKMARK [2][-]{subsection.Alph7.3.1}{Conexi\363n con el Backend desde Aplicaci\363n M\363vil}{section.Alph7.3}% 100
 \BOOKMARK [2][-]{subsection.Alph7.3.2}{Configuraci\363n de la Navegaci\363n}{section.Alph7.3}% 101
 \BOOKMARK [2][-]{subsection.Alph7.3.3}{DetailsScreen}{section.Alph7.3}% 102
+\BOOKMARK [1][-]{section.Alph7.4}{Pruebas del Back-End}{appendix.Alph7}% 103
+\BOOKMARK [2][-]{subsection.Alph7.4.1}{Configuracion de testsettings.py}{section.Alph7.4}% 104
+\BOOKMARK [2][-]{subsection.Alph7.4.2}{Configuraci\363n de Pruebas de Usuario}{section.Alph7.4}% 105
+\BOOKMARK [2][-]{subsection.Alph7.4.3}{Pruebas de Usuario}{section.Alph7.4}% 106
+\BOOKMARK [2][-]{subsection.Alph7.4.4}{Configuraci\363n de Pruebas de Deporte}{section.Alph7.4}% 107
+\BOOKMARK [2][-]{subsection.Alph7.4.5}{Pruebas de Deporte}{section.Alph7.4}% 108
+\BOOKMARK [2][-]{subsection.Alph7.4.6}{Configuraci\363n de Pruebas de Nutrici\363n}{section.Alph7.4}% 109
+\BOOKMARK [2][-]{subsection.Alph7.4.7}{Pruebas de Nutrici\363n}{section.Alph7.4}% 110
+\BOOKMARK [1][-]{section.Alph7.5}{Pruebas del Front-End}{appendix.Alph7}% 111
+\BOOKMARK [2][-]{subsection.Alph7.5.1}{Pruebas de la Aplicaci\363n Web}{section.Alph7.5}% 112
+\BOOKMARK [2][-]{subsection.Alph7.5.2}{Pruebas de Login}{section.Alph7.5}% 113
+\BOOKMARK [2][-]{subsection.Alph7.5.3}{Pruebas de Profile}{section.Alph7.5}% 114
+\BOOKMARK [2][-]{subsection.Alph7.5.4}{Pruebas de la Aplicaci\363n M\363vil}{section.Alph7.5}% 115

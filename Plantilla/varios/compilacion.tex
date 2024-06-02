@@ -1,68 +1,32 @@
-Para compilar el documento se puede hacer de múltiples formas y aquí se van a contar dos posibles formas. Una compilación manual basada en pdflatex y otra basada en arara.
-
+La siguiente sección detalla las pruebas realizadas en el proyecto FitFuelBalance, incluyendo pruebas del back-end y pruebas del front-end. Todas las pruebas han sido realizadas en entornos controlados aparte del entorno de producción, para asegurar que el sistema funcione correctamente y sin errores. También aclarar que para la realización de las pruebas se ha desactivado el uso tokens de autenticación para facilitar el acceso a los endpoints.
 \section{Pruebas del Back-End}
 
-Las pruebas del back-end se han centrado en verificar la funcionalidad de la API y asegurar que todas las operaciones del servidor se realicen correctamente. Para esto, se han utilizado herramientas como \textit{pytest} para ejecutar pruebas automatizadas y \textit{Postman} para realizar pruebas manuales de los distintos endpoints de la API.
+Las pruebas del back-end se han centrado en verificar la funcionalidad de la API y asegurar que todas las operaciones del servidor se realicen correctamente. Para esto, se han utilizado herramientas como \textit{pytest} para ejecutar pruebas automatizadas y \textit{Postman} para realizar pruebas manuales de los distintos endpoints de la API. Se ha creado un testsettings.py para configurar las pruebas de Django. Todas las pruebas se encuentran en la sección \ref{SEC:PRUEBASBACKEND} del Apéndice \ref{CAP:CODIGO}.
 
 \subsubsection{Configuración de Pruebas}
-Para realizar las pruebas, se configuró un entorno de pruebas separado en el que se llevaron a cabo las siguientes acciones:
-
-\begin{verbatim}
-***FUTURO CODIGO DE TEST***
-\end{verbatim}
-
-En este ejemplo, se prueba el registro de un usuario en la API, verificando que la respuesta del servidor sea correcta y que el usuario se cree en la base de datos.
+Para realizar las pruebas, se configuró un entorno de pruebas separado en el que se llevaron a cabo pruebas. Como se ha comentado anteriormente, para no causar problemas con el proyecto en producción todas las pruebas han sido realizadas en un entorno y una base de datos separada. Se ha creado un archivo de configuración de pruebas testsettings.py para configurar las pruebas de Django. En este archivo se han configurado las credenciales de la base de datos de pruebas y se han desactivado las migraciones automáticas para evitar conflictos con la base de datos de producción. La configuración de este archivo se muestra en la figura \ref{FIG:testsettings}.
+La configuración de los tests de usuario se representan en la figura \ref{FIG:usertestsconfig}. La de deporte en la figura \ref{FIG:sporttestsconfig} y la de nutrición en la figura \ref{FIG:nutritiontestsconfig}.
 
 \subsubsection{Pruebas de Endpoints}
-Se han realizado pruebas a todos los endpoints críticos del back-end, asegurando que cada uno de ellos responda adecuadamente y maneje los errores de manera eficiente. A continuación, se muestra un ejemplo de prueba de un endpoint de obtención de ejercicios:
-
-\begin{verbatim}
-***FUTURO CODIGO DE TEST***
-\end{verbatim}
-
+Se han realizado pruebas a todos los endpoints críticos del back-end, asegurando que cada uno de ellos responda adecuadamente y maneje los errores de manera eficiente. Todas las aplicaciones del proyecto han sido probadas, incluyendo las aplicaciones de usuario, deporte y nutrición. La figura \ref{FIG:usertests} muestra un ejemplo de pruebas realizadas a la aplicación de usuario. La figura \ref{FIG:sporttests} muestra un ejemplo de pruebas realizadas a la aplicación de deporte y la figura \ref{FIG:nutritiontests} muestra un ejemplo de pruebas realizadas a la aplicación de nutrición.
 \section{Pruebas del Front-End}
 
 Las pruebas del front-end son esenciales para asegurar que la interfaz de usuario sea intuitiva, funcional y libre de errores. Para esto, se han utilizado diferentes técnicas y herramientas para probar tanto la aplicación web como la aplicación móvil.
 
 \subsubsection{Pruebas de la Aplicación Web}
-Para la aplicación web, se ha utilizado \textit{Jest} y \textit{React Testing Library} para realizar pruebas unitarias y de integración. Estas herramientas permiten simular eventos y verificar que los componentes reaccionen adecuadamente a diferentes interacciones del usuario.
+Para la aplicación web, se ha utilizado \textit{Jest} y \textit{React Testing Library} para realizar las pruebas de sus componentes. Estas herramientas permiten simular eventos y verificar que los componentes reaccionen adecuadamente a diferentes interacciones del usuario.
 
 \paragraph{Prueba de Componentes}
-Se ha realizado una serie de pruebas a los componentes principales de la aplicación web para asegurarse de que se rendericen correctamente y manejen los eventos de usuario como se espera. A continuación, se muestra un ejemplo de prueba de un componente de formulario:
-
-\begin{verbatim}
-***FUTURO CODIGO DE TEST***
-\end{verbatim}
-
-En este ejemplo, se prueba que el componente de formulario de login maneje adecuadamente la entrada del usuario y muestre los mensajes de error correctos si los campos están vacíos.
-
-\paragraph{Pruebas de Integración}
-Además de las pruebas unitarias, se han realizado pruebas de integración para verificar que diferentes partes de la aplicación funcionen juntas sin problemas. A continuación, se muestra un ejemplo de prueba de integración para verificar el flujo de login:
-
-\begin{verbatim}
-***FUTURO CODIGO DE TEST***
-\end{verbatim}
-
+Se ha realizado una serie de pruebas a los componentes principales de la aplicación web para asegurarse de que se rendericen correctamente y manejen los eventos de usuario como se espera.  Los tests se encuentran en la sección \ref{SEC:PRUEBASFRONTEND} del Apéndice \ref{CAP:CODIGO}.
 \subsubsection{Pruebas de la Aplicación Móvil}
-Para la aplicación móvil desarrollada con \textit{React Native}, se han utilizado herramientas como \textit{Jest} y \textit{React Native Testing Library} para realizar pruebas unitarias. Además, se ha utilizado \textit{React Native CLI} para probar la aplicación en diferentes dispositivos y asegurar la compatibilidad.
+Para la aplicación móvil desarrollada con \textit{React Native}, se han utilizado herramientas como \textit{Jest} y \textit{React Native Testing Library} para realizar pruebas unitarias. Además, se ha utilizado \textit{React Native CLI} para probar la aplicación en diferentes dispositivos y asegurar la compatibilidad. 
 
 \paragraph{Prueba de Componentes Móviles}
-Las pruebas de componentes móviles aseguran que los elementos de la interfaz de usuario se rendericen correctamente en diferentes tamaños de pantalla y manejen las interacciones del usuario de manera adecuada. A continuación, se muestra un ejemplo de prueba de un componente de botón en la aplicación móvil:
-
-\begin{verbatim}
-***FUTURO CODIGO DE TEST***
-\end{verbatim}
-
-\paragraph{Pruebas de Integración Móviles}
-Se han realizado pruebas de integración en la aplicación móvil para asegurar que la navegación entre pantallas y la comunicación con el backend sean fluidas y sin errores. A continuación, se muestra un ejemplo de prueba de integración que verifica el flujo de registro de usuario en la aplicación móvil:
-
-\begin{verbatim}
-***FUTURO CODIGO DE TEST***
-\end{verbatim}
+Las pruebas de componentes móviles aseguran que los elementos de la interfaz de usuario se rendericen correctamente en diferentes tamaños de pantalla y manejen las interacciones del usuario de manera adecuada. Las pruebas se encuentran en la subsección \ref{SEC:PRUEBASMOVIL} de la sección \ref{SEC:PRUEBASFRONTEND} del Apéndice \ref{CAP:CODIGO}.
 
 \section{Implementación}
 
-La implementación de la plataforma FitFuelBalance ha sido un proceso detallado y meticuloso que ha involucrado varias fases, desde el desarrollo inicial hasta el despliegue en un entorno de producción. Esta sección describe las principales etapas del proceso de implementación, incluyendo la configuración de los servidores, el despliegue de la base de datos y las aplicaciones, y la integración continua.
+La implementación de la plataforma ha sido un proceso que ha involucrado varias fases, desde el desarrollo inicial hasta el despliegue en un entorno de producción. Esta sección describe las principales etapas del proceso de implementación, incluyendo la configuración de los servidores, el despliegue de la base de datos y las aplicaciones, y la integración continua.
 
 \subsubsection{Despliegue del Back-End}
 El back-end de FitFuelBalance, desarrollado en Django, ha sido desplegado en la plataforma Render, que proporciona un entorno escalable y fácil de gestionar. A continuación, se describen los pasos principales seguidos durante el despliegue:

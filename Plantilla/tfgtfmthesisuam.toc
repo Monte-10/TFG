@@ -76,17 +76,15 @@
 \contentsline {chapter}{\numberline {5}Pruebas e Implementaci\IeC {\'o}n}{41}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Pruebas del Back-End}{41}{section.5.1}%
 \contentsline {subsubsection}{Configuraci\IeC {\'o}n de Pruebas}{41}{section*.67}%
-\contentsline {subsubsection}{Pruebas de Endpoints}{41}{section*.68}%
+\contentsline {subsubsection}{Pruebas de Endpoints}{42}{section*.68}%
 \contentsline {section}{\numberline {5.2}Pruebas del Front-End}{42}{section.5.2}%
 \contentsline {subsubsection}{Pruebas de la Aplicaci\IeC {\'o}n Web}{42}{section*.69}%
 \contentsline {paragraph}{Prueba de Componentes}{42}{section*.70}%
-\contentsline {paragraph}{Pruebas de Integraci\IeC {\'o}n}{42}{section*.71}%
-\contentsline {subsubsection}{Pruebas de la Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{42}{section*.72}%
-\contentsline {paragraph}{Prueba de Componentes M\IeC {\'o}viles}{42}{section*.73}%
-\contentsline {paragraph}{Pruebas de Integraci\IeC {\'o}n M\IeC {\'o}viles}{43}{section*.74}%
+\contentsline {subsubsection}{Pruebas de la Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{42}{section*.71}%
+\contentsline {paragraph}{Prueba de Componentes M\IeC {\'o}viles}{42}{section*.72}%
 \contentsline {section}{\numberline {5.3}Implementaci\IeC {\'o}n}{43}{section.5.3}%
-\contentsline {subsubsection}{Despliegue del Back-End}{43}{section*.75}%
-\contentsline {subsubsection}{Despliegue del Front-End}{43}{section*.76}%
+\contentsline {subsubsection}{Despliegue del Back-End}{43}{section*.73}%
+\contentsline {subsubsection}{Despliegue del Front-End}{43}{section*.74}%
 \contentsline {chapter}{\numberline {6}Conclusiones y Trabajo Futuro}{45}{chapter.6}%
 \contentsline {section}{\numberline {6.1}Conclusiones}{45}{section.6.1}%
 \contentsline {section}{\numberline {6.2}Trabajo Futuro}{45}{section.6.2}%
@@ -94,7 +92,7 @@
 \contentsline {subsection}{\numberline {6.2.2}Mejoras en la Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{46}{subsection.6.2.2}%
 \contentsline {subsection}{\numberline {6.2.3}Nuevas Funcionalidades}{46}{subsection.6.2.3}%
 \contentsline {subsection}{\numberline {6.2.4}Integraci\IeC {\'o}n de Inteligencia Artificial}{46}{subsection.6.2.4}%
-\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{47}{chapter*.77}%
+\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{47}{chapter*.75}%
 \contentsline {part}{Ap\IeC {\'e}ndices}{49}{part.1}%
 \contentsline {chapter}{\numberline {A}Dependecias y librer\IeC {\'\i }as}{51}{appendix.Alph1}%
 \contentsline {section}{\numberline {A.1}Acceso a FitFuelBalance}{51}{section.Alph1.1}%
@@ -140,3 +138,19 @@
 \contentsline {subsection}{\numberline {G.3.1}Conexi\IeC {\'o}n con el Backend desde Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{82}{subsection.Alph7.3.1}%
 \contentsline {subsection}{\numberline {G.3.2}Configuraci\IeC {\'o}n de la Navegaci\IeC {\'o}n}{83}{subsection.Alph7.3.2}%
 \contentsline {subsection}{\numberline {G.3.3}DetailsScreen}{84}{subsection.Alph7.3.3}%
+\contentsline {section}{\numberline {G.4}Pruebas del Back-End}{86}{section.Alph7.4}%
+\contentsline {subsection}{\numberline {G.4.1}Configuracion de testsettings.py}{86}{subsection.Alph7.4.1}%
+\contentsline {subsection}{\numberline {G.4.2}Configuraci\IeC {\'o}n de Pruebas de Usuario}{88}{subsection.Alph7.4.2}%
+\contentsline {subsection}{\numberline {G.4.3}Pruebas de Usuario}{89}{subsection.Alph7.4.3}%
+\contentsline {subsection}{\numberline {G.4.4}Configuraci\IeC {\'o}n de Pruebas de Deporte}{91}{subsection.Alph7.4.4}%
+\contentsline {subsection}{\numberline {G.4.5}Pruebas de Deporte}{93}{subsection.Alph7.4.5}%
+\contentsline {subsection}{\numberline {G.4.6}Configuraci\IeC {\'o}n de Pruebas de Nutrici\IeC {\'o}n}{95}{subsection.Alph7.4.6}%
+\contentsline {subsection}{\numberline {G.4.7}Pruebas de Nutrici\IeC {\'o}n}{97}{subsection.Alph7.4.7}%
+\contentsline {section}{\numberline {G.5}Pruebas del Front-End}{99}{section.Alph7.5}%
+\contentsline {subsection}{\numberline {G.5.1}Pruebas de la Aplicaci\IeC {\'o}n Web}{99}{subsection.Alph7.5.1}%
+\contentsline {subsubsection}{Prueba de HomePage}{99}{section*.105}%
+\contentsline {subsection}{\numberline {G.5.2}Pruebas de Login}{100}{subsection.Alph7.5.2}%
+\contentsline {subsection}{\numberline {G.5.3}Pruebas de Profile}{101}{subsection.Alph7.5.3}%
+\contentsline {subsection}{\numberline {G.5.4}Pruebas de la Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{102}{subsection.Alph7.5.4}%
+\contentsline {subsubsection}{Prueba de LoginScreen}{102}{section*.109}%
+\contentsline {subsubsection}{Prueba de HomeScreen}{103}{section*.111}%
