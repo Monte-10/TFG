@@ -21,17 +21,22 @@ La API maneja los siguientes métodos HTTP:
 \end{itemize}
 
 \subsubsection{Ejemplo de Solicitud y Respuesta}
-Figura \ref{FIG:getrequest} muestra un ejemplo de solicitud GET en Python utilizando la librería \texttt{requests}. En este caso, se solicita la lista de alimentos disponibles en la API de FitFuelBalance.
-\begin{figure}[Ejemplo Solicitud GET]{FIG:getrequest}{Ejemplo de solicitud GET en Python}
+Figura \ref{FIG:getrequest} muestra un ejemplo de solicitud GET en Python utilizando la librería \texttt{requests}. En este caso, se solicita la lista de alimentos disponibles en la API de FitFuelBalance. Figura \ref{FIG:getresponse} muestra un ejemplo de lo que podría ser la respuesta a la solicitud GET anterior. En este caso, se devuelve una lista de alimentos en formato JSON con sus propiedades.
+
+\begin{figure}[ht]
+\centering
+\begin{minipage}[b]{0.45\textwidth}
+\caption{Ejemplo de solicitud GET en Python}
+\label{FIG:getrequest}
 \begin{verbatim}
 response = requests.get(
     'https://fitfuelbalance.onrender.com/nutrition/foods/')
 \end{verbatim}
-\end{figure}
-
-Figura \ref{FIG:getresponse} muestra un ejemplo de lo que podrías ser la respuesta a la solicitud GET anterior. En este caso, se devuelve una lista de alimentos en formato JSON con sus propiedades.
-
-\begin{figure}[Ejemplo Respuesta GET]{FIG:getresponse}{Ejemplo de respuesta GET en JSON}
+\end{minipage}
+\hspace{0.05\textwidth}
+\begin{minipage}[b]{0.45\textwidth}
+\caption{Ejemplo de respuesta GET en JSON}
+\label{FIG:getresponse}
 \begin{verbatim}
     [{
         "id": 1,
@@ -45,4 +50,5 @@ Figura \ref{FIG:getresponse} muestra un ejemplo de lo que podrías ser la respue
         "image": "url/media/foods/apple.jpg"
     },...]
 \end{verbatim}
+\end{minipage}
 \end{figure}

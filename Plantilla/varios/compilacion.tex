@@ -29,21 +29,7 @@ Las pruebas de componentes móviles aseguran que los elementos de la interfaz de
 La implementación de la plataforma ha sido un proceso que ha involucrado varias fases, desde el desarrollo inicial hasta el despliegue en un entorno de producción. Esta sección describe las principales etapas del proceso de implementación, incluyendo la configuración de los servidores, el despliegue de la base de datos y las aplicaciones, y la integración continua.
 
 \subsubsection{Despliegue del Back-End}
-El back-end de FitFuelBalance, desarrollado en Django, ha sido desplegado en la plataforma Render, que proporciona un entorno escalable y fácil de gestionar. A continuación, se describen los pasos principales seguidos durante el despliegue:
-
-\begin{itemize}
-    \item \textbf{Configuración del Entorno:} Se configuraron las variables de entorno necesarias, incluyendo las credenciales de la base de datos y las claves secretas de la aplicación.
-    \item \textbf{Despliegue del Código:} Se utilizó Git para manejar el control de versiones y despliegue continuo. El código fue desplegado desde el repositorio de GitHub a Render.
-    \item \textbf{Migraciones de la Base de Datos:} Se ejecutaron las migraciones de Django para configurar la estructura de la base de datos en PostgreSQL.
-    \item \textbf{Pruebas y Verificación:} Se realizaron pruebas post-despliegue para asegurar que el servidor estuviera funcionando correctamente y todas las API estuvieran accesibles.
-\end{itemize}
+El back-end de FitFuelBalance, desarrollado en Django, ha sido desplegado en la plataforma Render, que proporciona un entorno escalable y fácil de gestionar. Los pasos principales seguidos durante el despliegue incluyen la configuración del entorno, donde se configuraron las variables de entorno necesarias, incluyendo las credenciales de la base de datos y las claves secretas de la aplicación. El despliegue del código se manejó utilizando Git para el control de versiones y despliegue continuo, con el código desplegado desde el repositorio de GitHub a Render. Las migraciones de la base de datos se ejecutaron para configurar la estructura de la base de datos en PostgreSQL. Finalmente, se realizaron pruebas post-despliegue para asegurar que el servidor estuviera funcionando correctamente y todas las API estuvieran accesibles.
 
 \subsubsection{Despliegue del Front-End}
-El front-end de la plataforma, desarrollado en React, fue desplegado en la plataforma Render de nuevo. Los pasos seguidos incluyen:
-
-\begin{itemize}
-    \item \textbf{Configuración del Proyecto:} Se configuraron las variables de entorno necesarias para la comunicación con el back-end.
-    \item \textbf{Despliegue del Código:} Similar al back-end, se utilizó GitHub para manejar el despliegue continuo. Cada push al repositorio de producción desencadena un nuevo despliegue en Render.
-    \item \textbf{Optimización y Compilación:} Se realizaron optimizaciones de compilación para mejorar el rendimiento y reducir el tiempo de carga de la aplicación.
-    \item \textbf{Pruebas y Verificación:} Se verificó que la aplicación web estuviera funcionando correctamente y se realizaron pruebas de rendimiento.
-\end{itemize}
+El front-end de la plataforma, desarrollado en React, también fue desplegado en la plataforma Render. Los pasos seguidos incluyen la configuración del proyecto, donde se configuraron las variables de entorno necesarias para la comunicación con el back-end. El despliegue del código se manejó similar al back-end, utilizando GitHub para el despliegue continuo. Cada push al repositorio de producción desencadena un nuevo despliegue en Render. Se realizaron optimizaciones de compilación para mejorar el rendimiento y reducir el tiempo de carga de la aplicación. Finalmente, se verificó que la aplicación web estuviera funcionando correctamente y se realizaron pruebas de rendimiento.
