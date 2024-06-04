@@ -4,153 +4,154 @@
 \contentsline {section}{\numberline {1.2}Objetivos}{2}{section.1.2}%
 \contentsline {section}{\numberline {1.3}Estructura del documento}{2}{section.1.3}%
 \contentsline {chapter}{\numberline {2}Estado del arte}{3}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Contexto y Necesidad}{3}{section.2.1}%
-\contentsline {subsection}{\numberline {2.1.1}Importancia de la Nutrici\IeC {\'o}n y el Ejercicio}{3}{subsection.2.1.1}%
-\contentsline {subsection}{\numberline {2.1.2}Desaf\IeC {\'\i }os Comunes}{3}{subsection.2.1.2}%
-\contentsline {subsection}{\numberline {2.1.3}Necesidad de Informaci\IeC {\'o}n Relevante y Accesible}{4}{subsection.2.1.3}%
-\contentsline {section}{\numberline {2.2}Soluciones Existentes}{4}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}Aplicaciones de Nutrici\IeC {\'o}n}{4}{subsection.2.2.1}%
-\contentsline {subsection}{\numberline {2.2.2}Aplicaciones de Ejercicio}{4}{subsection.2.2.2}%
-\contentsline {subsection}{\numberline {2.2.3}Plataformas Combinadas}{5}{subsection.2.2.3}%
-\contentsline {subsection}{\numberline {2.2.4}Limitaciones de las Soluciones Actuales}{5}{subsection.2.2.4}%
-\contentsline {section}{\numberline {2.3}Plataformas Personalizadas para la Nutrici\IeC {\'o}n y el Ejercicio}{7}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}Aplicaciones de Nutrici\IeC {\'o}n Personalizada}{7}{subsection.2.3.1}%
-\contentsline {subsection}{\numberline {2.3.2}Aplicaciones de Ejercicio Personalizado}{7}{subsection.2.3.2}%
-\contentsline {subsection}{\numberline {2.3.3}Plataformas Combinadas}{9}{subsection.2.3.3}%
-\contentsline {subsection}{\numberline {2.3.4}Limitaciones y Oportunidades de Mejora}{9}{subsection.2.3.4}%
-\contentsline {section}{\numberline {2.4}Tecnolog\IeC {\'\i }as Utilizadas.}{9}{section.2.4}%
-\contentsline {subsection}{\numberline {2.4.1}Django}{10}{subsection.2.4.1}%
-\contentsline {subsection}{\numberline {2.4.2}React}{10}{subsection.2.4.2}%
-\contentsline {subsection}{\numberline {2.4.3}React Native}{11}{subsection.2.4.3}%
-\contentsline {subsection}{\numberline {2.4.4}PostgreSQL}{11}{subsection.2.4.4}%
-\contentsline {subsection}{\numberline {2.4.5}Python}{12}{subsection.2.4.5}%
-\contentsline {subsection}{\numberline {2.4.6}JavaScript}{12}{subsection.2.4.6}%
-\contentsline {subsection}{\numberline {2.4.7}Bootstrap y CSS}{12}{subsection.2.4.7}%
-\contentsline {chapter}{\numberline {3}Dise\IeC {\~n}o}{15}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Definici\IeC {\'o}n del proyecto y alcance}{15}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Metodolog\IeC {\'\i }a}{16}{section.3.2}%
-\contentsline {subsubsection}{Fases del proyecto}{16}{section*.28}%
-\contentsline {subsubsection}{Herramientas y t\IeC {\'e}cnicas}{17}{section*.29}%
-\contentsline {section}{\numberline {3.3}Arquitectura}{17}{section.3.3}%
-\contentsline {subsubsection}{Diagrama de Arquitectura}{17}{section*.30}%
-\contentsline {subsubsection}{Descripci\IeC {\'o}n de Componentes}{18}{section*.32}%
-\contentsline {subsubsection}{Despliegue y Infraestructura}{19}{section*.33}%
-\contentsline {section}{\numberline {3.4}Roles}{19}{section.3.4}%
-\contentsline {subsubsection}{Usuarios Normales}{19}{section*.34}%
-\contentsline {subsubsection}{Entrenadores y/o Nutricionistas}{19}{section*.35}%
-\contentsline {subsubsection}{Administradores}{20}{section*.36}%
-\contentsline {section}{\numberline {3.5}Requisitos Funcionales y No Funcionales}{20}{section.3.5}%
-\contentsline {section}{\numberline {3.6}Incrementos}{20}{section.3.6}%
-\contentsline {subsubsection}{Back-end}{20}{section*.37}%
-\contentsline {subsubsection}{Front-end}{21}{section*.38}%
-\contentsline {subsubsection}{Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{21}{section*.39}%
-\contentsline {chapter}{\numberline {4}Desarrollo}{23}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Back-End}{23}{section.4.1}%
-\contentsline {subsection}{\numberline {4.1.1}Estructura del Servidor}{23}{subsection.4.1.1}%
-\contentsline {subsection}{\numberline {4.1.2}Base de Datos}{25}{subsection.4.1.2}%
-\contentsline {subsection}{\numberline {4.1.3}API REST}{27}{subsection.4.1.3}%
-\contentsline {subsubsection}{Endpoints y Rutas}{29}{section*.44}%
-\contentsline {subsubsection}{Vistas y Controladores}{29}{section*.45}%
-\contentsline {subsubsection}{Serializadores}{29}{section*.46}%
-\contentsline {subsubsection}{M\IeC {\'e}todos HTTP}{29}{section*.47}%
-\contentsline {subsubsection}{Ejemplo de Solicitud y Respuesta}{29}{section*.48}%
-\contentsline {subsection}{\numberline {4.1.4}Tokens JWT}{30}{subsection.4.1.4}%
-\contentsline {subsubsection}{Middleware y Configuraci\IeC {\'o}n}{32}{section*.53}%
-\contentsline {subsubsection}{Uso de Tokens en el Front-End}{32}{section*.55}%
-\contentsline {section}{\numberline {4.2}Front-End}{32}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}Aplicaci\IeC {\'o}n Web}{32}{subsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.2.2}Componentes}{33}{subsection.4.2.2}%
-\contentsline {subsubsection}{App.js}{34}{section*.56}%
-\contentsline {subsubsection}{Componentes de Nutrici\IeC {\'o}n}{34}{section*.57}%
-\contentsline {subsubsection}{Componentes de Deporte}{36}{section*.58}%
-\contentsline {subsubsection}{Componentes de Usuario}{36}{section*.59}%
-\contentsline {subsection}{\numberline {4.2.3}Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{37}{subsection.4.2.3}%
-\contentsline {section}{\numberline {4.3}Herramientas y Entorno de Desarrollo}{38}{section.4.3}%
-\contentsline {subsubsection}{Control de Versiones}{38}{section*.60}%
-\contentsline {subsubsection}{Entorno de Desarrollo}{38}{section*.61}%
-\contentsline {subsubsection}{Dise\IeC {\~n}o de la Interfaz de Usuario}{39}{section*.62}%
-\contentsline {subsubsection}{Base de Datos}{39}{section*.63}%
-\contentsline {subsubsection}{Despliegue}{39}{section*.64}%
-\contentsline {subsubsection}{Testing y Depuraci\IeC {\'o}n}{39}{section*.65}%
-\contentsline {subsubsection}{Gesti\IeC {\'o}n de Dependencias}{39}{section*.66}%
-\contentsline {chapter}{\numberline {5}Pruebas e Implementaci\IeC {\'o}n}{41}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Pruebas del Back-End}{41}{section.5.1}%
-\contentsline {subsubsection}{Configuraci\IeC {\'o}n de Pruebas}{41}{section*.67}%
-\contentsline {subsubsection}{Pruebas de Endpoints}{42}{section*.68}%
-\contentsline {section}{\numberline {5.2}Pruebas del Front-End}{42}{section.5.2}%
-\contentsline {subsubsection}{Pruebas de la Aplicaci\IeC {\'o}n Web}{42}{section*.69}%
-\contentsline {paragraph}{Prueba de Componentes}{42}{section*.70}%
-\contentsline {subsubsection}{Pruebas de la Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{42}{section*.71}%
-\contentsline {paragraph}{Prueba de Componentes M\IeC {\'o}viles}{42}{section*.72}%
-\contentsline {section}{\numberline {5.3}Implementaci\IeC {\'o}n}{43}{section.5.3}%
-\contentsline {subsubsection}{Despliegue del Back-End}{43}{section*.73}%
-\contentsline {subsubsection}{Despliegue del Front-End}{43}{section*.74}%
-\contentsline {chapter}{\numberline {6}Conclusiones y Trabajo Futuro}{45}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Conclusiones}{45}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Trabajo Futuro}{45}{section.6.2}%
-\contentsline {subsection}{\numberline {6.2.1}Mejoras en el Front-End}{46}{subsection.6.2.1}%
-\contentsline {subsection}{\numberline {6.2.2}Mejoras en la Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{46}{subsection.6.2.2}%
-\contentsline {subsection}{\numberline {6.2.3}Nuevas Funcionalidades}{46}{subsection.6.2.3}%
-\contentsline {subsection}{\numberline {6.2.4}Integraci\IeC {\'o}n de Inteligencia Artificial}{46}{subsection.6.2.4}%
-\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{47}{chapter*.75}%
-\contentsline {part}{Ap\IeC {\'e}ndices}{49}{part.1}%
-\contentsline {chapter}{\numberline {A}Dependecias y librer\IeC {\'\i }as}{51}{appendix.Alph1}%
-\contentsline {section}{\numberline {A.1}Acceso a FitFuelBalance}{51}{section.Alph1.1}%
-\contentsline {section}{\numberline {A.2}Acceso al c\IeC {\'o}digo fuente}{51}{section.Alph1.2}%
-\contentsline {chapter}{\numberline {B}Dependencias}{53}{appendix.Alph2}%
-\contentsline {subsection}{\numberline {B.0.1}Dependencias Back-End}{53}{subsection.Alph2.0.1}%
-\contentsline {subsection}{\numberline {B.0.2}Dependencias Front-End}{55}{subsection.Alph2.0.2}%
-\contentsline {subsection}{\numberline {B.0.3}Dependencias de la Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{56}{subsection.Alph2.0.3}%
-\contentsline {chapter}{\numberline {C}Requisitos}{57}{appendix.Alph3}%
-\contentsline {section}{\numberline {C.1}Requisitos Funcionales}{57}{section.Alph3.1}%
-\contentsline {subsection}{\numberline {C.1.1}Subsistema de Servidor y Comunicaci\IeC {\'o}n con la Base de Datos}{57}{subsection.Alph3.1.1}%
-\contentsline {subsection}{\numberline {C.1.2}Subsistema de Gesti\IeC {\'o}n de Usuarios}{57}{subsection.Alph3.1.2}%
-\contentsline {subsection}{\numberline {C.1.3}Subsistema de Gesti\IeC {\'o}n de Entrenamientos y Nutrici\IeC {\'o}n}{57}{subsection.Alph3.1.3}%
-\contentsline {section}{\numberline {C.2}Requisitos No Funcionales}{57}{section.Alph3.2}%
-\contentsline {subsection}{\numberline {C.2.1}Generales}{58}{subsection.Alph3.2.1}%
-\contentsline {subsection}{\numberline {C.2.2}Errores}{58}{subsection.Alph3.2.2}%
-\contentsline {subsection}{\numberline {C.2.3}Seguridad}{58}{subsection.Alph3.2.3}%
-\contentsline {subsection}{\numberline {C.2.4}Interfaz y Usabilidad}{58}{subsection.Alph3.2.4}%
-\contentsline {subsection}{\numberline {C.2.5}Soporte y Documentaci\IeC {\'o}n}{58}{subsection.Alph3.2.5}%
-\contentsline {subsection}{\numberline {C.2.6}Regulatorio y Legal}{59}{subsection.Alph3.2.6}%
-\contentsline {chapter}{\numberline {D}Diagramas de Flujo}{61}{appendix.Alph4}%
-\contentsline {subsection}{\numberline {D.0.1}Creaci\IeC {\'o}n de un nuevo usuario}{61}{subsection.Alph4.0.1}%
-\contentsline {subsection}{\numberline {D.0.2}Creaci\IeC {\'o}n de un nuevo entrenamiento}{61}{subsection.Alph4.0.2}%
-\contentsline {subsection}{\numberline {D.0.3}Creaci\IeC {\'o}n y asignaci\IeC {\'o}n de una Opci\IeC {\'o}n}{62}{subsection.Alph4.0.3}%
-\contentsline {subsection}{\numberline {D.0.4}Asignaci\IeC {\'o}n de entrenador}{62}{subsection.Alph4.0.4}%
-\contentsline {chapter}{\numberline {E}Estructura del Proyecto}{63}{appendix.Alph5}%
-\contentsline {subsection}{\numberline {E.0.1}Backend}{63}{subsection.Alph5.0.1}%
-\contentsline {subsection}{\numberline {E.0.2}Frontend}{63}{subsection.Alph5.0.2}%
-\contentsline {chapter}{\numberline {F}Capturas de Pantalla}{67}{appendix.Alph6}%
-\contentsline {chapter}{\numberline {G}C\IeC {\'o}digo Fuente}{69}{appendix.Alph7}%
-\contentsline {section}{\numberline {G.1}Back-End}{69}{section.Alph7.1}%
-\contentsline {subsection}{\numberline {G.1.1}Configuraci\IeC {\'o}n de las Rutas y urls}{69}{subsection.Alph7.1.1}%
-\contentsline {subsection}{\numberline {G.1.2}Vistas y Controladores}{69}{subsection.Alph7.1.2}%
-\contentsline {subsection}{\numberline {G.1.3}Serializadores}{71}{subsection.Alph7.1.3}%
-\contentsline {subsection}{\numberline {G.1.4}Autenticaci\IeC {\'o}n con JWT}{72}{subsection.Alph7.1.4}%
-\contentsline {subsection}{\numberline {G.1.5}Ejemplo de Modelo en Django}{73}{subsection.Alph7.1.5}%
-\contentsline {section}{\numberline {G.2}Front-End}{75}{section.Alph7.2}%
-\contentsline {subsection}{\numberline {G.2.1}Uso de Tokens en el Front-End}{75}{subsection.Alph7.2.1}%
-\contentsline {subsection}{\numberline {G.2.2}Conexi\IeC {\'o}n con el Backend desde la Aplicaci\IeC {\'o}n Web}{77}{subsection.Alph7.2.2}%
-\contentsline {subsection}{\numberline {G.2.3}Inicio Creaci\IeC {\'o}n de una Dieta}{78}{subsection.Alph7.2.3}%
-\contentsline {subsection}{\numberline {G.2.4}Return de una Dieta}{80}{subsection.Alph7.2.4}%
-\contentsline {section}{\numberline {G.3}Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{82}{section.Alph7.3}%
-\contentsline {subsection}{\numberline {G.3.1}Conexi\IeC {\'o}n con el Backend desde Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{82}{subsection.Alph7.3.1}%
-\contentsline {subsection}{\numberline {G.3.2}Configuraci\IeC {\'o}n de la Navegaci\IeC {\'o}n}{83}{subsection.Alph7.3.2}%
-\contentsline {subsection}{\numberline {G.3.3}DetailsScreen}{84}{subsection.Alph7.3.3}%
-\contentsline {section}{\numberline {G.4}Pruebas del Back-End}{86}{section.Alph7.4}%
-\contentsline {subsection}{\numberline {G.4.1}Configuracion de testsettings.py}{86}{subsection.Alph7.4.1}%
-\contentsline {subsection}{\numberline {G.4.2}Configuraci\IeC {\'o}n de Pruebas de Usuario}{88}{subsection.Alph7.4.2}%
-\contentsline {subsection}{\numberline {G.4.3}Pruebas de Usuario}{89}{subsection.Alph7.4.3}%
-\contentsline {subsection}{\numberline {G.4.4}Configuraci\IeC {\'o}n de Pruebas de Deporte}{91}{subsection.Alph7.4.4}%
-\contentsline {subsection}{\numberline {G.4.5}Pruebas de Deporte}{93}{subsection.Alph7.4.5}%
-\contentsline {subsection}{\numberline {G.4.6}Configuraci\IeC {\'o}n de Pruebas de Nutrici\IeC {\'o}n}{95}{subsection.Alph7.4.6}%
-\contentsline {subsection}{\numberline {G.4.7}Pruebas de Nutrici\IeC {\'o}n}{97}{subsection.Alph7.4.7}%
-\contentsline {section}{\numberline {G.5}Pruebas del Front-End}{99}{section.Alph7.5}%
-\contentsline {subsection}{\numberline {G.5.1}Pruebas de la Aplicaci\IeC {\'o}n Web}{99}{subsection.Alph7.5.1}%
-\contentsline {subsubsection}{Prueba de HomePage}{99}{section*.105}%
-\contentsline {subsection}{\numberline {G.5.2}Pruebas de Login}{100}{subsection.Alph7.5.2}%
-\contentsline {subsection}{\numberline {G.5.3}Pruebas de Profile}{101}{subsection.Alph7.5.3}%
-\contentsline {subsection}{\numberline {G.5.4}Pruebas de la Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{102}{subsection.Alph7.5.4}%
-\contentsline {subsubsection}{Prueba de LoginScreen}{102}{section*.109}%
-\contentsline {subsubsection}{Prueba de HomeScreen}{103}{section*.111}%
+\contentsline {section}{\numberline {2.1}Background}{3}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Contexto y Necesidad}{3}{subsection.2.1.1}%
+\contentsline {subsubsection}{Importancia de la Nutrici\IeC {\'o}n y el Ejercicio}{3}{section*.13}%
+\contentsline {subsubsection}{Desaf\IeC {\'\i }os Comunes}{4}{section*.14}%
+\contentsline {subsubsection}{Necesidad de Informaci\IeC {\'o}n Relevante y Accesible}{4}{section*.15}%
+\contentsline {subsection}{\numberline {2.1.2}Tecnolog\IeC {\'\i }as Utilizadas.}{4}{subsection.2.1.2}%
+\contentsline {subsubsection}{Django}{4}{section*.16}%
+\contentsline {subsubsection}{React}{5}{section*.18}%
+\contentsline {subsubsection}{React Native}{5}{section*.20}%
+\contentsline {subsubsection}{PostgreSQL}{5}{section*.22}%
+\contentsline {subsubsection}{Python}{6}{section*.24}%
+\contentsline {subsubsection}{JavaScript}{6}{section*.26}%
+\contentsline {subsubsection}{Bootstrap y CSS}{7}{section*.28}%
+\contentsline {section}{\numberline {2.2}Soluciones Existentes}{7}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Aplicaciones de Nutrici\IeC {\'o}n}{7}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Aplicaciones de Ejercicio}{8}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Plataformas Combinadas}{8}{subsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.2.4}Limitaciones de las Soluciones Actuales}{8}{subsection.2.2.4}%
+\contentsline {section}{\numberline {2.3}Plataformas Personalizadas para la Nutrici\IeC {\'o}n y el Ejercicio}{10}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Aplicaciones de Nutrici\IeC {\'o}n Personalizada}{10}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Aplicaciones de Ejercicio Personalizado}{10}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Plataformas Combinadas}{10}{subsection.2.3.3}%
+\contentsline {subsection}{\numberline {2.3.4}Limitaciones y Oportunidades de Mejora}{12}{subsection.2.3.4}%
+\contentsline {chapter}{\numberline {3}Dise\IeC {\~n}o}{13}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Definici\IeC {\'o}n del proyecto y alcance}{13}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Metodolog\IeC {\'\i }a}{14}{section.3.2}%
+\contentsline {subsubsection}{Fases del proyecto}{14}{section*.38}%
+\contentsline {subsubsection}{Herramientas y t\IeC {\'e}cnicas}{15}{section*.39}%
+\contentsline {section}{\numberline {3.3}Arquitectura}{15}{section.3.3}%
+\contentsline {subsubsection}{Diagrama de Arquitectura}{16}{section*.40}%
+\contentsline {subsubsection}{Descripci\IeC {\'o}n de Componentes}{16}{section*.42}%
+\contentsline {subsubsection}{Despliegue y Infraestructura}{17}{section*.43}%
+\contentsline {section}{\numberline {3.4}Roles}{17}{section.3.4}%
+\contentsline {subsubsection}{Usuarios Regulares}{17}{section*.44}%
+\contentsline {subsubsection}{Entrenadores y/o Nutricionistas}{17}{section*.45}%
+\contentsline {subsubsection}{Administradores}{18}{section*.46}%
+\contentsline {section}{\numberline {3.5}Requisitos Funcionales y No Funcionales}{18}{section.3.5}%
+\contentsline {section}{\numberline {3.6}Incrementos}{18}{section.3.6}%
+\contentsline {subsubsection}{Back-end}{18}{section*.47}%
+\contentsline {subsubsection}{Front-end}{19}{section*.48}%
+\contentsline {subsubsection}{Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{19}{section*.49}%
+\contentsline {chapter}{\numberline {4}Desarrollo}{21}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Back-End}{21}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Estructura del Servidor}{21}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Base de Datos}{23}{subsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.3}API REST}{26}{subsection.4.1.3}%
+\contentsline {subsubsection}{Endpoints y Rutas}{26}{section*.53}%
+\contentsline {subsubsection}{Vistas y Controladores}{26}{section*.54}%
+\contentsline {subsubsection}{Serializadores}{26}{section*.55}%
+\contentsline {subsubsection}{M\IeC {\'e}todos HTTP}{26}{section*.56}%
+\contentsline {subsubsection}{Ejemplo de Solicitud y Respuesta}{26}{section*.57}%
+\contentsline {subsection}{\numberline {4.1.4}Tokens JWT}{27}{subsection.4.1.4}%
+\contentsline {subsubsection}{Middleware y Configuraci\IeC {\'o}n}{29}{section*.62}%
+\contentsline {subsubsection}{Uso de Tokens en el Front-End}{29}{section*.64}%
+\contentsline {section}{\numberline {4.2}Front-End}{29}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Aplicaci\IeC {\'o}n Web}{29}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Componentes}{30}{subsection.4.2.2}%
+\contentsline {subsubsection}{App.js}{31}{section*.65}%
+\contentsline {subsubsection}{Componentes de Nutrici\IeC {\'o}n}{31}{section*.66}%
+\contentsline {subsubsection}{Componentes de Deporte}{33}{section*.67}%
+\contentsline {subsubsection}{Componentes de Usuario}{33}{section*.68}%
+\contentsline {subsection}{\numberline {4.2.3}Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{34}{subsection.4.2.3}%
+\contentsline {section}{\numberline {4.3}Herramientas y Entorno de Desarrollo}{35}{section.4.3}%
+\contentsline {subsubsection}{Control de Versiones}{35}{section*.69}%
+\contentsline {subsubsection}{Entorno de Desarrollo}{35}{section*.70}%
+\contentsline {subsubsection}{Dise\IeC {\~n}o de la Interfaz de Usuario}{36}{section*.71}%
+\contentsline {subsubsection}{Base de Datos}{36}{section*.72}%
+\contentsline {subsubsection}{Despliegue}{36}{section*.73}%
+\contentsline {subsubsection}{Testing y Depuraci\IeC {\'o}n}{36}{section*.74}%
+\contentsline {subsubsection}{Gesti\IeC {\'o}n de Dependencias}{36}{section*.75}%
+\contentsline {chapter}{\numberline {5}Pruebas e Implementaci\IeC {\'o}n}{37}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Pruebas del Back-End}{37}{section.5.1}%
+\contentsline {subsubsection}{Configuraci\IeC {\'o}n de Pruebas}{37}{section*.76}%
+\contentsline {subsubsection}{Pruebas de Endpoints}{38}{section*.77}%
+\contentsline {section}{\numberline {5.2}Pruebas del Front-End}{38}{section.5.2}%
+\contentsline {subsubsection}{Pruebas de la Aplicaci\IeC {\'o}n Web}{38}{section*.78}%
+\contentsline {paragraph}{Prueba de Componentes}{38}{section*.79}%
+\contentsline {subsubsection}{Pruebas de la Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{38}{section*.80}%
+\contentsline {paragraph}{Prueba de Componentes M\IeC {\'o}viles}{38}{section*.81}%
+\contentsline {section}{\numberline {5.3}Implementaci\IeC {\'o}n}{39}{section.5.3}%
+\contentsline {subsubsection}{Despliegue del Back-End}{39}{section*.82}%
+\contentsline {subsubsection}{Despliegue del Front-End}{39}{section*.83}%
+\contentsline {chapter}{\numberline {6}Conclusiones y Trabajo Futuro}{41}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Conclusiones}{41}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Trabajo Futuro}{41}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Mejoras en el Front-End}{41}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}Mejoras en la Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{42}{subsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.2.3}Nuevas Funcionalidades}{42}{subsection.6.2.3}%
+\contentsline {subsection}{\numberline {6.2.4}Integraci\IeC {\'o}n de Inteligencia Artificial}{42}{subsection.6.2.4}%
+\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{43}{chapter*.84}%
+\contentsline {part}{Ap\IeC {\'e}ndices}{45}{part.1}%
+\contentsline {chapter}{\numberline {A}Dependecias y librer\IeC {\'\i }as}{47}{appendix.Alph1}%
+\contentsline {section}{\numberline {A.1}Acceso a FitFuelBalance}{47}{section.Alph1.1}%
+\contentsline {section}{\numberline {A.2}Acceso al c\IeC {\'o}digo fuente}{47}{section.Alph1.2}%
+\contentsline {chapter}{\numberline {B}Dependencias}{49}{appendix.Alph2}%
+\contentsline {subsection}{\numberline {B.0.1}Dependencias Back-End}{49}{subsection.Alph2.0.1}%
+\contentsline {subsection}{\numberline {B.0.2}Dependencias Front-End}{51}{subsection.Alph2.0.2}%
+\contentsline {subsection}{\numberline {B.0.3}Dependencias de la Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{52}{subsection.Alph2.0.3}%
+\contentsline {chapter}{\numberline {C}Requisitos}{53}{appendix.Alph3}%
+\contentsline {section}{\numberline {C.1}Requisitos Funcionales}{53}{section.Alph3.1}%
+\contentsline {subsection}{\numberline {C.1.1}Subsistema de Servidor y Comunicaci\IeC {\'o}n con la Base de Datos}{53}{subsection.Alph3.1.1}%
+\contentsline {subsection}{\numberline {C.1.2}Subsistema de Gesti\IeC {\'o}n de Usuarios}{53}{subsection.Alph3.1.2}%
+\contentsline {subsection}{\numberline {C.1.3}Subsistema de Gesti\IeC {\'o}n de Entrenamientos y Nutrici\IeC {\'o}n}{53}{subsection.Alph3.1.3}%
+\contentsline {section}{\numberline {C.2}Requisitos No Funcionales}{53}{section.Alph3.2}%
+\contentsline {subsection}{\numberline {C.2.1}Generales}{54}{subsection.Alph3.2.1}%
+\contentsline {subsection}{\numberline {C.2.2}Errores}{54}{subsection.Alph3.2.2}%
+\contentsline {subsection}{\numberline {C.2.3}Seguridad}{54}{subsection.Alph3.2.3}%
+\contentsline {subsection}{\numberline {C.2.4}Interfaz y Usabilidad}{54}{subsection.Alph3.2.4}%
+\contentsline {subsection}{\numberline {C.2.5}Soporte y Documentaci\IeC {\'o}n}{54}{subsection.Alph3.2.5}%
+\contentsline {subsection}{\numberline {C.2.6}Regulatorio y Legal}{55}{subsection.Alph3.2.6}%
+\contentsline {chapter}{\numberline {D}Diagramas de Flujo}{57}{appendix.Alph4}%
+\contentsline {subsection}{\numberline {D.0.1}Creaci\IeC {\'o}n de un nuevo usuario}{57}{subsection.Alph4.0.1}%
+\contentsline {subsection}{\numberline {D.0.2}Creaci\IeC {\'o}n de un nuevo entrenamiento}{57}{subsection.Alph4.0.2}%
+\contentsline {subsection}{\numberline {D.0.3}Creaci\IeC {\'o}n y asignaci\IeC {\'o}n de una Opci\IeC {\'o}n}{58}{subsection.Alph4.0.3}%
+\contentsline {subsection}{\numberline {D.0.4}Asignaci\IeC {\'o}n de entrenador}{58}{subsection.Alph4.0.4}%
+\contentsline {chapter}{\numberline {E}Estructura del Proyecto}{59}{appendix.Alph5}%
+\contentsline {subsection}{\numberline {E.0.1}Backend}{59}{subsection.Alph5.0.1}%
+\contentsline {subsection}{\numberline {E.0.2}Frontend}{59}{subsection.Alph5.0.2}%
+\contentsline {chapter}{\numberline {F}Capturas de Pantalla}{63}{appendix.Alph6}%
+\contentsline {chapter}{\numberline {G}C\IeC {\'o}digo Fuente}{65}{appendix.Alph7}%
+\contentsline {section}{\numberline {G.1}Back-End}{65}{section.Alph7.1}%
+\contentsline {subsection}{\numberline {G.1.1}Configuraci\IeC {\'o}n de las Rutas y urls}{65}{subsection.Alph7.1.1}%
+\contentsline {subsection}{\numberline {G.1.2}Vistas y Controladores}{65}{subsection.Alph7.1.2}%
+\contentsline {subsection}{\numberline {G.1.3}Serializadores}{67}{subsection.Alph7.1.3}%
+\contentsline {subsection}{\numberline {G.1.4}Autenticaci\IeC {\'o}n con JWT}{68}{subsection.Alph7.1.4}%
+\contentsline {subsection}{\numberline {G.1.5}Ejemplo de Modelo en Django}{69}{subsection.Alph7.1.5}%
+\contentsline {section}{\numberline {G.2}Front-End}{71}{section.Alph7.2}%
+\contentsline {subsection}{\numberline {G.2.1}Uso de Tokens en el Front-End}{71}{subsection.Alph7.2.1}%
+\contentsline {subsection}{\numberline {G.2.2}Conexi\IeC {\'o}n con el Backend desde la Aplicaci\IeC {\'o}n Web}{73}{subsection.Alph7.2.2}%
+\contentsline {subsection}{\numberline {G.2.3}Inicio Creaci\IeC {\'o}n de una Dieta}{74}{subsection.Alph7.2.3}%
+\contentsline {subsection}{\numberline {G.2.4}Return de una Dieta}{76}{subsection.Alph7.2.4}%
+\contentsline {section}{\numberline {G.3}Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{78}{section.Alph7.3}%
+\contentsline {subsection}{\numberline {G.3.1}Conexi\IeC {\'o}n con el Backend desde Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{78}{subsection.Alph7.3.1}%
+\contentsline {subsection}{\numberline {G.3.2}Configuraci\IeC {\'o}n de la Navegaci\IeC {\'o}n}{79}{subsection.Alph7.3.2}%
+\contentsline {subsection}{\numberline {G.3.3}DetailsScreen}{80}{subsection.Alph7.3.3}%
+\contentsline {section}{\numberline {G.4}Pruebas del Back-End}{82}{section.Alph7.4}%
+\contentsline {subsection}{\numberline {G.4.1}Configuracion de testsettings.py}{82}{subsection.Alph7.4.1}%
+\contentsline {subsection}{\numberline {G.4.2}Configuraci\IeC {\'o}n de Pruebas de Usuario}{84}{subsection.Alph7.4.2}%
+\contentsline {subsection}{\numberline {G.4.3}Pruebas de Usuario}{85}{subsection.Alph7.4.3}%
+\contentsline {subsection}{\numberline {G.4.4}Configuraci\IeC {\'o}n de Pruebas de Deporte}{87}{subsection.Alph7.4.4}%
+\contentsline {subsection}{\numberline {G.4.5}Pruebas de Deporte}{89}{subsection.Alph7.4.5}%
+\contentsline {subsection}{\numberline {G.4.6}Configuraci\IeC {\'o}n de Pruebas de Nutrici\IeC {\'o}n}{91}{subsection.Alph7.4.6}%
+\contentsline {subsection}{\numberline {G.4.7}Pruebas de Nutrici\IeC {\'o}n}{93}{subsection.Alph7.4.7}%
+\contentsline {section}{\numberline {G.5}Pruebas del Front-End}{95}{section.Alph7.5}%
+\contentsline {subsection}{\numberline {G.5.1}Pruebas de la Aplicaci\IeC {\'o}n Web}{95}{subsection.Alph7.5.1}%
+\contentsline {subsubsection}{Prueba de HomePage}{95}{section*.114}%
+\contentsline {subsection}{\numberline {G.5.2}Pruebas de Login}{96}{subsection.Alph7.5.2}%
+\contentsline {subsection}{\numberline {G.5.3}Pruebas de Profile}{97}{subsection.Alph7.5.3}%
+\contentsline {subsection}{\numberline {G.5.4}Pruebas de la Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{98}{subsection.Alph7.5.4}%
+\contentsline {subsubsection}{Prueba de LoginScreen}{98}{section*.118}%
+\contentsline {subsubsection}{Prueba de HomeScreen}{99}{section*.120}%
