@@ -2,689 +2,98 @@ En esta sección se presentan los códigos implementados en el proyecto. Se incl
 
 \section{Back-End}
 \subsection{Configuración de las Rutas y urls}
-\begin{figure}[Ejemplo Código Urls]{FIG:urls}{Ejemplo de rutas en Django}
-    \begin{verbatim}
-    from django.urls import path, include
-    from rest_framework.routers import DefaultRouter
-    
-    router = DefaultRouter()
-    router.register(r'foods', views.FoodViewSet)
-    router.register(r'assigned_options', views.AssignedOptionViewSet)
-    
-    urlpatterns = [
-        path('', include(router.urls)),
-        path('assign_option/', views.assignOption, name='assign_option'),
-    ]
-    \end{verbatim}
-    \end{figure}
-
+\PythonCode[COD:urls]{Ejemplo Código Urls.}{Ejemplo de rutas en Django}{python/codigo.py}{33}{43}{1}
 
 \subsection{Vistas y Controladores}
-\begin{figure}[Ejemplo Código Vistas]{FIG:views}{Ejemplo de vistas en Django}
-    \begin{verbatim}
-    class TodayDailyDietView(APIView):
-        def get(self, request, *args, **kwargs):
-            today = timezone.now().date()
-            user = request.user
-            
-            # Filtra las Dietas por el usuario logueado
-            diets = Diet.objects.filter(user=user)
-            
-            # Encuentra las DailyDiet dentro del rango de fechas de las Dietas filtradas que coincidan con 'hoy'
-            today_diets = DailyDiet.objects.filter(diet__in=diets, date=today)
-            
-            # Serializa y devuelve los resultados
-            serializer = DailyDietSerializer(today_diets, many=True)
-            return Response(serializer.data)
-
-    @api_view(['POST'])
-    def assignOption(request):
-        if not request.user.is_trainer:
-            return Response({"error": "Solo los entrenadores pueden crear asignaciones."}, status=status.HTTP_403_FORBIDDEN)
-        
-        user_id = request.data.get('userId')
-        option_id = request.data.get('optionId')
-    
-        user = get_object_or_404(CustomUser, id=user_id)
-        option = get_object_or_404(Option, id=option_id)
-    
-        assignment = AssignedOption.objects.create(
-            user=user,
-            option=option,
-            start_date=timezone.now()
-        )
-    
-        return Response({
-            "message": "Option assigned successfully",
-            "assignedOptionId": assignment.id,  # ID de la asignación
-            "optionId": option.id,
-            "start_date": assignment.start_date.strftime("%Y-%m-%d")
-        }, status=status.HTTP_201_CREATED)
-    \end{verbatim}
-    \end{figure}
-
+\PythonCode[COD:views]{Ejemplo Código Vistas.}{Ejemplo de vistas en Django.}{python/codigo.py}{47}{84}{1}
 \newpage
 
 \subsection{Serializadores}
-\begin{figure}[Ejemplo Código Serializadores]{FIG:serializers}{Ejemplo de serializadores en Django}
-    \begin{verbatim}
-    class FoodSerializer(serializers.ModelSerializer):
-        class Meta:
-            model = Food
-            fields = '__all__'
-
-    class OptionSerializer(serializers.ModelSerializer):
-        week_option_one = serializers.PrimaryKeyRelatedField(queryset=WeekOption.objects.all())
-        week_option_two = serializers.PrimaryKeyRelatedField(queryset=WeekOption.objects.all())
-        week_option_three = serializers.PrimaryKeyRelatedField(queryset=WeekOption.objects.all())
-
-        class Meta:
-            model = Option
-            fields = ['id', 'name', 'week_option_one', 'week_option_two', 'week_option_three']
-            read_only_fields = ['trainer']
-
-        def create(self, validated_data):
-            user = self.context['request'].user
-            if user.is_trainer:
-                trainer = user.trainer
-            else:
-                raise serializers.ValidationError("El usuario no está autorizado para crear opciones.")
-
-            # Crea la instancia de Option incluyendo el trainer obtenido del contexto
-            option = Option.objects.create(**validated_data, trainer=trainer)
-            return option
-            
-    \end{verbatim}
-    \end{figure}
+\PythonCode[COD:serializers]{Ejemplo Código Serializadores.}{Ejemplo de serializadores en Django.}{python/codigo.py}{88}{112}{1}
 
 \newpage
 
 \subsection{Autenticación con JWT}
-\begin{figure}[Vista Autenticación]{FIG:authview}{Vista de autenticación con JWT en Django}
-    \begin{verbatim}
-    class LoginView(APIView):
-        authentication_classes = []  # No authentication required
-        permission_classes = []  # No permission required
-    
-        def post(self, request, *args, **kwargs):
-            username = request.data.get('username')
-            password = request.data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                token, created = Token.objects.get_or_create(user=user)
-                return Response(
-                    {'token': token.key, 'userId': user.id}, 
-                    status=status.HTTP_200_OK)
-            else:
-                return Response(
-                    {'detail': 'Invalid Credentials'}, 
-                    status=status.HTTP_401_UNAUTHORIZED)
-    \end{verbatim}
-    \end{figure}
+\PythonCode[COD:authview]{Vista Autenticación.}{Vista de autenticación con JWT en Django.}{python/codigo.py}{116}{132}{1}
 
 \newpage
 
 \subsection{Ejemplo de Modelo en Django}
-\begin{figure}[Modelo de Entrenamiento]{FIG:trainingmodel}{Modelo de Entrenamiento en Django}
-    \begin{verbatim}
-class Option(models.Model):
-    trainer = models.ForeignKey('user.Trainer',
-     on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    week_option_one = models.ForeignKey(
-        WeekOption, 
-        related_name='week_option_one', on_delete=models.CASCADE)
-    week_option_two = models.ForeignKey(
-        WeekOption, related_name='week_option_two',
-         on_delete=models.CASCADE)
-    week_option_three = models.ForeignKey(
-        WeekOption, related_name='week_option_three',
-         on_delete=models.CASCADE)
-    
-    def __str__(self):
-        return self.name
-
-class Training(models.Model):
-    trainer = models.ForeignKey(
-        'user.Trainer', on_delete=models.CASCADE,
-         related_name='trainer')
-    name = models.CharField(max_length=255)
-    exercises = models.ManyToManyField(Exercise, through='TrainingExercise')
-    date = models.DateField()
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='user')
-
-    def __str__(self):
-        return self.name
-    \end{verbatim}
-    \end{figure}
+\PythonCode[COD:trainingmodel]{Modelo de Entrenamiento.}{Modelo de Entrenamiento en Django.}{python/codigo.py}{136}{164}{1}
 
 \newpage
 
 \section{Front-End}
 
 \subsection{Uso de Tokens en el Front-End}
-\begin{figure}[Uso de Tokens]{FIG:usetokens}{Uso de tokens en el Front-end}
-\begin{verbatim}
-function Login({ onLoginSuccess }) {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const navigate = useNavigate();
-    const apiUrl = process.env.REACT_APP_API_URL;
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        setError('');
-
-        try {
-            const response = await fetch(`
-                ${apiUrl}/user/frontlogin/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Token ${
-                        localStorage.getItem('authToken')}`
-                },
-                body: JSON.stringify({ username, password }),
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(
-                    errorData.detail || 'Falló inicio de sesión');
-            }
-
-            const { token, userId } = await response.json();
-            localStorage.setItem('authToken', token);
-            localStorage.setItem('userId', userId);
-            onLoginSuccess(token, userId);
-            navigate('/dashboard');
-        } catch (error) {
-            setError(error.message);
-        }
-    };...}
-\end{verbatim}
-\end{figure}
+\JavaCode[COD:usetokens]{Uso de Tokens.}{Uso de tokens en el Front-end.}{javascript/javascript.js}{2}{36}{1}
 
 \newpage
 
 \subsection{Conexión con el Backend desde la Aplicación Web}
-\begin{figure}[Ejemplo Servicio React]{FIG:reactservice}{Ejemplo de servicio en React para obtener planes de entrenamiento}
-    \begin{verbatim}
-        const apiUrl = process.env.REACT_APP_API_URL;
-
-        export const getTrainingPlans = async () => {
-            const response = await fetch(`${apiUrl}/sport/trainings/` {
-                headers: {
-                  'Authorization': `Token ${
-                    localStorage.getItem('token')}`
-                }
-            });
-            const data = await response.json();
-            return data;
-        };
-    \end{verbatim}
-    \end{figure}
+\JavaCode[COD:reactservice]{Ejemplo Servicio React.}{Ejemplo de servicio en React para obtener planes de entrenamiento.}{javascript/javascript.js}{119}{130}{1}
 
 \newpage
 
 \subsection{Inicio Creación de una Dieta}
 
-\begin{figure}[Creación de Dieta]{FIG:creatediet}{Creación de una dieta en React}
-    \begin{verbatim}
-function CreateDiet() {
-  ...
-  useEffect(() => {
-    fetch(`${apiUrl}/user/regularusers/`, {
-      headers: {
-        'Authorization': `Token ${localStorage.getItem('authToken')}`
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        setUsers(data);
-        if (data.length > 0) {
-          setSelectedUser(data[0].id.toString());
-        }
-      });
-  }, [apiUrl]);
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const dietData = {
-      name,
-      user: selectedUser,
-      start_date: startDate,
-      end_date: endDate,
-    };
-    console.log("Sending diet data", dietData);
-    fetch(`${apiUrl}/nutrition/diet/`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Token ${
-                localStorage.getItem('authToken')}`
-        },
-        body: JSON.stringify(dietData),
-    })
-    ...
-    \end{verbatim}
-    \end{figure}
+\JavaCode[COD:creatediet]{Creación de una dieta en React.}{Creación de una dieta en React.}{javascript/javascript.js}{39}{74}{1}
 
 \newpage
 
 \subsection{Return de una Dieta}
-\begin{figure}[Return de Dieta]{FIG:returndiet}{Return de una dieta en React}
-    \begin{verbatim}
-return (
-<div className="container mt-5">
-    <h2 className="mb-4">Crear Nueva Dieta</h2>
-    <form onSubmit={handleSubmit}>
-    <div className="mb-3">
-        <label htmlFor="name" 
-        className="form-label">Nombre de la Dieta:</label>
-        <input type="text" 
-        className="form-control" id="name" value={name} 
-        onChange={e => setName(e.target.value)} required />
-    </div>
-    <div className="mb-3">
-        <label htmlFor="userSelect" 
-        className="form-label">Usuario:</label>
-        <select className="form-select" id="userSelect" 
-        value={selectedUser} onChange={
-            e => setSelectedUser(e.target.value)}
-         required>
-        <option value="">Seleccione un usuario</option>
-        {users.map(user => (
-            <option key={user.id} 
-            value={user.id}>{user.username}</option>
-        ))}
-        </select>
-    </div>
-    <div className="mb-3">
-        <label htmlFor="startDate" 
-        className="form-label">Fecha de Inicio:</label>
-        <input type="date" className="form-control" id="startDate" 
-        value={startDate} onChange={e => setStartDate(e.target.value)}
-         required />
-    </div>
-    ...
-    <button type="submit" className="btn btn-primary">
-    Crear Dieta</button>
-    </form>
-</div>);}
-export default CreateDiet;
-    \end{verbatim}
-    \end{figure}
-
+\JavaCode[COD:returndiet]{Return de una dieta en React.}{Return de una dieta en React.}{javascript/javascript.js}{78}{115}{1}
 
 \newpage
+
 \section{Aplicación Móvil}
 
 \subsection{Conexión con el Backend desde Aplicación Móvil}
-\begin{figure}[Ejemplo Servicio React Native]{FIG:reactnativeservice}{Ejemplo de servicio en React Native para obtener planes de entrenamiento}
-    \begin{verbatim}
-        import { API_URL } from '../config';
-        export const fetchTrainingPlans = async () => {
-            try {
-                const response = await fetch(
-                    `${API_URL}/training-plans/`);
-                if (!response.ok) throw new Error(
-                    'Network response was not ok');
-                const data = await response.json();
-                return data;
-            } catch (error) {
-                console.error('Error fetching training plans:', error);
-                return [];
-            }
-        };
-    \end{verbatim}
-    \end{figure}
-
-\newpage
-
+\JavaCode[COD:reactnativeservice]{Ejemplo de servicio en React Native para obtener planes de entrenamiento.}{Ejemplo de servicio en React Native para obtener planes de entrenamiento.}{javascript/javascript.js}{134}{147}{1}
 \subsection{Configuración de la Navegación}
-\begin{figure}[Configuración de Navegación]{FIG:navconfig}{Configuración de navegación en React Navigation}
-    \begin{verbatim}
-    const AppNavigator = () => {
-        return (
-            <Stack.Navigator initialRouteName="LoginScreen">
-                <Stack.Screen name="HomeScreen" component={HomeScreen} />
-                <Stack.Screen name="LoginScreen" component={LoginScreen} />
-                <Stack.Screen name="TrainingDetailsScreen" 
-                component={TrainingDetailsScreen} />
-        </Stack.Navigator>
-        );
-    }
-    export default AppNavigator;
-    \end{verbatim}
-    \end{figure}
+\JavaCode[COD:navconfig]{Configuración de navegación en React Navigation.}{Configuración de navegación en React Navigation.}{javascript/javascript.js}{151}{161}{1}
 
 \newpage
 
 \subsection{DetailsScreen}
-
-\begin{figure}[Pantalla de Detalles]{FIG:detailscreen}{Pantalla de detalles en React Native}
-    \begin{verbatim}
-const DetailsScreen = ({ route }) => {
-const { date, dietEvents, trainingEvents } = route.params;
-return (
-    ...
-    <Text style={styles.subtitle}>Entrenamientos:</Text>
-    {trainingEvents && trainingEvents.length > 0 ? (
-        trainingEvents.map((training, index) => (
-        <View key={index} style={styles.section}>
-            <Text style={styles.sectionTitle}>{training.name}</Text>
-            {training.exercises_details.map((detail, idx) => (
-            <Text key={idx} style={styles.itemText}>
-                {detail.exercise.name} - 
-                Series: {detail.sets}, ...
-                {detail.weight && `, Peso: ${detail.weight}kg`}
-                {detail.time && `, Tiempo: ${detail.time}min`}
-            </Text>))}</View>))
-    ) : (
-        <Text style={styles.noDataText}>
-        No hay entrenamientos para este día.</Text>
-    )}
-    <Text style={styles.subtitle}>Detalles de la Dieta Diaria:</Text>
-    {dietEvents && dietEvents.length > 0 ? (
-        ...
-            <Text style={styles.sectionTitle}>Nutrientes:</Text>
-            ...
-            <Text style={styles.sectionTitle}>Comidas:</Text>
-            {diet.mealsDetails && diet.mealsDetails.length > 0 ? (
-            diet.mealsDetails.map((meal, mealIndex) => (
-                <Text key={mealIndex} style={styles.itemText}>
-                {meal.name}</Text>
-            ))
-            ) : (
-            <Text style={styles.noDataText}>No hay ...</Text>
-            )}
-        </View>
-    ...
-    \end{verbatim}
-    \end{figure}
+\JavaCode[COD:detailscreen]{Pantalla de detalles en React Native.}{Pantalla de detalles en React Native.}{javascript/javascript.js}{165}{200}{1}
 
 \newpage
 \section{Pruebas del Back-End\label{SEC:PRUEBASBACKEND}}
 
 \subsection{Configuracion de testsettings.py}
-\begin{figure}[Configuración de Pruebas]{FIG:testsettings}{Configuración de pruebas en Django}
-    \begin{verbatim}
-from .settings import *
-# Configuración de la base de datos para pruebas
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ':memory:',
-        'ATOMIC_REQUESTS': True,
-    }
-}
-# Otros ajustes específicos para pruebas
-SECRET_KEY = 'test-secret-key'
-DEBUG = True
-# Usar el backend de contraseñas de hashing rápido
-PASSWORD_HASHERS = [
-    'django.contrib.auth.hashers.MD5PasswordHasher',
-]
-# Desactivar middleware y aplicaciones en pruebas
-MIDDLEWARE = [mw for mw in MIDDLEWARE if mw not in 
-['debug_toolbar.middleware.DebugToolbarMiddleware']]
-INSTALLED_APPS = [app for 
-app in INSTALLED_APPS if app != 'debug_toolbar']
-
-# Configuración de REST framework para pruebas
-REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] = (
-    'rest_framework.authentication.SessionAuthentication',
-    'rest_framework.authentication.BasicAuthentication',
-)
-# Configuración de CORS para pruebas (si es necesario)
-CORS_ALLOW_ALL_ORIGINS = True
-# Configuración de las rutas de archivos estáticos
-STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_test')
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media_test')
-# Configuración de la caché para pruebas
-CACHES = {
-    'default': {
-    'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',}}
-    \end{verbatim}
-    \end{figure}
+\PythonCode[COD:testsettings]{Configuración de Pruebas.}{Configuración de pruebas en Django.}{python/codigo.py}{168}{205}{1}
 
 \newpage
 
 \subsection{Configuración de Pruebas de Usuario}
-\begin{figure}[Configuración de Pruebas]{FIG:usertestsconfig}{Configuración de pruebas en Django}
-    \begin{verbatim}
-def setUp(self):
-    self.client = APIClient(enforce_csrf_checks=False)
-    self.user_data = {
-        'username': 'testuser',
-        'password': 'TestPassword123',
-        'email': 'testuser@example.com',
-        'first_name': 'Test',
-        'last_name': 'User',
-    }
-    self.trainer_data = {
-        'username': 'testtrainer',
-        'password': 'TestPassword123',
-        'email': 'testtrainer@example.com',
-        'first_name': 'Test',
-        'last_name': 'Trainer',
-        'trainer_type': 'trainer'
-    }
-    \end{verbatim}
-    \end{figure}
+\PythonCode[COD:usertestsconfig]{Configuración de Pruebas.}{Configuración de pruebas en Django.}{python/codigo.py}{209}{225}{1}
 
 \newpage
+
 \subsection{Pruebas de Usuario}
-En la figura \ref{FIG:usertests} se presentan algunas de las pruebas más relevantes de usuario en Django.
-\begin{figure}[Pruebas de Usuario]{FIG:usertests}{Pruebas de usuario en Django}
-    \begin{verbatim}
-def test_create_regular_user(self):
-    url = reverse('regularuser_signup')
-    response = self.client.post(url, self.user_data, format='json')
-    self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-    self.assertEqual(CustomUser.objects.count(), 1)
-    self.assertEqual(CustomUser.objects.get().username, 'testuser')
-
-def test_create_trainer(self):
-    url = reverse('trainer_signup')
-    response = self.client.post(url, self.trainer_data, format='json')
-    self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-    self.assertEqual(CustomUser.objects.count(), 1)
-    self.assertEqual(CustomUser.objects.get().username, 'testtrainer')
-
-def test_login_regular_user(self):
-    self.test_create_regular_user()
-    url = reverse('frontlogin')
-    response = self.client.post(url, self.user_data, format='json')
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
-    self.assertIn('token', response.data)
-
-def test_search_trainer(self):
-    self.test_create_regular_user()
-    self.test_create_trainer()
-    url = reverse('frontlogin')
-    response = self.client.post(url, self.user_data, format='json')
-    token = response.data['token']
-    self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
-    search_url = reverse('search_trainer')
-    response = self.client.get(search_url, {'trainer_type': 'trainer'})
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
-    self.assertGreaterEqual(len(response.data), 1)
-
-    \end{verbatim}
-    \end{figure}
+En Código \ref{COD:usertests} se presentan algunas de las pruebas más relevantes de usuario en Django.
+\PythonCode[COD:usertests]{Pruebas de Usuario.}{Pruebas de usuario en Django.}{python/codigo.py}{229}{260}{1}
 
 \newpage
 
 \subsection{Configuración de Pruebas de Deporte}
-\begin{figure}[Configuración de Pruebas]{FIG:sporttestsconfig}{Configuración de pruebas en Django}
-    \begin{verbatim}
-def setUp(self):
-    self.trainer_data = {
-        'username': 'testtrainer',
-        'password': 'TestPassword123',
-        'email': 'testtrainer@example.com',
-        'first_name': 'Test',
-        'last_name': 'Trainer',
-    }
-    self.trainer = Trainer.objects.create_user(**self.trainer_data)
-    self.client.force_authenticate(user=self.trainer)
-
-    self.exercise_data = {
-        'name': 'Push Up',
-        'description': 'Push up exercise',
-        'type': 'FUERZA'
-    }
-
-    self.training_data = {
-        'trainer': self.trainer,
-        'name': 'Morning Workout',
-        'date': date.today(),
-    }
-
-    self.user_data = {
-        'username': 'testuser',
-        'password': 'TestPassword123',
-        'email': 'testuser@example.com',
-        'first_name': 'Test',
-        'last_name': 'User',
-    }
-    self.user = CustomUser.objects.create_user(**self.user_data)
-    \end{verbatim}
-    \end{figure}
+\PythonCode[COD:sporttestsconfig]{Configuración de Pruebas.}{Configuración de pruebas en Django.}{python/codigo.py}{264}{294}{1}
 
 \newpage
 \subsection{Pruebas de Deporte}
-En la figura \ref{FIG:sporttests} se presentan algunas de las pruebas más relevantes de deporte en Django.
-\begin{figure}[Pruebas de Deporte]{FIG:sporttests}{Pruebas de deporte en Django}
-    \begin{verbatim}
-def test_create_exercise(self):
-    url = reverse('exercise-list')
-    response = self.client.post(url, self.exercise_data, format='json')
-    self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-    self.assertEqual(Exercise.objects.count(), 1)
-    self.assertEqual(Exercise.objects.get().name, 'Push Up')
-
-def test_create_training_exercise(self):
-    exercise = Exercise.objects.create(**self.exercise_data)
-    training = Training.objects.create(trainer=self.trainer,
-     name='Morning Workout', date=date.today(), user=self.user)
-    training_exercise_data = {
-        'training': training.id,
-        'exercise': exercise.id,
-        'repetitions': 10,
-        'sets': 3,
-        'weight': 50,
-    }
-    url = reverse('trainingexercise-list')
-    response = self.client.post(url, training_exercise_data,
-     format='json')
-    self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-    self.assertEqual(TrainingExercise.objects.count(), 1)
-    self.assertEqual(TrainingExercise.objects.get().repetitions, 10)
-
-def test_get_today_trainings(self):
-    training = Training.objects.create(trainer=self.trainer,
-     name='Morning Workout', date=date.today(), user=self.user)
-    url = reverse('today-trainings')
-    response = self.client.get(url, {'user': self.user.id})
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
-    self.assertEqual(len(response.data), 1)
-    self.assertEqual(response.data[0]['name'], 'Morning Workout')
-    \end{verbatim}
-    \end{figure}
+En Código \ref{COD:sporttests} se presentan algunas de las pruebas más relevantes de deporte en Django.
+\PythonCode[COD:sporttests]{Pruebas de Deporte.}{Pruebas de deporte en Django.}{python/codigo.py}{298}{330}{1}
 
 \newpage
 
 \subsection{Configuración de Pruebas de Nutrición}
-\begin{figure}[Configuración de Pruebas]{FIG:nutritiontestsconfig}{Configuración de pruebas en Django}
-    \begin{verbatim}
-def setUp(self):
-    self.trainer_data = {
-        'username': 'testtrainer',
-        'password': 'TestPassword123',
-        'email': 'testtrainer@example.com',
-        'first_name': 'Test',
-        'last_name': 'Trainer',
-    }
-    self.trainer = Trainer.objects.create_user(**self.trainer_data)
-    self.client.force_authenticate(user=self.trainer)
-
-    self.food_data = {
-        'name': 'Apple',
-        'unit_weight': 100,
-        'calories': 52,
-        'protein': 0.26,
-        'carbohydrates': 14,
-        'sugar': 10,
-        'fiber': 2.4,
-        'fat': 0.17,
-        'saturated_fat': 0.03,
-    }
-
-    self.ingredient_data = {
-        'name': 'Apple Slice',
-        'food': Food.objects.create(**self.food_data).id,
-        'quantity': 150
-    }
-
-    self.user_data = {
-        'username': 'testuser',
-        'password': 'TestPassword123',
-        'email': 'testuser@example.com',
-        'first_name': 'Test',
-        'last_name': 'User',
-    }
-    self.user = CustomUser.objects.create_user(**self.user_data)
-    \end{verbatim}
-    \end{figure}
+\PythonCode[COD:nutritiontestsconfig]{Configuración de Pruebas.}{Configuración de pruebas en Django.}{python/codigo.py}{334}{370}{1}
 
 \newpage
 \subsection{Pruebas de Nutrición}
-En la figura \ref{FIG:nutritiontests} se presentan algunas de las pruebas más relevantes de nutrición en Django.
-\begin{figure}[Pruebas de Nutrición]{FIG:nutritiontests}{Pruebas de nutrición en Django}
-    \begin{verbatim}
-def test_create_food(self):
-    url = reverse('food-list')
-    response = self.client.post(url, self.food_data, format='json')
-    self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-    self.assertEqual(Food.objects.count(), 1)
-    self.assertEqual(Food.objects.get().name, 'Apple')
-
-def test_create_dish(self):
-    ingredient = Ingredient.objects.create(**self.ingredient_data)
-    dish_data = {
-        'user': self.user.id,
-        'name': 'Apple Salad',
-        'ingredients': [ingredient.id]
-    }
-    url = reverse('dish-list')
-    response = self.client.post(url, dish_data, format='json')
-    self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-    self.assertEqual(Dish.objects.count(), 1)
-    self.assertEqual(Dish.objects.get().name, 'Apple Salad')
-
-def test_get_today_dailydiets(self):
-    diet = Diet.objects.create(user=self.user, name='Weight Loss', 
-    start_date=timezone.now().date(), 
-    end_date=timezone.now().date() + timedelta(days=7))
-    daily_diet = DailyDiet.objects.create(diet=diet,
-     date=timezone.now().date())
-    daily_diet.meals.add(Meal.objects.create(user=self.user,
-     name='Breakfast'))
-    url = reverse('today-dailydiets')
-    self.client.force_authenticate(user=self.user)
-    response = self.client.get(url)
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
-    self.assertEqual(len(response.data), 1)
-    self.assertEqual(response.data[0]['diet'], diet.id)
-    \end{verbatim}
-    \end{figure}
+En el Código \ref{COD:nutritiontests} se presentan algunas de las pruebas más relevantes de nutrición en Django.
+\PythonCode[COD:nutritiontests]{Pruebas de Nutrición.}{Pruebas de nutrición en Django.}{python/codigo.py}{374}{407}{1}
 
 \newpage
 
@@ -693,70 +102,17 @@ En esta sección se presentan algunas de las pruebas realizadas en el front-end 
 
 \subsection{Pruebas de la Aplicación Web}
 \subsubsection{Prueba de HomePage}
-\begin{figure}[Prueba de HomePage.js]{FIG:homepagejs}{Prueba de HomePage.js en React}
-    \begin{verbatim}
-import React from 'react';
-import { render } from '@testing-library/react';
-import HomePage from './HomePage';
-
-test('renders HomePage component', () => {
-    const { getByText } = render(<HomePage />);
-    const linkElement = getByText(/Welcome to HomePage/i);
-    expect(linkElement).toBeInTheDocument();
-});
-    \end{verbatim}
-    \end{figure}
+\JavaCode[COD:homepagejs]{Prueba de HomePage.js en React.}{Prueba de HomePage.js en React.}{javascript/javascript.js}{232}{240}{1}
 
 \newpage
 
 \subsection{Pruebas de Login}
-
-\begin{figure}[Prueba de Login]{FIG:login}{Prueba de Login en React}
-    \begin{verbatim}
-import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import Login from './Login';
-
-test('renders Login component', () => {
-    const { getByLabelText, getByText } = render(<Login />);
-    const usernameInput = getByLabelText(/username/i);
-    const passwordInput = getByLabelText(/password/i);
-    const loginButton = getByText(/login/i);
-
-    expect(usernameInput).toBeInTheDocument();
-    expect(passwordInput).toBeInTheDocument();
-    expect(loginButton).toBeInTheDocument();
-});
-
-test('allows the user to log in', () => {
-    const { getByLabelText, getByText } = render(<Login />);
-    const usernameInput = getByLabelText(/username/i);
-    const passwordInput = getByLabelText(/password/i);
-    const loginButton = getByText(/login/i);
-
-    fireEvent.change(usernameInput, { target: { value: 'testuser' } });
-    fireEvent.change(passwordInput, { target: { value: 'password' } });
-    fireEvent.click(loginButton);
-        });
-    \end{verbatim}
-    \end{figure}
+\JavaCode[COD:login]{Prueba de Login en React.}{Prueba de Login en React.}{javascript/javascript.js}{204}{228}{1}
 
 \newpage
 
 \subsection{Pruebas de Profile}
-\begin{figure}[Prueba de Profile.js]{FIG:profilejs}{Prueba de Profile.js en React}
-    \begin{verbatim}
-import React from 'react';
-import { render } from '@testing-library/react';
-import Profile from './Profile';
-
-test('renders Profile component', () => {
-    const { getByText } = render(<Profile />);
-    const headingElement = getByText(/Profile/i);
-    expect(headingElement).toBeInTheDocument();
-});
-    \end{verbatim}
-    \end{figure}
+\JavaCode[COD:profilejs]{Prueba de Profile.js en React.}{Prueba de Profile.js en React.}{javascript/javascript.js}{244}{252}{1}
 
 \newpage
 
@@ -764,55 +120,9 @@ test('renders Profile component', () => {
 En esta sección se presentan algunas de las pruebas realizadas en la aplicación móvil.
 
 \subsubsection{Prueba de LoginScreen}
-
-\begin{figure}[Prueba de LoginScreen]{FIG:loginscreen}{Prueba de LoginScreen en React Native}
-    \begin{verbatim}
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import LoginScreen from './LoginScreen';
-import AuthContext from '../AuthContext';
-
-const mockLogin = jest.fn();
-
-describe('LoginScreen', () => {
-    test('renders LoginScreen and performs login', () => {
-    render(
-        <AuthContext.Provider value={{ login: mockLogin }}>
-        <LoginScreen />
-        </AuthContext.Provider>
-    );
-
-    fireEvent.change(screen.getByPlaceholderText('Username'), {
-        target: { value: 'testuser' },
-    });
-    fireEvent.change(screen.getByPlaceholderText('Password'), {
-        target: { value: 'password123' },
-    });
-    fireEvent.click(screen.getByText('Login'));
-
-    expect(mockLogin).toHaveBeenCalledWith('testuser', 'password123');
-    });
-});
-
-    \end{verbatim}
-    \end{figure}
+\JavaCode[COD:loginscreen]{Prueba de LoginScreen en React Native.}{Prueba de LoginScreen en React Native.}{javascript/javascript.js}{256}{281}{1}
 
 \newpage
 
 \subsubsection{Prueba de HomeScreen}
-\begin{figure}[Prueba de HomeScreen]{FIG:homescreen}{Prueba de HomeScreen en React Native}
-    \begin{verbatim}
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import HomeScreen from './HomeScreen';
-
-describe('HomeScreen', () => {
-    test('renders HomeScreen with welcome message', () => {
-    render(<HomeScreen />);
-    expect(screen.getByText('Welcome to the Home Screen')).toBeInTheDocument();
-    });
-});
-    \end{verbatim}
-    \end{figure}
-
-\newpage
+\JavaCode[COD:homescreen]{Prueba de HomeScreen en React Native.}{Prueba de HomeScreen en React Native.}{javascript/javascript.js}{285}{294}{1}

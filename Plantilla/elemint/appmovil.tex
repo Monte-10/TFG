@@ -1,40 +1,9 @@
-La aplicación móvil de FitFuelBalance ha sido desarrollada utilizando React Native, un framework que permite crear aplicaciones móviles nativas para iOS y Android utilizando JavaScript y React. Esta tecnología ha sido seleccionada por su capacidad de compartir código entre plataformas y su excelente rendimiento en dispositivos móviles.
+La aplicación móvil \circled{10} de FitFuelBalance ha sido desarrollada utilizando React Native, un framework que permite crear aplicaciones móviles nativas para iOS y Android utilizando JavaScript y React. Esta tecnología ha sido seleccionada por su capacidad de compartir código entre plataformas y su excelente rendimiento en dispositivos móviles. La Figura \ref{FIG:estrucmovil} del Apéndice \ref{CAP:FUNCENT} muestra la estructura general de la aplicación móvil.
 
-\begin{itemize}
-    \item \textbf{Estructura del Proyecto:} La estructura del proyecto React Native se ha organizado de la siguiente manera:
-    \begin{itemize}
-        \item \texttt{src/} - Directorio principal del código fuente.
-        \begin{itemize}
-            \item \texttt{api/} - Contiene los archivos relacionados con la API.
-            \begin{itemize}
-                \item \texttt{trainingApi.js} - Archivo para las llamadas a la API relacionadas con los entrenamientos.
-            \end{itemize}
-            \item \texttt{AuthContext.js} - Contexto de autenticación.
-            \item \texttt{components/} - Contiene los componentes reutilizables de la UI.
-            \begin{itemize}
-                \item \texttt{CountdownTimer.js} - Componente para un temporizador de cuenta regresiva.
-            \end{itemize}
-            \item \texttt{navigation/} - Configuración de la navegación de la aplicación.
-            \begin{itemize}
-                \item \texttt{AppNavigator.js} - Archivo de configuración del navegador de la aplicación.
-            \end{itemize}
-            \item \texttt{screens/} - Contiene las diferentes pantallas de la aplicación, la más importantes son:
-            \begin{itemize}
-                \item \texttt{ActiveTrainingScreen.js} - Pantalla de entrenamiento activo.
-                \item \texttt{CalendarScreen.js} - Pantalla del calendario.
-                \item \texttt{FoodDetailsScreen.js} - Pantalla de detalles de alimentos.
-                \item \texttt{HomeScreen.js} - Pantalla de inicio.
-                \item \texttt{LoginScreen.js} - Pantalla de inicio de sesión.
-                \item \texttt{TodayScreen.js} - Muestra los entrenamientos y comidas del día.
-                \item \texttt{TrainingDetailsScreen.js} - Pantalla de detalles del entrenamiento.
-            \end{itemize}
-        \end{itemize}
-    \end{itemize}
+La navegación \circled{11} en la aplicación móvil se ha implementado utilizando React Navigation. Esta biblioteca facilita la gestión de la navegación entre pantallas y la organización de la estructura de navegación de la aplicación. Código \ref{COD:navconfig} muestra un ejemplo de configuración de navegación.
 
-    \item \textbf{Navegación:} La navegación en la aplicación móvil se ha implementado utilizando React Navigation. Esta biblioteca facilita la gestión de la navegación entre pantallas y la organización de la estructura de navegación de la aplicación. Figura \ref{FIG:navconfig} muestra un ejemplo de configuración de navegación.
+Las pantallas de la aplicación móvil se encuentran en la carpeta \texttt{screens/} \circled{12} y contienen los componentes principales de la aplicación. Algunas de las pantallas más importantes son: \texttt{HomeScreen.js}, \texttt{CalendarScreen.js} y \texttt{LoginScreen.js}. Estas pantallas se encargan de mostrar la información y permitir la interacción del usuario con la aplicación.
 
-    \item \textbf{Estilos:} Para los estilos de la aplicación móvil se ha utilizado una combinación de hojas de estilo en JavaScript y StyleSheet de React Native. Esto permite definir estilos que se aplican de manera consistente en toda la aplicación y aprovechar características específicas de la plataforma.
+Para los estilos \circled{13} de la aplicación móvil se ha utilizado una combinación de hojas de estilo en JavaScript y StyleSheet de React Native. Esto permite definir estilos que se aplican de manera consistente en toda la aplicación y aprovechar características específicas de la plataforma.
 
-    \item \textbf{Integración con Backend:} Similar a la aplicación web, la aplicación móvil se comunica con el backend de Django a través de servicios definidos en la carpeta \texttt{api/}. Estos servicios utilizan \texttt{fetch} para realizar solicitudes HTTP y manejar las respuestas. Figura \ref{FIG:reactnativeservice} muestra un ejemplo de un servicio para obtener planes de entrenamiento.
-
-\end{itemize}
+Similar a la aplicación web, la aplicación móvil se comunica con el backend de Django a través de servicios definidos en la carpeta \texttt{api/}. Estos servicios utilizan \texttt{fetch} \circled{14} para realizar solicitudes HTTP y manejar las respuestas. Código \ref{COD:reactnativeservice} muestra un ejemplo de un servicio para obtener planes de entrenamiento.

@@ -1,15 +1,15 @@
 El desarrollo de la API RESTful en FitFuelBalance se ha realizado utilizando Django REST Framework (DRF). Esta API permite la comunicación entre el servidor y los clientes (tanto la aplicación web como la móvil) a través de solicitudes HTTP, proporcionando respuestas en formato JSON. A continuación, se detalla la estructura y los componentes principales de la API.
 
 \subsubsection{Endpoints y Rutas}
-Las rutas de la API están definidas en el archivo \texttt{urls.py} del proyecto. Estas rutas mapean las solicitudes HTTP a las vistas correspondientes, las cuales manejan la lógica de negocio. Figura \ref{FIG:urls} muestra un ejemplo de rutas en Django.
+Las rutas de la API están definidas en el archivo \texttt{urls.py} del proyecto. Estas rutas mapean las solicitudes HTTP a las vistas correspondientes, las cuales manejan la lógica de negocio. Código \ref{COD:urls} muestra un ejemplo de rutas en Django.
 
 
 
 \subsubsection{Vistas y Controladores}
-Las vistas en Django se encargan de manejar las solicitudes HTTP y devolver las respuestas correspondientes. En FitFuelBalance, las vistas se han implementado utilizando clases basadas en vistas (Class-Based Views) y ViewSets de DRF para facilitar la reutilización y el manejo de lógica compleja. Figura \ref{FIG:views} muestra un fragmento del código la vistas del proyecto en Django.
+Las vistas en Django se encargan de manejar las solicitudes HTTP y devolver las respuestas correspondientes. En FitFuelBalance, las vistas se han implementado utilizando clases basadas en vistas (Class-Based Views) y ViewSets de DRF para facilitar la reutilización y el manejo de lógica compleja. Código \ref{COD:views} muestra un fragmento del código la vistas del proyecto en Django.
 
 \subsubsection{Serializadores}
-Los serializadores de DRF se utilizan para convertir instancias de modelos de Django a formatos JSON y viceversa. Esto es esencial para la comunicación entre el servidor y los clientes. Figura \ref{FIG:serializers} muestra un ejemplo de estos serializadores en Django.
+Los serializadores de DRF se utilizan para convertir instancias de modelos de Django a formatos JSON y viceversa. Esto es esencial para la comunicación entre el servidor y los clientes. Código \ref{COD:serializers} muestra un ejemplo de estos serializadores en Django.
 
 \subsubsection{Métodos HTTP}
 La API maneja los siguientes métodos HTTP:
@@ -21,28 +21,8 @@ La API maneja los siguientes métodos HTTP:
 \end{itemize}
 
 \subsubsection{Ejemplo de Solicitud y Respuesta}
-Figura \ref{FIG:getrequest} muestra un ejemplo de solicitud GET en Python utilizando la librería \texttt{requests}. En este caso, se solicita la lista de alimentos disponibles en la API de FitFuelBalance.
-\begin{figure}[Ejemplo Solicitud GET]{FIG:getrequest}{Ejemplo de solicitud GET en Python}
-\begin{verbatim}
-response = requests.get(
-    'https://fitfuelbalance.onrender.com/nutrition/foods/')
-\end{verbatim}
-\end{figure}
+Código \ref{COD:getrequest} muestra un ejemplo de solicitud GET en Python utilizando la librería \texttt{requests}. En este caso, se solicita la lista de alimentos disponibles en la API de FitFuelBalance.
+\PythonCode[COD:getrequest]{Ejemplo Solicitud GET.}{Ejemplo de solicitud GET en Python.}{python/codigo.py}{18}{18}{1}
 
-Figura \ref{FIG:getresponse} muestra un ejemplo de lo que podría ser la respuesta a la solicitud GET anterior. En este caso, se devuelve una lista de alimentos en formato JSON con sus propiedades.
-
-\begin{figure}[Ejemplo Respuesta GET]{FIG:getresponse}{Ejemplo de respuesta GET en JSON}
-\begin{verbatim}
-    [{
-        "id": 1,
-        "name": "Apple",
-        "calories": 52,
-        "protein": 0.3,
-        "carbohydrates": 14,
-        "sugar": 10,
-        "fiber": 2.4,
-        "fat": 0.2,
-        "image": "url/media/foods/apple.jpg"
-    },...]
-\end{verbatim}
-\end{figure}
+Código \ref{COD:getresponse} muestra un ejemplo de lo que podría ser la respuesta a la solicitud GET anterior. En este caso, se devuelve una lista de alimentos en formato JSON con sus propiedades.
+\JavaCode[COD:getresponse]{Ejemplo de Respuesta GET.}{Ejemplo de respuesta GET en JSON.}{python/js.json}{1}{12}{1}

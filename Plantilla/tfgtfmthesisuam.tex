@@ -40,6 +40,12 @@
 \logosdir{img}
 \codesdir{codes}
 
+\usepackage{tikz}
+\usepackage{amsmath}
+
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=1pt] (char) {#1};}}
+
 \begin{document}
 
 \chapter{Introducción\label{CAP:ESTETICA}}{estetica/estetica}
@@ -47,10 +53,11 @@
   \section{Objetivos\label{SEC:GAMASEL}}{estetica/gamacolores}
   \section{Estructura del documento\label{SEC:COLORES}}{estetica/colores}
 
+\chapter{Antecedentes\label{CAP:BACKGROUND}}{estructura/background}
+  \section{Contexto y Necesidad\label{SEC:VARIABLES}}{estructura/titulo}
+  \section{Tecnologías Utilizadas.\label{SEC:PREFACIO}}{estructura/prefacioresumen}
+
 \chapter{Estado del arte\label{CAP:ESTRUCTURA}}{estructura/estructura}
-  \section{Background\label{CAP:BACKGROUND}}{estructura/background}
-    \subsection{Contexto y Necesidad\label{SEC:VARIABLES}}{estructura/titulo}
-    \subsection{Tecnologías Utilizadas.\label{SEC:PREFACIO}}{estructura/prefacioresumen}
   \section{Soluciones Existentes\label{SEC:INDICES}}{estructura/indices}
   \section{Plataformas Personalizadas para la Nutrición y el Ejercicio\label{SEC:COPYRIGHT}}{estructura/copyright}
 

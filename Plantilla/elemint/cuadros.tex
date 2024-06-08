@@ -2,12 +2,7 @@ El desarrollo de FitFuelBalance ha requerido el uso de diversas herramientas y e
 
 \subsubsection{Control de Versiones}
 
-Para el control de versiones se ha utilizado Git junto con la plataforma GitHub. Git es un sistema de control de versiones distribuido que permite a los desarrolladores realizar un seguimiento de los cambios en el código fuente y colaborar de manera eficiente. GitHub, por su parte, proporciona un entorno de alojamiento de repositorios Git con características adicionales como la gestión de issues, pull requests y la integración continua.
-
-\begin{itemize}
-    \item \textbf{Repositorio Git:} El código fuente del proyecto se encuentra alojado en un repositorio privado en GitHub. Esto permite realizar un seguimiento detallado de los cambios, gestionar versiones y colaborar con otros desarrolladores de manera eficiente.
-    \item \textbf{Branching:} Se han utilizado ramas (branches) para organizar el desarrollo de nuevas funcionalidades y la corrección de errores. La rama \texttt{main} contiene la versión estable del proyecto, mientras que las ramas que contienen la aplicación en producción (\texttt{primer-deploy/}), versiones anteriores estables (\texttt{beforeRemake/}) y versiones para probar funcionalidades nuevas (\texttt{modelos-unicos/}) se utilizan para trabajar en paralelo sin afectar la versión principal.
-\end{itemize}
+Para el control de versiones se ha utilizado Git junto con la plataforma GitHub. Git es un sistema de control de versiones distribuido que permite a los desarrolladores realizar un seguimiento de los cambios en el código fuente y colaborar de manera eficiente. GitHub, por su parte, proporciona un entorno de alojamiento de repositorios Git con características adicionales como la gestión de issues, pull requests y la integración continua. El código fuente del proyecto se encuentra alojado en un repositorio privado en GitHub, lo que permite realizar un seguimiento detallado de los cambios, gestionar versiones y colaborar con otros desarrolladores de manera eficiente. Se han utilizado ramas (branches) para organizar el desarrollo de nuevas funcionalidades y la corrección de errores. La rama \texttt{main} contiene la versión estable del proyecto, mientras que las ramas que contienen la aplicación en producción (\texttt{primer-deploy/}), versiones anteriores estables (\texttt{beforeRemake/}) y versiones para probar funcionalidades nuevas (\texttt{modelos-unicos/}) se utilizan para trabajar en paralelo sin afectar la versión principal.
 
 \subsubsection{Entorno de Desarrollo}
 
@@ -23,26 +18,12 @@ Para la gestión de la base de datos se ha utilizado Neon, una plataforma basada
 
 \subsubsection{Despliegue}
 
-El despliegue de las aplicaciones web y backend se ha realizado utilizando Render, una plataforma de despliegue en la nube que facilita el proceso de publicación de aplicaciones.
-Esta plataforma ha sido seleccionada por su simplicidad y eficiencia en el despliegue de aplicaciones. Render permite automatizar el despliegue a partir del código fuente alojado en GitHub, asegurando que las últimas versiones del proyecto estén siempre disponibles en producción.
-
+El despliegue de las aplicaciones web y backend se ha realizado utilizando Render, una plataforma de despliegue en la nube que facilita el proceso de publicación de aplicaciones. Esta plataforma ha sido seleccionada por su simplicidad y eficiencia en el despliegue de aplicaciones. Render permite automatizar el despliegue a partir del código fuente alojado en GitHub, asegurando que las últimas versiones del proyecto estén siempre disponibles en producción.
 
 \subsubsection{Testing y Depuración}
 
-Durante el desarrollo del proyecto, se han utilizado diversas herramientas y técnicas para realizar pruebas y depuración de código.
-
-\begin{itemize}
-    \item \textbf{React Native Debugger:} Utilizado para depurar la aplicación móvil desarrollada en React Native.
-    \item \textbf{Postman:} Herramienta utilizada para probar las API desarrolladas en Django y asegurarse de que respondan correctamente a las solicitudes.
-    \item \textbf{Pytest:} Framework de pruebas para Python, utilizado para crear y ejecutar pruebas automatizadas del backend.
-    \item \textbf{Google Chrome DevTools:} Herramienta de desarrollo integrada en el navegador Chrome.
-\end{itemize}
+Durante el desarrollo del proyecto, se han utilizado diversas herramientas y técnicas para realizar pruebas y depuración de código. React Native Debugger se ha utilizado para depurar la aplicación móvil desarrollada en React Native. Postman ha sido la herramienta utilizada para probar las API desarrolladas en Django y asegurarse de que respondan correctamente a las solicitudes. Pytest es el framework de pruebas para Python, utilizado para crear y ejecutar pruebas automatizadas del backend. Google Chrome DevTools ha sido la herramienta de desarrollo integrada en el navegador Chrome.
 
 \subsubsection{Gestión de Dependencias}
 
-Para gestionar las dependencias del proyecto se han utilizado herramientas específicas para cada entorno de desarrollo.
-
-\begin{itemize}
-    \item \textbf{pip:} Utilizado para gestionar las dependencias del backend desarrollado en Python y Django.
-    \item \textbf{npm:} Utilizado para gestionar las dependencias del frontend desarrollado en React y React Native.
-\end{itemize}
+Para gestionar las dependencias del proyecto se han utilizado herramientas específicas para cada entorno de desarrollo. \texttt{pip} se ha utilizado para gestionar las dependencias del backend desarrollado en Python y Django. \texttt{npm} se ha utilizado para gestionar las dependencias del frontend desarrollado en React y React Native.

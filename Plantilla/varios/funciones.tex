@@ -46,3 +46,39 @@ El diagrama de la figura \ref{FIG:frontend} muestra la estructura del frontend d
 \begin{figure}[Diagrama de la estructura del frontend]{FIG:frontend}{Diagrama de la estructura del frontend de FitFuelBalance}
   \image{16cm}{}{front}
 \end{figure}
+\newpage
+
+\subsubsection{Aplicación Móvil}
+
+A continuación se muestra un esquema de la estructura de la aplicación móvil:
+
+\begin{figure}[Estructura de aplicación móvil]{FIG:estrucmovil}{Esquema de la estructura de la aplicación móvil}
+    \begin{itemize}
+        \item \texttt{src/} - Directorio principal del código fuente.
+        \begin{itemize}
+            \item \texttt{api/} - Contiene los archivos relacionados con la API.
+            \begin{itemize}
+                \item \texttt{trainingApi.js} - Archivo para las llamadas a la API relacionadas con los entrenamientos.
+            \end{itemize}
+            \item \texttt{AuthContext.js} - Contexto de autenticación.
+            \item \texttt{components/} - Contiene los componentes reutilizables de la UI.
+            \begin{itemize}
+                \item \texttt{CountdownTimer.js} - Componente para un temporizador de cuenta regresiva.
+            \end{itemize}
+            \item \texttt{navigation/} - Configuración de la navegación de la aplicación.
+            \begin{itemize}
+                \item \texttt{AppNavigator.js} - Archivo de configuración del navegador de la aplicación.
+            \end{itemize}
+            \item \texttt{screens/} - Contiene las diferentes pantallas de la aplicación, la más importantes son:
+            \begin{itemize}
+                \item \texttt{ActiveTrainingScreen.js} - Pantalla de entrenamiento activo.
+                \item \texttt{CalendarScreen.js} - Pantalla del calendario.
+                \item \texttt{FoodDetailsScreen.js} - Pantalla de detalles de alimentos.
+                \item \texttt{HomeScreen.js} - Pantalla de inicio.
+                \item \texttt{LoginScreen.js} - Pantalla de inicio de sesión.
+                \item \texttt{TodayScreen.js} - Muestra los entrenamientos y comidas del día.
+                \item \texttt{TrainingDetailsScreen.js} - Pantalla de detalles del entrenamiento.
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{figure}
