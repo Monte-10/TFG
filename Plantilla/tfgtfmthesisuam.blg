@@ -2,38 +2,127 @@ This is BibTeX, Version 0.99d (TeX Live 2022/dev/Debian)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: tfgtfmthesisuam.aux
 The style file: ieeetr.bst
-I found no \citation commands---while reading file tfgtfmthesisuam.aux
 Database file #1: tfgtfmthesisuam.bib
-You've used 0 entries,
+Warning--entry type for "MetodologiaIncremental" isn't style-file defined
+--line 1 of file tfgtfmthesisuam.bib
+Warning--entry type for "JWTIntroduction" isn't style-file defined
+--line 8 of file tfgtfmthesisuam.bib
+Warning--entry type for "ACSMRebrandX" isn't style-file defined
+--line 14 of file tfgtfmthesisuam.bib
+Warning--entry type for "WHOPhysicalActivity" isn't style-file defined
+--line 20 of file tfgtfmthesisuam.bib
+Warning--entry type for "CDC" isn't style-file defined
+--line 26 of file tfgtfmthesisuam.bib
+Warning--entry type for "BJSM" isn't style-file defined
+--line 32 of file tfgtfmthesisuam.bib
+Warning--entry type for "Django" isn't style-file defined
+--line 38 of file tfgtfmthesisuam.bib
+Warning--entry type for "React" isn't style-file defined
+--line 44 of file tfgtfmthesisuam.bib
+Warning--entry type for "ReactNative" isn't style-file defined
+--line 50 of file tfgtfmthesisuam.bib
+Warning--entry type for "PostgreSQL" isn't style-file defined
+--line 56 of file tfgtfmthesisuam.bib
+Warning--entry type for "Python" isn't style-file defined
+--line 62 of file tfgtfmthesisuam.bib
+Warning--entry type for "JavaScript" isn't style-file defined
+--line 68 of file tfgtfmthesisuam.bib
+Warning--entry type for "Bootstrap" isn't style-file defined
+--line 74 of file tfgtfmthesisuam.bib
+Warning--entry type for "CSS" isn't style-file defined
+--line 80 of file tfgtfmthesisuam.bib
+Warning--entry type for "MyFitnessPal" isn't style-file defined
+--line 86 of file tfgtfmthesisuam.bib
+Warning--entry type for "Yazio" isn't style-file defined
+--line 92 of file tfgtfmthesisuam.bib
+Warning--entry type for "NikeTrainingClub" isn't style-file defined
+--line 98 of file tfgtfmthesisuam.bib
+Warning--entry type for "Fitbod" isn't style-file defined
+--line 104 of file tfgtfmthesisuam.bib
+Warning--entry type for "Calisteniapp" isn't style-file defined
+--line 110 of file tfgtfmthesisuam.bib
+Warning--entry type for "Fitbit" isn't style-file defined
+--line 116 of file tfgtfmthesisuam.bib
+Warning--entry type for "SamsungHealth" isn't style-file defined
+--line 122 of file tfgtfmthesisuam.bib
+Warning--entry type for "Nutrifix" isn't style-file defined
+--line 128 of file tfgtfmthesisuam.bib
+Warning--entry type for "PlateJoy" isn't style-file defined
+--line 134 of file tfgtfmthesisuam.bib
+Warning--entry type for "Freeletics" isn't style-file defined
+--line 140 of file tfgtfmthesisuam.bib
+Warning--entry type for "JEFIT" isn't style-file defined
+--line 146 of file tfgtfmthesisuam.bib
+Warning--entry type for "8fit" isn't style-file defined
+--line 152 of file tfgtfmthesisuam.bib
+Warning--entry type for "Noom" isn't style-file defined
+--line 158 of file tfgtfmthesisuam.bib
+Warning--entry type for "GitHub" isn't style-file defined
+--line 164 of file tfgtfmthesisuam.bib
+Warning--entry type for "VSCode" isn't style-file defined
+--line 170 of file tfgtfmthesisuam.bib
+Warning--entry type for "Figma" isn't style-file defined
+--line 176 of file tfgtfmthesisuam.bib
+Warning--entry type for "ReactNativeCLI" isn't style-file defined
+--line 182 of file tfgtfmthesisuam.bib
+Warning--entry type for "Neon" isn't style-file defined
+--line 188 of file tfgtfmthesisuam.bib
+Warning--entry type for "Render" isn't style-file defined
+--line 194 of file tfgtfmthesisuam.bib
+Warning--entry type for "Android" isn't style-file defined
+--line 200 of file tfgtfmthesisuam.bib
+Warning--entry type for "iOS" isn't style-file defined
+--line 206 of file tfgtfmthesisuam.bib
+Warning--entry type for "RESTfulAPI" isn't style-file defined
+--line 212 of file tfgtfmthesisuam.bib
+Warning--entry type for "Axios" isn't style-file defined
+--line 218 of file tfgtfmthesisuam.bib
+Warning--entry type for "JWT" isn't style-file defined
+--line 224 of file tfgtfmthesisuam.bib
+Warning--entry type for "Pip" isn't style-file defined
+--line 230 of file tfgtfmthesisuam.bib
+Warning--entry type for "Npm" isn't style-file defined
+--line 236 of file tfgtfmthesisuam.bib
+Warning--entry type for "Pytest" isn't style-file defined
+--line 242 of file tfgtfmthesisuam.bib
+Warning--entry type for "Postman" isn't style-file defined
+--line 248 of file tfgtfmthesisuam.bib
+Warning--entry type for "ReactNativeDebugger" isn't style-file defined
+--line 254 of file tfgtfmthesisuam.bib
+Warning--entry type for "GoogleChromeDevTools" isn't style-file defined
+--line 260 of file tfgtfmthesisuam.bib
+Warning--entry type for "Lucidchart" isn't style-file defined
+--line 278 of file tfgtfmthesisuam.bib
+You've used 45 entries,
             1876 wiz_defined-function locations,
-            478 strings with 3499 characters,
-and the built_in function-call counts, 20 in all, are:
-= -- 0
-> -- 0
+            608 strings with 5956 characters,
+and the built_in function-call counts, 4888 in all, are:
+= -- 540
+> -- 45
 < -- 0
-+ -- 0
++ -- 45
 - -- 0
-* -- 2
-:= -- 9
-add.period$ -- 0
-call.type$ -- 0
-change.case$ -- 0
+* -- 93
+:= -- 420
+add.period$ -- 46
+call.type$ -- 45
+change.case$ -- 45
 chr.to.int$ -- 0
-cite$ -- 0
-duplicate$ -- 0
-empty$ -- 1
+cite$ -- 45
+duplicate$ -- 180
+empty$ -- 811
 format.name$ -- 0
-if$ -- 1
+if$ -- 1441
 int.to.chr$ -- 0
-int.to.str$ -- 0
+int.to.str$ -- 45
 missing$ -- 0
-newline$ -- 3
+newline$ -- 183
 num.names$ -- 0
-pop$ -- 0
+pop$ -- 404
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 1
+skip$ -- 134
 stack$ -- 0
 substring$ -- 0
 swap$ -- 0
@@ -43,6 +132,6 @@ top$ -- 0
 type$ -- 0
 warning$ -- 0
 while$ -- 0
-width$ -- 0
-write$ -- 2
-(There was 1 error message)
+width$ -- 47
+write$ -- 318
+(There were 45 warnings)

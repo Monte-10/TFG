@@ -34,10 +34,13 @@ function CreateIngredient() {
         'Authorization': `Token ${localStorage.getItem('authToken')}`
       }
     })
-      .then(response => response.json())
-      .then(data => {
-        setFoods(data);
-      });
+    .then(response => response.json())
+    .then(data => {
+      setFoods(data);
+    })
+    .catch(error => {
+      console.error('Error fetching foods:', error);
+    });
   }, [apiUrl]);
 
   useEffect(() => {
@@ -114,7 +117,7 @@ function CreateIngredient() {
       minSaturatedFat: { value: '', active: false },
       maxSaturatedFat: { value: '', active: false },
     });
-    setShowAdvancedFilters(false);  // Optionally reset the visibility
+    setShowAdvancedFilters(false);
   };
 
   const handleSelectChange = (event) => {
@@ -140,18 +143,17 @@ function CreateIngredient() {
       food: selectedFood,
       quantity: quantity
     };
-    console.log("Submitting ingredient data:", ingredientData);
 
     fetch(`${apiUrl}/nutrition/ingredients/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
       },
       body: JSON.stringify(ingredientData),
     })
     .then(response => response.json())
     .then(data => {
-      console.log('Ingredient created successfully', data);
       setIngredientCreated(true);
     })
     .catch(error => {

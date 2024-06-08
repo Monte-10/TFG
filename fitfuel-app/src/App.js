@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import './css/style.css';
-import './vendor/bootstrap/css/bootstrap.min.css';
-import { BrowserRouter as Router, Routes, Route, Link, Navigate, NavLink } from 'react-router-dom';
-import { Container, Navbar, Nav, Offcanvas } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
-import Dropdown from 'react-bootstrap/Dropdown';
-import Accordion from 'react-bootstrap/Accordion';
+import { BrowserRouter as Router, Routes, Route, NavLink, Navigate } from 'react-router-dom';
+import { Container, Navbar, Nav, Offcanvas, Accordion, Dropdown } from 'react-bootstrap';
 import axios from 'axios';
 
 import HomePage from './components/HomePage';
@@ -57,7 +52,7 @@ function App() {
             const fetchProfile = async () => {
                 try {
                     const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/profile/`, {
-                        headers: { 'Authorization': `Token ${localStorage.getItem('authToken')}` }
+                        headers: { 'Authorization': `Token ${authToken}` }
                     });
                     setProfile(response.data);
                 } catch (error) {
@@ -85,18 +80,18 @@ function App() {
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/search_trainer/`, {
                 params: { specialty, trainerType },
-                headers: { 'Authorization': `Token ${localStorage.getItem('authToken')}` }
+                headers: { 'Authorization': `Token ${authToken}` }
             });
             setTrainers(response.data);
         } catch (error) {
             console.error("Error al buscar entrenadores:", error);
         }
-    };    
+    };
 
     const handleSendRequest = async (trainerId) => {
         try {
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/send_request/${trainerId}/`, {}, {
-                headers: { 'Authorization': `Token ${localStorage.getItem('authToken')}` }
+                headers: { 'Authorization': `Token ${authToken}` }
             });
             console.log("Solicitud enviada con éxito", response.data);
         } catch (error) {
@@ -117,26 +112,20 @@ function App() {
                                     {profile?.username || "Usuario"}
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                    <Dropdown.Item as={Link} to="/profile">Ver Perfil</Dropdown.Item>
+                                    <Dropdown.Item as={NavLink} to="/profile">Ver Perfil</Dropdown.Item>
                                     <Dropdown.Item onClick={handleLogout}>Cerrar Sesión</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
                         ) : (
                             <Nav className="flex-column mb-3 ms-auto">
                                 <Nav.Item>
-                                    <LinkContainer to="/login">
-                                        <Nav.Link>Iniciar Sesión</Nav.Link>
-                                    </LinkContainer>
+                                    <Nav.Link as={NavLink} to="/login">Iniciar Sesión</Nav.Link>
                                 </Nav.Item>
                                 <Nav.Item>
-                                    <LinkContainer to="/signup/regularuser">
-                                        <Nav.Link>Registrarse como Usuario</Nav.Link>
-                                    </LinkContainer>
+                                    <Nav.Link as={NavLink} to="/signup/regularuser">Registrarse como Usuario</Nav.Link>
                                 </Nav.Item>
                                 <Nav.Item>
-                                    <LinkContainer to="/signup/trainer">
-                                        <Nav.Link>Registrarse como Entrenador</Nav.Link>
-                                    </LinkContainer>
+                                    <Nav.Link as={NavLink} to="/signup/trainer">Registrarse como Entrenador</Nav.Link>
                                 </Nav.Item>
                             </Nav>
                         )}
@@ -152,52 +141,52 @@ function App() {
                                             <Nav className="flex-column">
                                                 <p className="mt-2 mb-1"><strong>Creación de Alimentos</strong></p>
                                                 <Nav.Item>
-                                                    <Nav.Link as={Link} to="/nutrition/create-food">Crear Alimento</Nav.Link>
+                                                    <Nav.Link as={NavLink} to="/nutrition/create-food">Crear Alimento</Nav.Link>
                                                 </Nav.Item>
                                                 <Nav.Item>
-                                                    <Nav.Link as={Link} to="/nutrition/create-ingredient">Crear Ingrediente</Nav.Link>
+                                                    <Nav.Link as={NavLink} to="/nutrition/create-ingredient">Crear Ingrediente</Nav.Link>
                                                 </Nav.Item>
                                                 <Nav.Item>
-                                                    <Nav.Link as={Link} to="/nutrition/create-dish">Crear Plato</Nav.Link>
+                                                    <Nav.Link as={NavLink} to="/nutrition/create-dish">Crear Plato</Nav.Link>
                                                 </Nav.Item>
                                                 <Nav.Item>
-                                                    <Nav.Link as={Link} to="/nutrition/create-meal">Crear Comida</Nav.Link>
+                                                    <Nav.Link as={NavLink} to="/nutrition/create-meal">Crear Comida</Nav.Link>
                                                 </Nav.Item>
                                                 <Nav.Item>
-                                                    <Nav.Link as={Link} to="/nutrition/create-diet">Crear Dieta</Nav.Link>
+                                                    <Nav.Link as={NavLink} to="/nutrition/create-diet">Crear Dieta</Nav.Link>
                                                 </Nav.Item>
                                                 <Nav.Item>
-                                                    <Nav.Link as={Link} to="/nutrition/upload-food">Subir Alimento</Nav.Link>
+                                                    <Nav.Link as={NavLink} to="/nutrition/upload-food">Subir Alimento</Nav.Link>
                                                 </Nav.Item>
                                                 <p className="mt-2 mb-1"><strong>Creación de Opciones</strong></p>
                                                 <Nav.Item>
-                                                    <Nav.Link as={Link} to="/nutrition/create-dayoption">Crear Opción Diaria</Nav.Link>
+                                                    <Nav.Link as={NavLink} to="/nutrition/create-dayoption">Crear Opción Diaria</Nav.Link>
                                                 </Nav.Item>
                                                 <Nav.Item>
-                                                    <Nav.Link as={Link} to="/nutrition/create-weekoption">Crear Opción Semanal</Nav.Link>
+                                                    <Nav.Link as={NavLink} to="/nutrition/create-weekoption">Crear Opción Semanal</Nav.Link>
                                                 </Nav.Item>
                                                 <Nav.Item>
-                                                    <Nav.Link as={Link} to="/nutrition/create-option">Crear Opción</Nav.Link>
+                                                    <Nav.Link as={NavLink} to="/nutrition/create-option">Crear Opción</Nav.Link>
                                                 </Nav.Item>
                                                 <Nav.Item>
-                                                    <Nav.Link as={Link} to="/nutrition/assign-option">Asignar Opción</Nav.Link>
+                                                    <Nav.Link as={NavLink} to="/nutrition/assign-option">Asignar Opción</Nav.Link>
                                                 </Nav.Item>
                                                 <p className="mt-2 mb-1"><strong>Listado</strong></p>
                                                 <Nav.Item>
-                                                    <Nav.Link as={Link} to="/nutrition/list-food">Listar Alimentos</Nav.Link>
+                                                    <Nav.Link as={NavLink} to="/nutrition/list-food">Listar Alimentos</Nav.Link>
                                                 </Nav.Item>
                                                 <Nav.Item>
-                                                    <Nav.Link as={Link} to="/nutrition/list-ingredient">Listar Ingredientes</Nav.Link>
+                                                    <Nav.Link as={NavLink} to="/nutrition/list-ingredient">Listar Ingredientes</Nav.Link>
                                                 </Nav.Item>
                                                 <Nav.Item>
-                                                    <Nav.Link as={Link} to="/nutrition/list-dish">Listar Platos</Nav.Link>
+                                                    <Nav.Link as={NavLink} to="/nutrition/list-dish">Listar Platos</Nav.Link>
                                                 </Nav.Item>
                                                 <Nav.Item>
-                                                    <Nav.Link as={Link} to="/nutrition/list-meal">Listar Comidas</Nav.Link>
+                                                    <Nav.Link as={NavLink} to="/nutrition/list-meal">Listar Comidas</Nav.Link>
                                                 </Nav.Item>
                                                 <p className="mt-2 mb-1"><strong>Adaptar Dietas y Opciones</strong></p>
                                                 <Nav.Item>
-                                                    <Nav.Link as={Link} to="nutrition/adapt-diet-or-option">Adaptar Dieta u Opción</Nav.Link>
+                                                    <Nav.Link as={NavLink} to="/nutrition/adapt-diet-or-option">Adaptar Dieta u Opción</Nav.Link>
                                                 </Nav.Item>
                                             </Nav>
                                         </Accordion.Body>
@@ -207,24 +196,16 @@ function App() {
                                         <Accordion.Body>
                                             <Nav className="flex-column">
                                                 <Nav.Item>
-                                                    <LinkContainer to="/sport/create-exercise">
-                                                        <Nav.Link>Crear Ejercicio</Nav.Link>
-                                                    </LinkContainer>
+                                                    <Nav.Link as={NavLink} to="/sport/create-exercise">Crear Ejercicio</Nav.Link>
                                                 </Nav.Item>
                                                 <Nav.Item>
-                                                    <LinkContainer to="/sport/list-exercise">
-                                                        <Nav.Link>Lista de Ejercicios</Nav.Link>
-                                                    </LinkContainer>
+                                                    <Nav.Link as={NavLink} to="/sport/list-exercise">Lista de Ejercicios</Nav.Link>
                                                 </Nav.Item>
                                                 <Nav.Item>
-                                                    <LinkContainer to="/sport/create-training">
-                                                        <Nav.Link>Crear Entrenamiento</Nav.Link>
-                                                    </LinkContainer>
+                                                    <Nav.Link as={NavLink} to="/sport/create-training">Crear Entrenamiento</Nav.Link>
                                                 </Nav.Item>
                                                 <Nav.Item>
-                                                    <LinkContainer to="/sport/list-training">
-                                                        <Nav.Link>Listar Entrenamientos</Nav.Link>
-                                                    </LinkContainer>
+                                                    <Nav.Link as={NavLink} to="/sport/list-training">Listar Entrenamientos</Nav.Link>
                                                 </Nav.Item>
                                             </Nav>
                                         </Accordion.Body>
@@ -298,23 +279,23 @@ function Nutrition() {
     return (
         <div>
             <h2>Nutrición</h2>
-            <Link to="/nutrition/create-food">Crear Alimento</Link><br />
-            <Link to="/nutrition/create-ingredient">Crear Ingrediente</Link><br />
-            <Link to="/nutrition/create-dish">Crear Plato</Link><br />
-            <Link to="/nutrition/create-meal">Crear Comida</Link><br />
-            <Link to="/nutrition/create-diet">Crear Dieta</Link><br />
-            <Link to="/nutrition/upload-food">Subir Alimento</Link><br />
-            <Link to="/nutrition/create-dayoption">Crear Opción Diaria</Link><br />
-            <Link to="/nutrition/create-weekoption">Crear Opción Semanal</Link><br />
-            <Link to="/nutrition/create-option">Crear Opción</Link><br />
-            <Link to="/nutrition/assign-option">Asignar Opción</Link><br />
-            <Link to="/nutrition/list-ingredient">Listar Ingredientes</Link><br />
-            <Link to="/nutrition/list-food">Listar Alimentos</Link><br />
-            <Link to="/nutrition/edit-food/:id">Editar Alimento</Link><br />
-            <Link to="/nutrition/edit-ingredient/:id">Editar Ingrediente</Link><br />
-            <Link to="/nutrition/edit-dish/:id">Editar Plato</Link><br />
-            <Link to="/nutrition/edit-meal/:id">Editar Comida</Link><br />
-            <Link to="/nutrition/edit-diet/:id">Editar Dieta</Link><br />
+            <NavLink to="/nutrition/create-food">Crear Alimento</NavLink><br />
+            <NavLink to="/nutrition/create-ingredient">Crear Ingrediente</NavLink><br />
+            <NavLink to="/nutrition/create-dish">Crear Plato</NavLink><br />
+            <NavLink to="/nutrition/create-meal">Crear Comida</NavLink><br />
+            <NavLink to="/nutrition/create-diet">Crear Dieta</NavLink><br />
+            <NavLink to="/nutrition/upload-food">Subir Alimento</NavLink><br />
+            <NavLink to="/nutrition/create-dayoption">Crear Opción Diaria</NavLink><br />
+            <NavLink to="/nutrition/create-weekoption">Crear Opción Semanal</NavLink><br />
+            <NavLink to="/nutrition/create-option">Crear Opción</NavLink><br />
+            <NavLink to="/nutrition/assign-option">Asignar Opción</NavLink><br />
+            <NavLink to="/nutrition/list-ingredient">Listar Ingredientes</NavLink><br />
+            <NavLink to="/nutrition/list-food">Listar Alimentos</NavLink><br />
+            <NavLink to="/nutrition/edit-food/:id">Editar Alimento</NavLink><br />
+            <NavLink to="/nutrition/edit-ingredient/:id">Editar Ingrediente</NavLink><br />
+            <NavLink to="/nutrition/edit-dish/:id">Editar Plato</NavLink><br />
+            <NavLink to="/nutrition/edit-meal/:id">Editar Comida</NavLink><br />
+            <NavLink to="/nutrition/edit-diet/:id">Editar Dieta</NavLink><br />
         </div>
     );
 }
@@ -323,14 +304,14 @@ function Sport() {
     return (
         <div>
             <h2>Deporte</h2>
-            <Link to="/sport/create-exercise">Crear Ejercicio</Link><br />
-            <Link to="/sport/exercise/:id">Detalles del Ejercicio</Link><br />
-            <Link to="/sport/edit-exercise/:id">Editar Ejercicio</Link><br />
-            <Link to="/sport/create-training">Crear Entrenamiento</Link><br />
-            <Link to="/sport/list-exercise">Listar Ejercicios</Link><br />
-            <Link to="/sport/edit-training/:id">Editar Entrenamiento</Link><br />
-            <Link to="/sport/list-training">Listar Entrenamientos</Link><br />
-            <Link to="/sport/training/:id">Detalles del Entrenamiento</Link><br />
+            <NavLink to="/sport/create-exercise">Crear Ejercicio</NavLink><br />
+            <NavLink to="/sport/exercise/:id">Detalles del Ejercicio</NavLink><br />
+            <NavLink to="/sport/edit-exercise/:id">Editar Ejercicio</NavLink><br />
+            <NavLink to="/sport/create-training">Crear Entrenamiento</NavLink><br />
+            <NavLink to="/sport/list-exercise">Listar Ejercicios</NavLink><br />
+            <NavLink to="/sport/edit-training/:id">Editar Entrenamiento</NavLink><br />
+            <NavLink to="/sport/list-training">Listar Entrenamientos</NavLink><br />
+            <NavLink to="/sport/training/:id">Detalles del Entrenamiento</NavLink><br />
         </div>
     );
 }

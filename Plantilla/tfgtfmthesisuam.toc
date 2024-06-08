@@ -49,7 +49,7 @@
 \contentsline {section}{\numberline {5.1}Back-End}{21}{section.5.1}%
 \contentsline {subsection}{\numberline {5.1.1}Estructura del Servidor}{21}{subsection.5.1.1}%
 \contentsline {subsection}{\numberline {5.1.2}Base de Datos}{23}{subsection.5.1.2}%
-\contentsline {subsection}{\numberline {5.1.3}API REST}{25}{subsection.5.1.3}%
+\contentsline {subsection}{\numberline {5.1.3}API REST}{26}{subsection.5.1.3}%
 \contentsline {subsubsection}{Endpoints y Rutas}{26}{section*.40}%
 \contentsline {subsubsection}{Vistas y Controladores}{26}{section*.41}%
 \contentsline {subsubsection}{Serializadores}{26}{section*.42}%
@@ -93,7 +93,7 @@
 \contentsline {subsection}{\numberline {7.2.2}Mejoras en la Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{40}{subsection.7.2.2}%
 \contentsline {subsection}{\numberline {7.2.3}Nuevas Funcionalidades}{40}{subsection.7.2.3}%
 \contentsline {subsection}{\numberline {7.2.4}Integraci\IeC {\'o}n de Inteligencia Artificial}{40}{subsection.7.2.4}%
-\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{41}{chapter*.69}%
+\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{42}{chapter*.69}%
 \contentsline {part}{Ap\IeC {\'e}ndices}{43}{part.1}%
 \contentsline {chapter}{\numberline {A}Dependecias y librer\IeC {\'\i }as}{45}{appendix.Alph1}%
 \contentsline {section}{\numberline {A.1}Acceso a FitFuelBalance}{45}{section.Alph1.1}%
@@ -121,8 +121,9 @@
 \contentsline {subsection}{\numberline {D.0.4}Asignaci\IeC {\'o}n de entrenador}{56}{subsection.Alph4.0.4}%
 \contentsline {chapter}{\numberline {E}Estructura del Proyecto}{57}{appendix.Alph5}%
 \contentsline {subsection}{\numberline {E.0.1}Backend}{57}{subsection.Alph5.0.1}%
-\contentsline {subsection}{\numberline {E.0.2}Frontend}{57}{subsection.Alph5.0.2}%
-\contentsline {subsubsection}{Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{61}{section*.80}%
+\contentsline {subsubsection}{Base de Datos}{59}{section*.79}%
+\contentsline {subsection}{\numberline {E.0.2}Frontend}{60}{subsection.Alph5.0.2}%
+\contentsline {subsubsection}{Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{62}{section*.83}%
 \contentsline {chapter}{\numberline {F}Capturas de Pantalla}{63}{appendix.Alph6}%
 \contentsline {chapter}{\numberline {G}C\IeC {\'o}digo Fuente}{65}{appendix.Alph7}%
 \contentsline {section}{\numberline {G.1}Back-End}{65}{section.Alph7.1}%
@@ -150,9 +151,9 @@
 \contentsline {subsection}{\numberline {G.4.7}Pruebas de Nutrici\IeC {\'o}n}{82}{subsection.Alph7.4.7}%
 \contentsline {section}{\numberline {G.5}Pruebas del Front-End}{83}{section.Alph7.5}%
 \contentsline {subsection}{\numberline {G.5.1}Pruebas de la Aplicaci\IeC {\'o}n Web}{83}{subsection.Alph7.5.1}%
-\contentsline {subsubsection}{Prueba de HomePage}{83}{section*.82}%
+\contentsline {subsubsection}{Prueba de HomePage}{83}{section*.85}%
 \contentsline {subsection}{\numberline {G.5.2}Pruebas de Login}{84}{subsection.Alph7.5.2}%
 \contentsline {subsection}{\numberline {G.5.3}Pruebas de Profile}{85}{subsection.Alph7.5.3}%
 \contentsline {subsection}{\numberline {G.5.4}Pruebas de la Aplicaci\IeC {\'o}n M\IeC {\'o}vil}{86}{subsection.Alph7.5.4}%
-\contentsline {subsubsection}{Prueba de LoginScreen}{86}{section*.83}%
-\contentsline {subsubsection}{Prueba de HomeScreen}{87}{section*.84}%
+\contentsline {subsubsection}{Prueba de LoginScreen}{86}{section*.86}%
+\contentsline {subsubsection}{Prueba de HomeScreen}{87}{section*.87}%

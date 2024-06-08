@@ -1,8 +1,8 @@
 La arquitectura de FitFuelBalance se ha diseñado para ser modular, escalable y mantener una separación clara entre las distintas capas del sistema. A continuación, se describen los principales componentes de la arquitectura y sus interacciones.
 
-El sistema está estructurado en tres capas principales. La Capa de Presentación se divide en dos componentes: el Frontend Web y la Aplicación Móvil. El Frontend Web, desarrollado utilizando React, se encarga de la interacción con el usuario a través de una interfaz intuitiva y responsive. Para el diseño y estilo visual, se utilizan Bootstrap y CSS. Por otro lado, la Aplicación Móvil, desarrollada con React Native, permite a los usuarios acceder a los servicios de FitFuelBalance desde dispositivos móviles iOS y Android. La interfaz móvil está diseñada para ser amigable y fácil de usar.
+El sistema está estructurado en tres capas principales. La Capa de Presentación se divide en dos componentes: el Frontend Web y la Aplicación Móvil. El Frontend Web, desarrollado utilizando React, se encarga de la interacción con el usuario a través de una interfaz intuitiva y responsive. Para el diseño y estilo visual, se utilizan Bootstrap y CSS. Por otro lado, la Aplicación Móvil, desarrollada con React Native, permite a los usuarios acceder a los servicios de FitFuelBalance desde dispositivos móviles iOS \cite{iOS} y Android \cite{Android}. La interfaz móvil está diseñada para ser amigable y fácil de usar.
 
-La Capa de Lógica de Negocio está representada por el Backend, desarrollado con Django. El backend maneja la lógica de negocio de la aplicación, las reglas de negocio y la gestión de datos. Además, implementa APIs RESTful para la comunicación con el frontend y la aplicación móvil, asegurando una integración eficiente y segura entre las distintas partes del sistema.
+La Capa de Lógica de Negocio está representada por el Backend, desarrollado con Django. El backend maneja la lógica de negocio de la aplicación, las reglas de negocio y la gestión de datos. Además, implementa APIs RESTful \cite{RESTfulAPI} para la comunicación con el frontend y la aplicación móvil, asegurando una integración eficiente y segura entre las distintas partes del sistema.
 
 Finalmente, la Capa de Datos se centra en la Base de Datos. Para almacenar y gestionar los datos de la aplicación se utiliza PostgreSQL. Neon gestiona esta base de datos, proporcionando alta disponibilidad y escalabilidad, lo que garantiza que los datos estén siempre accesibles y seguros, incluso a medida que la aplicación crece y se expande.
 
@@ -26,4 +26,3 @@ A continuación, Figura \ref{FIG:arquitectura} muestra un diagrama de la arquite
 \subsubsection{Despliegue y Infraestructura}
 
 El despliegue de FitFuelBalance se ha realizado utilizando \textbf{Render}, una plataforma que facilita la gestión y el despliegue continuo tanto del frontend como del backend. Render permite gestionar la aplicación de manera eficiente, asegurando una alta disponibilidad, escalabilidad y rendimiento, lo que permite manejar un alto volumen de usuarios y datos.
-    

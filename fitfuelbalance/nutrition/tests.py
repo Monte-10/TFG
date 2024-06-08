@@ -2,7 +2,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from user.models import CustomUser, Trainer
-from nutrition.models import Food, Ingredient, Dish, Meal, Diet, DailyDiet, Option, AssignedOption
+from nutrition.models import Food, Ingredient, Dish, Meal, Diet, DailyDiet, Option, AssignedOption, WeekOption, DayOption
 from datetime import date, timedelta
 from django.utils import timezone
 

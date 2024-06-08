@@ -15,6 +15,7 @@ function CreateDish() {
     special_drink_or_supplement: false, tuber: false, other: false
   });
   const [selectedUser, setSelectedUser] = useState('');
+  const [users, setUsers] = useState([]);
   const [name, setName] = useState('');
   const [dishCreated, setDishCreated] = useState(false);
   const [createdDishId, setCreatedDishId] = useState(null);
@@ -58,7 +59,8 @@ function CreateDish() {
       .then(response => response.json())
       .then(data => {
         if (data.length > 0) {
-          setSelectedUser(data[0].id.toString());
+          setUsers(data);
+          setSelectedUser(data[0]?.id?.toString() || '');
         }
       });
   }, [apiUrl, itemsPerPage]);
@@ -119,7 +121,7 @@ function CreateDish() {
   };
 
   const handleIngredientToggle = (ingredientId) => {
-    const existingIndex = selectedIngredients.findIndex(item => item.ingredientId === ingredientId);
+    const existingIndex = selectedIngredients.findIndex(item => item.ingredientId === ingredientId.toString());
 
     if (existingIndex >= 0) {
       // Ingrediente ya añadido, quitarlo
@@ -130,7 +132,7 @@ function CreateDish() {
       const ingredient = ingredients.find(ing => ing.id === ingredientId);
       if (ingredient) {
         setSelectedIngredients([...selectedIngredients, {
-          ingredientId: ingredient.id,
+          ingredientId: ingredient.id.toString(),
           quantity: 1,
           name: ingredient.name
         }]);
@@ -182,12 +184,14 @@ function CreateDish() {
 
     const dishData = {
       name,
-      user: selectedUser,
+      user: parseInt(selectedUser, 10),  // Asegura que el ID de usuario es un entero
       ingredients: selectedIngredients.map(si => ({
         ingredient: si.ingredientId,
         quantity: si.quantity,
       })),
     };
+
+    console.log('Dish Data:', dishData);
 
     try {
       const response = await fetch(`${apiUrl}/nutrition/dishes/`, {
@@ -238,6 +242,23 @@ function CreateDish() {
           placeholder="Introduce el nombre del plato"
           required
         />
+      </div>
+      <div className="form-group mb-3">
+        <label htmlFor="userSelect">Seleccionar Usuario:</label>
+        <select
+          className="form-control"
+          id="userSelect"
+          name="user"
+          value={selectedUser}
+          onChange={(e) => setSelectedUser(e.target.value)}
+          required
+        >
+          {users.map(user => (
+            <option key={user.id} value={user.id}>
+              {user.username}
+            </option>
+          ))}
+        </select>
       </div>
       {!dishCreated && (
         <form onSubmit={handleSubmit}>
@@ -405,8 +426,8 @@ function CreateDish() {
             <div className="row">
               <div className="col-md-6">
                 <h3>Ingredientes Disponibles</h3>
-                {currentIngredients.map((ingredient, index) => (
-                  <div key={index} className="card mb-2">
+                {currentIngredients.map((ingredient) => (
+                  <div key={ingredient.id} className="card mb-2">
                     <div className="card-body">
                       {ingredient.food_image && (
                         <img
@@ -419,10 +440,10 @@ function CreateDish() {
                       <h5 className="card-title">{ingredient.name}</h5>
                       <button
                         type="button"
-                        className={selectedIngredients.some(item => item.ingredientId === ingredient.id) ? "btn btn-danger" : "btn btn-primary"}
+                        className={selectedIngredients.some(item => item.ingredientId === ingredient.id.toString()) ? "btn btn-danger" : "btn btn-primary"}
                         onClick={() => handleIngredientToggle(ingredient.id)}
                       >
-                        {selectedIngredients.some(item => item.ingredientId === ingredient.id) ? "Quitar" : "Añadir"}
+                        {selectedIngredients.some(item => item.ingredientId === ingredient.id.toString()) ? "Quitar" : "Añadir"}
                       </button>
                     </div>
                   </div>

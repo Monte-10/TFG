@@ -12,7 +12,7 @@ class TrainerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Trainer
-        fields = ['specialties', 'trainer_type']
+        fields = ['username', 'specialties', 'trainer_type']
 
 class SpecialtySerializer(serializers.ModelSerializer):
     class Meta:
@@ -22,7 +22,7 @@ class SpecialtySerializer(serializers.ModelSerializer):
 class RegularUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = RegularUser
-        fields = ['weight', 'height', 'neck', 'shoulder', 'chest', 'waist', 'hip', 'arm', 'glute', 'upper_leg', 'middle_leg', 'lower_leg']
+        fields = ['username', 'weight', 'height', 'neck', 'shoulder', 'chest', 'waist', 'hip', 'arm', 'glute', 'upper_leg', 'middle_leg', 'lower_leg']
 
         
 class CustomUserSerializer(serializers.ModelSerializer):
