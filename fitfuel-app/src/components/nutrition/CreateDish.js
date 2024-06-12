@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import './CreateDish.css'; // Importa el archivo CSS
 
 function CreateDish() {
   const [ingredients, setIngredients] = useState([]);
   const [selectedIngredients, setSelectedIngredients] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const [itemsPerPage] = useState(3);
+  const [itemsPerPage] = useState(6); // Ajustado para mostrar más ingredientes por página
   const [totalPages, setTotalPages] = useState(0);
   const [nutritionTotals, setNutritionTotals] = useState({
     calories: 0, protein: 0, carbohydrates: 0, fat: 0, sugar: 0, fiber: 0, saturated_fat: 0,
@@ -426,58 +427,72 @@ function CreateDish() {
             <div className="row">
               <div className="col-md-6">
                 <h3>Ingredientes Disponibles</h3>
-                {currentIngredients.map((ingredient) => (
-                  <div key={ingredient.id} className="card mb-2">
-                    <div className="card-body">
-                      {ingredient.food_image && (
-                        <img
-                          src={ingredient.food_image}
-                          className="card-img-top"
-                          alt={ingredient.name}
-                          style={{ maxWidth: '100px', marginBottom: '10px' }}
-                        />
-                      )}
-                      <h5 className="card-title">{ingredient.name}</h5>
-                      <button
-                        type="button"
-                        className={selectedIngredients.some(item => item.ingredientId === ingredient.id.toString()) ? "btn btn-danger" : "btn btn-primary"}
-                        onClick={() => handleIngredientToggle(ingredient.id)}
-                      >
-                        {selectedIngredients.some(item => item.ingredientId === ingredient.id.toString()) ? "Quitar" : "Añadir"}
-                      </button>
+                <div className="row">
+                  {currentIngredients.map((ingredient) => (
+                    <div key={ingredient.id} className="col-md-6">
+                      <div className="card mb-2">
+                        <div className="card-body">
+                          {ingredient.food_image && (
+                            <img
+                              src={ingredient.food_image}
+                              className="card-img-top"
+                              alt={ingredient.name}
+                              style={{ maxWidth: '100px', marginBottom: '10px' }}
+                            />
+                          )}
+                          <h5 className="card-title">{ingredient.name}</h5>
+                          <button
+                            type="button"
+                            className={selectedIngredients.some(item => item.ingredientId === ingredient.id.toString()) ? "btn btn-danger" : "btn btn-primary"}
+                            onClick={() => handleIngredientToggle(ingredient.id)}
+                          >
+                            {selectedIngredients.some(item => item.ingredientId === ingredient.id.toString()) ? "Quitar" : "Añadir"}
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
               <div className="col-md-6">
                 <h3>Ingredientes Seleccionados</h3>
-                {selectedIngredients.map((item, index) => (
-                  <div key={index} className="input-group mb-3">
-                    <input
-                      type="text"
-                      readOnly
-                      className="form-control"
-                      value={item.name}
-                    />
-                    <input
-                      type="number"
-                      className="form-control"
-                      value={item.quantity}
-                      onChange={(e) => handleQuantityChange(index, e.target.value)}
-                      min="0.01"
-                      step="0.01"
-                    />
-                    <div className="input-group-append">
-                      <button
-                        type="button"
-                        className="btn btn-danger"
-                        onClick={() => handleRemoveIngredient(index)}
-                      >
-                        Quitar
-                      </button>
+                {selectedIngredients.map((item, index) => {
+                  const ingredient = ingredients.find(ing => ing.id.toString() === item.ingredientId);
+                  return (
+                    <div key={index} className="input-group mb-3">
+                      <input
+                        type="text"
+                        readOnly
+                        className="form-control"
+                        value={item.name}
+                      />
+                      <input
+                        type="number"
+                        className="form-control"
+                        value={item.quantity}
+                        onChange={(e) => handleQuantityChange(index, e.target.value)}
+                        min="0.01"
+                        step="0.01"
+                      />
+                      <div className="input-group-append">
+                        <button
+                          type="button"
+                          className="btn btn-danger"
+                          onClick={() => handleRemoveIngredient(index)}
+                        >
+                          Quitar
+                        </button>
+                      </div>
+                      {ingredient && (
+                        <div className="ingredient-summary">
+                          <small>
+                            Cal: {ingredient.calories.toFixed(2)} | Prot: {ingredient.protein.toFixed(2)}g | Carb: {ingredient.carbohydrates.toFixed(2)}g | Grasa: {ingredient.fat.toFixed(2)}g
+                          </small>
+                        </div>
+                      )}
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>

@@ -44,9 +44,8 @@ function AssignOptionToUser() {
     if (response.ok) {
         const blob = await response.blob();
         const downloadUrl = window.URL.createObjectURL(blob);
-        setPdfDownloadUrl(downloadUrl); // Guardamos la URL para descargar luego
+        setPdfDownloadUrl(downloadUrl);
     } else {
-        // Manejar el caso de que la respuesta no esté bien
         console.error('Error downloading PDF:', await response.text());
     }
 };

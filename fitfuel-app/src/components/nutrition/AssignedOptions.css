@@ -1,0 +1,21 @@
+.assigned-options-table {
+    margin-top: 20px;
+}
+
+.assigned-options-table th, .assigned-options-table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.pdf-viewer {
+    margin-top: 20px;
+}
+
+.pdf-viewer iframe {
+    border: none;
+}
+
+.btn-close-pdf {
+    display: block;
+    margin-bottom: 10px;
+}

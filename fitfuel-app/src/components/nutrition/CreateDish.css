@@ -1,0 +1,15 @@
+/* CreateDish.css */
+
+/* Ajusta las tarjetas de ingredientes disponibles para que sean más pequeñas y se alineen en dos columnas */
+.ingredient-list .card {
+    flex: 0 0 48%; /* Ajusta el tamaño de la tarjeta para que ocupen dos columnas */
+    margin: 1%;
+  }
+  
+  /* Ajusta la visualización de los detalles de los ingredientes seleccionados */
+  .ingredient-summary {
+    margin-top: 5px;
+    font-size: 0.9em;
+    color: #666;
+  }
+  

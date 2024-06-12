@@ -23,7 +23,9 @@ const Profile = () => {
         glute: '',
         upper_leg: '',
         middle_leg: '',
-        lower_leg: ''
+        lower_leg: '',
+        communication_email: '',
+        phone: ''
     });
     const [specialties, setSpecialties] = useState([]);
     const [isTrainer, setIsTrainer] = useState(false);
@@ -39,38 +41,38 @@ const Profile = () => {
                         'Authorization': `Token ${localStorage.getItem('authToken')}`
                     }
                 });
-                const profileData = response.data.profile || {};
-                const trainerData = response.data.trainer || {};
-                const regularUserData = response.data.regular_user || {};
+                const { profile: profileData = {}, trainer = {}, regular_user = {} } = response.data;
 
                 setProfile({
                     bio: profileData.bio || '',
                     age: profileData.age || '',
                     gender: profileData.gender || 'male',
                     image: profileData.image || null,
-                    specialties: trainerData.specialties || [],
-                    trainer_type: trainerData.trainer_type || 'trainer'
+                    specialties: trainer.specialties || [],
+                    trainer_type: trainer.trainer_type || 'trainer'
                 });
 
                 setRegularUser({
-                    weight: regularUserData.weight || '',
-                    height: regularUserData.height || '',
-                    neck: regularUserData.neck || '',
-                    shoulder: regularUserData.shoulder || '',
-                    chest: regularUserData.chest || '',
-                    waist: regularUserData.waist || '',
-                    hip: regularUserData.hip || '',
-                    arm: regularUserData.arm || '',
-                    glute: regularUserData.glute || '',
-                    upper_leg: regularUserData.upper_leg || '',
-                    middle_leg: regularUserData.middle_leg || '',
-                    lower_leg: regularUserData.lower_leg || ''
+                    weight: regular_user.weight || '',
+                    height: regular_user.height || '',
+                    neck: regular_user.neck || '',
+                    shoulder: regular_user.shoulder || '',
+                    chest: regular_user.chest || '',
+                    waist: regular_user.waist || '',
+                    hip: regular_user.hip || '',
+                    arm: regular_user.arm || '',
+                    glute: regular_user.glute || '',
+                    upper_leg: regular_user.upper_leg || '',
+                    middle_leg: regular_user.middle_leg || '',
+                    lower_leg: regular_user.lower_leg || '',
+                    communication_email: regular_user.communication_email || '',
+                    phone: regular_user.phone || ''
                 });
 
-                setIsTrainer(Boolean(trainerData.specialties));
+                setIsTrainer(!!trainer.specialties?.length);
             } catch (error) {
                 setError("Error al cargar el perfil");
-                console.error("Error al cargar el perfil:", error.response ? error.response.data : error.message);
+                console.error("Error al cargar el perfil:", error.response?.data || error.message);
             }
         };
 
@@ -84,7 +86,7 @@ const Profile = () => {
                 setSpecialties(response.data);
             } catch (error) {
                 setError("Error al cargar especialidades");
-                console.error("Error al cargar especialidades:", error.response ? error.response.data : error.message);
+                console.error("Error al cargar especialidades:", error.response?.data || error.message);
             }
         };
 
@@ -130,6 +132,8 @@ const Profile = () => {
         if (isTrainer) {
             formData.append('trainer_type', profile.trainer_type);
             formData.append('specialties', JSON.stringify(profile.specialties));
+            formData.append('communication_email', profile.communication_email);
+            formData.append('phone', profile.phone);
         } else {
             Object.keys(regularUser).forEach(key => {
                 formData.append(key, regularUser[key]);
@@ -143,17 +147,16 @@ const Profile = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            const updatedProfileData = response.data.profile || {};
-            const updatedTrainerData = response.data.trainer || {};
-            const updatedRegularUserData = response.data.regular_user || {};
+
+            const { profile: updatedProfileData = {}, trainer: updatedTrainerData = {}, regular_user: updatedRegularUserData = {} } = response.data;
 
             setProfile({
                 bio: updatedProfileData.bio || '',
                 age: updatedProfileData.age || '',
                 gender: updatedProfileData.gender || 'male',
                 image: updatedProfileData.image || null,
-                specialties: updatedTrainerData.specialties || [],
-                trainer_type: updatedTrainerData.trainer_type || 'trainer'
+                specialties: updatedTrainerData ? updatedTrainerData.specialties : [],
+                trainer_type: updatedTrainerData ? updatedTrainerData.trainer_type : 'trainer'
             });
 
             setRegularUser({
@@ -168,12 +171,14 @@ const Profile = () => {
                 glute: updatedRegularUserData.glute || '',
                 upper_leg: updatedRegularUserData.upper_leg || '',
                 middle_leg: updatedRegularUserData.middle_leg || '',
-                lower_leg: updatedRegularUserData.lower_leg || ''
+                lower_leg: updatedRegularUserData.lower_leg || '',
+                communication_email: updatedRegularUserData.communication_email || '',
+                phone: updatedRegularUserData.phone || ''
             });
 
         } catch (error) {
             setError(`Error al actualizar el perfil: ${error.response ? JSON.stringify(error.response.data) : error.message}`);
-            console.error("Error al actualizar el perfil:", error.response ? error.response.data : error.message);
+            console.error("Error al actualizar el perfil:", error.response?.data || error.message);
         }
     };
 
@@ -417,6 +422,34 @@ const Profile = () => {
                                         name="lower_leg"
                                         className="form-control"
                                         value={regularUser.lower_leg}
+                                        onChange={handleRegularUserChange}
+                                    />
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col md={6}>
+                                <div className="mb-3">
+                                    <label htmlFor="communication_email" className="form-label">Correo Electrónico</label>
+                                    <input
+                                        type="email"
+                                        id="communication_email"
+                                        name="communication_email"
+                                        className="form-control"
+                                        value={regularUser.communication_email}
+                                        onChange={handleRegularUserChange}
+                                    />
+                                </div>
+                            </Col>
+                            <Col md={6}>
+                                <div className="mb-3">
+                                    <label htmlFor="phone" className="form-label">Teléfono</label>
+                                    <input
+                                        type="text"
+                                        id="phone"
+                                        name="phone"
+                                        className="form-control"
+                                        value={regularUser.phone}
                                         onChange={handleRegularUserChange}
                                     />
                                 </div>

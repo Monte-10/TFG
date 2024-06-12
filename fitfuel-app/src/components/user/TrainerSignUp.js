@@ -26,13 +26,14 @@ function TrainerSignUp({ onSignUpSuccess }) {
       });
 
       if (!response.ok) {
-        throw new Error('Error en el registro');
+        const errorData = await response.json();
+        throw new Error(errorData.username ? errorData.username[0] : 'Error en el registro');
       }
 
       const data = await response.json();
       onSignUpSuccess(data.token);
     } catch (error) {
-      setError('Error al registrarse');
+      setError('Error al registrarse: ' + (error.message || 'Unknown error'));
       console.error(error);
     }
   };
@@ -57,7 +58,7 @@ function TrainerSignUp({ onSignUpSuccess }) {
             </div>
             <div className="mb-3">
               <label htmlFor="confirmPassword" className="form-label">Confirmar Password</label>
-              <input type="password" id="confirmPassword" className="form-control" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+              <input type="password" id="confirmPassword" className="form-control" placeholder="Confirmar Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
             </div>
             <div className="d-grid">
               <button type="submit" className="btn btn-primary">Registrarse</button>

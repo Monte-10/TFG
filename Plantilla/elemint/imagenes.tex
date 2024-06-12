@@ -1,82 +1,80 @@
 Para la persistencia de datos en el proyecto FitFuelBalance, se ha utilizado PostgreSQL, un sistema de gestión de bases de datos relacional conocido por su robustez, flexibilidad y soporte para tipos de datos avanzados. A continuación, se describen los aspectos clave de la estructura de la base de datos y su integración con Django.
 
+El diseño de la base de datos ha sido cuidadosamente planificado para asegurar la eficiencia y escalabilidad. Los principales esquemas de la base de datos incluyen las siguientes tablas (no se incluyen todas las columnas para simplificar la descripción):
 \begin{itemize}
-    \item \textbf{Diseño de la Base de Datos:} El diseño de la base de datos ha sido cuidadosamente planificado para asegurar la eficiencia y escalabilidad. Los principales esquemas de la base de datos incluyen las siguientes tablas (no se incluyen todas las columnas para simplificar la descripción):
+    \item \textbf{CustomUser:} Almacena información de los usuarios. Sus propiedades son:
     \begin{itemize}
-        \item \textbf{CustomUser:} Almacena información de los usuarios. Sus propiedades son:
-        \begin{itemize}
-            \item \textbf{id (Integer):} Identificador único del usuario.
-            \item \textbf{password (String):} Contraseña hasheada del usuario.
-            \item \textbf{last\_login (Datetime):} Fecha y hora del último inicio de sesión.
-            \item \textbf{is\_superuser (Boolean):} Indica si el usuario es un superusuario.
-            \item \textbf{username (String):} Nombre de usuario único.
-            \item \textbf{first\_name (String):} Nombre del usuario.
-            \item \textbf{last\_name (String):} Apellido del usuario.
-            \item \textbf{email (String):} Correo electrónico del usuario.
-            \item \textbf{is\_staff (Boolean):} Indica si el usuario es parte del staff.
-            \item \textbf{is\_active (Boolean):} Indica si la cuenta del usuario está activa.
-            \item \textbf{date\_joined (Datetime):} Fecha y hora de creación de la cuenta.
-        \end{itemize}
-        \item \textbf{RegularUser:} Extiende \texttt{CustomUser} y almacena medidas corporales y datos de los usuarios normales. Sus propiedades son:
-        \begin{itemize}
-            \item \textbf{customuser\_ptr\_id (Integer):} Identificador único del usuario regular.
-            \item \textbf{weight (Float):} Peso del usuario.
-            \item \textbf{height (Float):} Altura del usuario.
-            \item \textbf{personal\_trainer\_id (Integer):} Identificador del entrenador personal asignado.
-            \item \textbf{arm (Float):} Medida del brazo.
-            \item \textbf{chest (Float):} Medida del pecho.
-        \end{itemize}
-        \item \textbf{Trainer:} Extiende \texttt{CustomUser} y almacena información adicional sobre los entrenadores. Sus propiedades son:
-        \begin{itemize}
-            \item \textbf{customuser\_ptr\_id (Integer):} Identificador único del entrenador.
-            \item \textbf{trainer\_type (String):} Tipo de entrenador.
-        \end{itemize}
-        \item \textbf{Food:} Almacena información detallada sobre alimentos. Sus propiedades son:
-        \begin{itemize}
-            \item \textbf{id (Integer):} Identificador único del alimento.
-            \item \textbf{name (String):} Nombre del alimento.
-            \item \textbf{unit\_weight (Float):} Peso unitario del alimento.
-            \item \textbf{calories (Float):} Calorías por unidad.
-            \item \textbf{protein (Float):} Proteínas por unidad.
-            \item \textbf{carbohydrates (Float):} Carbohidratos por unidad.
-            \item \textbf{sugar (Float):} Azúcar por unidad.
-            \item \textbf{fiber (Float):} Fibra por unidad.
-            \item \textbf{fat (Float):} Grasa por unidad.
-            \item \textbf{saturated\_fat (Float):} Grasa saturada por unidad.
-            \item \textbf{gluten\_free (Boolean):} Indica si es libre de gluten.
-            \item \textbf{lactose\_free (Boolean):} Indica si es libre de lactosa.
-            \item \textbf{contains\_meat (Boolean):} Indica si contiene carne.
-            \item \textbf{contains\_vegetables (Boolean):} Indica si contiene vegetales.
-        \end{itemize}
-        \item \textbf{Diet:} Almacena los planes de dietas desarrollados por los nutricionistas. Sus propiedades son:
-        \begin{itemize}
-            \item \textbf{id (Integer):} Identificador único del plan de dieta.
-            \item \textbf{name (String):} Nombre del plan de dieta.
-            \item \textbf{start\_date (Datetime):} Fecha de inicio del plan de dieta.
-            \item \textbf{end\_date (Datetime):} Fecha de finalización del plan de dieta.
-            \item \textbf{user\_id (Integer):} Identificador del usuario al que pertenece el plan de dieta.
-        \end{itemize}
-        \item \textbf{Option:} Registra las opciones de comidas para cada día de la semana. Sus propiedades son:
-        \begin{itemize}
-            \item \textbf{id (Integer):} Identificador único de la opción.
-            \item \textbf{name (String):} Nombre de la opción.
-            \item \textbf{trainer\_id (Integer):} Identificador del entrenador que creó la opción.
-            \item \textbf{week\_option\_one\_id (Integer):} Identificador de la primera opción semanal.
-            \item \textbf{week\_option\_two\_id (Integer):} Identificador de la segunda opción semanal.
-            \item \textbf{week\_option\_three\_id (Integer):} Identificador de la tercera opción semanal.
-        \end{itemize}
+        \item \textbf{id (Integer):} Identificador único del usuario.
+        \item \textbf{password (String):} Contraseña hasheada del usuario.
+        \item \textbf{last\_login (Datetime):} Fecha y hora del último inicio de sesión.
+        \item \textbf{is\_superuser (Boolean):} Indica si el usuario es un superusuario.
+        \item \textbf{username (String):} Nombre de usuario único.
+        \item \textbf{first\_name (String):} Nombre del usuario.
+        \item \textbf{last\_name (String):} Apellido del usuario.
+        \item \textbf{email (String):} Correo electrónico del usuario.
+        \item \textbf{is\_staff (Boolean):} Indica si el usuario es parte del staff.
+        \item \textbf{is\_active (Boolean):} Indica si la cuenta del usuario está activa.
+        \item \textbf{date\_joined (Datetime):} Fecha y hora de creación de la cuenta.
     \end{itemize}
-
-    \item \textbf{Migraciones:} Django facilita la gestión de cambios en la estructura de la base de datos a través del sistema de migraciones. Cada vez que se realiza un cambio en los modelos, se crea una migración que, al aplicarse, sincroniza la base de datos con los nuevos cambios. Esto asegura que la base de datos esté siempre en línea con el código del proyecto.
-
-    \item \textbf{ORM de Django:} Para interactuar con la base de datos, se utiliza el Object-Relational Mapping (ORM) de Django, que permite trabajar con la base de datos utilizando objetos Python en lugar de escribir consultas SQL directamente. Esto no solo simplifica el código sino que también mejora la portabilidad y mantenimiento del mismo. Código \ref{COD:consultaorm} muestra un ejemplo de consulta ORM para ver todos los entrenamientos.
-    \PythonCode[COD:consultaorm]{Consulta ORM.}{Ejemplo de consulta ORM en Django.}{python/codigo.py}{1}{1}{1}
-
-    \item \textbf{Conexión a la Base de Datos:} La configuración de la conexión a la base de datos se encuentra en el archivo \texttt{settings.py} del proyecto Django, donde se especifican los detalles necesarios para conectarse a PostgreSQL. Código \ref{COD:basedatos} muestra un ejemplo de configuración de la base de datos en Django.
-    \PythonCode[COD:basedatos]{Configuración Base de Datos.}{Configuración de la base de datos en Django.}{python/codigo.py}{5}{14}{5}
-
-    \item \textbf{Gestión de Datos:} Para la administración y gestión de la base de datos, se ha utilizado Neon, una herramienta que facilita la visualización y manipulación de datos de PostgreSQL. Neon ofrece una interfaz gráfica intuitiva que permite realizar consultas, revisar tablas y gestionar esquemas de manera eficiente.
-    \item \textbf{Seguridad y Copias de Seguridad:} Se han implementado medidas de seguridad para proteger los datos almacenados. Esto incluye la encriptación de contraseñas de usuarios utilizando el sistema de hash de Django y la realización periódica de copias de seguridad de la base de datos para prevenir pérdidas de datos.
+    \item \textbf{RegularUser:} Extiende \texttt{CustomUser} y almacena medidas corporales y datos de los usuarios normales. Sus propiedades son:
+    \begin{itemize}
+        \item \textbf{customuser\_ptr\_id (Integer):} Identificador único del usuario regular.
+        \item \textbf{weight (Float):} Peso del usuario.
+        \item \textbf{height (Float):} Altura del usuario.
+        \item \textbf{personal\_trainer\_id (Integer):} Identificador del entrenador personal asignado.
+        \item \textbf{arm (Float):} Medida del brazo.
+        \item \textbf{chest (Float):} Medida del pecho.
+    \end{itemize}
+    \item \textbf{Trainer:} Extiende \texttt{CustomUser} y almacena información adicional sobre los entrenadores. Sus propiedades son:
+    \begin{itemize}
+        \item \textbf{customuser\_ptr\_id (Integer):} Identificador único del entrenador.
+        \item \textbf{trainer\_type (String):} Tipo de entrenador.
+    \end{itemize}
+    \item \textbf{Food:} Almacena información detallada sobre alimentos. Sus propiedades son:
+    \begin{itemize}
+        \item \textbf{id (Integer):} Identificador único del alimento.
+        \item \textbf{name (String):} Nombre del alimento.
+        \item \textbf{unit\_weight (Float):} Peso unitario del alimento.
+        \item \textbf{calories (Float):} Calorías por unidad.
+        \item \textbf{protein (Float):} Proteínas por unidad.
+        \item \textbf{carbohydrates (Float):} Carbohidratos por unidad.
+        \item \textbf{sugar (Float):} Azúcar por unidad.
+        \item \textbf{fiber (Float):} Fibra por unidad.
+        \item \textbf{fat (Float):} Grasa por unidad.
+        \item \textbf{saturated\_fat (Float):} Grasa saturada por unidad.
+        \item \textbf{gluten\_free (Boolean):} Indica si es libre de gluten.
+        \item \textbf{lactose\_free (Boolean):} Indica si es libre de lactosa.
+        \item \textbf{contains\_meat (Boolean):} Indica si contiene carne.
+        \item \textbf{contains\_vegetables (Boolean):} Indica si contiene vegetales.
+    \end{itemize}
+    \item \textbf{Diet:} Almacena los planes de dietas desarrollados por los nutricionistas. Sus propiedades son:
+    \begin{itemize}
+        \item \textbf{id (Integer):} Identificador único del plan de dieta.
+        \item \textbf{name (String):} Nombre del plan de dieta.
+        \item \textbf{start\_date (Datetime):} Fecha de inicio del plan de dieta.
+        \item \textbf{end\_date (Datetime):} Fecha de finalización del plan de dieta.
+        \item \textbf{user\_id (Integer):} Identificador del usuario al que pertenece el plan de dieta.
+    \end{itemize}
+    \item \textbf{Option:} Registra las opciones de comidas para cada día de la semana. Sus propiedades son:
+    \begin{itemize}
+        \item \textbf{id (Integer):} Identificador único de la opción.
+        \item \textbf{name (String):} Nombre de la opción.
+        \item \textbf{trainer\_id (Integer):} Identificador del entrenador que creó la opción.
+        \item \textbf{week\_option\_one\_id (Integer):} Identificador de la primera opción semanal.
+        \item \textbf{week\_option\_two\_id (Integer):} Identificador de la segunda opción semanal.
+        \item \textbf{week\_option\_three\_id (Integer):} Identificador de la tercera opción semanal.
+    \end{itemize}
 \end{itemize}
+
+Django facilita la gestión de cambios en la estructura de la base de datos a través del sistema de migraciones. Cada vez que se realiza un cambio en los modelos, se crea una migración que, al aplicarse, sincroniza la base de datos con los nuevos cambios. Esto asegura que la base de datos esté siempre en línea con el código del proyecto.
+
+Para interactuar con la base de datos, se utiliza el Object-Relational Mapping (ORM) de Django, que permite trabajar con la base de datos utilizando objetos Python en lugar de escribir consultas SQL directamente. Esto no solo simplifica el código sino que también mejora la portabilidad y mantenimiento del mismo. Código \ref{COD:consultaorm} muestra un ejemplo de consulta ORM para ver todos los entrenamientos.
+\PythonCode[COD:consultaorm]{Consulta ORM.}{Ejemplo de consulta ORM en Django.}{python/codigo.py}{1}{1}{1}
+
+La configuración de la conexión a la base de datos se encuentra en el archivo \texttt{settings.py} del proyecto Django, donde se especifican los detalles necesarios para conectarse a PostgreSQL. Código \ref{COD:basedatos} muestra un ejemplo de configuración de la base de datos en Django.
+\PythonCode[COD:basedatos]{Configuración Base de Datos.}{Configuración de la base de datos en Django.}{python/codigo.py}{5}{14}{5}
+
+Para la administración y gestión de la base de datos, se ha utilizado Neon, una herramienta que facilita la visualización y manipulación de datos de PostgreSQL. Neon ofrece una interfaz gráfica intuitiva que permite realizar consultas, revisar tablas y gestionar esquemas de manera eficiente.
+Se han implementado medidas de seguridad para proteger los datos almacenados. Esto incluye el cifrado de contraseñas de usuarios utilizando el sistema de hash de Django y la realización periódica de copias de seguridad de la base de datos para prevenir pérdidas de datos.
 
 Una imagen del diseño de la base de datos se puede ver en el Apéndice \ref{CAP:FUNCENT} en las figuras \ref{FIG:db1} y \ref{FIG:db2}.

@@ -30,6 +30,8 @@ class RegularUser(CustomUser):
     upper_leg = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     middle_leg = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     lower_leg = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    communication_email = models.EmailField(max_length=254, blank=True, null=True)
+    phone = models.CharField(max_length=20, null=True, blank=True)
 
     def has_personal_trainer(self):
         return self.personal_trainer is not None
@@ -53,6 +55,8 @@ class Specialty(models.Model):
 class Trainer(CustomUser):
     clients = models.ManyToManyField('RegularUser', related_name='clients', blank=True)
     specialties = models.ManyToManyField(Specialty, related_name='specialties', blank=True)
+    communication_email = models.EmailField(max_length=254, blank=True, null=True)
+    phone = models.CharField(max_length=20, null=True, blank=True)
     TRAINER_TYPE = [
         ('trainer', 'Trainer'),
         ('nutritionist', 'Nutritionist'),
@@ -75,6 +79,9 @@ class TrainingRequest(models.Model):
     regular_user = models.ForeignKey(RegularUser, on_delete=models.CASCADE)
     trainer = models.ForeignKey(Trainer, on_delete=models.CASCADE)
     is_accepted = models.BooleanField(default=False)
+    description = models.TextField(blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    phone = models.CharField(max_length=15, blank=True, null=True)
 
     class Meta:
         unique_together = ('regular_user', 'trainer')

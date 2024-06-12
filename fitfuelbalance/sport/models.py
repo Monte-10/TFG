@@ -43,3 +43,26 @@ class TrainingExercise(models.Model):
     
     def __str__(self):
         return f"{self.exercise.name} x {self.sets} sets of {self.repetitions}"
+    
+User = get_user_model()
+
+class WeekTraining(models.Model):
+    name = models.CharField(max_length=255)
+    monday = models.ManyToManyField(Training, related_name='monday_trainings')
+    tuesday = models.ManyToManyField(Training, related_name='tuesday_trainings')
+    wednesday = models.ManyToManyField(Training, related_name='wednesday_trainings')
+    thursday = models.ManyToManyField(Training, related_name='thursday_trainings')
+    friday = models.ManyToManyField(Training, related_name='friday_trainings')
+    saturday = models.ManyToManyField(Training, related_name='saturday_trainings')
+    sunday = models.ManyToManyField(Training, related_name='sunday_trainings')
+
+    def __str__(self):
+        return self.name
+    
+class AssignedWeekTraining(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    week_training = models.ForeignKey(WeekTraining, on_delete=models.CASCADE)
+    start_date = models.DateField()
+
+    def __str__(self):
+        return f"Week training '{self.week_training.name}' assigned to {self.user.username}"

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink, Navigate } from 'react-router-dom';
 import { Container, Navbar, Nav, Offcanvas, Accordion, Dropdown } from 'react-bootstrap';
 import axios from 'axios';
+import './custom.css';
 
 import HomePage from './components/HomePage';
 import CreateIngredient from './components/nutrition/CreateIngredient';
@@ -14,6 +15,8 @@ import CreateExercise from './components/sport/CreateExercise';
 import ExerciseDetails from './components/sport/ExerciseDetails';
 import EditExercise from './components/sport/EditExercise';
 import CreateTraining from './components/sport/CreateTraining';
+import CreateWeekTraining from './components/sport/CreateWeekTraining';
+import AssignWeekTrainingToUser from './components/sport/AssignWeekTrainingToUser';
 import Login from './components/user/Login';
 import RegularUserSignUp from './components/user/RegularSignUp';
 import TrainerSignUp from './components/user/TrainerSignUp';
@@ -24,8 +27,8 @@ import CreateOption from './components/nutrition/CreateOption';
 import AssignOptionToUser from './components/nutrition/AssignOptionToUser';
 import FoodDetails from './components/nutrition/FoodDetails';
 import ManageDailyDiet from './components/nutrition/ManageDailyDiet';
-import SearchTrainer from './components/user/SearchTrainer';
 import TrainerList from './components/user/TrainerList';
+import TrainerRequests from './components/user/TrainerRequests';
 import ListIngredient from './components/nutrition/ListIngredient';
 import IngredientDetails from './components/nutrition/IngredientDetails';
 import ListDish from './components/nutrition/ListDish';
@@ -39,13 +42,18 @@ import ListExercise from './components/sport/ListExercise';
 import EditTraining from './components/sport/EditTraining';
 import ListTraining from './components/sport/ListTraining';
 import TrainingDetails from './components/sport/TrainingDetails';
-import AdaptDietOrOption from './components/nutrition/AdaptDietOrOption';
 import Profile from './components/user/Profile';
+import ManageClients from './components/user/ManageClients';
+import ClientDetails from './components/user/ClientDetails';
+import TrainerDetails from './components/user/TrainerDetails';
+import AssignedOptions from './components/nutrition/AssignedOptions';
+import AssignedWeekTrainings from './components/sport/AssignedWeekTrainings';
+import AdaptOption from './components/nutrition/AdaptOption';  // Importar el nuevo componente
 
 function App() {
     const [authToken, setAuthToken] = useState(localStorage.getItem('authToken') || '');
-    const [trainers, setTrainers] = useState([]);
     const [profile, setProfile] = useState(null);
+    const [selectedClientId, setSelectedClientId] = useState(null);
 
     useEffect(() => {
         if (authToken) {
@@ -76,27 +84,23 @@ function App() {
         setAuthToken('');
     };
 
-    const handleSearchTrainers = async (specialty, trainerType) => {
-        try {
-            const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/search_trainer/`, {
-                params: { specialty, trainerType },
-                headers: { 'Authorization': `Token ${authToken}` }
-            });
-            setTrainers(response.data);
-        } catch (error) {
-            console.error("Error al buscar entrenadores:", error);
-        }
-    };
-
     const handleSendRequest = async (trainerId) => {
         try {
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/send_request/${trainerId}/`, {}, {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/send_request/`, { trainerId }, {
                 headers: { 'Authorization': `Token ${authToken}` }
             });
             console.log("Solicitud enviada con éxito", response.data);
         } catch (error) {
             console.error("Error al enviar solicitud:", error);
         }
+    };
+
+    const handleClientSelect = (clientId) => {
+        setSelectedClientId(clientId);
+    };
+
+    const handleBack = () => {
+        setSelectedClientId(null);
     };
 
     return (
@@ -113,6 +117,22 @@ function App() {
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
                                     <Dropdown.Item as={NavLink} to="/profile">Ver Perfil</Dropdown.Item>
+                                    {profile?.role === "trainer" ? (
+                                        <Dropdown.Item as={NavLink} to="/clients">Mis Clientes</Dropdown.Item>
+                                    ) : (
+                                        profile?.role === "regular_user" && (
+                                            <>
+                                                <Dropdown.Item as={NavLink} to="/trainer-details">Mi Entrenador</Dropdown.Item>
+                                                <Dropdown.Item as={NavLink} to="/assigned-options">Mis Opciones Asignadas</Dropdown.Item>
+                                                <Dropdown.Item as={NavLink} to="/assigned-week-trainings">Mis Entrenamientos Asignados</Dropdown.Item>
+                                            </>
+                                        )
+                                    )}
+                                    {profile?.role === "trainer" ? (
+                                        <Dropdown.Item as={NavLink} to="/trainer-requests">Solicitudes Recibidas</Dropdown.Item>
+                                    ) : (
+                                        null
+                                    )}
                                     <Dropdown.Item onClick={handleLogout}>Cerrar Sesión</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
@@ -171,6 +191,9 @@ function App() {
                                                 <Nav.Item>
                                                     <Nav.Link as={NavLink} to="/nutrition/assign-option">Asignar Opción</Nav.Link>
                                                 </Nav.Item>
+                                                <Nav.Item>
+                                                    <Nav.Link as={NavLink} to="/nutrition/adapt-option">Adaptar Opción</Nav.Link> {/* Añadir nueva ruta */}
+                                                </Nav.Item>
                                                 <p className="mt-2 mb-1"><strong>Listado</strong></p>
                                                 <Nav.Item>
                                                     <Nav.Link as={NavLink} to="/nutrition/list-food">Listar Alimentos</Nav.Link>
@@ -183,10 +206,6 @@ function App() {
                                                 </Nav.Item>
                                                 <Nav.Item>
                                                     <Nav.Link as={NavLink} to="/nutrition/list-meal">Listar Comidas</Nav.Link>
-                                                </Nav.Item>
-                                                <p className="mt-2 mb-1"><strong>Adaptar Dietas y Opciones</strong></p>
-                                                <Nav.Item>
-                                                    <Nav.Link as={NavLink} to="/nutrition/adapt-diet-or-option">Adaptar Dieta u Opción</Nav.Link>
                                                 </Nav.Item>
                                             </Nav>
                                         </Accordion.Body>
@@ -205,6 +224,12 @@ function App() {
                                                     <Nav.Link as={NavLink} to="/sport/create-training">Crear Entrenamiento</Nav.Link>
                                                 </Nav.Item>
                                                 <Nav.Item>
+                                                    <Nav.Link as={NavLink} to="/sport/create-week-training">Crear Semana de Entrenamiento</Nav.Link>
+                                                </Nav.Item>
+                                                <Nav.Item>
+                                                    <Nav.Link as={NavLink} to="/sport/assign-week-training">Asignar Semana de Entrenamiento</Nav.Link>
+                                                </Nav.Item>
+                                                <Nav.Item>
                                                     <Nav.Link as={NavLink} to="/sport/list-training">Listar Entrenamientos</Nav.Link>
                                                 </Nav.Item>
                                             </Nav>
@@ -221,8 +246,8 @@ function App() {
                         {authToken ? (
                             <>
                                 <Route path="/" element={<HomePage />} />
-                                <Route path="/search-trainer" element={<SearchTrainer onSearch={handleSearchTrainers} />} />
-                                <Route path="/trainer-list" element={<TrainerList trainers={trainers} onSendRequest={handleSendRequest} />} />
+                                <Route path="/trainer-list" element={<TrainerList onSendRequest={handleSendRequest} />} />
+                                <Route path="/trainer-requests" element={<TrainerRequests />} />
                                 <Route path="/nutrition" element={<Nutrition />} />
                                 <Route path="/sport" element={<Sport />} />
                                 <Route path="/nutrition/create-food" element={<CreateFood />} />
@@ -235,10 +260,13 @@ function App() {
                                 <Route path="/sport/exercise/:id" element={<ExerciseDetails />} />
                                 <Route path="/sport/edit-exercise/:id" element={<EditExercise />} />
                                 <Route path="/sport/create-training" element={<CreateTraining />} />
+                                <Route path="/sport/create-week-training" element={<CreateWeekTraining />} />
+                                <Route path="/sport/assign-week-training" element={<AssignWeekTrainingToUser />} />
                                 <Route path="/nutrition/create-dayoption" element={<CreateDayOption />} />
                                 <Route path="/nutrition/create-weekoption" element={<CreateWeekOption />} />
                                 <Route path="/nutrition/create-option" element={<CreateOption />} />
                                 <Route path="/nutrition/assign-option" element={<AssignOptionToUser />} />
+                                <Route path="/nutrition/adapt-option" element={<AdaptOption />} /> {/* Añadir nueva ruta */}
                                 <Route path="/nutrition/list-food" element={<ListFood />} />
                                 <Route path="/nutrition/foods/:foodId" element={<FoodDetails />} />
                                 <Route path="/nutrition/edit-dailydiet/:dietId" element={<ManageDailyDiet />} />
@@ -255,9 +283,17 @@ function App() {
                                 <Route path="/sport/edit-training/:id" element={<EditTraining />} />
                                 <Route path="/sport/list-training" element={<ListTraining />} />
                                 <Route path="/sport/training/:id" element={<TrainingDetails />} />
-                                <Route path="/nutrition/adapt-diet-or-option" element={<AdaptDietOrOption />} />
-                                <Route path="/trainers" element={<TrainerList trainers={trainers} onSendRequest={handleSendRequest} />} />
                                 <Route path="/profile" element={<Profile />} />
+                                <Route path="/clients" element={
+                                    selectedClientId ? (
+                                        <ClientDetails clientId={selectedClientId} onBack={handleBack} />
+                                    ) : (
+                                        <ManageClients onClientSelect={handleClientSelect} />
+                                    )
+                                } />
+                                <Route path="/trainer-details" element={<TrainerDetails />} />
+                                <Route path="/assigned-options" element={<AssignedOptions />} />
+                                <Route path="/assigned-week-trainings" element={<AssignedWeekTrainings />} />
                                 <Route path="*" element={<Navigate replace to="/" />} />
                             </>
                         ) : (
@@ -289,6 +325,7 @@ function Nutrition() {
             <NavLink to="/nutrition/create-weekoption">Crear Opción Semanal</NavLink><br />
             <NavLink to="/nutrition/create-option">Crear Opción</NavLink><br />
             <NavLink to="/nutrition/assign-option">Asignar Opción</NavLink><br />
+            <NavLink to="/nutrition/adapt-option">Adaptar Opción</NavLink><br /> {/* Añadir nueva ruta */}
             <NavLink to="/nutrition/list-ingredient">Listar Ingredientes</NavLink><br />
             <NavLink to="/nutrition/list-food">Listar Alimentos</NavLink><br />
             <NavLink to="/nutrition/edit-food/:id">Editar Alimento</NavLink><br />

@@ -1,54 +1,59 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { Container, Table, Button } from 'react-bootstrap';
 
-function ManageClients() {
+const ManageClients = ({ onClientSelect }) => {
     const [clients, setClients] = useState([]);
+    const [error, setError] = useState('');
+
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
-        const trainerId = localStorage.getItem('userId');
-        const authToken = localStorage.getItem('authToken');
-        const apiUrl = process.env.REACT_APP_API_URL;
-        fetch(`${apiUrl}/user/trainers/${trainerId}/clients`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${authToken}`, // Asegúrate que este es el método de autenticación correcto para tu backend
-            },
-        })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+        const fetchClients = async () => {
+            try {
+                const response = await axios.get(`${apiUrl}/user/trainer/clients/`, {
+                    headers: {
+                        'Authorization': `Token ${localStorage.getItem('authToken')}`
+                    }
+                });
+                setClients(response.data);
+            } catch (error) {
+                setError('Error al cargar los clientes');
+                console.error("Error al cargar los clientes:", error.response?.data || error.message);
             }
-            return response.json();
-        })
-        .then(data => {
-            setClients(data.clients); // Ajusta según la estructura de tu respuesta
-        })
-        .catch((error) => console.error('Error fetching clients:', error));
-    }, []);
+        };
+
+        fetchClients();
+    }, [apiUrl]);
 
     return (
-        <div className="container">
+        <Container className="mt-4">
             <h2>Mis Clientes</h2>
-            {clients.length > 0 ? (
-                clients.map(client => (
-                    <div key={client.id} className="client-card">
-                        <h3>{client.name}</h3>
-                        {/* Más detalles sobre el cliente */}
-                        
-                        {/* Ejemplo de enlace a una página de detalles del cliente */}
-                        <Link to={`/client-details/${client.id}`} className="btn btn-primary">
-                            Ver detalles
-                        </Link>
-
-                        {/* Otros enlaces de gestión, como editar, asignar dietas, entrenamientos, etc. */}
-                    </div>
-                ))
-            ) : (
-                <p>No tienes clientes asignados aún.</p>
-            )}
-        </div>
+            {error && <p className="text-danger">{error}</p>}
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                        <th>Nombre de Usuario</th>
+                        <th>Correo Electrónico</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {clients.map(client => (
+                        <tr key={client.id}>
+                            <td>{client.username}</td>
+                            <td>{client.email}</td>
+                            <td>
+                                <Button variant="info" onClick={() => onClientSelect(client.id)}>
+                                    Ver Detalles
+                                </Button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
+        </Container>
     );
-}
+};
 
 export default ManageClients;

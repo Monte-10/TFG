@@ -289,7 +289,7 @@ class MealDishSerializer(serializers.ModelSerializer):
     class Meta:
         model = MealDish
         fields = ['dish', 'portion', 'notes', 'dish_name']
-
+        
 class MealSerializer(serializers.ModelSerializer):
     dishes_data = MealDishSerializer(source='mealdish_set', many=True, read_only=False)
     calories = serializers.SerializerMethodField()
@@ -929,6 +929,8 @@ class OptionSerializer(serializers.ModelSerializer):
         return option
     
 class AssignedOptionSerializer(serializers.ModelSerializer):
+    start_date = serializers.DateField(format="%Y-%m-%d")
+
     class Meta:
         model = AssignedOption
         fields = '__all__'
