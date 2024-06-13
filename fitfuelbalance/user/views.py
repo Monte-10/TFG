@@ -25,6 +25,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import JsonResponse
+import json
 
 # Vistas del usuario
 
@@ -80,6 +81,7 @@ class ProfileView(viewsets.ViewSet):
                 "trainer": trainer_data,
                 "regular_user": regular_user_data,
                 "username": user.username,
+                "id": user.id,  # Asegúrate de que el user_id se devuelve aquí
                 "role": "trainer" if user.is_trainer() else "regular_user",
                 "personal_trainer": regular_user_data.get('personal_trainer') if regular_user_data else None
             }, status=status.HTTP_200_OK)
@@ -493,3 +495,42 @@ class RegularUserSignUpAPIView(APIView):
             login(request, user)  # Inicia sesión al usuario
             return Response({'token': token.key, 'userId': user.id}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+from rest_framework import viewsets, permissions, status
+from rest_framework.response import Response
+from rest_framework.decorators import action
+
+class RegularUserMeasurementViewSet(viewsets.ModelViewSet):
+    queryset = RegularUserMeasurement.objects.all()
+    serializer_class = RegularUserMeasurementSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_regular_user():
+            return self.queryset.filter(user=user)
+        elif user.is_trainer():
+            return self.queryset.filter(user__in=user.trainer.clients.all())
+        return self.queryset.none()
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    @action(detail=False, methods=['get'], url_path='history/(?P<user_id>\d+)', permission_classes=[permissions.IsAuthenticated])
+    def history(self, request, user_id=None):
+        if not user_id:
+            return Response({"error": "User ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        measurements = RegularUserMeasurement.objects.filter(user_id=user_id)
+        serializer = RegularUserMeasurementSerializer(measurements, many=True)
+        return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def regular_user_details(request, pk):
+    try:
+        regular_user = RegularUser.objects.get(pk=pk)
+        serializer = RegularUserSerializer(regular_user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except RegularUser.DoesNotExist:
+        return Response({'error': 'RegularUser not found'}, status=status.HTTP_404_NOT_FOUND)

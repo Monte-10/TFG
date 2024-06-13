@@ -1,0 +1,63 @@
+.home-page {
+    background-image: url('./img/background.png');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+}
+
+.welcome-text {
+    color: #fff;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.intro-text {
+    color: #ddd;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.option-card {
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    margin: 10px;
+    text-align: center;
+}
+
+.option-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.option-card .card-title {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.option-card .card-text {
+    color: #666;
+}
+
+.modal-content {
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 2rem;
+}
+
+.modal-header, .modal-footer {
+    border: none;
+}
+
+.home-option {
+    width: 100%;
+    text-decoration: none;
+    color: inherit;
+}

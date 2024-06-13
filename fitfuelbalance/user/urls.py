@@ -8,6 +8,7 @@ router.register(r'regularusers', views.RegularUserViewSet)
 router.register(r'trainers', views.TrainerViewSet)
 router.register(r'customusers', views.CustomUserViewSet)
 router.register(r'specialties', views.SpecialtyView)
+router.register(r'measurements', views.RegularUserMeasurementViewSet, basename='measurements')
 
 urlpatterns = [
     path('', include(router.urls)),
@@ -20,6 +21,8 @@ urlpatterns = [
     path('signup/trainer/', views.TrainerSignUpAPIView.as_view(), name='trainer_signup'),
     path('profile/', views.ProfileView.as_view({'get': 'list', 'put': 'update'}), name='profile'),
     path('profile-info/', views.profile_view, name='profile_view'),
+    path('measurements/history/<int:user_id>/', views.RegularUserMeasurementViewSet.as_view({'get': 'history'}), name='measurement-history'),
+    path('regularusers/<int:pk>/details/', views.regular_user_details, name='regularuser-details'),
 ]
 
 urlpatterns += [
@@ -38,5 +41,5 @@ urlpatterns += [
     path('handle_request/<int:request_id>/', views.manage_request, name='handle_request'),
     path('trainer/clients/', views.get_trainer_clients, name='trainer_clients'),
     path('remove_trainer/', views.remove_trainer, name='remove_trainer'),
-     path('trainer-details/', views.get_trainer_details, name='trainer-details'),
+    path('trainer-details/', views.get_trainer_details, name='trainer-details'),
 ]

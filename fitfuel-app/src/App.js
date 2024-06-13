@@ -3,7 +3,10 @@ import { BrowserRouter as Router, Routes, Route, NavLink, Navigate } from 'react
 import { Container, Navbar, Nav, Offcanvas, Accordion, Dropdown } from 'react-bootstrap';
 import axios from 'axios';
 import './custom.css';
+import './App.css';
+import './index.css';
 
+// Importar componentes
 import HomePage from './components/HomePage';
 import CreateIngredient from './components/nutrition/CreateIngredient';
 import CreateFood from './components/nutrition/CreateFood';
@@ -48,7 +51,7 @@ import ClientDetails from './components/user/ClientDetails';
 import TrainerDetails from './components/user/TrainerDetails';
 import AssignedOptions from './components/nutrition/AssignedOptions';
 import AssignedWeekTrainings from './components/sport/AssignedWeekTrainings';
-import AdaptOption from './components/nutrition/AdaptOption';  // Importar el nuevo componente
+import AdaptOption from './components/nutrition/AdaptOption';
 
 function App() {
     const [authToken, setAuthToken] = useState(localStorage.getItem('authToken') || '');
@@ -106,7 +109,7 @@ function App() {
     return (
         <Router>
             <div className="App">
-                <Navbar bg="light" expand={false}>
+                <Navbar bg="dark" variant="dark" expand={false}>
                     <Container fluid>
                         <Navbar.Toggle aria-controls="offcanvasNavbar" />
                         <Navbar.Brand as={NavLink} to="/" className="mx-auto">FitFuelBalance</Navbar.Brand>
@@ -118,20 +121,14 @@ function App() {
                                 <Dropdown.Menu>
                                     <Dropdown.Item as={NavLink} to="/profile">Ver Perfil</Dropdown.Item>
                                     {profile?.role === "trainer" ? (
-                                        <Dropdown.Item as={NavLink} to="/clients">Mis Clientes</Dropdown.Item>
+                                        <>
+                                            <Dropdown.Item as={NavLink} to="/clients">Mis Clientes</Dropdown.Item>
+                                            <Dropdown.Item as={NavLink} to="/trainer-requests">Solicitudes Recibidas</Dropdown.Item>
+                                        </>
                                     ) : (
                                         profile?.role === "regular_user" && (
-                                            <>
-                                                <Dropdown.Item as={NavLink} to="/trainer-details">Mi Entrenador</Dropdown.Item>
-                                                <Dropdown.Item as={NavLink} to="/assigned-options">Mis Opciones Asignadas</Dropdown.Item>
-                                                <Dropdown.Item as={NavLink} to="/assigned-week-trainings">Mis Entrenamientos Asignados</Dropdown.Item>
-                                            </>
+                                            <Dropdown.Item as={NavLink} to="/trainer-details">Mi Entrenador</Dropdown.Item>
                                         )
-                                    )}
-                                    {profile?.role === "trainer" ? (
-                                        <Dropdown.Item as={NavLink} to="/trainer-requests">Solicitudes Recibidas</Dropdown.Item>
-                                    ) : (
-                                        null
                                     )}
                                     <Dropdown.Item onClick={handleLogout}>Cerrar Sesión</Dropdown.Item>
                                 </Dropdown.Menu>
@@ -192,7 +189,7 @@ function App() {
                                                     <Nav.Link as={NavLink} to="/nutrition/assign-option">Asignar Opción</Nav.Link>
                                                 </Nav.Item>
                                                 <Nav.Item>
-                                                    <Nav.Link as={NavLink} to="/nutrition/adapt-option">Adaptar Opción</Nav.Link> {/* Añadir nueva ruta */}
+                                                    <Nav.Link as={NavLink} to="/nutrition/adapt-option">Adaptar Opción</Nav.Link>
                                                 </Nav.Item>
                                                 <p className="mt-2 mb-1"><strong>Listado</strong></p>
                                                 <Nav.Item>
@@ -245,7 +242,7 @@ function App() {
                     <Routes>
                         {authToken ? (
                             <>
-                                <Route path="/" element={<HomePage />} />
+                                <Route path="/" element={<HomePage profile={profile} />} />
                                 <Route path="/trainer-list" element={<TrainerList onSendRequest={handleSendRequest} />} />
                                 <Route path="/trainer-requests" element={<TrainerRequests />} />
                                 <Route path="/nutrition" element={<Nutrition />} />
@@ -266,7 +263,7 @@ function App() {
                                 <Route path="/nutrition/create-weekoption" element={<CreateWeekOption />} />
                                 <Route path="/nutrition/create-option" element={<CreateOption />} />
                                 <Route path="/nutrition/assign-option" element={<AssignOptionToUser />} />
-                                <Route path="/nutrition/adapt-option" element={<AdaptOption />} /> {/* Añadir nueva ruta */}
+                                <Route path="/nutrition/adapt-option" element={<AdaptOption />} />
                                 <Route path="/nutrition/list-food" element={<ListFood />} />
                                 <Route path="/nutrition/foods/:foodId" element={<FoodDetails />} />
                                 <Route path="/nutrition/edit-dailydiet/:dietId" element={<ManageDailyDiet />} />
@@ -325,7 +322,7 @@ function Nutrition() {
             <NavLink to="/nutrition/create-weekoption">Crear Opción Semanal</NavLink><br />
             <NavLink to="/nutrition/create-option">Crear Opción</NavLink><br />
             <NavLink to="/nutrition/assign-option">Asignar Opción</NavLink><br />
-            <NavLink to="/nutrition/adapt-option">Adaptar Opción</NavLink><br /> {/* Añadir nueva ruta */}
+            <NavLink to="/nutrition/adapt-option">Adaptar Opción</NavLink><br />
             <NavLink to="/nutrition/list-ingredient">Listar Ingredientes</NavLink><br />
             <NavLink to="/nutrition/list-food">Listar Alimentos</NavLink><br />
             <NavLink to="/nutrition/edit-food/:id">Editar Alimento</NavLink><br />
@@ -354,3 +351,4 @@ function Sport() {
 }
 
 export default App;
+

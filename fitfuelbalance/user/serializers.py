@@ -20,6 +20,7 @@ class SpecialtySerializer(serializers.ModelSerializer):
 
 class RegularUserSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer()
+    personal_trainer = TrainerSerializer()
 
     class Meta:
         model = RegularUser
@@ -74,3 +75,9 @@ class TrainingRequestSerializer(serializers.ModelSerializer):
         model = TrainingRequest
         fields = ['id', 'regular_user', 'trainer', 'is_accepted', 'description', 'email', 'phone']
         read_only_fields = ['id', 'is_accepted']
+        
+class RegularUserMeasurementSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source='user.id')
+    class Meta:
+        model = RegularUserMeasurement
+        fields = '__all__'

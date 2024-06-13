@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Table, Form, Button } from 'react-bootstrap';
+import { Line, Bar, Pie } from 'react-chartjs-2';
+import 'chart.js/auto';
 
 const Profile = () => {
     const [profile, setProfile] = useState({
@@ -9,7 +11,9 @@ const Profile = () => {
         gender: 'male',
         image: null,
         specialties: [],
-        trainer_type: 'trainer'
+        trainer_type: 'trainer',
+        communication_email: '',
+        phone: ''
     });
     const [regularUser, setRegularUser] = useState({
         weight: '',
@@ -30,6 +34,11 @@ const Profile = () => {
     const [specialties, setSpecialties] = useState([]);
     const [isTrainer, setIsTrainer] = useState(false);
     const [error, setError] = useState('');
+    const [measurements, setMeasurements] = useState([]);
+    const [chartType, setChartType] = useState('line');
+    const [selectedMeasurements, setSelectedMeasurements] = useState(['weight']);
+    const [timeRange, setTimeRange] = useState('1month');
+    const [viewType, setViewType] = useState('chart');
 
     const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -49,7 +58,9 @@ const Profile = () => {
                     gender: profileData.gender || 'male',
                     image: profileData.image || null,
                     specialties: trainer.specialties || [],
-                    trainer_type: trainer.trainer_type || 'trainer'
+                    trainer_type: trainer.trainer_type || 'trainer',
+                    communication_email: trainer.communication_email || '',
+                    phone: trainer.phone || ''
                 });
 
                 setRegularUser({
@@ -70,6 +81,32 @@ const Profile = () => {
                 });
 
                 setIsTrainer(!!trainer.specialties?.length);
+
+                // Fetch and set the latest measurements
+                if (!trainer.specialties?.length) {
+                    const measurementsResponse = await axios.get(`${apiUrl}/user/measurements/history/${response.data.id}/`, {
+                        headers: {
+                            'Authorization': `Token ${localStorage.getItem('authToken')}`
+                        }
+                    });
+                    const latestMeasurements = measurementsResponse.data[0];
+                    setRegularUser({
+                        weight: latestMeasurements.weight || '',
+                        height: latestMeasurements.height || '',
+                        neck: latestMeasurements.neck || '',
+                        shoulder: latestMeasurements.shoulder || '',
+                        chest: latestMeasurements.chest || '',
+                        waist: latestMeasurements.waist || '',
+                        hip: latestMeasurements.hip || '',
+                        arm: latestMeasurements.arm || '',
+                        glute: latestMeasurements.glute || '',
+                        upper_leg: latestMeasurements.upper_leg || '',
+                        middle_leg: latestMeasurements.middle_leg || '',
+                        lower_leg: latestMeasurements.lower_leg || '',
+                        communication_email: regular_user.communication_email || '',
+                        phone: regular_user.phone || ''
+                    });
+                }
             } catch (error) {
                 setError("Error al cargar el perfil");
                 console.error("Error al cargar el perfil:", error.response?.data || error.message);
@@ -90,8 +127,23 @@ const Profile = () => {
             }
         };
 
+        const fetchMeasurements = async () => {
+            try {
+                const response = await axios.get(`${apiUrl}/user/measurements/`, {
+                    headers: {
+                        'Authorization': `Token ${localStorage.getItem('authToken')}`
+                    }
+                });
+                setMeasurements(response.data);
+            } catch (error) {
+                setError("Error al cargar el historial de medidas");
+                console.error("Error al cargar el historial de medidas:", error.response?.data || error.message);
+            }
+        };
+
         fetchProfile();
         fetchSpecialties();
+        fetchMeasurements();
     }, [apiUrl]);
 
     const handleChange = (e) => {
@@ -120,7 +172,7 @@ const Profile = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         const formData = new FormData();
         formData.append('bio', profile.bio);
         formData.append('age', profile.age);
@@ -128,18 +180,14 @@ const Profile = () => {
         if (profile.image instanceof File) {
             formData.append('image', profile.image);
         }
-
+    
         if (isTrainer) {
             formData.append('trainer_type', profile.trainer_type);
             formData.append('specialties', JSON.stringify(profile.specialties));
             formData.append('communication_email', profile.communication_email);
             formData.append('phone', profile.phone);
-        } else {
-            Object.keys(regularUser).forEach(key => {
-                formData.append(key, regularUser[key]);
-            });
         }
-
+    
         try {
             const response = await axios.put(`${apiUrl}/user/profile/`, formData, {
                 headers: {
@@ -147,18 +195,20 @@ const Profile = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-
+    
             const { profile: updatedProfileData = {}, trainer: updatedTrainerData = {}, regular_user: updatedRegularUserData = {} } = response.data;
-
+    
             setProfile({
                 bio: updatedProfileData.bio || '',
                 age: updatedProfileData.age || '',
                 gender: updatedProfileData.gender || 'male',
                 image: updatedProfileData.image || null,
                 specialties: updatedTrainerData ? updatedTrainerData.specialties : [],
-                trainer_type: updatedTrainerData ? updatedTrainerData.trainer_type : 'trainer'
+                trainer_type: updatedTrainerData ? updatedTrainerData.trainer_type : 'trainer',
+                communication_email: updatedTrainerData ? updatedTrainerData.communication_email : '',
+                phone: updatedTrainerData ? updatedTrainerData.phone : ''
             });
-
+    
             setRegularUser({
                 weight: updatedRegularUserData.weight || '',
                 height: updatedRegularUserData.height || '',
@@ -176,10 +226,144 @@ const Profile = () => {
                 phone: updatedRegularUserData.phone || ''
             });
 
+            // Save measurement data for regular users
+            if (!isTrainer) {
+                try {
+                    await axios.post(`${apiUrl}/user/measurements/`, regularUser, {
+                        headers: {
+                            'Authorization': `Token ${localStorage.getItem('authToken')}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    // Refresh measurements after adding new ones
+                    const measurementsResponse = await axios.get(`${apiUrl}/user/measurements/history/${response.data.id}/`, {
+                        headers: {
+                            'Authorization': `Token ${localStorage.getItem('authToken')}`
+                        }
+                    });
+                    setMeasurements(measurementsResponse.data);
+
+                } catch (error) {
+                    setError(`Error al guardar las medidas: ${error.response ? JSON.stringify(error.response.data) : error.message}`);
+                    console.error("Error al guardar las medidas:", error.response?.data || error.message);
+                }
+            }
+    
         } catch (error) {
             setError(`Error al actualizar el perfil: ${error.response ? JSON.stringify(error.response.data) : error.message}`);
             console.error("Error al actualizar el perfil:", error.response?.data || error.message);
         }
+    };
+
+    const filterMeasurementsByTimeRange = () => {
+        const now = new Date();
+        let startDate;
+
+        switch (timeRange) {
+            case '1week':
+                startDate = new Date(now.setDate(now.getDate() - 7));
+                break;
+            case '1month':
+                startDate = new Date(now.setMonth(now.getMonth() - 1));
+                break;
+            case '3months':
+                startDate = new Date(now.setMonth(now.getMonth() - 3));
+                break;
+            case '6months':
+                startDate = new Date(now.setMonth(now.getMonth() - 6));
+                break;
+            case '9months':
+                startDate = new Date(now.setMonth(now.getMonth() - 9));
+                break;
+            case '1year':
+                startDate = new Date(now.setFullYear(now.getFullYear() - 1));
+                break;
+            case '2years':
+                startDate = new Date(now.setFullYear(now.getFullYear() - 2));
+                break;
+            default:
+                startDate = new Date(now.setMonth(now.getMonth() - 1));
+        }
+
+        return measurements.filter(measurement => new Date(measurement.date) >= startDate);
+    };
+
+    const getChartData = () => {
+        const filteredMeasurements = filterMeasurementsByTimeRange();
+        const labels = filteredMeasurements.map(m => new Date(m.date).toLocaleDateString());
+
+        const datasets = selectedMeasurements.map((measurement, index) => ({
+            label: measurement,
+            data: filteredMeasurements.map(m => m[measurement]),
+            backgroundColor: `rgba(${index * 50}, ${index * 100}, ${index * 150}, 0.6)`,
+            borderColor: `rgba(${index * 50}, ${index * 100}, ${index * 150}, 1)`,
+            borderWidth: 1
+        }));
+
+        return {
+            labels,
+            datasets
+        };
+    };
+
+    const renderChart = () => {
+        const data = getChartData();
+
+        switch (chartType) {
+            case 'bar':
+                return <Bar data={data} />;
+            case 'pie':
+                return <Pie data={data} />;
+            default:
+                return <Line data={data} />;
+        }
+    };
+
+    const renderTable = () => {
+        const filteredMeasurements = filterMeasurementsByTimeRange();
+
+        return (
+            <Table striped bordered hover className="mt-4">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        {selectedMeasurements.map((measurement, index) => (
+                            <th key={index}>{measurement}</th>
+                        ))}
+                    </tr>
+                </thead>
+                <tbody>
+                    {filteredMeasurements.map((measurement, index) => (
+                        <tr key={index}>
+                            <td>{new Date(measurement.date).toLocaleDateString()}</td>
+                            {selectedMeasurements.map((key, i) => (
+                                <td key={i}>{measurement[key]}</td>
+                            ))}
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
+        );
+    };
+
+    const handleChartTypeChange = (e) => {
+        setChartType(e.target.value);
+    };
+
+    const handleMeasurementChange = (e) => {
+        const { value, checked } = e.target;
+        setSelectedMeasurements(prev =>
+            checked ? [...prev, value] : prev.filter(m => m !== value)
+        );
+    };
+
+    const handleTimeRangeChange = (e) => {
+        setTimeRange(e.target.value);
+    };
+
+    const handleViewTypeChange = (e) => {
+        setViewType(e.target.value);
     };
 
     return (
@@ -256,6 +440,34 @@ const Profile = () => {
                                 </div>
                             ))}
                         </div>
+                        <Row>
+                            <Col md={6}>
+                                <div className="mb-3">
+                                    <label htmlFor="communication_email" className="form-label">Correo Electrónico</label>
+                                    <input
+                                        type="email"
+                                        id="communication_email"
+                                        name="communication_email"
+                                        className="form-control"
+                                        value={profile.communication_email}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                            </Col>
+                            <Col md={6}>
+                                <div className="mb-3">
+                                    <label htmlFor="phone" className="form-label">Teléfono</label>
+                                    <input
+                                        type="text"
+                                        id="phone"
+                                        name="phone"
+                                        className="form-control"
+                                        value={profile.phone}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                            </Col>
+                        </Row>
                     </>
                 ) : (
                     <Container>
@@ -469,6 +681,51 @@ const Profile = () => {
                 </div>
                 <button type="submit" className="btn btn-primary">Guardar Cambios</button>
             </form>
+            {!isTrainer && (
+                <div>
+                    <Form.Group controlId="viewTypeSelect" className="mt-3">
+                        <Form.Label>Tipo de Vista</Form.Label>
+                        <Form.Control as="select" value={viewType} onChange={handleViewTypeChange}>
+                            <option value="chart">Gráfico</option>
+                            <option value="table">Tabla</option>
+                        </Form.Control>
+                    </Form.Group>
+                    <Form.Group controlId="chartTypeSelect" className="mt-3">
+                        <Form.Label>Tipo de Gráfico</Form.Label>
+                        <Form.Control as="select" value={chartType} onChange={handleChartTypeChange}>
+                            <option value="line">Línea</option>
+                            <option value="bar">Barras</option>
+                            <option value="pie">Circular</option>
+                        </Form.Control>
+                    </Form.Group>
+                    <Form.Group controlId="measurementSelect" className="mt-3">
+                        <Form.Label>Mediciones</Form.Label>
+                        {['weight', 'height', 'neck', 'shoulder', 'chest', 'waist', 'hip', 'arm', 'glute', 'upper_leg', 'middle_leg', 'lower_leg'].map((measurement) => (
+                            <Form.Check
+                                key={measurement}
+                                type="checkbox"
+                                label={measurement}
+                                value={measurement}
+                                checked={selectedMeasurements.includes(measurement)}
+                                onChange={handleMeasurementChange}
+                            />
+                        ))}
+                    </Form.Group>
+                    <Form.Group controlId="timeRangeSelect" className="mt-3">
+                        <Form.Label>Rango de Tiempo</Form.Label>
+                        <Form.Control as="select" value={timeRange} onChange={handleTimeRangeChange}>
+                            <option value="1week">1 Semana</option>
+                            <option value="1month">1 Mes</option>
+                            <option value="3months">3 Meses</option>
+                            <option value="6months">6 Meses</option>
+                            <option value="9months">9 Meses</option>
+                            <option value="1year">1 Año</option>
+                            <option value="2years">2 Años</option>
+                        </Form.Control>
+                    </Form.Group>
+                    {viewType === 'chart' ? renderChart() : renderTable()}
+                </div>
+            )}
         </div>
     );
 };

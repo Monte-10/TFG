@@ -85,3 +85,22 @@ class TrainingRequest(models.Model):
 
     class Meta:
         unique_together = ('regular_user', 'trainer')
+        
+class RegularUserMeasurement(models.Model):
+    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
+    weight = models.FloatField(null=True, blank=True)
+    height = models.FloatField(null=True, blank=True)
+    neck = models.FloatField(null=True, blank=True)
+    shoulder = models.FloatField(null=True, blank=True)
+    chest = models.FloatField(null=True, blank=True)
+    waist = models.FloatField(null=True, blank=True)
+    hip = models.FloatField(null=True, blank=True)
+    arm = models.FloatField(null=True, blank=True)
+    glute = models.FloatField(null=True, blank=True)
+    upper_leg = models.FloatField(null=True, blank=True)
+    middle_leg = models.FloatField(null=True, blank=True)
+    lower_leg = models.FloatField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.date}"
