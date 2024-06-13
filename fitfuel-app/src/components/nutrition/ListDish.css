@@ -1,0 +1,117 @@
+.container-listdish {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    color: #343a40;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.table-listdish {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.table-listdish th, .table-listdish td {
+    padding: 1rem;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.table-listdish thead th {
+    background-color: #343a40;
+    color: #fff;
+}
+
+.table-listdish tbody tr {
+    transition: background-color 0.3s;
+    background-color: #ffffff;
+    color: #333;
+}
+
+.table-listdish tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table-listdish tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+.form-control-listdish, .form-select-listdish {
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.btn-listdish {
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 14px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn-listdish:hover {
+    transform: scale(1.05);
+}
+
+.btn-primary-listdish {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+.btn-danger-listdish {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #fff;
+}
+
+.btn-secondary-listdish {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: #fff;
+}
+
+.pagination-listdish {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pagination-listdish span {
+    margin: 0 10px;
+}
+
+.alert-listdish {
+    margin-top: 20px;
+}
+
+.row-listdish {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.col-md-2-listdish {
+    flex: 0 0 calc(16.66667% - 20px);
+    max-width: calc(16.66667% - 20px);
+}
+
+@media (max-width: 768px) {
+    .col-md-2-listdish {
+        flex: 0 0 calc(50% - 10px);
+        max-width: calc(50% - 10px);
+    }
+}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Card, Button, Modal } from 'react-bootstrap';
+import './TrainerDetails.css'; // Importar el archivo de estilos
 
 const TrainerDetails = () => {
     const [trainerDetails, setTrainerDetails] = useState(null);
@@ -58,21 +59,23 @@ const TrainerDetails = () => {
     };
 
     return (
-        <Container>
-            <h2>Detalles del Entrenador</h2>
+        <Container className="trainer-details-container mt-4">
+            <h2 className="text-center mb-4">Detalles del Entrenador</h2>
             {trainerDetails ? (
-                <Card>
+                <Card className="trainer-details-card mx-auto">
                     <Card.Body>
-                        <Card.Title>{trainerDetails.username}</Card.Title>
-                        <Card.Text>Especialidades: {getSpecialtyNames(trainerDetails.specialties)}</Card.Text>
-                        <Card.Text>Tipo de Entrenador: {trainerDetails.trainer_type}</Card.Text>
-                        <Card.Text>Email: {trainerDetails.communication_email}</Card.Text>
-                        <Card.Text>Teléfono: {trainerDetails.phone}</Card.Text>
-                        <Button variant="danger" onClick={handleConfirmShow}>Eliminar Entrenador</Button>
+                        <Card.Title className="text-center">{trainerDetails.username}</Card.Title>
+                        <Card.Text><strong>Especialidades:</strong> {getSpecialtyNames(trainerDetails.specialties)}</Card.Text>
+                        <Card.Text><strong>Tipo de Entrenador:</strong> {trainerDetails.trainer_type}</Card.Text>
+                        <Card.Text><strong>Email:</strong> {trainerDetails.communication_email}</Card.Text>
+                        <Card.Text><strong>Teléfono:</strong> {trainerDetails.phone}</Card.Text>
+                        <div className="text-center">
+                            <Button variant="danger" onClick={handleConfirmShow}>Eliminar Entrenador</Button>
+                        </div>
                     </Card.Body>
                 </Card>
             ) : (
-                <p>No tienes un entrenador asignado.</p>
+                <p className="text-center">No tienes un entrenador asignado.</p>
             )}
 
             <Modal show={showConfirm} onHide={handleConfirmClose}>

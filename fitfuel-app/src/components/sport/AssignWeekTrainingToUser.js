@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './AssignWeekTrainingToUser.css';
 
 function AssignWeekTrainingToUser() {
     const [users, setUsers] = useState([]);
@@ -92,8 +93,8 @@ function AssignWeekTrainingToUser() {
     };
 
     return (
-        <div className="container mt-4">
-            <h2>Asignar Semana de Entrenamiento a Usuario</h2>
+        <div className="container-assign-week mt-4">
+            <h2 className="mb-4">Asignar Semana de Entrenamiento a Usuario</h2>
             {error && <div className="alert alert-danger" role="alert">{error}</div>}
             {success && (
                 <>
@@ -110,7 +111,7 @@ function AssignWeekTrainingToUser() {
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label htmlFor="userSelect" className="form-label">Usuario:</label>
-                    <select className="form-select" id="userSelect" value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)}>
+                    <select className="form-select" id="userSelect" value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)} required>
                         <option value="">Selecciona un usuario</option>
                         {users.map((user) => (
                             <option key={user.id} value={user.id}>{user.username}</option>
@@ -119,7 +120,7 @@ function AssignWeekTrainingToUser() {
                 </div>
                 <div className="mb-3">
                     <label htmlFor="weekTrainingSelect" className="form-label">Semana de Entrenamiento:</label>
-                    <select className="form-select" id="weekTrainingSelect" value={selectedWeekTraining} onChange={(e) => setSelectedWeekTraining(e.target.value)}>
+                    <select className="form-select" id="weekTrainingSelect" value={selectedWeekTraining} onChange={(e) => setSelectedWeekTraining(e.target.value)} required>
                         <option value="">Selecciona una semana de entrenamiento</option>
                         {weekTrainings.map((weekTraining) => (
                             <option key={weekTraining.id} value={weekTraining.id}>{weekTraining.name}</option>
@@ -134,9 +135,10 @@ function AssignWeekTrainingToUser() {
                         id="startDate"
                         value={selectedDate}
                         onChange={(e) => setSelectedDate(e.target.value)}
+                        required
                     />
                 </div>
-                <button type="submit" className="btn btn-primary">Asignar Semana de Entrenamiento</button>
+                <button type="submit" className="btn btn-success">Asignar Semana de Entrenamiento</button>
             </form>
         </div>
     );

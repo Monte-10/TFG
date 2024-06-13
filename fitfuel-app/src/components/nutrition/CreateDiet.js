@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './CreateDiet.css';
 
 function CreateDiet() {
   const [users, setUsers] = useState([]);
@@ -59,7 +60,7 @@ function CreateDiet() {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="create-diet-container mt-5">
       <h2 className="mb-4">Crear Nueva Dieta</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">

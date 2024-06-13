@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Card, Button } from 'react-bootstrap';
+import './WeeklyTrainings.css';
 
 function WeeklyTrainings() {
   const [weeklyTrainings, setWeeklyTrainings] = useState([]);
@@ -45,7 +46,7 @@ function WeeklyTrainings() {
   };
 
   return (
-    <Container className="mt-4">
+    <Container className="mt-4 container-weekly-trainings">
       <h2>Mis Entrenamientos Semanales</h2>
       {error && <div className="alert alert-danger" role="alert">{error}</div>}
       {weeklyTrainings.length > 0 ? (
@@ -53,7 +54,7 @@ function WeeklyTrainings() {
           <Card key={week.id} className="mb-3">
             <Card.Body>
               <Card.Title>{`Semana del ${new Date(week.start_date).toLocaleDateString()}`}</Card.Title>
-              <Button variant="primary" onClick={() => handleDownloadPdf(week.id)}>Descargar PDF</Button>
+              <Button variant="success" onClick={() => handleDownloadPdf(week.id)}>Descargar PDF</Button>
             </Card.Body>
           </Card>
         ))

@@ -296,11 +296,33 @@ def assigned_options(request):
 from decimal import Decimal, ROUND_HALF_UP
 from django.db import transaction
 
+import logging
+
+# Configura el logger
+logger = logging.getLogger(__name__)
+
 def calculate_bmr(user):
-    if user.profile.gender == 'male':
-        return Decimal(user.weight) * Decimal(10) + Decimal(user.height) * Decimal(6.25) - Decimal(user.profile.age) * Decimal(5) + Decimal(5)
-    else:
-        return Decimal(user.weight) * Decimal(10) + Decimal(user.height) * Decimal(6.25) - Decimal(user.profile.age) * Decimal(5) - Decimal(161)
+    try:
+        latest_measurement = RegularUserMeasurement.objects.filter(user=user).order_by('-date').first()
+
+        if not latest_measurement:
+            raise ValueError("No measurements found for user")
+
+        weight = Decimal(latest_measurement.weight)
+        height = Decimal(latest_measurement.height)
+        age = Decimal(user.profile.age)
+        gender = user.profile.gender
+
+        if weight is None or height is None or age is None:
+            raise ValueError("Weight, height, or age is None")
+
+        if gender == 'male':
+            return weight * Decimal(10) + height * Decimal(6.25) - age * Decimal(5) + Decimal(5)
+        else:
+            return weight * Decimal(10) + height * Decimal(6.25) - age * Decimal(5) - Decimal(161)
+    except Exception as e:
+        logger.error(f"Error calculating BMR: {e}")
+        raise
 
 def calculate_daily_caloric_needs(user):
     bmr = calculate_bmr(user)

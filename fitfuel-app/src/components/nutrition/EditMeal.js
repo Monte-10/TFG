@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import './EditMeal.css'; // Asegúrate de tener un archivo CSS separado
 
 function EditMeal() {
   const { mealId } = useParams();
@@ -51,68 +52,68 @@ function EditMeal() {
 
   const calculateNutritionTotals = () => {
     let totals = {
-        calories: 0,
-        protein: 0,
-        carbohydrates: 0,
-        fat: 0,
-        sugar: 0,
-        fiber: 0,
-        saturated_fat: 0,
-        gluten_free: true,
-        lactose_free: true,
-        vegan: true,
-        vegetarian: true,
-        pescetarian: true,
-        contains_meat: false,
-        contains_vegetables: false,
-        contains_fish_shellfish_canned_preserved: false,
-        cereal: false,
-        pasta_or_rice: false,
-        dairy_yogurt_cheese: false,
-        fruit: false,
-        nuts: false,
-        legume: false,
-        sauce_or_condiment: false,
-        deli_meat: false,
-        bread_or_toast: false,
-        egg: false,
-        special_drink_or_supplement: false,
-        tuber: false,
-        other: false
+      calories: 0,
+      protein: 0,
+      carbohydrates: 0,
+      fat: 0,
+      sugar: 0,
+      fiber: 0,
+      saturated_fat: 0,
+      gluten_free: true,
+      lactose_free: true,
+      vegan: true,
+      vegetarian: true,
+      pescetarian: true,
+      contains_meat: false,
+      contains_vegetables: false,
+      contains_fish_shellfish_canned_preserved: false,
+      cereal: false,
+      pasta_or_rice: false,
+      dairy_yogurt_cheese: false,
+      fruit: false,
+      nuts: false,
+      legume: false,
+      sauce_or_condiment: false,
+      deli_meat: false,
+      bread_or_toast: false,
+      egg: false,
+      special_drink_or_supplement: false,
+      tuber: false,
+      other: false
     };
 
     selectedDishes.forEach(({ dishId, portion }) => {
-        const foundDish = dishes.find(dish => dish.id.toString() === dishId);
-        if (foundDish && portion) {
-            totals.calories += foundDish.calories * portion;
-            totals.protein += foundDish.protein * portion;
-            totals.carbohydrates += foundDish.carbohydrates * portion;
-            totals.fat += foundDish.fat * portion;
-            totals.sugar += foundDish.sugar * portion;
-            totals.fiber += foundDish.fiber * portion;
-            totals.saturated_fat += foundDish.saturated_fat * portion;
-            totals.gluten_free = totals.gluten_free && foundDish.glutenFree;
-            totals.lactose_free = totals.lactose_free && foundDish.lactoseFree;
-            totals.vegan = totals.vegan && foundDish.vegan;
-            totals.vegetarian = totals.vegetarian && foundDish.vegetarian;
-            totals.pescetarian = totals.pescetarian && foundDish.pescetarian;
-            totals.contains_meat = totals.contains_meat || foundDish.containsMeat;
-            totals.contains_vegetables = totals.contains_vegetables || foundDish.containsVegetables;
-            totals.contains_fish_shellfish_canned_preserved = totals.contains_fish_shellfish_canned_preserved || foundDish.containsFishShellfishCannedPreserved;
-            totals.cereal = totals.cereal || foundDish.cereal;
-            totals.pasta_or_rice = totals.pasta_or_rice || foundDish.pastaOrRice;
-            totals.dairy_yogurt_cheese = totals.dairy_yogurt_cheese || foundDish.dairyYogurtCheese;
-            totals.fruit = totals.fruit || foundDish.fruit;
-            totals.nuts = totals.nuts || foundDish.nuts;
-            totals.legume = totals.legume || foundDish.legume;
-            totals.sauce_or_condiment = totals.sauce_or_condiment || foundDish.sauceOrCondiment;
-            totals.deli_meat = totals.deli_meat || foundDish.deliMeat;
-            totals.bread_or_toast = totals.bread_or_toast || foundDish.breadOrToast;
-            totals.egg = totals.egg || foundDish.egg;
-            totals.special_drink_or_supplement = totals.special_drink_or_supplement || foundDish.specialDrinkOrSupplement;
-            totals.tuber = totals.tuber || foundDish.tuber;
-            totals.other = totals.other || foundDish.other;
-        }
+      const foundDish = dishes.find(dish => dish.id.toString() === dishId);
+      if (foundDish && portion) {
+        totals.calories += foundDish.calories * portion;
+        totals.protein += foundDish.protein * portion;
+        totals.carbohydrates += foundDish.carbohydrates * portion;
+        totals.fat += foundDish.fat * portion;
+        totals.sugar += foundDish.sugar * portion;
+        totals.fiber += foundDish.fiber * portion;
+        totals.saturated_fat += foundDish.saturated_fat * portion;
+        totals.gluten_free = totals.gluten_free && foundDish.glutenFree;
+        totals.lactose_free = totals.lactose_free && foundDish.lactoseFree;
+        totals.vegan = totals.vegan && foundDish.vegan;
+        totals.vegetarian = totals.vegetarian && foundDish.vegetarian;
+        totals.pescetarian = totals.pescetarian && foundDish.pescetarian;
+        totals.contains_meat = totals.contains_meat || foundDish.containsMeat;
+        totals.contains_vegetables = totals.contains_vegetables || foundDish.containsVegetables;
+        totals.contains_fish_shellfish_canned_preserved = totals.contains_fish_shellfish_canned_preserved || foundDish.containsFishShellfishCannedPreserved;
+        totals.cereal = totals.cereal || foundDish.cereal;
+        totals.pasta_or_rice = totals.pasta_or_rice || foundDish.pastaOrRice;
+        totals.dairy_yogurt_cheese = totals.dairy_yogurt_cheese || foundDish.dairyYogurtCheese;
+        totals.fruit = totals.fruit || foundDish.fruit;
+        totals.nuts = totals.nuts || foundDish.nuts;
+        totals.legume = totals.legume || foundDish.legume;
+        totals.sauce_or_condiment = totals.sauce_or_condiment || foundDish.sauceOrCondiment;
+        totals.deli_meat = totals.deli_meat || foundDish.deliMeat;
+        totals.bread_or_toast = totals.bread_or_toast || foundDish.breadOrToast;
+        totals.egg = totals.egg || foundDish.egg;
+        totals.special_drink_or_supplement = totals.special_drink_or_supplement || foundDish.specialDrinkOrSupplement;
+        totals.tuber = totals.tuber || foundDish.tuber;
+        totals.other = totals.other || foundDish.other;
+      }
     });
 
     return totals;
@@ -133,14 +134,14 @@ function EditMeal() {
   const addDishField = () => {
     setSelectedDishes([...selectedDishes, { dishId: '', portion: '', notes: '' }]);
   };
-  
+
   const removeDishField = (index) => {
     setSelectedDishes(selectedDishes.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+
     const mealData = {
       name,
       user: selectedUser,
@@ -150,7 +151,7 @@ function EditMeal() {
         notes: dish.notes
       })),
     };
-  
+
     try {
       const response = await fetch(`${apiUrl}/nutrition/meals/${mealId}/`, {
         method: 'PUT',
@@ -160,11 +161,11 @@ function EditMeal() {
         },
         body: JSON.stringify(mealData),
       });
-  
+
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
-  
+
       const data = await response.json();
       console.log('Comida actualizada con éxito:', data);
       setMealUpdated(true);
@@ -175,12 +176,12 @@ function EditMeal() {
   };
 
   return (
-    <div className="container mt-5">
-      <h2>Editar Comida</h2>
+    <div className="container-editmeal mt-5">
+      <h2 className="mb-4">Editar Comida</h2>
       {mealUpdated ? (
         <div className="alert alert-success">
           <p>La Comida se ha actualizado correctamente.</p>
-          <button onClick={() => setMealUpdated(false)} className="btn btn-secondary ml-2">Editar otra Comida</button>
+          <button onClick={() => setMealUpdated(false)} className="btn btn-secondary mt-2">Editar otra Comida</button>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="needs-validation" noValidate>
@@ -188,7 +189,7 @@ function EditMeal() {
             <label htmlFor="name" className="form-label">Nombre de la Comida:</label>
             <input type="text" className="form-control" id="name" value={name} onChange={e => setName(e.target.value)} required />
           </div>
-  
+
           <div className="mb-3">
             <label htmlFor="userSelect" className="form-label">Usuario:</label>
             <select className="form-select" id="userSelect" value={selectedUser} onChange={e => setSelectedUser(e.target.value)} required>

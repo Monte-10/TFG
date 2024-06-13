@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import './CreateMeal.css'; // Importa el archivo CSS
 
 function CreateMeal() {
   const [dishes, setDishes] = useState([]);
@@ -27,7 +30,7 @@ function CreateMeal() {
     maxSaturatedFat: '',
   });
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
-  const [itemsPerPage] = useState(3);
+  const [itemsPerPage] = useState(6); // Cambiado a 6 para más platos por página
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -195,19 +198,23 @@ function CreateMeal() {
         setName('');
         setSelectedUser('');
         setSelectedDishes([]);
+        toast.success('Comida creada exitosamente!');
       } else {
         console.error('Failed to create meal');
+        toast.error('Error al crear la comida');
       }
     } catch (error) {
       console.error('Error creating meal:', error);
+      toast.error('Error al crear la comida');
     }
   };
 
   const nutritionTotals = calculateNutritionTotals(selectedDishes, dishes);
 
   return (
-    <div className="container mt-5">
+    <div className="create-meal-container meal-container mt-5">
       <h2>Crear Comida</h2>
+      <ToastContainer />
       {mealCreated ? (
         <div className="alert alert-success">
           <p>La Comida se ha creado correctamente. ID: {createdMealId}</p>
@@ -243,7 +250,7 @@ function CreateMeal() {
             />
           </div>
   
-          <button type="button" className="btn btn-info" onClick={toggleAdvancedFilters}>
+          <button type="button" className="btn btn-info btn-lg mb-3" onClick={toggleAdvancedFilters}>
             {showAdvancedFilters ? 'Ocultar Filtros Avanzados' : 'Mostrar Filtros Avanzados'}
           </button>
 
@@ -256,7 +263,7 @@ function CreateMeal() {
                     type="number"
                     className="form-control mt-2"
                     placeholder="Calorías Mínimas"
-                    value={filter.minCalories.value}
+                    value={filter.minCalories}
                     onChange={handleFilterChange}
                     name="minCalories"
                   />
@@ -267,7 +274,7 @@ function CreateMeal() {
                     type="number"
                     className="form-control mt-2"
                     placeholder="Calorías Máximas"
-                    value={filter.maxCalories.value}
+                    value={filter.maxCalories}
                     onChange={handleFilterChange}
                     name="maxCalories"
                   />
@@ -278,7 +285,7 @@ function CreateMeal() {
                     type="number"
                     className="form-control mt-2"
                     placeholder="Proteínas Mínimas"
-                    value={filter.minProtein.value}
+                    value={filter.minProtein}
                     onChange={handleFilterChange}
                     name="minProtein"
                   />
@@ -289,7 +296,7 @@ function CreateMeal() {
                     type="number"
                     className="form-control mt-2"
                     placeholder="Proteínas Máximas"
-                    value={filter.maxProtein.value}
+                    value={filter.maxProtein}
                     onChange={handleFilterChange}
                     name="maxProtein"
                   />
@@ -302,7 +309,7 @@ function CreateMeal() {
                     type="number"
                     className="form-control mt-2"
                     placeholder="Carbohidratos Mínimos"
-                    value={filter.minCarbohydrates.value}
+                    value={filter.minCarbohydrates}
                     onChange={handleFilterChange}
                     name="minCarbohydrates"
                   />
@@ -313,7 +320,7 @@ function CreateMeal() {
                     type="number"
                     className="form-control mt-2"
                     placeholder="Carbohidratos Máximos"
-                    value={filter.maxCarbohydrates.value}
+                    value={filter.maxCarbohydrates}
                     onChange={handleFilterChange}
                     name="maxCarbohydrates"
                   />
@@ -324,7 +331,7 @@ function CreateMeal() {
                     type="number"
                     className="form-control mt-2"
                     placeholder="Grasas Mínimas"
-                    value={filter.minFat.value}
+                    value={filter.minFat}
                     onChange={handleFilterChange}
                     name="minFat"
                   />
@@ -335,7 +342,7 @@ function CreateMeal() {
                     type="number"
                     className="form-control mt-2"
                     placeholder="Grasas Máximas"
-                    value={filter.maxFat.value}
+                    value={filter.maxFat}
                     onChange={handleFilterChange}
                     name="maxFat"
                   />
@@ -348,7 +355,7 @@ function CreateMeal() {
                     type="number"
                     className="form-control mt-2"
                     placeholder="Azúcares Mínimos"
-                    value={filter.minSugar.value}
+                    value={filter.minSugar}
                     onChange={handleFilterChange}
                     name="minSugar"
                   />
@@ -359,7 +366,7 @@ function CreateMeal() {
                     type="number"
                     className="form-control mt-2"
                     placeholder="Azúcares Máximos"
-                    value={filter.maxSugar.value}
+                    value={filter.maxSugar}
                     onChange={handleFilterChange}
                     name="maxSugar"
                   />
@@ -370,7 +377,7 @@ function CreateMeal() {
                     type="number"
                     className="form-control mt-2"
                     placeholder="Fibra Mínima"
-                    value={filter.minFiber.value}
+                    value={filter.minFiber}
                     onChange={handleFilterChange}
                     name="minFiber"
                   />
@@ -381,7 +388,7 @@ function CreateMeal() {
                     type="number"
                     className="form-control mt-2"
                     placeholder="Fibra Máxima"
-                    value={filter.maxFiber.value}
+                    value={filter.maxFiber}
                     onChange={handleFilterChange}
                     name="maxFiber"
                   />
@@ -460,7 +467,7 @@ function CreateMeal() {
               ))}
             </div>
           </div>
-          <button type="submit" className="btn btn-primary">Crear Comida</button>
+          <button type="submit" className="btn btn-success btn-lg">Crear Comida</button>
         </form>
       )}
 
@@ -478,7 +485,6 @@ function CreateMeal() {
               <li className="list-group-item">Carbohidratos: {nutritionTotals.carbohydrates.toFixed(2)}g</li>
               <li className="list-group-item">Grasas: {nutritionTotals.fat.toFixed(2)}g</li>
               <li className="list-group-item">Azúcares: {nutritionTotals.sugar.toFixed(2)}g</li>
-              <li className="list-group-item">Fibra: {nutritionTotals.fiber.toFixed(2)}g</li>
               <li className="list-group-item">
                 Grasas Saturadas: {nutritionTotals.saturated_fat.toFixed(2)}g
               </li>

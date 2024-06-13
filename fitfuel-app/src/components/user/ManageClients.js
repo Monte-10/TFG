@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Container, Table, Button } from 'react-bootstrap';
+import { Table, Button } from 'react-bootstrap';
+import './ManageClients.css'; // Importar el nuevo archivo de estilos
 
 const ManageClients = ({ onClientSelect }) => {
     const [clients, setClients] = useState([]);
@@ -27,10 +28,10 @@ const ManageClients = ({ onClientSelect }) => {
     }, [apiUrl]);
 
     return (
-        <Container className="mt-4">
-            <h2>Mis Clientes</h2>
+        <div className="container-manage-clients mt-4">
+            <h2 className="title-manage-clients">Mis Clientes</h2>
             {error && <p className="text-danger">{error}</p>}
-            <Table striped bordered hover>
+            <Table striped bordered hover className="table-manage-clients">
                 <thead>
                     <tr>
                         <th>Nombre de Usuario</th>
@@ -52,7 +53,7 @@ const ManageClients = ({ onClientSelect }) => {
                     ))}
                 </tbody>
             </Table>
-        </Container>
+        </div>
     );
 };
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import './ListDish.css';
 
 function ListDish() {
     const [dishes, setDishes] = useState([]);
@@ -161,13 +162,13 @@ function ListDish() {
     const currentDishes = filteredDishes.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
     return (
-        <div className="container">
-            <h1>Lista de Platos</h1>
-            <div className="row">
-                <div className="col-md-2 mb-3">
+        <div className="container-listdish">
+            <h1 className="mb-4">Lista de Platos</h1>
+            <div className="row-listdish mb-4">
+                <div className="col-md-2-listdish mb-3">
                     <input
                         type="text"
-                        className="form-control mb-2"
+                        className="form-control-listdish mb-2"
                         placeholder="Filtrar por nombre..."
                         value={filters.name}
                         onChange={handleFilterChange}
@@ -175,7 +176,7 @@ function ListDish() {
                     />
                     <input
                         type="number"
-                        className="form-control mb-2"
+                        className="form-control-listdish mb-2"
                         placeholder="Calorías mínimas"
                         value={filters.minCalories}
                         onChange={handleFilterChange}
@@ -183,17 +184,17 @@ function ListDish() {
                     />
                     <input
                         type="number"
-                        className="form-control"
+                        className="form-control-listdish"
                         placeholder="Calorías máximas"
                         value={filters.maxCalories}
                         onChange={handleFilterChange}
                         name="maxCalories"
                     />
                 </div>
-                <div className="col-md-2 mb-3">
+                <div className="col-md-2-listdish mb-3">
                     <input
                         type="number"
-                        className="form-control mb-2"
+                        className="form-control-listdish mb-2"
                         placeholder="Proteínas mínimas"
                         value={filters.minProtein}
                         onChange={handleFilterChange}
@@ -201,17 +202,17 @@ function ListDish() {
                     />
                     <input
                         type="number"
-                        className="form-control mb-2"
+                        className="form-control-listdish mb-2"
                         placeholder="Proteínas máximas"
                         value={filters.maxProtein}
                         onChange={handleFilterChange}
                         name="maxProtein"
                     />
                 </div>
-                <div className="col-md-2 mb-3">
+                <div className="col-md-2-listdish mb-3">
                     <input
                         type="number"
-                        className="form-control mb-2"
+                        className="form-control-listdish mb-2"
                         placeholder="Carbohidratos mínimos"
                         value={filters.minCarbohydrates}
                         onChange={handleFilterChange}
@@ -219,17 +220,17 @@ function ListDish() {
                     />
                     <input
                         type="number"
-                        className="form-control mb-2"
+                        className="form-control-listdish mb-2"
                         placeholder="Carbohidratos máximos"
                         value={filters.maxCarbohydrates}
                         onChange={handleFilterChange}
                         name="maxCarbohydrates"
                     />
                 </div>
-                <div className="col-md-2 mb-3">
+                <div className="col-md-2-listdish mb-3">
                     <input
                         type="number"
-                        className="form-control mb-2"
+                        className="form-control-listdish mb-2"
                         placeholder="Grasas mínimas"
                         value={filters.minFat}
                         onChange={handleFilterChange}
@@ -237,17 +238,17 @@ function ListDish() {
                     />
                     <input
                         type="number"
-                        className="form-control mb-2"
+                        className="form-control-listdish mb-2"
                         placeholder="Grasas máximas"
                         value={filters.maxFat}
                         onChange={handleFilterChange}
                         name="maxFat"
                     />
                 </div>
-                <div className="col-md-2 mb-3">
+                <div className="col-md-2-listdish mb-3">
                     <input
                         type="number"
-                        className="form-control mb-2"
+                        className="form-control-listdish mb-2"
                         placeholder="Azúcar mínimo"
                         value={filters.minSugar}
                         onChange={handleFilterChange}
@@ -255,17 +256,17 @@ function ListDish() {
                     />
                     <input
                         type="number"
-                        className="form-control"
+                        className="form-control-listdish"
                         placeholder="Azúcar máximo"
                         value={filters.maxSugar}
                         onChange={handleFilterChange}
                         name="maxSugar"
                     />
                 </div>
-                <div className="col-md-2 mb-3">
+                <div className="col-md-2-listdish mb-3">
                     <input
                         type="number"
-                        className="form-control mb-2"
+                        className="form-control-listdish mb-2"
                         placeholder="Fibra mínima"
                         value={filters.minFiber}
                         onChange={handleFilterChange}
@@ -273,17 +274,17 @@ function ListDish() {
                     />
                     <input
                         type="number"
-                        className="form-control"
+                        className="form-control-listdish"
                         placeholder="Fibra máxima"
                         value={filters.maxFiber}
                         onChange={handleFilterChange}
                         name="maxFiber"
                     />
                 </div>
-                <button className="btn btn-secondary mt-3" onClick={resetFilters}>Limpiar Filtros</button>
+                <button className="btn-listdish btn-secondary-listdish mt-3" onClick={resetFilters}>Limpiar Filtros</button>
             </div>
 
-            <table className="table">
+            <table className="table-listdish table-striped-listdish">
                 <thead>
                     <tr>
                         <th>Nombre</th>
@@ -302,34 +303,34 @@ function ListDish() {
                     {currentDishes.map(dish => (
                         <tr key={dish.id} onClick={() => navigate(`/nutrition/dishes/${dish.id}`)} style={{ cursor: 'pointer' }}>
                             <td>{dish.name}</td>
-                            <td>{dish.calories}</td>
-                            <td>{dish.protein}</td>
-                            <td>{dish.carbohydrates}</td>
-                            <td>{dish.fat}</td>
-                            <td>{dish.sugar}</td>
-                            <td>{dish.fiber}</td>
-                            <td>{dish.saturatedFat}</td>
+                            <td>{(dish.calories || 0).toFixed(2)}</td>
+                            <td>{(dish.protein || 0).toFixed(2)}</td>
+                            <td>{(dish.carbohydrates || 0).toFixed(2)}</td>
+                            <td>{(dish.fat || 0).toFixed(2)}</td>
+                            <td>{(dish.sugar || 0).toFixed(2)}</td>
+                            <td>{(dish.fiber || 0).toFixed(2)}</td>
+                            <td>{(dish.saturatedFat || 0).toFixed(2)}</td>
                             <td>
-                                <Link to={`/nutrition/edit-dish/${dish.id}`} className="btn btn-primary me-2">Editar</Link>
+                                <Link to={`/nutrition/edit-dish/${dish.id}`} className="btn-listdish btn-primary-listdish me-2" onClick={(e) => e.stopPropagation()}>Editar</Link>
                             </td>
                             <td>
-                                <button onClick={(e) => { e.stopPropagation(); handleDeleteDish(dish.id); }} className="btn btn-danger">Eliminar</button>
+                                <button onClick={(e) => { e.stopPropagation(); handleDeleteDish(dish.id); }} className="btn-listdish btn-danger-listdish">Eliminar</button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
             {filteredDishes.length === 0 && (
-                <div className="alert alert-info" role="alert">
+                <div className="alert-listdish alert-info-listdish" role="alert">
                     No se encontraron platos que coincidan con los filtros seleccionados.
                 </div>
             )}
 
-            <div className="pagination">
+            <div className="pagination-listdish">
                 <button
                     disabled={currentPage === 0}
                     onClick={() => setCurrentPage(currentPage - 1)}
-                    className="btn btn-secondary"
+                    className="btn-listdish btn-secondary-listdish"
                 >
                     Anterior
                 </button>
@@ -337,7 +338,7 @@ function ListDish() {
                 <button
                     disabled={currentPage >= totalPages - 1}
                     onClick={() => setCurrentPage(currentPage + 1)}
-                    className="btn btn-secondary"
+                    className="btn-listdish btn-secondary-listdish"
                 >
                     Siguiente
                 </button>

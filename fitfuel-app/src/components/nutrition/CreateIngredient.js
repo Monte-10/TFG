@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import './CreateIngredient.css';
 
 function CreateIngredient() {
   const [foods, setFoods] = useState([]);
@@ -6,7 +9,6 @@ function CreateIngredient() {
   const [selectedFood, setSelectedFood] = useState('');
   const [quantity, setQuantity] = useState(0);
   const [name, setName] = useState('');
-  const [ingredientCreated, setIngredientCreated] = useState(false);
   const [nutritionalInfo, setNutritionalInfo] = useState({});
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [filters, setFilters] = useState({
@@ -154,17 +156,20 @@ function CreateIngredient() {
     })
     .then(response => response.json())
     .then(data => {
-      setIngredientCreated(true);
+      toast.success('Ingrediente creado exitosamente!');
+      setName('');
+      setSelectedFood('');
+      setQuantity(0);
     })
     .catch(error => {
-      console.error('Error creating ingredient:', error);
+      console.error('Error creando el ingrediente:', error);
+      toast.error('Error creando el ingrediente');
     });
   };
 
   return (
-    <div className="container mt-4">
+    <div className="create-ingredient-container mt-4">
       <h2>Crear Ingrediente</h2>
-      {ingredientCreated && <div className="alert alert-success" role="alert">El Ingrediente ha sido creado con éxito.</div>}
       <form onSubmit={handleSubmit}>
         <h3>Filtros para Ingredientes</h3>
         <div className="row">
@@ -363,40 +368,41 @@ function CreateIngredient() {
                 <li className="list-group-item">Azúcares: {calculateNutritionalValues(nutritionalInfo.sugar, quantity)} g</li>
                 <li className="list-group-item">Fibra: {calculateNutritionalValues(nutritionalInfo.fiber, quantity)} g</li>
                 <li className="list-group-item">Grasas Saturadas: {calculateNutritionalValues(nutritionalInfo.saturated_fat, quantity)} g</li>
-                <li className="list-group-item">Gluten Free: {nutritionalInfo.gluten_free ? 'Sí' : 'No'}</li>
-                <li className="list-group-item">Lactose Free: {nutritionalInfo.lactose_free ? 'Sí' : 'No'}</li>
+                <li className="list-group-item">Sin Gluten: {nutritionalInfo.gluten_free ? 'Sí' : 'No'}</li>
+                <li className="list-group-item">Sin Lactosa: {nutritionalInfo.lactose_free ? 'Sí' : 'No'}</li>
               </ul>
             </div>
             <div className="col-md-4">
               <ul className="list-group list-group-flush">
-                <li className="list-group-item">Vegan: {nutritionalInfo.vegan ? 'Sí' : 'No'}</li>
-                <li className="list-group-item">Vegetarian: {nutritionalInfo.vegetarian ? 'Sí' : 'No'}</li>
-                <li className="list-group-item">Pescetarian: {nutritionalInfo.pescetarian ? 'Sí' : 'No'}</li>
-                <li className="list-group-item">Contains Meat: {nutritionalInfo.contains_meat ? 'Sí' : 'No'}</li>
-                <li className="list-group-item">Contains Vegetables: {nutritionalInfo.contains_vegetables ? 'Sí' : 'No'}</li>
-                <li className="list-group-item">Contains Fish/Shellfish/Canned: {nutritionalInfo.contains_fish_shellfish_canned_preserved ? 'Sí' : 'No'}</li>
+                <li className="list-group-item">Vegano: {nutritionalInfo.vegan ? 'Sí' : 'No'}</li>
+                <li className="list-group-item">Vegetariano: {nutritionalInfo.vegetarian ? 'Sí' : 'No'}</li>
+                <li className="list-group-item">Pescetariano: {nutritionalInfo.pescetarian ? 'Sí' : 'No'}</li>
+                <li className="list-group-item">Contiene Carne: {nutritionalInfo.contains_meat ? 'Sí' : 'No'}</li>
+                <li className="list-group-item">Contiene Verduras: {nutritionalInfo.contains_vegetables ? 'Sí' : 'No'}</li>
+                <li className="list-group-item">Contiene Pescado/Mariscos/Enlatado: {nutritionalInfo.contains_fish_shellfish_canned_preserved ? 'Sí' : 'No'}</li>
                 <li className="list-group-item">Cereal: {nutritionalInfo.cereal ? 'Sí' : 'No'}</li>
-                <li className="list-group-item">Pasta or Rice: {nutritionalInfo.pasta_or_rice ? 'Sí' : 'No'}</li>
-                <li className="list-group-item">Dairy/Yogurt/Cheese: {nutritionalInfo.dairy_yogurt_cheese ? 'Sí' : 'No'}</li>
+                <li className="list-group-item">Pasta o Arroz: {nutritionalInfo.pasta_or_rice ? 'Sí' : 'No'}</li>
+                <li className="list-group-item">Lácteos/Yogur/Queso: {nutritionalInfo.dairy_yogurt_cheese ? 'Sí' : 'No'}</li>
               </ul>
             </div>
             <div className="col-md-4">
               <ul className="list-group list-group-flush">
-                <li className="list-group-item">Fruit: {nutritionalInfo.fruit ? 'Sí' : 'No'}</li>
-                <li className="list-group-item">Nuts: {nutritionalInfo.nuts ? 'Sí' : 'No'}</li>
-                <li className="list-group-item">Legume: {nutritionalInfo.legume ? 'Sí' : 'No'}</li>
-                <li className="list-group-item">Sauce or Condiment: {nutritionalInfo.sauce_or_condiment ? 'Sí' : 'No'}</li>
-                <li className="list-group-item">Deli Meat: {nutritionalInfo.deli_meat ? 'Sí' : 'No'}</li>
-                <li className="list-group-item">Bread or Toast: {nutritionalInfo.bread_or_toast ? 'Sí' : 'No'}</li>
-                <li className="list-group-item">Egg: {nutritionalInfo.egg ? 'Sí' : 'No'}</li>
-                <li className="list-group-item">Special Drink or Supplement: {nutritionalInfo.special_drink_or_supplement ? 'Sí' : 'No'}</li>
-                <li className="list-group-item">Tuber: {nutritionalInfo.tuber ? 'Sí' : 'No'}</li>
-                <li className="list-group-item">Other: {nutritionalInfo.other ? 'Sí' : 'No'}</li>
+                <li className="list-group-item">Fruta: {nutritionalInfo.fruit ? 'Sí' : 'No'}</li>
+                <li className="list-group-item">Nueces: {nutritionalInfo.nuts ? 'Sí' : 'No'}</li>
+                <li className="list-group-item">Legumbres: {nutritionalInfo.legume ? 'Sí' : 'No'}</li>
+                <li className="list-group-item">Salsa o Condimento: {nutritionalInfo.sauce_or_condiment ? 'Sí' : 'No'}</li>
+                <li className="list-group-item">Embutido: {nutritionalInfo.deli_meat ? 'Sí' : 'No'}</li>
+                <li className="list-group-item">Pan o Tostada: {nutritionalInfo.bread_or_toast ? 'Sí' : 'No'}</li>
+                <li className="list-group-item">Huevo: {nutritionalInfo.egg ? 'Sí' : 'No'}</li>
+                <li className="list-group-item">Bebida Especial o Suplemento: {nutritionalInfo.special_drink_or_supplement ? 'Sí' : 'No'}</li>
+                <li className="list-group-item">Tubérculo: {nutritionalInfo.tuber ? 'Sí' : 'No'}</li>
+                <li className="list-group-item">Otro: {nutritionalInfo.other ? 'Sí' : 'No'}</li>
               </ul>
             </div>
           </div>
         </div>
       </form>
+      <ToastContainer />
     </div>
   );
 }

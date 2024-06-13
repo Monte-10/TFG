@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import './EditExercise.css';
 
 function EditExercise() {
   const { id } = useParams();
@@ -40,6 +41,9 @@ function EditExercise() {
     fetch(`${apiUrl}/sport/exercises/${id}/`, {
       method: 'PUT', // or PATCH depending on your API
       body: formData,
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
     })
     .then(response => {
       if (response.ok) {
@@ -56,44 +60,45 @@ function EditExercise() {
   };
 
   return (
-    <div className="container mt-4">
-      <h2>Edit Exercise</h2>
+    <div className="container-edit-exercise mt-4">
+      <h2>Editar Ejercicio</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label htmlFor="exerciseName" className="form-label">Exercise Name:</label>
+          <label htmlFor="exerciseName" className="form-label">Nombre del Ejercicio:</label>
           <input
             type="text"
             className="form-control"
             id="exerciseName"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="exerciseDescription" className="form-label">Description:</label>
+          <label htmlFor="exerciseDescription" className="form-label">Descripción:</label>
           <textarea
             className="form-control"
             id="exerciseDescription"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            required
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="exerciseType" className="form-label">Type:</label>
-          <select className="form-select" id="exerciseType" value={type} onChange={(e) => setType(e.target.value)}>
-            <option value="">Select a type</option>
-            {/* List of exercise types */}
+          <label htmlFor="exerciseType" className="form-label">Tipo:</label>
+          <select className="form-select" id="exerciseType" value={type} onChange={(e) => setType(e.target.value)} required>
+            <option value="">Seleccione un tipo</option>
             <option value="FUERZA">Fuerza</option>
-              <option value="CARDIO">Cardio</option>
-              <option value="FLEXIBILIDAD">Flexibilidad</option>
-              <option value="BALANCE">Balance</option>
-              <option value="RESISTENCIA">Resistencia</option>
-              <option value="HIIT">HIIT</option>
-              <option value="FUNCIONAL">Funcional</option>
+            <option value="CARDIO">Cardio</option>
+            <option value="FLEXIBILIDAD">Flexibilidad</option>
+            <option value="BALANCE">Balance</option>
+            <option value="RESISTENCIA">Resistencia</option>
+            <option value="HIIT">HIIT</option>
+            <option value="FUNCIONAL">Funcional</option>
           </select>
         </div>
         <div className="mb-3">
-          <label htmlFor="exerciseImage" className="form-label">Image (optional):</label>
+          <label htmlFor="exerciseImage" className="form-label">Imagen (opcional):</label>
           <input
             type="file"
             className="form-control"
@@ -102,7 +107,7 @@ function EditExercise() {
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="videoUrl" className="form-label">Video URL (optional):</label>
+          <label htmlFor="videoUrl" className="form-label">URL del Video (opcional):</label>
           <input
             type="text"
             className="form-control"
@@ -111,7 +116,7 @@ function EditExercise() {
             onChange={(e) => setVideoUrl(e.target.value)}
           />
         </div>
-        <button type="submit" className="btn btn-primary">Update Exercise</button>
+        <button type="submit" className="btn btn-success">Actualizar Ejercicio</button>
       </form>
     </div>
   );

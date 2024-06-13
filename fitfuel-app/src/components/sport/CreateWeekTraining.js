@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './CreateWeekTraining.css';
 
 function CreateWeekTraining() {
     const [trainings, setTrainings] = useState([]);
@@ -76,23 +77,24 @@ function CreateWeekTraining() {
     };
 
     return (
-        <div className="container mt-4">
-            <h2>Create Week Training</h2>
+        <div className="container-create-week-training mt-4">
+            <h2>Crear Semana de Entrenamiento</h2>
             {error && <div className="alert alert-danger" role="alert">{error}</div>}
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                    <label htmlFor="weekTrainingName" className="form-label">Week Training Name:</label>
+                    <label htmlFor="weekTrainingName" className="form-label">Nombre de la Semana de Entrenamiento:</label>
                     <input
                         type="text"
                         className="form-control"
                         id="weekTrainingName"
                         value={weekTraining.name}
                         onChange={(e) => setWeekTraining({ ...weekTraining, name: e.target.value })}
+                        required
                     />
                 </div>
                 {['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map(day => (
                     <div className="mb-3" key={day}>
-                        <label className="form-label">{day.charAt(0).toUpperCase() + day.slice(1)} Trainings:</label>
+                        <label className="form-label">{day.charAt(0).toUpperCase() + day.slice(1)} Entrenamientos:</label>
                         <select className="form-select" multiple onChange={(e) => handleChange(day, e.target.value)}>
                             {trainings.map(training => (
                                 <option key={training.id} value={training.id}>{training.name}</option>
@@ -100,7 +102,7 @@ function CreateWeekTraining() {
                         </select>
                     </div>
                 ))}
-                <button type="submit" className="btn btn-primary">Create Week Training</button>
+                <button type="submit" className="btn btn-success">Crear Semana de Entrenamiento</button>
             </form>
         </div>
     );

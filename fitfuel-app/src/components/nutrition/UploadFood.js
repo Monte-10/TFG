@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './UploadFood.css'; // Importa el archivo CSS
 
 const UploadFood = () => {
   const [file, setFile] = useState(null);
@@ -40,13 +41,13 @@ const UploadFood = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <h1 className="mb-4">Upload Food Data</h1>
+    <div className="upload-food-container mt-5">
+      <h1 className="mb-4">Subir Alimentos por CSV</h1>
       <form onSubmit={handleFormSubmit} className="mb-3">
         <div className="mb-3">
           <input type="file" className="form-control" name="file" accept=".csv" onChange={handleFileChange} required />
         </div>
-        <button type="submit" className="btn btn-primary">Upload CSV</button>
+        <button type="submit" className="btn btn-primary">Subir CSV</button>
       </form>
     </div>
   );

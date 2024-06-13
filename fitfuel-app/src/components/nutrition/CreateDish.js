@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './CreateDish.css'; // Importa el archivo CSS
 
 function CreateDish() {
@@ -214,18 +216,21 @@ function CreateDish() {
       const data = await response.json();
       console.log('Dish created successfully:', data);
       setDishCreated(true);
+      toast.success('Plato creado exitosamente!');
       setCreatedDishId(data.id);
       setName('');
       setSelectedUser('');
       setSelectedIngredients([]);
     } catch (error) {
       console.error('Error creating dish:', error.message);
+      toast.error('Error al crear el plato');
     }
   };
 
   return (
-    <div className="container mt-4">
+    <div className="container mt-4 create-dish-container">
       <h2 className="mb-4">Crear Plato</h2>
+      <ToastContainer />
       {dishCreated && (
         <div className="alert alert-success" role="alert">
           Plato creado con éxito. ID: {createdDishId}

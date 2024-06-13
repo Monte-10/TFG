@@ -1,0 +1,100 @@
+.container-listmeal {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    color: #343a40;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.table-listmeal {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.table-listmeal th, .table-listmeal td {
+    padding: 1rem;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.table-listmeal thead th {
+    background-color: #343a40;
+    color: #fff;
+}
+
+.table-listmeal tbody tr {
+    transition: background-color 0.3s;
+}
+
+.table-listmeal tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.form-control-listmeal, .form-select-listmeal {
+    margin-bottom: 10px;
+}
+
+.btn-listmeal {
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 14px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn-listmeal:hover {
+    transform: scale(1.05);
+}
+
+.btn-primary-listmeal {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-danger-listmeal {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-secondary-listmeal {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.pagination-listmeal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pagination-listmeal span {
+    margin: 0 10px;
+}
+
+.alert-listmeal {
+    margin-top: 20px;
+}
+
+.row-listmeal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.col-md-2-listmeal {
+    flex: 0 0 calc(16.66667% - 20px);
+    max-width: calc(16.66667% - 20px);
+}

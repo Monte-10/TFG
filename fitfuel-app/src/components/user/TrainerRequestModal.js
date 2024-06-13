@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
+import './TrainerRequestModal.css';
 
 const TrainerRequestModal = ({ show, handleClose, handleSendRequest, trainerId }) => {
     const [description, setDescription] = useState('');
@@ -31,7 +32,7 @@ const TrainerRequestModal = ({ show, handleClose, handleSendRequest, trainerId }
     };
 
     return (
-        <Modal show={show} onHide={handleClose}>
+        <Modal show={show} onHide={handleClose} className="trainer-request-modal">
             <Modal.Header closeButton>
                 <Modal.Title>Enviar Solicitud</Modal.Title>
             </Modal.Header>

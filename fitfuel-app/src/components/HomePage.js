@@ -70,26 +70,16 @@ function HomePage({ profile }) {
         </>
     );
 
-    const regularUserOptions = (
-        <>
-            <h3>Mis Opciones</h3>
-            <ul>
-                <li><Link to="/assigned-options">Opciones Asignadas</Link></li>
-                <li><Link to="/assigned-week-trainings">Entrenamientos Asignados</Link></li>
-            </ul>
-        </>
-    );
-
     return (
         <Container className="home-page mt-4">
             <h1 className="welcome-text">Bienvenido a FitFuelBalance</h1>
             <p className="intro-text">Elige una de las opciones a continuación para comenzar:</p>
             {profile?.role === "trainer" ? (
-                <Row>
+                <Row className="row-centered">
                     <Col md={3}>
                         <Card className="option-card" onClick={() => handleCardClick(nutritionOptions)}>
                             <Card.Body>
-                                <Card.Title>Creación Alimentos</Card.Title>
+                                <Card.Title>Alimentos</Card.Title>
                                 <Card.Text>Ver opciones</Card.Text>
                             </Card.Body>
                         </Card>
@@ -105,7 +95,7 @@ function HomePage({ profile }) {
                     <Col md={3}>
                         <Card className="option-card" onClick={() => handleCardClick(listOptions)}>
                             <Card.Body>
-                                <Card.Title>Listado de Alimentos</Card.Title>
+                                <Card.Title>Listados</Card.Title>
                                 <Card.Text>Ver opciones</Card.Text>
                             </Card.Body>
                         </Card>
@@ -120,7 +110,7 @@ function HomePage({ profile }) {
                     </Col>
                 </Row>
             ) : (
-                <Row>
+                <Row className="row-centered">
                     <Col md={6}>
                         <Link to="/assigned-options" className="home-option">
                             <Card className="option-card">

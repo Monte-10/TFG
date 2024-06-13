@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Container, Table, Button, Form } from 'react-bootstrap';
 import { Line, Bar, Pie } from 'react-chartjs-2';
 import 'chart.js/auto';
+import './ClientDetails.css';  // Asegúrate de enlazar el archivo CSS correctamente
 
 const ClientDetails = ({ clientId, onBack }) => {
     const [client, setClient] = useState(null);
@@ -178,7 +179,7 @@ const ClientDetails = ({ clientId, onBack }) => {
     const latestMeasurements = measurements.length > 0 ? measurements[measurements.length - 1] : {};
 
     return (
-        <Container className="mt-4">
+        <Container className="container-clientdetails mt-4">
             <Button variant="secondary" onClick={onBack}>Volver</Button>
             <h2 className="mt-4">Detalles del Cliente</h2>
             <Table striped bordered hover className="mt-4">
@@ -261,7 +262,7 @@ const ClientDetails = ({ clientId, onBack }) => {
                     <option value="pie">Circular</option>
                 </Form.Control>
             </Form.Group>
-            <Form.Group controlId="measurementSelect">
+            <Form.Group controlId="measurementSelect" className="measurements-checkboxes">
                 <Form.Label>Mediciones</Form.Label>
                 {['weight', 'height', 'neck', 'shoulder', 'chest', 'waist', 'hip', 'arm', 'glute', 'upper_leg', 'middle_leg', 'lower_leg'].map(measurement => (
                     <Form.Check

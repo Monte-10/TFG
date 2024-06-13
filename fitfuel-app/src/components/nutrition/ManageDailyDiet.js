@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import './ManageDailyDiet.css';
 
 function ManageDailyDiet() {
   const { dietId } = useParams();
-const [dietName, setDietName] = useState('');
-const [dailyDiets, setDailyDiets] = useState([]);
-const [currentPage, setCurrentPage] = useState(0);
-const apiUrl = process.env.REACT_APP_API_URL;
-const [meals, setMeals] = useState([]);
-const [selectedMeals, setSelectedMeals] = useState({});
-const [mealFilters, setMealFilters] = useState({
+  const [dietName, setDietName] = useState('');
+  const [dailyDiets, setDailyDiets] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const apiUrl = process.env.REACT_APP_API_URL;
+  const [meals, setMeals] = useState([]);
+  const [selectedMeals, setSelectedMeals] = useState({});
+  const [mealFilters, setMealFilters] = useState({
     name: '',
     minCalories: '',
     maxCalories: '',
@@ -25,32 +26,32 @@ const [mealFilters, setMealFilters] = useState({
     maxFiber: '',
     minSaturatedFat: '',
     maxSaturatedFat: '',
-});
+  });
 
-useEffect(() => {
+  useEffect(() => {
     const fetchDailyDiets = async () => {
-        try {
-            const response = await fetch(`${apiUrl}/nutrition/diet/${dietId}/`, {
-              headers: {
-                'Authorization': `Token ${localStorage.getItem('authToken')}`
-              }
-            });
-            if (!response.ok) throw new Error('Failed to fetch daily diets');
-            const data = await response.json();
-            setDailyDiets(data.daily_diets || []);
-            setDietName(data.name);
-            const mealsSelection = {};
-            data.daily_diets.forEach(dd => {
-                mealsSelection[dd.date] = dd.meals.map(m => m.id); // Ensure this is always an array
-            });
-            setSelectedMeals(mealsSelection);
-        } catch (error) {
-            console.error('Error fetching daily diets:', error);
-        }
+      try {
+        const response = await fetch(`${apiUrl}/nutrition/diet/${dietId}/`, {
+          headers: {
+            'Authorization': `Token ${localStorage.getItem('authToken')}`
+          }
+        });
+        if (!response.ok) throw new Error('Failed to fetch daily diets');
+        const data = await response.json();
+        setDailyDiets(data.daily_diets || []);
+        setDietName(data.name);
+        const mealsSelection = {};
+        data.daily_diets.forEach(dd => {
+          mealsSelection[dd.date] = dd.meals.map(m => m.id); // Ensure this is always an array
+        });
+        setSelectedMeals(mealsSelection);
+      } catch (error) {
+        console.error('Error fetching daily diets:', error);
+      }
     };
 
     fetchDailyDiets();
-}, [dietId, apiUrl]);
+  }, [dietId, apiUrl]);
 
   useEffect(() => {
     const fetchMeals = async () => {
@@ -97,21 +98,20 @@ useEffect(() => {
 
   const handleMealSelection = (mealId, date) => {
     setSelectedMeals(prev => {
-        const updatedMealsForDate = prev[date] ? [...prev[date]] : [];
-        if (!updatedMealsForDate.includes(mealId)) {
-            updatedMealsForDate.push(mealId);
-        }
-        return { ...prev, [date]: updatedMealsForDate };
+      const updatedMealsForDate = prev[date] ? [...prev[date]] : [];
+      if (!updatedMealsForDate.includes(mealId)) {
+        updatedMealsForDate.push(mealId);
+      }
+      return { ...prev, [date]: updatedMealsForDate };
     });
-};
+  };
 
-
-const handleMealRemoval = (mealId, date) => {
-  setSelectedMeals(prev => {
+  const handleMealRemoval = (mealId, date) => {
+    setSelectedMeals(prev => {
       const updatedMealsForDate = prev[date] ? prev[date].filter(id => id !== mealId) : [];
       return { ...prev, [date]: updatedMealsForDate };
-  });
-};
+    });
+  };
 
   const handlePageChange = (index) => {
     setCurrentPage(index);
@@ -149,11 +149,11 @@ const handleMealRemoval = (mealId, date) => {
   };
 
   return (
-    <div className="container mt-4">
+    <div className="manage-daily-diet-container mt-4">
       <h2>Administrar Dieta Diaria para la Dieta: {dietName}</h2>
       <div className="mb-3">
-        <button onClick={() => handlePageChange(Math.max(0, currentPage - 1))}>Anterior</button>
-        <button onClick={() => handlePageChange(Math.min(dailyDiets.length - 1, currentPage + 1))}>Siguiente</button>
+        <button className="btn btn-secondary mr-2" onClick={() => handlePageChange(Math.max(0, currentPage - 1))}>Anterior</button>
+        <button className="btn btn-secondary" onClick={() => handlePageChange(Math.min(dailyDiets.length - 1, currentPage + 1))}>Siguiente</button>
       </div>
 
       {dailyDiets.length > 0 && (
@@ -164,7 +164,7 @@ const handleMealRemoval = (mealId, date) => {
               <div key={filter} className="col-md-4">
                 <input
                   type={filter.includes('Calories') || filter.includes('Protein') || filter.includes('Fat') || filter.includes('Sugar') || filter.includes('Fiber') || filter.includes('SaturatedFat') ? "number" : "text"}
-                  className="form-control"
+                  className="form-control mb-2"
                   placeholder={filter}
                   value={mealFilters[filter]}
                   onChange={handleFilterChange}

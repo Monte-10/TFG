@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Container, Table, Button } from 'react-bootstrap';
+import './TrainerRequests.css';
 
 const TrainerRequests = () => {
     const [requests, setRequests] = useState([]);
@@ -42,10 +43,10 @@ const TrainerRequests = () => {
     };
 
     return (
-        <Container className="mt-4">
-            <h2>Solicitudes de Entrenamiento</h2>
-            {error && <p className="text-danger">{error}</p>}
-            <Table striped bordered hover>
+        <Container className="trainer-requests-container mt-4">
+            <h2 className="text-center">Solicitudes de Entrenamiento</h2>
+            {error && <p className="text-danger text-center">{error}</p>}
+            <Table striped bordered hover className="requests-table">
                 <thead>
                     <tr>
                         <th>Usuario</th>

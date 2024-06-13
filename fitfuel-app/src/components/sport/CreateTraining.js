@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './CreateTraining.css';
 
 function CreateTraining() {
   const [exercises, setExercises] = useState([]);
@@ -53,7 +54,7 @@ function CreateTraining() {
         repetitions: exercise.repetitions,
         sets: exercise.sets,
         weight: exercise.weight,
-        time: exercise.time || null // Use null for time if it's not set
+        time: exercise.time || null
       }))
     };
 
@@ -74,7 +75,6 @@ function CreateTraining() {
       return response.json();
     })
     .then(data => {
-      console.log('Success:', data);
       alert('Entrenamiento creado exitosamente!');
     })
     .catch((error) => {
@@ -84,21 +84,21 @@ function CreateTraining() {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container-create-training mt-5">
       <h2>Crear Entrenamiento</h2>
       {error && <div className="alert alert-danger">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="trainingName" className="form-label">Nombre del Entrenamiento:</label>
-          <input type="text" className="form-control" id="trainingName" value={trainingName} onChange={(e) => setTrainingName(e.target.value)} />
+          <input type="text" className="form-control" id="trainingName" value={trainingName} onChange={(e) => setTrainingName(e.target.value)} required />
         </div>
         <div className="mb-3">
           <label htmlFor="trainingDate" className="form-label">Fecha del Entrenamiento:</label>
-          <input type="date" className="form-control" id="trainingDate" value={trainingDate} onChange={(e) => setTrainingDate(e.target.value)} />
+          <input type="date" className="form-control" id="trainingDate" value={trainingDate} onChange={(e) => setTrainingDate(e.target.value)} required />
         </div>
         <div className="mb-3">
           <label htmlFor="userSelect" className="form-label">Usuario:</label>
-          <select className="form-select" id="userSelect" value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)}>
+          <select className="form-select" id="userSelect" value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)} required>
             <option value="">Selecciona un usuario</option>
             {users.map(user => (
               <option key={user.id} value={user.id}>{user.username}</option>
@@ -108,28 +108,26 @@ function CreateTraining() {
         {selectedExercises.map((exercise, index) => (
           <div key={index} className="mb-3">
             <div className="input-group">
-              <select className="form-select" value={exercise.exerciseId} onChange={(e) => handleChange(index, 'exerciseId', e.target.value)}>
+              <select className="form-select" value={exercise.exerciseId} onChange={(e) => handleChange(index, 'exerciseId', e.target.value)} required>
                 <option value="">Selecciona un ejercicio</option>
                 {exercises.map(ex => (
-                  <option key={ex.id}
-                  value={ex.id}>{ex.name}</option>
-                  ))}
-                </select>
-                <input type="number" className="form-control" placeholder="Repeticiones" value={exercise.repetitions} onChange={(e) => handleChange(index, 'repetitions', e.target.value)} />
-                <input type="number" className="form-control" placeholder="Series" value={exercise.sets} onChange={(e) => handleChange(index, 'sets', e.target.value)} />
-                <input type="text" className="form-control" placeholder="Peso (opcional)" value={exercise.weight} onChange={(e) => handleChange(index, 'weight', e.target.value)} />
-                <input type="number" className="form-control" placeholder="Tiempo en segundos (opcional)" value={exercise.time || ''} onChange={(e) => handleChange(index, 'time', e.target.value)} />
-              </div>
+                  <option key={ex.id} value={ex.id}>{ex.name}</option>
+                ))}
+              </select>
+              <input type="number" className="form-control" placeholder="Repeticiones" value={exercise.repetitions} onChange={(e) => handleChange(index, 'repetitions', e.target.value)} required />
+              <input type="number" className="form-control" placeholder="Series" value={exercise.sets} onChange={(e) => handleChange(index, 'sets', e.target.value)} required />
+              <input type="text" className="form-control" placeholder="Peso (opcional)" value={exercise.weight} onChange={(e) => handleChange(index, 'weight', e.target.value)} />
+              <input type="number" className="form-control" placeholder="Tiempo en segundos (opcional)" value={exercise.time || ''} onChange={(e) => handleChange(index, 'time', e.target.value)} />
             </div>
-          ))}
-          <div className="d-grid gap-2 d-md-flex justify-content-md-start mb-3">
-            <button type="button" className="btn btn-outline-primary" onClick={handleAddExercise}>Añadir Ejercicio</button>
-            <button type="submit" className="btn btn-success">Guardar Entrenamiento</button>
           </div>
-        </form>
-      </div>
-    );
-  }
-  
-  export default CreateTraining;
-  
+        ))}
+        <div className="d-grid gap-2 d-md-flex justify-content-md-start mb-3">
+          <button type="button" className="btn btn-outline-secondary" onClick={handleAddExercise}>Añadir Ejercicio</button>
+          <button type="submit" className="btn btn-success">Guardar Entrenamiento</button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
+export default CreateTraining;

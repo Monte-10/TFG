@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Pagination, Container, Row, Col, Card, Button, Form } from 'react-bootstrap';
 import TrainerRequestModal from './TrainerRequestModal';
+import './TrainerList.css'; // Importar el archivo de estilos
 
 // Mapear IDs de especialidades a nombres
 const specialtyMap = {
@@ -22,7 +23,7 @@ const trainerTypeMap = {
 
 // Componente para cada entrenador en la lista
 const Trainer = ({ trainer, onSendRequest }) => (
-    <Card className="mb-3">
+    <Card className="trainer-card mb-3">
         <Card.Body>
             <Card.Title>{trainer.username}</Card.Title>
             <Card.Text>
@@ -104,8 +105,8 @@ const TrainerList = () => {
     };
 
     return (
-        <Container className="mt-4">
-            <h2 className="text-center">Entrenadores Disponibles</h2>
+        <Container className="trainer-list-container mt-4">
+            <h2 className="text-center mb-4">Entrenadores Disponibles</h2>
             {error && <p className="text-danger text-center">{error}</p>}
             <Form className="mb-4">
                 <Row>
@@ -152,7 +153,7 @@ const TrainerList = () => {
             ) : (
                 <p className="text-center">No se encontraron entrenadores.</p>
             )}
-            <Pagination>
+            <Pagination className="justify-content-center">
                 {Array.from({ length: Math.ceil(filteredTrainers.length / trainersPerPage) }, (_, index) => (
                     <Pagination.Item key={index + 1} active={index + 1 === currentPage} onClick={() => paginate(index + 1)}>
                         {index + 1}

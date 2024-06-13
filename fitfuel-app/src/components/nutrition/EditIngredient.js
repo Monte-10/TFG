@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import './EditIngredient.css';
 
 function EditIngredient() {
   const { ingredientId } = useParams();
@@ -104,8 +105,8 @@ function EditIngredient() {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="container mt-5">
-      <h2>Editar Ingrediente</h2>
+    <div className="container-editingredient mt-5">
+      <h2 className="mb-4">Editar Ingrediente</h2>
       {error && <div className="alert alert-danger" role="alert">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
@@ -146,7 +147,7 @@ function EditIngredient() {
           />
         </div>
         <button type="submit" className="btn btn-primary">Actualizar Ingrediente</button>
-        <button type="button" className="btn btn-secondary mt-3" onClick={handleDuplicate}>Duplicar Ingrediente</button>
+        <button type="button" className="btn btn-secondary mt-3 ml-2" onClick={handleDuplicate}>Duplicar Ingrediente</button>
 
       </form>
     </div>

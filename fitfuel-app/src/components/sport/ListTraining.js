@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import './ListTraining.css';
 
 function ListTraining() {
     const [trainings, setTrainings] = useState([]);
@@ -40,9 +41,9 @@ function ListTraining() {
     };
 
     return (
-        <div className="container">
-            <h1>Lista de Entrenamientos</h1>
-            <table className="table">
+        <div className="container-list-training mt-4">
+            <h1 className="mb-4">Lista de Entrenamientos</h1>
+            <table className="table table-striped">
                 <thead>
                     <tr>
                         <th>Nombre</th>
@@ -59,7 +60,7 @@ function ListTraining() {
                             <td>{training.user}</td>
                             <td onClick={(e) => e.stopPropagation()}>
                                 <Link to={`/sport/training/${training.id}`} className="btn btn-info me-2">Detalles</Link>
-                                <Link to={`/sport/edit-training/${training.id}`} className="btn btn-primary me-2">Editar</Link>
+                                <Link to={`/sport/edit-training/${training.id}`} className="btn btn-success me-2">Editar</Link>
                                 <button onClick={(e) => handleDeleteTraining(training.id, e)} className="btn btn-danger">Eliminar</button>
                             </td>
                         </tr>

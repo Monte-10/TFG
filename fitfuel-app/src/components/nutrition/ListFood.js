@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import './ListFood.css';
 
 function ListFood() {
     const [foods, setFoods] = useState([]);
     const [filteredFoods, setFilteredFoods] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
-    const [itemsPerPage] = useState(10); // Adjust this number as needed
+    const [itemsPerPage] = useState(10);
     const [totalPages, setTotalPages] = useState(0);
     const apiUrl = process.env.REACT_APP_API_URL;
     const [filters, setFilters] = useState({
@@ -168,9 +169,9 @@ function ListFood() {
     const currentFoods = filteredFoods.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
     return (
-        <div className="container">
-            <h1>Lista de Alimentos</h1>
-            <div className="row">
+        <div className="container-listfood">
+            <h1 className="mb-4">Lista de Alimentos</h1>
+            <div className="row mb-4">
                 <div className="col-md-2 mb-3">
                     <input
                         type="text"
@@ -277,7 +278,7 @@ function ListFood() {
                 <button className="btn btn-secondary mt-3" onClick={resetFilters}>Limpiar Filtros</button>
             </div>
 
-            <table className="table">
+            <table className="table table-striped">
                 <thead>
                     <tr>
                         <th>Nombre</th>
@@ -296,15 +297,15 @@ function ListFood() {
                     {currentFoods.map((food) => (
                         <tr key={food.id} onClick={() => navigate(`/nutrition/foods/${food.id}`)} style={{ cursor: 'pointer' }}>
                             <td>{food.name}</td>
-                            <td>{food.calories}</td>
-                            <td>{food.protein}</td>
-                            <td>{food.carbohydrates}</td>
-                            <td>{food.fat}</td>
-                            <td>{food.sugar}</td>
-                            <td>{food.fiber}</td>
-                            <td>{food.saturated_fat}</td>
+                            <td>{food.calories.toFixed(2)}</td>
+                            <td>{food.protein.toFixed(2)}</td>
+                            <td>{food.carbohydrates.toFixed(2)}</td>
+                            <td>{food.fat.toFixed(2)}</td>
+                            <td>{food.sugar.toFixed(2)}</td>
+                            <td>{food.fiber.toFixed(2)}</td>
+                            <td>{food.saturated_fat.toFixed(2)}</td>
                             <td>
-                                <Link to={`/nutrition/edit-food/${food.id}`} className="btn btn-primary me-2">Editar</Link>
+                                <Link to={`/nutrition/edit-food/${food.id}`} className="btn btn-primary me-2" onClick={(e) => e.stopPropagation()}>Editar</Link>
                             </td>
                             <td>
                                 <button onClick={(e) => { e.stopPropagation(); handleDeleteFood(food.id); }} className="btn btn-danger">Eliminar</button>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import './ExerciseDetails.css';
 
 function ExerciseDetails() {
   const { id } = useParams();
@@ -27,7 +28,7 @@ function ExerciseDetails() {
   }
 
   return (
-    <div className="container mt-4">
+    <div className="container-exercise-details mt-4">
       <h1 className="mb-3">{exercise.name}</h1>
       <p>{exercise.description}</p>
       <p><strong>Type:</strong> {exercise.type}</p>
@@ -51,7 +52,7 @@ function ExerciseDetails() {
           </div>
         </div>
       )}
-      <button onClick={handleEdit} className="btn btn-primary">Edit Exercise</button>
+      <button onClick={handleEdit} className="btn btn-success">Edit Exercise</button>
     </div>
   );
 }

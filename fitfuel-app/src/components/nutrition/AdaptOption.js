@@ -1,121 +1,131 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Container, Button, Pagination, Table } from 'react-bootstrap';
+import './AssignedOptions.css';
 
-const AdaptOption = () => {
-    const [options, setOptions] = useState([]);
-    const [users, setUsers] = useState([]);
-    const [selectedOption, setSelectedOption] = useState('');
-    const [selectedUser, setSelectedUser] = useState('');
-    const [newOptionName, setNewOptionName] = useState('');
+function AssignedOptions() {
+    const [assignedOptions, setAssignedOptions] = useState([]);
     const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
+    const [selectedPdfUrl, setSelectedPdfUrl] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const optionsPerPage = 5;
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
-        const fetchOptions = async () => {
+        const fetchAssignedOptions = async () => {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_API_URL}/nutrition/options/`, {
+                const response = await axios.get(`${apiUrl}/nutrition/assigned-options/`, {
                     headers: {
-                        'Authorization': `Token ${localStorage.getItem('authToken')}`
-                    }
+                        'Authorization': `Token ${localStorage.getItem('authToken')}`,
+                    },
                 });
-                setOptions(response.data);
+                setAssignedOptions(response.data);
             } catch (error) {
-                setError('Error fetching options');
+                console.error('Error fetching assigned options:', error);
+                setError('Failed to fetch assigned options. Please try again later.');
             }
         };
 
-        const fetchUsers = async () => {
-            try {
-                const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/regularusers/`, {
-                    headers: {
-                        'Authorization': `Token ${localStorage.getItem('authToken')}`
-                    }
-                });
-                setUsers(response.data);
-            } catch (error) {
-                setError('Error fetching users');
-            }
-        };
+        fetchAssignedOptions();
+    }, [apiUrl]);
 
-        fetchOptions();
-        fetchUsers();
-    }, []);
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError('');
-        setSuccess('');
-
+    const handleDownloadPdf = async (pdfUrl) => {
         try {
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}/nutrition/adapt-option/`, {
-                new_option_name: newOptionName,
-                option_id: selectedOption,
-                user_id: selectedUser
-            }, {
-                headers: {
-                    'Authorization': `Token ${localStorage.getItem('authToken')}`,
-                    'Content-Type': 'application/json'
-                }
+            const response = await axios.get(pdfUrl, {
+                responseType: 'blob' // Important to get the PDF as a blob
             });
-
-            setSuccess('Option adapted successfully!');
+            const blob = new Blob([response.data], { type: 'application/pdf' });
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = downloadUrl;
+            link.download = `assigned_option.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
         } catch (error) {
-            setError(error.response?.data?.error || 'Error adapting option');
-            console.error('Error adapting option:', error.response?.data || error.message);
+            setError('Failed to download PDF. Please try again later.');
         }
     };
 
-    return (
-        <div className="container mt-4">
-            <h2>Adapt Option</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                    <label htmlFor="newOptionName" className="form-label">New Option Name</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="newOptionName"
-                        value={newOptionName}
-                        onChange={(e) => setNewOptionName(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="selectUser" className="form-label">Select User</label>
-                    <select
-                        className="form-select"
-                        id="selectUser"
-                        value={selectedUser}
-                        onChange={(e) => setSelectedUser(e.target.value)}
-                        required
-                    >
-                        <option value="">Select a user</option>
-                        {users.map(user => (
-                            <option key={user.id} value={user.id}>{user.username}</option>
-                        ))}
-                    </select>
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="selectOption" className="form-label">Select Option</label>
-                    <select
-                        className="form-select"
-                        id="selectOption"
-                        value={selectedOption}
-                        onChange={(e) => setSelectedOption(e.target.value)}
-                        required
-                    >
-                        <option value="">Select an option</option>
-                        {options.map(option => (
-                            <option key={option.id} value={option.id}>{option.name}</option>
-                        ))}
-                    </select>
-                </div>
-                <button type="submit" className="btn btn-primary">Adapt Option</button>
-                {error && <div className="alert alert-danger mt-3">{error}</div>}
-                {success && <div className="alert alert-success mt-3">{success}</div>}
-            </form>
-        </div>
-    );
-};
+    const handleViewPdf = (pdfUrl) => {
+        setSelectedPdfUrl(`${apiUrl}${pdfUrl}`);
+    };
 
-export default AdaptOption;
+    const handleClosePdf = () => {
+        setSelectedPdfUrl('');
+    };
+
+    // Logic for displaying assigned options based on pagination
+    const indexOfLastOption = currentPage * optionsPerPage;
+    const indexOfFirstOption = indexOfLastOption - optionsPerPage;
+    const currentOptions = assignedOptions.slice(indexOfFirstOption, indexOfLastOption);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    return (
+        <Container className="container-assigned mt-4">
+            <h2 className="mb-4">Mis Opciones Asignadas</h2>
+            {error && <div className="alert alert-danger" role="alert">{error}</div>}
+            {selectedPdfUrl ? (
+                <div className="pdf-viewer">
+                    <Button variant="secondary" onClick={handleClosePdf} className="btn-close-pdf">Cerrar PDF</Button>
+                    <iframe src={selectedPdfUrl} width="100%" height="600px" title="PDF Viewer"></iframe>
+                </div>
+            ) : (
+                <>
+                    {currentOptions.length > 0 ? (
+                        <Table striped bordered hover className="assigned-options-table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre de la Opción</th>
+                                    <th>Fecha de Asignación</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {currentOptions.map(option => (
+                                    <tr key={option.id}>
+                                        <td>{option.optionName}</td>
+                                        <td>{new Date(option.start_date).toLocaleDateString()}</td>
+                                        <td>
+                                            {option.pdf_url && (
+                                                <>
+                                                    <Button
+                                                        variant="primary"
+                                                        size="sm"
+                                                        onClick={() => handleDownloadPdf(`${apiUrl}${option.pdf_url}`)}
+                                                        className="me-2"
+                                                    >
+                                                        Descargar PDF
+                                                    </Button>
+                                                    <Button
+                                                        variant="secondary"
+                                                        size="sm"
+                                                        onClick={() => handleViewPdf(option.pdf_url)}
+                                                    >
+                                                        Ver PDF
+                                                    </Button>
+                                                </>
+                                            )}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    ) : (
+                        <p>No tienes opciones asignadas actualmente.</p>
+                    )}
+                    <Pagination className="mt-3 justify-content-center">
+                        {Array.from({ length: Math.ceil(assignedOptions.length / optionsPerPage) }, (_, index) => (
+                            <Pagination.Item key={index + 1} active={index + 1 === currentPage} onClick={() => paginate(index + 1)}>
+                                {index + 1}
+                            </Pagination.Item>
+                        ))}
+                    </Pagination>
+                </>
+            )}
+        </Container>
+    );
+}
+
+export default AssignedOptions;

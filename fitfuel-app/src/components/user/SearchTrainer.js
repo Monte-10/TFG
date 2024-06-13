@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './SearchTrainer.css'; // Importar el archivo de estilos
 
 const SearchTrainer = ({ onSearch }) => {
     const [specialty, setSpecialty] = useState('');
@@ -10,8 +11,8 @@ const SearchTrainer = ({ onSearch }) => {
     };
 
     return (
-        <div className="container mt-4">
-            <h2>Buscar Entrenador</h2>
+        <div className="container-search-trainer mt-4">
+            <h2 className="title-search-trainer">Buscar Entrenador</h2>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label className="form-label">Especialidad:</label>

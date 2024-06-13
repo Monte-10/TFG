@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import './EditDiet.css';
 
 function EditDiet() {
   const { dietId } = useParams();
@@ -76,7 +77,7 @@ function EditDiet() {
     })
     .catch(error => {
       console.error('Error updating diet:', error);
-    }, [apiUrl]);
+    });
   };
 
   if (loadingError) {
@@ -84,7 +85,7 @@ function EditDiet() {
   }
 
   return (
-    <div className="container mt-5">
+    <div className="container-editdiet mt-5">
       <h2 className="mb-4">Editar Dieta</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">

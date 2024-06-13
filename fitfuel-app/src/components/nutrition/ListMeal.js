@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import './ListMeal.css';
 
 function ListMeal() {
     const [meals, setMeals] = useState([]);
@@ -161,13 +162,13 @@ function ListMeal() {
     const currentMeals = filteredMeals.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
     return (
-        <div className="container">
-            <h1>Lista de Comidas</h1>
-            <div className="row">
-                <div className="col-md-2 mb-3">
+        <div className="container-listmeal">
+            <h1 className="mb-4">Lista de Comidas</h1>
+            <div className="row-listmeal mb-4">
+                <div className="col-md-2-listmeal mb-3">
                     <input
                         type="text"
-                        className="form-control mb-2"
+                        className="form-control-listmeal mb-2"
                         placeholder="Filtrar por nombre..."
                         value={filters.name}
                         onChange={handleFilterChange}
@@ -175,7 +176,7 @@ function ListMeal() {
                     />
                     <input
                         type="number"
-                        className="form-control mb-2"
+                        className="form-control-listmeal mb-2"
                         placeholder="Calorías mínimas"
                         value={filters.minCalories}
                         onChange={handleFilterChange}
@@ -183,17 +184,17 @@ function ListMeal() {
                     />
                     <input
                         type="number"
-                        className="form-control"
+                        className="form-control-listmeal"
                         placeholder="Calorías máximas"
                         value={filters.maxCalories}
                         onChange={handleFilterChange}
                         name="maxCalories"
                     />
                 </div>
-                <div className="col-md-2 mb-3">
+                <div className="col-md-2-listmeal mb-3">
                     <input
                         type="number"
-                        className="form-control mb-2"
+                        className="form-control-listmeal mb-2"
                         placeholder="Proteínas mínimas"
                         value={filters.minProtein}
                         onChange={handleFilterChange}
@@ -201,17 +202,17 @@ function ListMeal() {
                     />
                     <input
                         type="number"
-                        className="form-control mb-2"
+                        className="form-control-listmeal mb-2"
                         placeholder="Proteínas máximas"
                         value={filters.maxProtein}
                         onChange={handleFilterChange}
                         name="maxProtein"
                     />
                 </div>
-                <div className="col-md-2 mb-3">
+                <div className="col-md-2-listmeal mb-3">
                     <input
                         type="number"
-                        className="form-control mb-2"
+                        className="form-control-listmeal mb-2"
                         placeholder="Carbohidratos mínimos"
                         value={filters.minCarbohydrates}
                         onChange={handleFilterChange}
@@ -219,17 +220,17 @@ function ListMeal() {
                     />
                     <input
                         type="number"
-                        className="form-control mb-2"
+                        className="form-control-listmeal mb-2"
                         placeholder="Carbohidratos máximos"
                         value={filters.maxCarbohydrates}
                         onChange={handleFilterChange}
                         name="maxCarbohydrates"
                     />
                 </div>
-                <div className="col-md-2 mb-3">
+                <div className="col-md-2-listmeal mb-3">
                     <input
                         type="number"
-                        className="form-control mb-2"
+                        className="form-control-listmeal mb-2"
                         placeholder="Grasas mínimas"
                         value={filters.minFat}
                         onChange={handleFilterChange}
@@ -237,17 +238,17 @@ function ListMeal() {
                     />
                     <input
                         type="number"
-                        className="form-control mb-2"
+                        className="form-control-listmeal mb-2"
                         placeholder="Grasas máximas"
                         value={filters.maxFat}
                         onChange={handleFilterChange}
                         name="maxFat"
                     />
                 </div>
-                <div className="col-md-2 mb-3">
+                <div className="col-md-2-listmeal mb-3">
                     <input
                         type="number"
-                        className="form-control mb-2"
+                        className="form-control-listmeal mb-2"
                         placeholder="Azúcar mínimo"
                         value={filters.minSugar}
                         onChange={handleFilterChange}
@@ -255,17 +256,17 @@ function ListMeal() {
                     />
                     <input
                         type="number"
-                        className="form-control"
+                        className="form-control-listmeal"
                         placeholder="Azúcar máximo"
                         value={filters.maxSugar}
                         onChange={handleFilterChange}
                         name="maxSugar"
                     />
                 </div>
-                <div className="col-md-2 mb-3">
+                <div className="col-md-2-listmeal mb-3">
                     <input
                         type="number"
-                        className="form-control mb-2"
+                        className="form-control-listmeal mb-2"
                         placeholder="Fibra mínima"
                         value={filters.minFiber}
                         onChange={handleFilterChange}
@@ -273,17 +274,17 @@ function ListMeal() {
                     />
                     <input
                         type="number"
-                        className="form-control"
+                        className="form-control-listmeal"
                         placeholder="Fibra máxima"
                         value={filters.maxFiber}
                         onChange={handleFilterChange}
                         name="maxFiber"
                     />
                 </div>
-                <button className="btn btn-secondary mt-3" onClick={resetFilters}>Limpiar Filtros</button>
+                <button className="btn-listmeal btn-secondary-listmeal mt-3" onClick={resetFilters}>Limpiar Filtros</button>
             </div>
 
-            <table className="table">
+            <table className="table-listmeal table-striped-listmeal">
                 <thead>
                     <tr>
                         <th>Nombre</th>
@@ -302,34 +303,34 @@ function ListMeal() {
                     {currentMeals.map(meal => (
                         <tr key={meal.id} onClick={() => navigate(`/nutrition/meals/${meal.id}`)} style={{ cursor: 'pointer' }}>
                             <td>{meal.name}</td>
-                            <td>{meal.calories}</td>
-                            <td>{meal.protein}</td>
-                            <td>{meal.carbohydrates}</td>
-                            <td>{meal.fat}</td>
-                            <td>{meal.sugar}</td>
-                            <td>{meal.fiber}</td>
-                            <td>{meal.saturated_fat}</td>
+                            <td>{(meal.calories || 0).toFixed(2)}</td>
+                            <td>{(meal.protein || 0).toFixed(2)}</td>
+                            <td>{(meal.carbohydrates || 0).toFixed(2)}</td>
+                            <td>{(meal.fat || 0).toFixed(2)}</td>
+                            <td>{(meal.sugar || 0).toFixed(2)}</td>
+                            <td>{(meal.fiber || 0).toFixed(2)}</td>
+                            <td>{(meal.saturated_fat || 0).toFixed(2)}</td>
                             <td>
-                                <Link to={`/nutrition/edit-meal/${meal.id}`} className="btn btn-primary me-2">Editar</Link>
+                                <Link to={`/nutrition/edit-meal/${meal.id}`} className="btn-listmeal btn-primary-listmeal me-2" onClick={(e) => e.stopPropagation()}>Editar</Link>
                             </td>
                             <td>
-                                <button onClick={(e) => { e.stopPropagation(); handleDeleteMeal(meal.id); }} className="btn btn-danger">Eliminar</button>
+                                <button onClick={(e) => { e.stopPropagation(); handleDeleteMeal(meal.id); }} className="btn-listmeal btn-danger-listmeal">Eliminar</button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
             {filteredMeals.length === 0 && (
-                <div className="alert alert-info" role="alert">
+                <div className="alert-listmeal alert-info-listmeal" role="alert">
                     No se encontraron comidas que coincidan con los filtros seleccionados.
                 </div>
             )}
 
-            <div className="pagination">
+            <div className="pagination-listmeal">
                 <button
                     disabled={currentPage === 0}
                     onClick={() => setCurrentPage(currentPage - 1)}
-                    className="btn btn-secondary"
+                    className="btn-listmeal btn-secondary-listmeal"
                 >
                     Anterior
                 </button>
@@ -337,7 +338,7 @@ function ListMeal() {
                 <button
                     disabled={currentPage >= totalPages - 1}
                     onClick={() => setCurrentPage(currentPage + 1)}
-                    className="btn btn-secondary"
+                    className="btn-listmeal btn-secondary-listmeal"
                 >
                     Siguiente
                 </button>

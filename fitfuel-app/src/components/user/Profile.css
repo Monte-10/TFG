@@ -1,0 +1,25 @@
+.container-profile {
+    max-width: 800px;
+    margin: auto;
+    background-color: #f8f9fa;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.title-profile {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.btn-primary {
+    width: 100%;
+}
+
+.mt-4 {
+    margin-top: 2rem !important;
+}

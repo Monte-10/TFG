@@ -1,0 +1,17 @@
+.trainer-request-modal .modal-content {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+}
+
+.trainer-request-modal .modal-header {
+    background-color: #343a40;
+    color: #fff;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.trainer-request-modal .modal-footer {
+    background-color: #e9ecef;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}

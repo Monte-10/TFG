@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink, Navigate } from 'react-router-dom';
 import { Container, Navbar, Nav, Offcanvas, Accordion, Dropdown } from 'react-bootstrap';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './custom.css';
 import './App.css';
 import './index.css';
+import './components/HomePage.css';
 
 // Importar componentes
 import HomePage from './components/HomePage';
@@ -109,12 +112,12 @@ function App() {
     return (
         <Router>
             <div className="App">
-                <Navbar bg="dark" variant="dark" expand={false}>
+                <Navbar bg="dark" variant="dark" expand={false} className="custom-navbar">
                     <Container fluid>
                         <Navbar.Toggle aria-controls="offcanvasNavbar" />
-                        <Navbar.Brand as={NavLink} to="/" className="mx-auto">FitFuelBalance</Navbar.Brand>
+                        <Navbar.Brand as={NavLink} to="/" className="navbar-title mx-auto">FitFuelBalance</Navbar.Brand>
                         {authToken ? (
-                            <Dropdown className="mb-3 ms-auto">
+                            <Dropdown className="ms-auto">
                                 <Dropdown.Toggle variant="secondary" id="dropdown-user">
                                     {profile?.username || "Usuario"}
                                 </Dropdown.Toggle>
@@ -127,7 +130,10 @@ function App() {
                                         </>
                                     ) : (
                                         profile?.role === "regular_user" && (
-                                            <Dropdown.Item as={NavLink} to="/trainer-details">Mi Entrenador</Dropdown.Item>
+                                            <>
+                                                <Dropdown.Item as={NavLink} to="/trainer-details">Mi Entrenador</Dropdown.Item>
+                                                <Dropdown.Item as={NavLink} to="/trainer-list">Buscar Entrenadores</Dropdown.Item>
+                                            </>
                                         )
                                     )}
                                     <Dropdown.Item onClick={handleLogout}>Cerrar Sesión</Dropdown.Item>
@@ -351,4 +357,3 @@ function Sport() {
 }
 
 export default App;
-

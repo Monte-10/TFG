@@ -1,0 +1,44 @@
+.container-assign-week {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #e9ecef; /* Fondo gris */
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+    color: #343a40;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.form-control, .form-select {
+    border-radius: 6px;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.btn {
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+.alert {
+    margin-top: 20px;
+}
+
+.alert a.btn-success {
+    margin-top: 10px;
+    display: block;
+}

@@ -63,12 +63,12 @@ function AssignedOptions() {
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
-        <Container className="mt-4">
-            <h2>Mis Opciones Asignadas</h2>
+        <Container className="container-assigned mt-4">
+            <h2 className="mb-4">Mis Opciones Asignadas</h2>
             {error && <div className="alert alert-danger" role="alert">{error}</div>}
             {selectedPdfUrl ? (
                 <div className="pdf-viewer">
-                    <Button variant="secondary" onClick={handleClosePdf}>Cerrar PDF</Button>
+                    <Button variant="secondary" onClick={handleClosePdf} className="btn-close-pdf">Cerrar PDF</Button>
                     <iframe src={selectedPdfUrl} width="100%" height="600px" title="PDF Viewer"></iframe>
                 </div>
             ) : (
@@ -115,7 +115,7 @@ function AssignedOptions() {
                     ) : (
                         <p>No tienes opciones asignadas actualmente.</p>
                     )}
-                    <Pagination className="mt-3">
+                    <Pagination className="mt-3 justify-content-center">
                         {Array.from({ length: Math.ceil(assignedOptions.length / optionsPerPage) }, (_, index) => (
                             <Pagination.Item key={index + 1} active={index + 1 === currentPage} onClick={() => paginate(index + 1)}>
                                 {index + 1}

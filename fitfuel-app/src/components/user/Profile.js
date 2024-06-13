@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Row, Col, Table, Form, Button } from 'react-bootstrap';
+import { Container, Row, Col, Table, Form } from 'react-bootstrap';
 import { Line, Bar, Pie } from 'react-chartjs-2';
 import 'chart.js/auto';
+import './Profile.css'; // Importar el nuevo archivo de estilos
 
 const Profile = () => {
     const [profile, setProfile] = useState({
@@ -367,8 +368,8 @@ const Profile = () => {
     };
 
     return (
-        <div className="container mt-4">
-            <h2>Perfil</h2>
+        <div className="container-profile mt-4">
+            <h2 className="title-profile">Perfil</h2>
             {error && <p className="text-danger">{error}</p>}
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
