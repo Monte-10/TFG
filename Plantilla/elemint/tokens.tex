@@ -5,13 +5,13 @@ El proceso de autenticación con JWT en FitFuelBalance sigue los siguientes paso
 Para cada solicitud posterior realizada por el cliente a recursos protegidos, el token se incluye en el encabezado de la solicitud HTTP. El middleware \texttt{TokenAuthentication} en el backend intercepta la solicitud y verifica la validez del token. Si el token es válido, se permite el acceso al recurso solicitado; de lo contrario, se devuelve una respuesta HTTP 401 Unauthorized. Figura \ref{FIG:diagramatokens} muestra un ejemplo de cómo funciona el sistema de verificación de tokens.
 
 \begin{figure}[Diagrama Tokens]{FIG:diagramatokens}{Diagrama del sistema de verificación de tokens \cite{JWTIntroduction}}
-    \image{14cm}{}{diagramatokens}
+    \image{16cm}{}{diagramatokens}
 \end{figure}
 
 Figura \ref{FIG:jwtexample} muestra un ejemplo de token JWT y como funciona la codificación de los datos en el token.
 
 \begin{figure}[Ejemplo Token]{FIG:jwtexample}{Ejemplo de token JWT \cite{JWTIntroduction}}
-    \image{10cm}{}{jwtexample}
+    \image{16cm}{}{jwtexample}
 \end{figure}
 
 \subsubsection{Middleware y Configuración}

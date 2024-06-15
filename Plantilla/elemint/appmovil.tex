@@ -2,8 +2,16 @@ La aplicación móvil \circled{10} de FitFuelBalance ha sido desarrollada utiliz
 
 La navegación \circled{11} en la aplicación móvil se ha implementado utilizando React Navigation. Esta biblioteca facilita la gestión de la navegación entre pantallas y la organización de la estructura de navegación de la aplicación. Código \ref{COD:navconfig} muestra un ejemplo de configuración de navegación.
 
-Las pantallas de la aplicación móvil se encuentran en la carpeta \texttt{screens/} \circled{12} y contienen los componentes principales de la aplicación. Algunas de las pantallas más importantes son: \texttt{HomeScreen.js}, \texttt{CalendarScreen.js} y \texttt{LoginScreen.js}. Estas pantallas se encargan de mostrar la información y permitir la interacción del usuario con la aplicación.
+Las pantallas de la aplicación móvil se encuentran en la carpeta \texttt{screens/} \circled{12} y contienen los componentes principales de la aplicación. Algunas de las pantallas más importantes son: \texttt{HomeScreen.js}, \texttt{CalendarScreen.js} y \texttt{LoginScreen.js}, Figura \ref{FIG:calendarscreen} muestra estas pantallas además de \texttt{TodayScreen.js}. Estas pantallas se encargan de mostrar la información y permitir la interacción del usuario con la aplicación.
 
 Para los estilos \circled{13} de la aplicación móvil se ha utilizado una combinación de hojas de estilo en JavaScript y StyleSheet de React Native. Esto permite definir estilos que se aplican de manera consistente en toda la aplicación y aprovechar características específicas de la plataforma.
 
 Similar a la aplicación web, la aplicación móvil se comunica con el backend de Django a través de servicios definidos en la carpeta \texttt{api/}. Estos servicios utilizan \texttt{fetch} \circled{14} para realizar solicitudes HTTP y manejar las respuestas. Código \ref{COD:reactnativeservice} muestra un ejemplo de un servicio para obtener planes de entrenamiento.
+
+\begin{figure}[CalendarScreen, TodayScreen, LoginScreen y HomeScreen]{FIG:calendarscreen}{Pantallas CalendarScreen, TodayScreen, LoginScreen y HomeScreen de la aplicación móvil.}
+    \image{5cm}{}{CalendarHomeScreens}
+    \image{5cm}{}{TodayScreen}
+    \image{5cm}{}{LoginScreen}
+\end{figure}
+
+\newpage

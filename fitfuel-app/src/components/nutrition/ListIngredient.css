@@ -2,13 +2,14 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #f8f9fa;
+    background-color: rgba(43, 43, 43, 1); /* Fondo gris oscuro con transparencia */
     border-radius: 12px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    color: #f0f0f0; /* Texto claro */
 }
 
 h1 {
-    color: #343a40;
+    color: #f0f0f0; /* Texto claro */
     text-align: center;
     margin-bottom: 20px;
 }
@@ -36,21 +37,34 @@ h1 {
 
 .table-listingredient tbody tr {
     transition: background-color 0.3s;
-    background-color: #ffffff;
-    color: #333;
+    background-color: #2b2b2b; /* Fondo gris oscuro */
+    color: #f0f0f0; /* Texto claro */
 }
 
 .table-listingredient tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: #3a3a3a; /* Fondo gris un poco más claro */
 }
 
 .table-listingredient tbody tr:hover {
-    background-color: #e9ecef;
+    background-color: #444; /* Fondo un poco más claro al pasar el ratón */
 }
 
 .form-control-listingredient, .form-select-listingredient {
     margin-bottom: 10px;
     width: 100%;
+    background-color: #1e1e1e; /* Fondo gris oscuro */
+    border: 1px solid #444;
+    color: #f0f0f0; /* Texto claro */
+}
+
+.form-control-listingredient::placeholder, .form-select-listingredient::placeholder {
+    color: #f0f0f0; /* Color del placeholder */
+    opacity: 0.7; /* Opacidad del placeholder */
+}
+
+.form-control-listingredient:focus, .form-select-listingredient:focus {
+    background-color: #3b3b3b; /* Fondo un poco más claro al enfocar */
+    color: #f0f0f0; /* Texto claro */
 }
 
 .btn-listingredient {
@@ -91,10 +105,13 @@ h1 {
 
 .pagination-listingredient span {
     margin: 0 10px;
+    color: #f0f0f0; /* Texto claro */
 }
 
 .alert-listingredient {
     margin-top: 20px;
+    background-color: #343a40;
+    color: #f0f0f0; /* Texto claro */
 }
 
 .row-listingredient {

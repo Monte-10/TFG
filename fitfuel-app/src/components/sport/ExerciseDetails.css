@@ -2,24 +2,25 @@
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #e9ecef; /* Fondo gris */
+    background-color: rgba(43, 43, 43, 1); /* Fondo gris oscuro con transparencia */
     border-radius: 12px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    color: #f0f0f0; /* Texto claro */
 }
 
-h1 {
-    color: #343a40;
+.container-exercise-details h1 {
+    color: #f0f0f0; /* Texto claro */
     text-align: center;
     margin-bottom: 20px;
 }
 
-p {
-    color: #495057;
+.container-exercise-details p {
+    color: #f0f0f0; /* Texto claro */
     font-size: 16px;
 }
 
-h3 {
-    color: #343a40;
+.container-exercise-details h3 {
+    color: #f0f0f0; /* Texto claro */
     margin-top: 20px;
 }
 
@@ -44,6 +45,7 @@ h3 {
 .btn-success {
     background-color: #28a745;
     border-color: #28a745;
+    color: #f0f0f0; /* Texto claro */
 }
 
 .btn-success:hover {

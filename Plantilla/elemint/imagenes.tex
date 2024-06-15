@@ -5,16 +5,10 @@ El diseño de la base de datos ha sido cuidadosamente planificado para asegurar 
     \item \textbf{CustomUser:} Almacena información de los usuarios. Sus propiedades son:
     \begin{itemize}
         \item \textbf{id (Integer):} Identificador único del usuario.
-        \item \textbf{password (String):} Contraseña hasheada del usuario.
-        \item \textbf{last\_login (Datetime):} Fecha y hora del último inicio de sesión.
-        \item \textbf{is\_superuser (Boolean):} Indica si el usuario es un superusuario.
+        \item \textbf{password (String):} Contraseña hasheada del usuario. superusuario.
         \item \textbf{username (String):} Nombre de usuario único.
         \item \textbf{first\_name (String):} Nombre del usuario.
-        \item \textbf{last\_name (String):} Apellido del usuario.
         \item \textbf{email (String):} Correo electrónico del usuario.
-        \item \textbf{is\_staff (Boolean):} Indica si el usuario es parte del staff.
-        \item \textbf{is\_active (Boolean):} Indica si la cuenta del usuario está activa.
-        \item \textbf{date\_joined (Datetime):} Fecha y hora de creación de la cuenta.
     \end{itemize}
     \item \textbf{RegularUser:} Extiende \texttt{CustomUser} y almacena medidas corporales y datos de los usuarios normales. Sus propiedades son:
     \begin{itemize}
@@ -22,8 +16,6 @@ El diseño de la base de datos ha sido cuidadosamente planificado para asegurar 
         \item \textbf{weight (Float):} Peso del usuario.
         \item \textbf{height (Float):} Altura del usuario.
         \item \textbf{personal\_trainer\_id (Integer):} Identificador del entrenador personal asignado.
-        \item \textbf{arm (Float):} Medida del brazo.
-        \item \textbf{chest (Float):} Medida del pecho.
     \end{itemize}
     \item \textbf{Trainer:} Extiende \texttt{CustomUser} y almacena información adicional sobre los entrenadores. Sus propiedades son:
     \begin{itemize}
@@ -41,11 +33,6 @@ El diseño de la base de datos ha sido cuidadosamente planificado para asegurar 
         \item \textbf{sugar (Float):} Azúcar por unidad.
         \item \textbf{fiber (Float):} Fibra por unidad.
         \item \textbf{fat (Float):} Grasa por unidad.
-        \item \textbf{saturated\_fat (Float):} Grasa saturada por unidad.
-        \item \textbf{gluten\_free (Boolean):} Indica si es libre de gluten.
-        \item \textbf{lactose\_free (Boolean):} Indica si es libre de lactosa.
-        \item \textbf{contains\_meat (Boolean):} Indica si contiene carne.
-        \item \textbf{contains\_vegetables (Boolean):} Indica si contiene vegetales.
     \end{itemize}
     \item \textbf{Diet:} Almacena los planes de dietas desarrollados por los nutricionistas. Sus propiedades son:
     \begin{itemize}

@@ -9,6 +9,10 @@
     position: relative; /* Añadir para poder usar ::before */
 }
 
+h2, h3, h4 {
+    color: #fff; /* Blanco */
+}
+
 .welcome-text {
     color: #fff;
     font-size: 2.5rem;

@@ -1,14 +1,30 @@
 .container-clientdetails {
-    background-color: #f8f9fa;
+    background-color: rgba(43, 43, 43, 1); /* Fondo gris oscuro con transparencia */
     padding: 20px;
     border-radius: 8px;
+    color: #f0f0f0; /* Texto claro */
 }
 
 .form-control,
 .form-select {
-    background-color: #e9ecef;
-    border: 1px solid #ced4da;
-    color: #495057;
+    background-color: #1e1e1e; /* Fondo gris oscuro */
+    border: 1px solid #444;
+    color: #f0f0f0; /* Texto claro */
+    border-radius: 6px;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.form-control::placeholder,
+.form-select::placeholder {
+    color: #f0f0f0; /* Color del placeholder */
+    opacity: 0.7; /* Opacidad del placeholder */
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: #3b3b3b; /* Fondo un poco más claro al enfocar */
+    color: #f0f0f0; /* Texto claro */
 }
 
 .measurements-checkboxes {
@@ -18,7 +34,7 @@
 }
 
 .form-check-label {
-    color: #495057;
+    color: #f0f0f0; /* Texto claro */
 }
 
 .chart-container {
@@ -28,15 +44,21 @@
 .btn-primary,
 .btn-success,
 .btn-secondary {
-    background-color: #28a745;
+    background-color: #28a745; /* Fondo verde */
     border-color: #28a745;
+    color: #f0f0f0; /* Texto claro */
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.3s;
 }
 
 .btn-primary:hover,
 .btn-success:hover,
 .btn-secondary:hover {
-    background-color: #218838;
+    background-color: #218838; /* Fondo verde oscuro al pasar el ratón */
     border-color: #1e7e34;
+    transform: scale(1.05);
 }
 
 .alert-danger {

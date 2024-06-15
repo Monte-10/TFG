@@ -24,6 +24,8 @@
     \item \textbf{RF12} Un entrenador/nutricionista podrá hacer seguimiento y ajustes en los planes de los usuarios.
 \end{itemize}
 
+\newpage
+
 \section{Requisitos No Funcionales}
 
 \subsection{Generales}
@@ -68,4 +70,44 @@
 \subsection{Regulatorio y Legal}
 \begin{itemize}
     \item \textbf{RNF20} Todos los recursos externos utilizados serán de uso libre y estarán debidamente acreditados en la documentación del proyecto.
+\end{itemize}
+
+\section{Incrementos\label{CAP:INCREMENTOS}}
+
+\subsubsection{Back-end}
+\begin{itemize}
+    \item \textbf{IN1.1} Crear una base de datos PostgreSQL y configurar el servidor HTTP local con Django.
+    \item \textbf{IN1.2} Definir modelos en Django para gestionar el módulo de deporte.
+    \item \textbf{IN1.3} Definir modelos en Django para gestionar el módulo de nutrición.
+    \item \textbf{IN1.4} Definir modelos en Django para gestionar los usuarios.
+    \item \textbf{IN1.5} Definir vistas para controlar las operaciones de los modelos.
+    \item \textbf{IN1.6} Crear controladores para manejar los inicios de sesión y registros de usuarios.
+    \item \textbf{IN1.7} Crear APIs RESTful con Django REST framework para manejar las llamadas de los clientes.
+    \item \textbf{IN1.8} Implementar la lógica de negocio y middleware necesarios para las operaciones del servidor.
+    \item \textbf{IN1.9} Desplegar todo en Render.
+\end{itemize}
+
+\subsubsection{Front-end}
+\begin{itemize}
+    \item \textbf{IN2.1} Crear una aplicación básica con una barra de navegación y definir las rutas en React Router.
+    \item \textbf{IN2.2} Desarrollar la sección de inicio de sesión.
+    \item \textbf{IN2.3} Desarrollar el componente de inicio.
+    \item \textbf{IN2.4} Desarrollar la sección de dietas.
+    \item \textbf{IN2.5} Desarrollar la sección de entrenamientos.
+    \item \textbf{IN2.6} Desarrollar la logica de autenticación y manejo de sesiones.
+    \item \textbf{IN2.7} Desarrollar estetica y diseño de la aplicación.
+    \item \textbf{IN2.8} Desarrollar sistema de filtraje y busqueda de dietas y entrenamientos.
+    \item \textbf{IN2.9} Desplegar todo en Render.
+\end{itemize}
+
+\subsubsection{Aplicación Móvil}
+\begin{itemize}
+    \item \textbf{IN3.1} Configurar el entorno de desarrollo con React Native CLI.
+    \item \textbf{IN3.2} Crear pantallas básicas para la navegación principal.
+    \item \textbf{IN3.3} Implementar la autenticación y el manejo de sesiones.
+    \item \textbf{IN3.4} Desarrollar la pantalla de inicio con acceso a las funcionalidades principales.
+    \item \textbf{IN3.5} Implementar la funcionalidad de seguimiento de entrenamientos en tiempo real.
+    \item \textbf{IN3.6} Desarrollar la funcionalidad de registro y seguimiento de dietas diarias.
+    \item \textbf{IN3.7} Probar la aplicación en dispositivos iOS y Android.
+    \item \textbf{IN3.8} Exportar la aplicación a una APK.
 \end{itemize}

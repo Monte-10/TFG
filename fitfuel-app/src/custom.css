@@ -3,6 +3,25 @@ body {
     color: #f0f0f0; /* Texto claro */
 }
 
+.modal-title h2,
+.modal-title h3,
+.modal-title h4 {
+  color: #fff !important;
+}
+
+h1, h2, h3, h4 {
+    color: #fff !important;
+  }  
+
+  .form-check-label {
+    color: #f0f0f0; /* Texto claro */
+}
+
+  .form-label {
+    font-weight: bold;
+    color: #f0f0f0; /* Texto claro */
+}
+
 .navbar-dark .navbar-brand {
     font-size: 1.75rem;
     font-weight: bold;
