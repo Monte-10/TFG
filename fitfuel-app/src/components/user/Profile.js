@@ -91,22 +91,13 @@ const Profile = () => {
                         }
                     });
                     const latestMeasurements = measurementsResponse.data[0];
-                    setRegularUser({
-                        weight: latestMeasurements.weight || '',
-                        height: latestMeasurements.height || '',
-                        neck: latestMeasurements.neck || '',
-                        shoulder: latestMeasurements.shoulder || '',
-                        chest: latestMeasurements.chest || '',
-                        waist: latestMeasurements.waist || '',
-                        hip: latestMeasurements.hip || '',
-                        arm: latestMeasurements.arm || '',
-                        glute: latestMeasurements.glute || '',
-                        upper_leg: latestMeasurements.upper_leg || '',
-                        middle_leg: latestMeasurements.middle_leg || '',
-                        lower_leg: latestMeasurements.lower_leg || '',
-                        communication_email: regular_user.communication_email || '',
-                        phone: regular_user.phone || ''
-                    });
+                    if (latestMeasurements) {
+                        setRegularUser(prev => ({
+                            ...prev,
+                            ...latestMeasurements
+                        }));
+                    }
+                    setMeasurements(measurementsResponse.data);
                 }
             } catch (error) {
                 setError("Error al cargar el perfil");
@@ -299,7 +290,9 @@ const Profile = () => {
             data: filteredMeasurements.map(m => m[measurement]),
             backgroundColor: `rgba(${index * 50}, ${index * 100}, ${index * 150}, 0.6)`,
             borderColor: `rgba(${index * 50}, ${index * 100}, ${index * 150}, 1)`,
-            borderWidth: 1
+            borderWidth: 1,
+            fill: false,
+            spanGaps: true // Esta línea asegura que las líneas se dibujen a través de los puntos faltantes
         }));
 
         return {

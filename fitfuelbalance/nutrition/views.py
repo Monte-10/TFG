@@ -120,6 +120,7 @@ class OptionViewSet(viewsets.ModelViewSet):
 class AssignedOptionViewSet(viewsets.ModelViewSet):
     queryset = AssignedOption.objects.all()
     serializer_class = AssignedOptionSerializer
+    permission_classes = [IsAuthenticated]
     
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -132,6 +133,21 @@ class AssignedOptionViewSet(viewsets.ModelViewSet):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        # Validar que la opción de día exista
+        for key, value in request.data.items():
+            if key.endswith('_option') and value is not None:
+                try:
+                    DayOption.objects.get(pk=value)
+                except DayOption.DoesNotExist:
+                    return Response({key: [f"Clave primaria \"{value}\" inválida - objeto no existe."]}, status=status.HTTP_400_BAD_REQUEST)
+        self.perform_update(serializer)
+        return Response(serializer.data)
+
 from django.utils.dateparse import parse_date
         
 @api_view(['POST'])
@@ -463,3 +479,9 @@ def adapt_option_to_user_view(request):
         return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+@api_view(['GET'])
+def get_assigned_options(request, client_id):
+    assigned_options = AssignedOption.objects.filter(user_id=client_id)
+    serializer = AssignedOptionSerializer(assigned_options, many=True)
+    return Response(serializer.data)

@@ -3,7 +3,6 @@ from . import views
 from rest_framework.routers import DefaultRouter
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import *
 
 router = DefaultRouter()
 router.register(r'foods', views.FoodViewSet)
@@ -29,6 +28,7 @@ urlpatterns = [
     path('options/<int:option_id>/pdf/', views.generate_option_pdf, name='generate_option_pdf'),
     path('assigned-options/', views.assigned_options, name='assigned_options'),
     path('adapt-option/', views.adapt_option_to_user_view, name='adapt_option_to_user'),
+    path('assignedoptions/client/<int:client_id>/', views.get_assigned_options, name='get_assigned_options'),
 ]
 
 if settings.DEBUG:

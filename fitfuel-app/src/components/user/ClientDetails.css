@@ -44,3 +44,8 @@
     background-color: #f8d7da;
     border-color: #f5c6cb;
 }
+
+.selected-option {
+    background-color: #d4edda; /* Color de fondo verde claro */
+    color: #155724; /* Color del texto verde oscuro */
+}

@@ -1,106 +1,147 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Button, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
-const TodayScreen = ({ navigation }) => {
+const TodayScreen = () => {
+  const navigation = useNavigation();
   const [trainings, setTrainings] = useState([]);
   const [dailyDiet, setDailyDiet] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      const authToken = await AsyncStorage.getItem('authToken');
-      const userId = await AsyncStorage.getItem('userId');
-      const today = new Date().toISOString().split('T')[0];
-  
-      // Fetch Training
-      fetch(`http://10.0.2.2:8000/sport/trainings/today?date=${today}&user=${userId}`, {
-        headers: {
-          'Authorization': `Token ${authToken}`,
-        },
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.detail) {
-          console.log("Training detail error:", data.detail);
+      try {
+        const authToken = await AsyncStorage.getItem('authToken');
+        const userId = await AsyncStorage.getItem('userId');
+        const today = new Date().toISOString().split('T')[0];
+
+        if (!authToken || !userId) {
+          throw new Error('Authentication token or user ID is missing');
+        }
+
+        const trainingResponse = await fetch(`http://10.0.2.2:8000/sport/trainings/today?date=${today}&user=${userId}`, {
+          headers: {
+            'Authorization': `Token ${authToken}`,
+          },
+        });
+        const trainingData = await trainingResponse.json();
+
+        if (trainingResponse.ok) {
+          setTrainings(trainingData);
+        } else {
+          console.log("Training detail error:", trainingData.detail);
           setTrainings([]);
-        } else {
-          setTrainings(data);
         }
-      })
-      .catch(error => console.error("Training fetch error:", error));
-  
-      // Fetch DailyDiet
-      fetch(`http://10.0.2.2:8000/nutrition/dailydiets/today?date=${today}&user=${userId}`, {
-        headers: {
-          'Authorization': `Token ${authToken}`,
-        },
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.detail) {
-          console.log("DailyDiet detail error:", data.detail);
+
+        const dietResponse = await fetch(`http://10.0.2.2:8000/nutrition/dailydiets/today?date=${today}&user=${userId}`, {
+          headers: {
+            'Authorization': `Token ${authToken}`,
+          },
+        });
+        const dietData = await dietResponse.json();
+
+        if (dietResponse.ok) {
+          setDailyDiet(dietData);
+        } else {
+          console.log("DailyDiet detail error:", dietData.detail);
           setDailyDiet(null);
-        } else {
-          setDailyDiet(data);
         }
-      })
-      .catch(error => console.error("DailyDiet fetch error:", error));
+      } catch (error) {
+        console.error("Fetch data error:", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
-  
+
     fetchData();
   }, []);
+
+  if (isLoading) {
+    return <ActivityIndicator size="large" color="#28a745" />;
+  }
 
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Entrenamientos de Hoy</Text>
-      {trainings.map((training, index) => (
-        <View key={index} style={styles.item}>
-          <Text>{training.name}</Text>
-          <Button
-            title="Ver Detalles"
-            onPress={() => navigation.navigate('TrainingDetailsScreen', { trainingId: training.id })}
-          />
-        </View>
-      ))}
+      {trainings.length > 0 ? (
+        trainings.map((training, index) => (
+          <View key={index} style={styles.item}>
+            <Text style={styles.itemText}>{training.name}</Text>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate('TrainingDetailsScreen', { trainingId: training.id })}
+            >
+              <Text style={styles.buttonText}>Ver Detalles</Text>
+            </TouchableOpacity>
+          </View>
+        ))
+      ) : (
+        <Text style={styles.noDataText}>No hay entrenamientos asignados para hoy.</Text>
+      )}
       <Text style={styles.title}>Dieta de Hoy</Text>
       {dailyDiet ? (
         <View style={styles.item}>
-          <Text>Haz click para ver tus comidas para hoy</Text>
-          <Button
-            title="Ver Comidas del Día"
+          <Text style={styles.itemText}>Haz click para ver tus comidas para hoy</Text>
+          <TouchableOpacity
+            style={styles.button}
             onPress={() => {
-                if (dailyDiet && dailyDiet.length > 0) {
-                // Asumiendo que siempre quieres el primer objeto de la lista
+              if (dailyDiet && dailyDiet.length > 0) {
                 const dietId = dailyDiet[0].id;
                 navigation.navigate('DailyDietDetailsScreen', { dailyDietId: dietId });
-                } else {
+              } else {
                 console.log('No hay dieta diaria disponible.');
-                }
+              }
             }}
-            />
+          >
+            <Text style={styles.buttonText}>Ver Comidas del Día</Text>
+          </TouchableOpacity>
         </View>
       ) : (
-        <Text>No hay dieta asignada para hoy.</Text>
+        <Text style={styles.noDataText}>No hay dieta asignada para hoy.</Text>
       )}
     </ScrollView>
-    );
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    padding: 20,
+    backgroundColor: '#1e1e1e', // Fondo oscuro
   },
   title: {
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: 'bold',
-    marginTop: 20,
+    color: '#28a745', // Verde
+    marginBottom: 10,
   },
   item: {
-    marginTop: 10,
+    marginBottom: 20,
+    padding: 15,
+    backgroundColor: '#2b2b2b', // Fondo oscuro para el ítem
+    borderRadius: 10,
+  },
+  itemText: {
+    fontSize: 18,
+    color: '#f0f0f0', // Texto claro
+    marginBottom: 10,
+  },
+  button: {
+    backgroundColor: '#28a745', // Fondo verde para el botón
     padding: 10,
-    backgroundColor: '#eaeaea',
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff', // Texto blanco
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  noDataText: {
+    fontSize: 16,
+    color: '#f0f0f0', // Texto claro
+    marginBottom: 10,
   },
 });
 

@@ -4,15 +4,22 @@ import { Text, View, StyleSheet } from 'react-native';
 const CountdownTimer = ({ initialTime, onEnd, prepareTime = 5 }) => {
   const [timeLeft, setTimeLeft] = useState(initialTime);
   const [isPreparing, setIsPreparing] = useState(prepareTime > 0);
+  const [prepareTimeLeft, setPrepareTimeLeft] = useState(prepareTime);
 
   useEffect(() => {
     let timer;
     if (isPreparing) {
       // Iniciar periodo de preparación
-      timer = setTimeout(() => {
-        setIsPreparing(false);
-        setTimeLeft(initialTime); // Resetear al tiempo inicial para el ejercicio
-      }, prepareTime * 1000); // prepareTime en segundos
+      timer = setInterval(() => {
+        setPrepareTimeLeft((prev) => {
+          if (prev - 1 === 0) {
+            clearInterval(timer);
+            setIsPreparing(false);
+            setTimeLeft(initialTime); // Resetear al tiempo inicial para el ejercicio
+          }
+          return prev - 1;
+        });
+      }, 1000);
     } else if (timeLeft > 0) {
       // Iniciar contador regresivo
       timer = setInterval(() => {
@@ -34,7 +41,7 @@ const CountdownTimer = ({ initialTime, onEnd, prepareTime = 5 }) => {
   return (
     <View style={styles.container}>
       {isPreparing ? (
-        <Text style={styles.text}>Preparándote... {prepareTime}</Text>
+        <Text style={styles.text}>Prepárate... {prepareTimeLeft}</Text>
       ) : (
         <Text style={styles.text}>Tiempo restante: {timeLeft}</Text>
       )}
@@ -44,11 +51,17 @@ const CountdownTimer = ({ initialTime, onEnd, prepareTime = 5 }) => {
 
 const styles = StyleSheet.create({
   container: {
-    // Estilos para tu contador
+    backgroundColor: '#333', // Fondo oscuro
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 10,
   },
   text: {
-    fontSize: 20,
-    // Otros estilos para el texto
+    color: '#f0f0f0', // Texto claro
+    fontSize: 24,
+    fontWeight: 'bold',
   },
 });
 

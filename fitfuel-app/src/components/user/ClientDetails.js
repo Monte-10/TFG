@@ -9,6 +9,8 @@ const ClientDetails = ({ clientId, onBack }) => {
     const [client, setClient] = useState(null);
     const [error, setError] = useState('');
     const [measurements, setMeasurements] = useState([]);
+    const [assignedOptions, setAssignedOptions] = useState([]);
+    const [dayOptions, setDayOptions] = useState({});
     const [chartType, setChartType] = useState('line');
     const [selectedMeasurements, setSelectedMeasurements] = useState(['weight']);
     const [timeRange, setTimeRange] = useState('1year');
@@ -47,8 +49,56 @@ const ClientDetails = ({ clientId, onBack }) => {
             }
         };
 
+        const fetchAssignedOptions = async () => {
+            try {
+                const response = await axios.get(`${apiUrl}/nutrition/assignedoptions/client/${clientId}/`, {
+                    headers: {
+                        'Authorization': `Token ${localStorage.getItem('authToken')}`
+                    }
+                });
+                console.log("Assigned options response:", response.data);
+                setAssignedOptions(response.data);
+                const dayOptionIds = new Set();
+                response.data.forEach(option => {
+                    if (option.monday_option) dayOptionIds.add(option.monday_option);
+                    if (option.tuesday_option) dayOptionIds.add(option.tuesday_option);
+                    if (option.wednesday_option) dayOptionIds.add(option.wednesday_option);
+                    if (option.thursday_option) dayOptionIds.add(option.thursday_option);
+                    if (option.friday_option) dayOptionIds.add(option.friday_option);
+                    if (option.saturday_option) dayOptionIds.add(option.saturday_option);
+                    if (option.sunday_option) dayOptionIds.add(option.sunday_option);
+                });
+                await fetchDayOptions([...dayOptionIds]);
+            } catch (error) {
+                setError('Error al cargar las opciones asignadas');
+                console.error("Error al cargar las opciones asignadas:", error.response?.data || error.message);
+            }
+        };
+
+        const fetchDayOptions = async (ids) => {
+            try {
+                const promises = ids.map(id => 
+                    axios.get(`${apiUrl}/nutrition/dayoptions/${id}/`, {
+                        headers: {
+                            'Authorization': `Token ${localStorage.getItem('authToken')}`
+                        }
+                    })
+                );
+                const responses = await Promise.all(promises);
+                const dayOptionsData = responses.reduce((acc, response) => {
+                    acc[response.data.id] = response.data.name;
+                    return acc;
+                }, {});
+                setDayOptions(dayOptionsData);
+            } catch (error) {
+                setError('Error al cargar las opciones diarias');
+                console.error("Error al cargar las opciones diarias:", error.response?.data || error.message);
+            }
+        };
+
         fetchClientDetails();
         fetchMeasurements();
+        fetchAssignedOptions();
     }, [apiUrl, clientId]);
 
     const handleChartTypeChange = (e) => {
@@ -167,6 +217,39 @@ const ClientDetails = ({ clientId, onBack }) => {
         </Table>
     );
 
+    const renderAssignedOptionsTable = () => (
+        <Table striped bordered hover className="mt-4">
+            <thead>
+                <tr>
+                    <th>Fecha de Inicio</th>
+                    <th>Opción</th>
+                    <th>Lunes</th>
+                    <th>Martes</th>
+                    <th>Miércoles</th>
+                    <th>Jueves</th>
+                    <th>Viernes</th>
+                    <th>Sábado</th>
+                    <th>Domingo</th>
+                </tr>
+            </thead>
+            <tbody>
+                {assignedOptions.map((option, index) => (
+                    <tr key={index}>
+                        <td>{new Date(option.start_date).toLocaleDateString()}</td>
+                        <td>{option.option}</td>
+                        <td className={option.monday_option ? 'selected-option' : ''}>{dayOptions[option.monday_option] || ''}</td>
+                        <td className={option.tuesday_option ? 'selected-option' : ''}>{dayOptions[option.tuesday_option] || ''}</td>
+                        <td className={option.wednesday_option ? 'selected-option' : ''}>{dayOptions[option.wednesday_option] || ''}</td>
+                        <td className={option.thursday_option ? 'selected-option' : ''}>{dayOptions[option.thursday_option] || ''}</td>
+                        <td className={option.friday_option ? 'selected-option' : ''}>{dayOptions[option.friday_option] || ''}</td>
+                        <td className={option.saturday_option ? 'selected-option' : ''}>{dayOptions[option.saturday_option] || ''}</td>
+                        <td className={option.sunday_option ? 'selected-option' : ''}>{dayOptions[option.sunday_option] || ''}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </Table>
+    );
+
     if (error) {
         return <p className="text-danger">{error}</p>;
     }
@@ -175,7 +258,6 @@ const ClientDetails = ({ clientId, onBack }) => {
         return <p>Cargando...</p>;
     }
 
-    // Usa el último conjunto de mediciones si los valores del cliente están vacíos
     const latestMeasurements = measurements.length > 0 ? measurements[measurements.length - 1] : {};
 
     return (
@@ -295,6 +377,8 @@ const ClientDetails = ({ clientId, onBack }) => {
                 </Form.Control>
             </Form.Group>
             {viewType === 'chart' ? renderChart() : renderTable()}
+            <h3 className="mt-4">Opciones Asignadas</h3>
+            {renderAssignedOptionsTable()}
         </Container>
     );
 };

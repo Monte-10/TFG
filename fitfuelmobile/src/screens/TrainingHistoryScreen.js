@@ -8,21 +8,22 @@ const TrainingHistoryScreen = ({ navigation }) => {
   useEffect(() => {
     const fetchTrainingHistory = async () => {
       try {
-        // Recuperar el ID del usuario logueado
         const userId = await AsyncStorage.getItem('userId');
-        
+        if (!userId) {
+          throw new Error('UserId not found');
+        }
+
         const savedFeedback = await AsyncStorage.getItem('trainingFeedback');
         const feedbackList = savedFeedback ? JSON.parse(savedFeedback) : [];
-        
-        // Filtrar el feedback por userId
         const userFeedbackList = feedbackList.filter(feedback => feedback.userId === userId);
-        
+
         setTrainingHistory(userFeedbackList);
       } catch (error) {
         Alert.alert("Error", "No se pudo recuperar el historial de entrenamientos.");
+        console.error("Error fetching training history:", error);
       }
     };
-  
+
     fetchTrainingHistory();
   }, []);
 
@@ -32,12 +33,18 @@ const TrainingHistoryScreen = ({ navigation }) => {
         data={trainingHistory}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('TrainingDetailsScreen', { trainingId: item.trainingId })}>
+          <TouchableOpacity style={styles.item} onPress={() => {
+            if (item.trainingId) {
+              navigation.navigate('TrainingDetailsScreen', { trainingId: item.trainingId });
+            } else {
+              Alert.alert("Error", "El ID del entrenamiento no está disponible.");
+            }
+          }}>
             <Text style={styles.title}>Id: {item.trainingId}</Text>
-            <Text style={styles.title}>Fecha: {item.date}</Text>
-            <Text>Entrenamiento: {item.name}</Text>
-            <Text>Esfuerzo: {item.effortLevel}</Text>
-            <Text>Notas: {item.notes}</Text>
+            <Text style={styles.subtitle}>Fecha: {item.date}</Text>
+            <Text style={styles.text}>Entrenamiento: {item.name}</Text>
+            <Text style={styles.text}>Esfuerzo: {item.effortLevel}</Text>
+            <Text style={styles.text}>Notas: {item.notes}</Text>
           </TouchableOpacity>
         )}
       />
@@ -49,16 +56,30 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 20,
+    backgroundColor: '#1e1e1e',
+    paddingHorizontal: 10,
   },
   item: {
-    backgroundColor: '#f9c2ff',
+    backgroundColor: '#333',
     padding: 20,
     marginVertical: 8,
-    marginHorizontal: 16,
+    borderRadius: 10,
   },
   title: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
+    color: '#28a745',
+    marginBottom: 5,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#fff',
+    marginBottom: 10,
+  },
+  text: {
+    fontSize: 14,
+    color: '#ccc',
+    marginBottom: 5,
   },
 });
 

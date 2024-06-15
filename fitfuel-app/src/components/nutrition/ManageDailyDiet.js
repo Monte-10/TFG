@@ -6,7 +6,8 @@ function ManageDailyDiet() {
   const { dietId } = useParams();
   const [dietName, setDietName] = useState('');
   const [dailyDiets, setDailyDiets] = useState([]);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentDayPage, setCurrentDayPage] = useState(0);
+  const [currentMealPage, setCurrentMealPage] = useState(0);
   const apiUrl = process.env.REACT_APP_API_URL;
   const [meals, setMeals] = useState([]);
   const [selectedMeals, setSelectedMeals] = useState({});
@@ -113,12 +114,17 @@ function ManageDailyDiet() {
     });
   };
 
-  const handlePageChange = (index) => {
-    setCurrentPage(index);
+  const handleDayPageChange = (index) => {
+    setCurrentDayPage(index);
+    setCurrentMealPage(0); // Reset meal page to 0 when changing day page
+  };
+
+  const handleMealPageChange = (index) => {
+    setCurrentMealPage(index);
   };
 
   const saveDailyDiet = async () => {
-    const dailyDiet = dailyDiets[currentPage];
+    const dailyDiet = dailyDiets[currentDayPage];
     if (!dailyDiet) {
       alert('No se encontró el Daily Diet para la página actual');
       return;
@@ -148,17 +154,21 @@ function ManageDailyDiet() {
     }
   };
 
+  const itemsPerPage = 5;
+  const mealPages = Math.ceil(filteredMeals.length / itemsPerPage);
+  const displayedMeals = filteredMeals.slice(currentMealPage * itemsPerPage, (currentMealPage + 1) * itemsPerPage);
+
   return (
     <div className="manage-daily-diet-container mt-4">
       <h2>Administrar Dieta Diaria para la Dieta: {dietName}</h2>
       <div className="mb-3">
-        <button className="btn btn-secondary mr-2" onClick={() => handlePageChange(Math.max(0, currentPage - 1))}>Anterior</button>
-        <button className="btn btn-secondary" onClick={() => handlePageChange(Math.min(dailyDiets.length - 1, currentPage + 1))}>Siguiente</button>
+        <button className="btn btn-secondary mr-2" onClick={() => handleDayPageChange(Math.max(0, currentDayPage - 1))}>Anterior Día</button>
+        <button className="btn btn-secondary" onClick={() => handleDayPageChange(Math.min(dailyDiets.length - 1, currentDayPage + 1))}>Siguiente Día</button>
       </div>
 
       {dailyDiets.length > 0 && (
         <div>
-          <h3>Día: {dailyDiets[currentPage].date}</h3>
+          <h3>Día: {dailyDiets[currentDayPage].date}</h3>
           <div className="row mb-4">
             {Object.keys(mealFilters).map((filter) => (
               <div key={filter} className="col-md-4">
@@ -177,30 +187,34 @@ function ManageDailyDiet() {
           <div className="row">
             <div className="col-md-6">
               <h4>Comidas Disponibles</h4>
-              {filteredMeals.map(meal => (
+              {displayedMeals.map(meal => (
                 <div key={meal.id} className="card mb-2">
                   <div className="card-body">
                     <h5 className="card-title">{meal.name} - {meal.calories} Calorías</h5>
                     <button
                       className="btn btn-primary btn-sm"
-                      onClick={() => handleMealSelection(meal.id, dailyDiets[currentPage].date)}
+                      onClick={() => handleMealSelection(meal.id, dailyDiets[currentDayPage].date)}
                     >
                       Añadir
                     </button>
                   </div>
                 </div>
               ))}
+              <div className="d-flex justify-content-center mt-4">
+                <button className="btn btn-secondary mx-2" onClick={() => handleMealPageChange(Math.max(0, currentMealPage - 1))}>Anterior Página de Comidas</button>
+                <button className="btn btn-secondary mx-2" onClick={() => handleMealPageChange(Math.min(mealPages - 1, currentMealPage + 1))}>Siguiente Página de Comidas</button>
+              </div>
             </div>
 
             <div className="col-md-6">
               <h4>Comidas Seleccionadas</h4>
               <ul className="list-group">
-                {selectedMeals[dailyDiets[currentPage].date]?.map((mealId, index) => {
+                {selectedMeals[dailyDiets[currentDayPage].date]?.map((mealId, index) => {
                   const meal = meals.find(m => m.id === mealId);
                   return (
                     <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
                       {meal?.name}
-                      <button className="btn btn-warning btn-sm" onClick={() => handleMealRemoval(mealId, dailyDiets[currentPage].date)}>Quitar</button>
+                      <button className="btn btn-warning btn-sm" onClick={() => handleMealRemoval(mealId, dailyDiets[currentDayPage].date)}>Quitar</button>
                     </li>
                   );
                 })}
@@ -209,7 +223,7 @@ function ManageDailyDiet() {
           </div>
           <div className="row">
             <div className="col-12 text-center mt-3">
-              <button className="btn btn-success" onClick={saveDailyDiet}>Guardar Cambios</button>
+              <button className="btn btn-success" onClick={saveDailyDiet}>Guardar cambios para este día</button>
             </div>
           </div>
         </div>
