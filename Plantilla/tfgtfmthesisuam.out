@@ -47,63 +47,70 @@
 \BOOKMARK [2][-]{subsection.7.2.4}{Integraci\363n de Inteligencia Artificial}{section.7.2}% 47
 \BOOKMARK [0][-]{chapter*.69}{Bibliograf\355a}{}% 48
 \BOOKMARK [-1][-]{part.1}{Ap\351ndices}{}% 49
-\BOOKMARK [0][-]{appendix.Alph1}{Dependecias y librer\355as}{part.1}% 50
+\BOOKMARK [0][-]{appendix.Alph1}{Acceso e instalaci\363n}{part.1}% 50
 \BOOKMARK [1][-]{section.Alph1.1}{Acceso a FitFuelBalance}{appendix.Alph1}% 51
 \BOOKMARK [1][-]{section.Alph1.2}{Acceso al c\363digo fuente}{appendix.Alph1}% 52
-\BOOKMARK [0][-]{appendix.Alph2}{Dependencias}{part.1}% 53
-\BOOKMARK [1][-]{subsection.Alph2.0.1}{Dependencias Back-End}{appendix.Alph2}% 54
-\BOOKMARK [2][-]{subsection.Alph2.0.2}{Dependencias Front-End}{subsection.Alph2.0.1}% 55
-\BOOKMARK [2][-]{subsection.Alph2.0.3}{Dependencias de la Aplicaci\363n M\363vil}{subsection.Alph2.0.1}% 56
-\BOOKMARK [0][-]{appendix.Alph3}{Requisitos e incrementos}{part.1}% 57
-\BOOKMARK [1][-]{section.Alph3.1}{Requisitos Funcionales}{appendix.Alph3}% 58
-\BOOKMARK [2][-]{subsection.Alph3.1.1}{Subsistema de Servidor y Comunicaci\363n con la Base de Datos}{section.Alph3.1}% 59
-\BOOKMARK [2][-]{subsection.Alph3.1.2}{Subsistema de Gesti\363n de Usuarios}{section.Alph3.1}% 60
-\BOOKMARK [2][-]{subsection.Alph3.1.3}{Subsistema de Gesti\363n de Entrenamientos y Nutrici\363n}{section.Alph3.1}% 61
-\BOOKMARK [1][-]{section.Alph3.2}{Requisitos No Funcionales}{appendix.Alph3}% 62
-\BOOKMARK [2][-]{subsection.Alph3.2.1}{Generales}{section.Alph3.2}% 63
-\BOOKMARK [2][-]{subsection.Alph3.2.2}{Errores}{section.Alph3.2}% 64
-\BOOKMARK [2][-]{subsection.Alph3.2.3}{Seguridad}{section.Alph3.2}% 65
-\BOOKMARK [2][-]{subsection.Alph3.2.4}{Interfaz y Usabilidad}{section.Alph3.2}% 66
-\BOOKMARK [2][-]{subsection.Alph3.2.5}{Soporte y Documentaci\363n}{section.Alph3.2}% 67
-\BOOKMARK [2][-]{subsection.Alph3.2.6}{Regulatorio y Legal}{section.Alph3.2}% 68
-\BOOKMARK [1][-]{section.Alph3.3}{Incrementos}{appendix.Alph3}% 69
-\BOOKMARK [0][-]{appendix.Alph4}{Diagramas de Flujo}{part.1}% 70
-\BOOKMARK [1][-]{subsection.Alph4.0.1}{Creaci\363n de un nuevo usuario}{appendix.Alph4}% 71
-\BOOKMARK [2][-]{subsection.Alph4.0.2}{Creaci\363n de un nuevo entrenamiento}{subsection.Alph4.0.1}% 72
-\BOOKMARK [2][-]{subsection.Alph4.0.3}{Creaci\363n y asignaci\363n de una Opci\363n}{subsection.Alph4.0.1}% 73
-\BOOKMARK [2][-]{subsection.Alph4.0.4}{Asignaci\363n de entrenador}{subsection.Alph4.0.1}% 74
-\BOOKMARK [0][-]{appendix.Alph5}{Estructura del Proyecto}{part.1}% 75
-\BOOKMARK [1][-]{subsection.Alph5.0.1}{Backend}{appendix.Alph5}% 76
-\BOOKMARK [2][-]{subsection.Alph5.0.2}{Frontend}{subsection.Alph5.0.1}% 77
-\BOOKMARK [0][-]{appendix.Alph6}{Capturas de Pantalla}{part.1}% 78
-\BOOKMARK [1][-]{subsection.Alph6.0.1}{Aplicaci\363n Web}{appendix.Alph6}% 79
-\BOOKMARK [2][-]{subsection.Alph6.0.2}{Aplicaci\363n M\363vil}{subsection.Alph6.0.1}% 80
-\BOOKMARK [0][-]{appendix.Alph7}{C\363digo Fuente}{part.1}% 81
-\BOOKMARK [1][-]{section.Alph7.1}{Back-End}{appendix.Alph7}% 82
-\BOOKMARK [2][-]{subsection.Alph7.1.1}{Configuraci\363n de las Rutas y urls}{section.Alph7.1}% 83
-\BOOKMARK [2][-]{subsection.Alph7.1.2}{Vistas y Controladores}{section.Alph7.1}% 84
-\BOOKMARK [2][-]{subsection.Alph7.1.3}{Serializadores}{section.Alph7.1}% 85
-\BOOKMARK [2][-]{subsection.Alph7.1.4}{Autenticaci\363n con JWT}{section.Alph7.1}% 86
-\BOOKMARK [2][-]{subsection.Alph7.1.5}{Ejemplo de Modelo en Django}{section.Alph7.1}% 87
-\BOOKMARK [1][-]{section.Alph7.2}{Front-End}{appendix.Alph7}% 88
-\BOOKMARK [2][-]{subsection.Alph7.2.1}{Uso de Tokens en el Front-End}{section.Alph7.2}% 89
-\BOOKMARK [2][-]{subsection.Alph7.2.2}{Conexi\363n con el Backend desde la Aplicaci\363n Web}{section.Alph7.2}% 90
-\BOOKMARK [2][-]{subsection.Alph7.2.3}{Inicio Creaci\363n de una Dieta}{section.Alph7.2}% 91
-\BOOKMARK [2][-]{subsection.Alph7.2.4}{Return de una Dieta}{section.Alph7.2}% 92
-\BOOKMARK [1][-]{section.Alph7.3}{Aplicaci\363n M\363vil}{appendix.Alph7}% 93
-\BOOKMARK [2][-]{subsection.Alph7.3.1}{Conexi\363n con el Backend desde Aplicaci\363n M\363vil}{section.Alph7.3}% 94
-\BOOKMARK [2][-]{subsection.Alph7.3.2}{Configuraci\363n de la Navegaci\363n}{section.Alph7.3}% 95
-\BOOKMARK [2][-]{subsection.Alph7.3.3}{DetailsScreen}{section.Alph7.3}% 96
-\BOOKMARK [1][-]{section.Alph7.4}{Pruebas del Back-End}{appendix.Alph7}% 97
-\BOOKMARK [2][-]{subsection.Alph7.4.1}{Configuracion de testsettings.py}{section.Alph7.4}% 98
-\BOOKMARK [2][-]{subsection.Alph7.4.2}{Configuraci\363n de Pruebas de Usuario}{section.Alph7.4}% 99
-\BOOKMARK [2][-]{subsection.Alph7.4.3}{Pruebas de Usuario}{section.Alph7.4}% 100
-\BOOKMARK [2][-]{subsection.Alph7.4.4}{Configuraci\363n de Pruebas de Deporte}{section.Alph7.4}% 101
-\BOOKMARK [2][-]{subsection.Alph7.4.5}{Pruebas de Deporte}{section.Alph7.4}% 102
-\BOOKMARK [2][-]{subsection.Alph7.4.6}{Configuraci\363n de Pruebas de Nutrici\363n}{section.Alph7.4}% 103
-\BOOKMARK [2][-]{subsection.Alph7.4.7}{Pruebas de Nutrici\363n}{section.Alph7.4}% 104
-\BOOKMARK [1][-]{section.Alph7.5}{Pruebas del Front-End}{appendix.Alph7}% 105
-\BOOKMARK [2][-]{subsection.Alph7.5.1}{Pruebas de la Aplicaci\363n Web}{section.Alph7.5}% 106
-\BOOKMARK [2][-]{subsection.Alph7.5.2}{Pruebas de Login}{section.Alph7.5}% 107
-\BOOKMARK [2][-]{subsection.Alph7.5.3}{Pruebas de Profile}{section.Alph7.5}% 108
-\BOOKMARK [2][-]{subsection.Alph7.5.4}{Pruebas de la Aplicaci\363n M\363vil}{section.Alph7.5}% 109
+\BOOKMARK [1][-]{section.Alph1.3}{Gu\355a de Instalaci\363n}{appendix.Alph1}% 53
+\BOOKMARK [2][-]{subsection.Alph1.3.1}{Prerrequisitos}{section.Alph1.3}% 54
+\BOOKMARK [2][-]{subsection.Alph1.3.2}{Descargar el Repositorio}{section.Alph1.3}% 55
+\BOOKMARK [2][-]{subsection.Alph1.3.3}{Backend \(Django\)}{section.Alph1.3}% 56
+\BOOKMARK [2][-]{subsection.Alph1.3.4}{Frontend \(React\)}{section.Alph1.3}% 57
+\BOOKMARK [2][-]{subsection.Alph1.3.5}{Frontend \(React Native\)}{section.Alph1.3}% 58
+\BOOKMARK [0][-]{appendix.Alph2}{Dependencias y librer\355as}{part.1}% 59
+\BOOKMARK [1][-]{subsection.Alph2.0.1}{Dependencias Back-End}{appendix.Alph2}% 60
+\BOOKMARK [2][-]{subsection.Alph2.0.2}{Dependencias Front-End}{subsection.Alph2.0.1}% 61
+\BOOKMARK [2][-]{subsection.Alph2.0.3}{Dependencias de la Aplicaci\363n M\363vil}{subsection.Alph2.0.1}% 62
+\BOOKMARK [0][-]{appendix.Alph3}{Requisitos e incrementos}{part.1}% 63
+\BOOKMARK [1][-]{section.Alph3.1}{Requisitos Funcionales}{appendix.Alph3}% 64
+\BOOKMARK [2][-]{subsection.Alph3.1.1}{Subsistema de Servidor y Comunicaci\363n con la Base de Datos}{section.Alph3.1}% 65
+\BOOKMARK [2][-]{subsection.Alph3.1.2}{Subsistema de Gesti\363n de Usuarios}{section.Alph3.1}% 66
+\BOOKMARK [2][-]{subsection.Alph3.1.3}{Subsistema de Gesti\363n de Entrenamientos y Nutrici\363n}{section.Alph3.1}% 67
+\BOOKMARK [1][-]{section.Alph3.2}{Requisitos No Funcionales}{appendix.Alph3}% 68
+\BOOKMARK [2][-]{subsection.Alph3.2.1}{Generales}{section.Alph3.2}% 69
+\BOOKMARK [2][-]{subsection.Alph3.2.2}{Errores}{section.Alph3.2}% 70
+\BOOKMARK [2][-]{subsection.Alph3.2.3}{Seguridad}{section.Alph3.2}% 71
+\BOOKMARK [2][-]{subsection.Alph3.2.4}{Interfaz y Usabilidad}{section.Alph3.2}% 72
+\BOOKMARK [2][-]{subsection.Alph3.2.5}{Soporte y Documentaci\363n}{section.Alph3.2}% 73
+\BOOKMARK [2][-]{subsection.Alph3.2.6}{Regulatorio y Legal}{section.Alph3.2}% 74
+\BOOKMARK [1][-]{section.Alph3.3}{Incrementos}{appendix.Alph3}% 75
+\BOOKMARK [0][-]{appendix.Alph4}{Diagramas de Flujo}{part.1}% 76
+\BOOKMARK [1][-]{subsection.Alph4.0.1}{Creaci\363n de un nuevo usuario}{appendix.Alph4}% 77
+\BOOKMARK [2][-]{subsection.Alph4.0.2}{Creaci\363n de un nuevo entrenamiento}{subsection.Alph4.0.1}% 78
+\BOOKMARK [2][-]{subsection.Alph4.0.3}{Creaci\363n y asignaci\363n de una Opci\363n}{subsection.Alph4.0.1}% 79
+\BOOKMARK [2][-]{subsection.Alph4.0.4}{Asignaci\363n de entrenador}{subsection.Alph4.0.1}% 80
+\BOOKMARK [0][-]{appendix.Alph5}{Estructura del Proyecto}{part.1}% 81
+\BOOKMARK [1][-]{subsection.Alph5.0.1}{Backend}{appendix.Alph5}% 82
+\BOOKMARK [2][-]{subsection.Alph5.0.2}{Frontend}{subsection.Alph5.0.1}% 83
+\BOOKMARK [0][-]{appendix.Alph6}{Capturas de Pantalla}{part.1}% 84
+\BOOKMARK [1][-]{subsection.Alph6.0.1}{Aplicaci\363n Web}{appendix.Alph6}% 85
+\BOOKMARK [2][-]{subsection.Alph6.0.2}{Aplicaci\363n M\363vil}{subsection.Alph6.0.1}% 86
+\BOOKMARK [0][-]{appendix.Alph7}{C\363digo Fuente}{part.1}% 87
+\BOOKMARK [1][-]{section.Alph7.1}{Back-End}{appendix.Alph7}% 88
+\BOOKMARK [2][-]{subsection.Alph7.1.1}{Configuraci\363n de las Rutas y urls}{section.Alph7.1}% 89
+\BOOKMARK [2][-]{subsection.Alph7.1.2}{Vistas y Controladores}{section.Alph7.1}% 90
+\BOOKMARK [2][-]{subsection.Alph7.1.3}{Serializadores}{section.Alph7.1}% 91
+\BOOKMARK [2][-]{subsection.Alph7.1.4}{Autenticaci\363n con JWT}{section.Alph7.1}% 92
+\BOOKMARK [2][-]{subsection.Alph7.1.5}{Ejemplo de Modelo en Django}{section.Alph7.1}% 93
+\BOOKMARK [2][-]{subsection.Alph7.1.6}{Adaptaci\363n de una Opci\363n}{section.Alph7.1}% 94
+\BOOKMARK [1][-]{section.Alph7.2}{Front-End}{appendix.Alph7}% 95
+\BOOKMARK [2][-]{subsection.Alph7.2.1}{Uso de Tokens en el Front-End}{section.Alph7.2}% 96
+\BOOKMARK [2][-]{subsection.Alph7.2.2}{Conexi\363n con el Backend desde la Aplicaci\363n Web}{section.Alph7.2}% 97
+\BOOKMARK [2][-]{subsection.Alph7.2.3}{Inicio Creaci\363n de una Dieta}{section.Alph7.2}% 98
+\BOOKMARK [2][-]{subsection.Alph7.2.4}{Return de una Dieta}{section.Alph7.2}% 99
+\BOOKMARK [1][-]{section.Alph7.3}{Aplicaci\363n M\363vil}{appendix.Alph7}% 100
+\BOOKMARK [2][-]{subsection.Alph7.3.1}{Conexi\363n con el Backend desde Aplicaci\363n M\363vil}{section.Alph7.3}% 101
+\BOOKMARK [2][-]{subsection.Alph7.3.2}{Configuraci\363n de la Navegaci\363n}{section.Alph7.3}% 102
+\BOOKMARK [2][-]{subsection.Alph7.3.3}{DetailsScreen}{section.Alph7.3}% 103
+\BOOKMARK [1][-]{section.Alph7.4}{Pruebas del Back-End}{appendix.Alph7}% 104
+\BOOKMARK [2][-]{subsection.Alph7.4.1}{Configuracion de testsettings.py}{section.Alph7.4}% 105
+\BOOKMARK [2][-]{subsection.Alph7.4.2}{Configuraci\363n de Pruebas de Usuario}{section.Alph7.4}% 106
+\BOOKMARK [2][-]{subsection.Alph7.4.3}{Pruebas de Usuario}{section.Alph7.4}% 107
+\BOOKMARK [2][-]{subsection.Alph7.4.4}{Configuraci\363n de Pruebas de Deporte}{section.Alph7.4}% 108
+\BOOKMARK [2][-]{subsection.Alph7.4.5}{Pruebas de Deporte}{section.Alph7.4}% 109
+\BOOKMARK [2][-]{subsection.Alph7.4.6}{Configuraci\363n de Pruebas de Nutrici\363n}{section.Alph7.4}% 110
+\BOOKMARK [2][-]{subsection.Alph7.4.7}{Pruebas de Nutrici\363n}{section.Alph7.4}% 111
+\BOOKMARK [1][-]{section.Alph7.5}{Pruebas del Front-End}{appendix.Alph7}% 112
+\BOOKMARK [2][-]{subsection.Alph7.5.1}{Pruebas de la Aplicaci\363n Web}{section.Alph7.5}% 113
+\BOOKMARK [2][-]{subsection.Alph7.5.2}{Pruebas de Login}{section.Alph7.5}% 114
+\BOOKMARK [2][-]{subsection.Alph7.5.3}{Pruebas de Profile}{section.Alph7.5}% 115
+\BOOKMARK [2][-]{subsection.Alph7.5.4}{Pruebas de la Aplicaci\363n M\363vil}{section.Alph7.5}% 116

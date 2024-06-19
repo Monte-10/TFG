@@ -12,27 +12,89 @@ function CreateWeekOption() {
     saturday: '',
     sunday: '',
   });
-  const [dayOptions, setDayOptions] = useState([]);
+  const [dayOptions, setDayOptions] = useState({
+    monday: [],
+    tuesday: [],
+    wednesday: [],
+    thursday: [],
+    friday: [],
+    saturday: [],
+    sunday: [],
+  });
+  const [filter, setFilter] = useState({
+    monday: '',
+    tuesday: '',
+    wednesday: '',
+    thursday: '',
+    friday: '',
+    saturday: '',
+    sunday: '',
+  });
+  const [currentPage, setCurrentPage] = useState({
+    monday: 1,
+    tuesday: 1,
+    wednesday: 1,
+    thursday: 1,
+    friday: 1,
+    saturday: 1,
+    sunday: 1,
+  });
+  const [totalPages, setTotalPages] = useState({
+    monday: 0,
+    tuesday: 0,
+    wednesday: 0,
+    thursday: 0,
+    friday: 0,
+    saturday: 0,
+    sunday: 0,
+  });
   const [optionCreated, setOptionCreated] = useState(false);
   const [error, setError] = useState('');
+  const [itemsPerPage] = useState(6);
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch(`${apiUrl}/nutrition/dayoptions/`, {
-      headers: {
-        'Authorization': `Token ${localStorage.getItem('authToken')}`,
-      },
-    })
-    .then(response => response.json())
-    .then(data => setDayOptions(data))
-    .catch(error => {
-      console.error('Error al obtener las opciones de día:', error);
-      setError('Error al obtener las opciones de día. Por favor, refresque la página.');
+    Object.keys(dayOptions).forEach(day => {
+      fetchDayOptions(day, currentPage[day], filter[day]);
     });
-  }, [apiUrl]);
+  }, [currentPage, filter]);
+
+  const fetchDayOptions = (day, page, filter) => {
+    const queryParams = new URLSearchParams({
+      page: page,
+      page_size: itemsPerPage,
+      name: filter,
+    });
+
+    fetch(`${apiUrl}/nutrition/dayoptions/?${queryParams.toString()}`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        setDayOptions(prevDayOptions => ({ ...prevDayOptions, [day]: data.results }));
+        setTotalPages(prevTotalPages => ({
+          ...prevTotalPages,
+          [day]: Math.ceil(data.count / itemsPerPage)
+        }));
+      })
+      .catch(error => {
+        console.error('Error fetching day options:', error);
+        setError('Error al obtener las opciones de día. Por favor, refresque la página.');
+      });
+  };
 
   const handleDayOptionChange = (day, value) => {
     setSelectedDayOptions({ ...selectedDayOptions, [day]: value });
+  };
+
+  const handleFilterChange = (day, e) => {
+    setFilter({ ...filter, [day]: e.target.value });
+  };
+
+  const handlePageChange = (day, newPage) => {
+    setCurrentPage(prevPage => ({ ...prevPage, [day]: newPage }));
   };
 
   const handleSubmit = async (event) => {
@@ -92,12 +154,46 @@ function CreateWeekOption() {
           {['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map(day => (
             <div key={day} className="mb-3">
               <label htmlFor={`${day}Option`} className="form-label">{day.charAt(0).toUpperCase() + day.slice(1)}:</label>
-              <select className="form-select" id={`${day}Option`} value={selectedDayOptions[day]} onChange={(e) => handleDayOptionChange(day, e.target.value)}>
-                <option value="">Seleccione una opción para {day}</option>
-                {dayOptions.map((option) => (
-                  <option key={option.id} value={option.id}>{option.name}</option>
-                ))}
-              </select>
+              <input
+                type="text"
+                className="form-control mb-2"
+                placeholder={`Buscar opción de ${day}`}
+                value={filter[day]}
+                onChange={(e) => handleFilterChange(day, e)}
+              />
+              {dayOptions[day].map((option) => (
+                <div key={option.id} className="card mb-2 small-card">
+                  <div className="card-body d-flex justify-content-between align-items-center">
+                    <span>{option.name}</span>
+                    <button
+                      type="button"
+                      className="btn btn-sm"
+                      onClick={() => handleDayOptionChange(day, option.id)}
+                    >
+                      {selectedDayOptions[day] === option.id ? 'Quitar' : 'Añadir'}
+                    </button>
+                  </div>
+                </div>
+              ))}
+              <div className="pagination">
+                <button
+                  type="button"
+                  disabled={currentPage[day] === 1}
+                  onClick={() => handlePageChange(day, currentPage[day] - 1)}
+                  className="btn btn-secondary"
+                >
+                  Anterior
+                </button>
+                <span> Página {currentPage[day]} de {totalPages[day]} </span>
+                <button
+                  type="button"
+                  disabled={currentPage[day] >= totalPages[day]}
+                  onClick={() => handlePageChange(day, currentPage[day] + 1)}
+                  className="btn btn-secondary"
+                >
+                  Siguiente
+                </button>
+              </div>
             </div>
           ))}
           <button type="submit" className="btn btn-primary">Crear Opción Semanal</button>

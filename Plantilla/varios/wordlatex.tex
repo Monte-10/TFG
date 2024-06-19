@@ -24,3 +24,60 @@ El código fuente del Front-End, Back-End y Aplicación Móvil de FitFuelBalance
     \item \textbf{Back-End:} \url{https://github.com/Monte-10/TFG/tree/main/fitfuelbalance}
     \item \textbf{Aplicación Móvil:} \url{https://github.com/Monte-10/TFG/tree/main/fitfuelmobile}
 \end{itemize}
+
+\section{Guía de Instalación}
+
+Esta guía describe los pasos necesarios para ejecutar el proyecto FitFuelBalance en local para desarrollo y pruebas.
+
+\subsection{Prerrequisitos}
+
+Se debe tener \texttt{git}, \texttt{python3}, \texttt{pip}, \texttt{node.js}, y \texttt{npm} instalados en la máquina que se vaya a usar. Los siguientes comandos pueden ser utilizados para instalar estos prerrequisitos en una máquina con sistema operativo basado en Debian/Ubuntu:
+
+\PythonCode[PRERREQUISITOS]{Instalación de Prerrequisitos.}{Instalación de git, python3, pip, node.js, y npm.}{instalacion/ins_prerrequisitos.py}{2}{22}{1}
+
+\subsection{Descargar el Repositorio}
+
+Clona el repositorio desde GitHub:
+
+\PythonCode[INSTALACION]{Descargar Repositorio.}{Clonación del repositorio desde GitHub.}{instalacion/instalacion.py}{2}{3}{1}
+
+\subsection{Backend (Django)}
+
+Para configurar y ejecutar el backend de Django, sigue estos pasos:
+
+\PythonCode[INSTALACION]{Configuración y Ejecución del Backend.}{Configuración y ejecución del backend de Django.}{instalacion/instalacion.py}{5}{17}{1}
+
+\begin{itemize}
+    \item Accede a la carpeta del backend.
+    \item Instala las dependencias necesarias con pip.
+    \item Ejecuta el servidor utilizando make. Esto realizará las migraciones y ejecutará el servidor.
+    \item Alternativamente, puedes realizar las migraciones y ejecutar el servidor manualmente con los comandos de Django.
+    \item Accede a la aplicación en tu navegador en \url{http://127.0.0.1:8000}.
+\end{itemize}
+
+\subsection{Frontend (React)}
+
+Para configurar y ejecutar el frontend de React, sigue estos pasos:
+
+\PythonCode[INSTALACION]{Configuración y Ejecución del Frontend.}{Configuración y ejecución del frontend de React.}{instalacion/instalacion.py}{19}{29}{1}
+
+\begin{itemize}
+    \item Accede a la carpeta del frontend.
+    \item Usa la versión correcta de Node.js con nvm.
+    \item Instala las dependencias necesarias con npm.
+    \item Ejecuta la aplicación del frontend con npm start.
+    \item Accede a la aplicación en tu navegador en \url{http://localhost:3000}.
+\end{itemize}
+
+\subsection{Frontend (React Native)}
+
+Para configurar y ejecutar el frontend móvil de React Native, sigue estos pasos:
+
+\PythonCode[INSTALACION]{Configuración y Ejecución del Frontend Móvil.}{Configuración y ejecución del frontend móvil de React Native.}{instalacion/instalacion.py}{31}{44}{1}
+
+\begin{itemize}
+    \item Accede a la carpeta del frontend móvil.
+    \item Instala las dependencias necesarias con npm.
+    \item Ejecuta la aplicación del frontend móvil con npm start.
+    \item Verás un mensaje en la terminal indicando que el servidor de desarrollo está listo, con opciones para ejecutar en iOS, Android, abrir el menú de desarrollo, o recargar la aplicación.
+\end{itemize}

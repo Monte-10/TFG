@@ -21,24 +21,67 @@ function CreateDayOption() {
     legume: false, sauce_or_condiment: false, deli_meat: false, bread_or_toast: false, egg: false,
     special_drink_or_supplement: false, tuber: false, other: false
   });
-  const [meals, setMeals] = useState([]);
+  const [meals, setMeals] = useState({
+    breakfast: [],
+    mid_morning: [],
+    lunch: [],
+    snack: [],
+    dinner: [],
+    extras: []
+  });
   const [optionCreated, setOptionCreated] = useState(false);
   const [error, setError] = useState('');
+  const [filter, setFilter] = useState({ name: '' });
+  const [currentPage, setCurrentPage] = useState({
+    breakfast: 1,
+    mid_morning: 1,
+    lunch: 1,
+    snack: 1,
+    dinner: 1,
+    extras: 1
+  });
+  const [totalPages, setTotalPages] = useState({
+    breakfast: 0,
+    mid_morning: 0,
+    lunch: 0,
+    snack: 0,
+    dinner: 0,
+    extras: 0
+  });
+  const [itemsPerPage] = useState(6);
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch(`${apiUrl}/nutrition/meals/`, {
-      headers: {
-        'Authorization': `Token ${localStorage.getItem('authToken')}`,
-      },
-    })
-    .then(response => response.json())
-    .then(data => setMeals(data))
-    .catch(error => {
-      console.error('Error fetching meals:', error);
-      setError('Error al obtener comidas. Por favor, refresque la página.');
+    ['breakfast', 'mid_morning', 'lunch', 'snack', 'dinner', 'extras'].forEach(mealType => {
+      fetchMeals(mealType, currentPage[mealType], filter);
     });
-  }, [apiUrl]);
+  }, [currentPage, filter]);
+
+  const fetchMeals = (mealType, page, filters) => {
+    const queryParams = new URLSearchParams({
+      page: page,
+      page_size: itemsPerPage,
+      name: filters.name
+    });
+
+    fetch(`${apiUrl}/nutrition/meals/?${queryParams.toString()}`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        setMeals(prevMeals => ({ ...prevMeals, [mealType]: data.results }));
+        setTotalPages(prevTotalPages => ({
+          ...prevTotalPages,
+          [mealType]: Math.ceil(data.count / itemsPerPage)
+        }));
+      })
+      .catch(error => {
+        console.error('Error fetching meals:', error);
+        setError('Error al obtener comidas. Por favor, refresque la página.');
+      });
+  };
 
   const calculateNutritionTotals = useCallback(() => {
     let newTotals = {
@@ -52,7 +95,7 @@ function CreateDayOption() {
 
     Object.values(selectedMeals).forEach(mealId => {
       if (mealId !== '') {
-        const meal = meals.find(m => m.id.toString() === mealId);
+        const meal = Object.values(meals).flat().find(m => m.id.toString() === mealId);
         if (meal) {
           newTotals.calories += meal.calories;
           newTotals.protein += meal.protein;
@@ -87,7 +130,7 @@ function CreateDayOption() {
     });
 
     selectedMeals.extras.forEach(extraId => {
-      const extra = meals.find(m => m.id.toString() === extraId);
+      const extra = Object.values(meals).flat().find(m => m.id.toString() === extraId);
       if (extra) {
         newTotals.calories += extra.calories;
         newTotals.protein += extra.protein;
@@ -133,6 +176,14 @@ function CreateDayOption() {
   const handleExtrasChange = (event) => {
     const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
     setSelectedMeals({ ...selectedMeals, extras: selectedOptions });
+  };
+
+  const handleFilterChange = (e) => {
+    setFilter({ ...filter, [e.target.name]: e.target.value });
+  };
+
+  const handlePageChange = (mealType, newPage) => {
+    setCurrentPage(prevPage => ({ ...prevPage, [mealType]: newPage }));
   };
 
   const handleSubmit = async (event) => {
@@ -202,79 +253,56 @@ function CreateDayOption() {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="breakfastSelect" className="form-label">Desayuno:</label>
-            <select
-              className="form-select"
-              id="breakfastSelect"
-              value={selectedMeals.breakfast}
-              onChange={(e) => handleMealChange('breakfast', e.target.value)}
-            >
-              <option value="">Seleccione Desayuno</option>
-              {meals.map((meal) => (
-                <option key={meal.id} value={meal.id}>{meal.name}</option>
-              ))}
-            </select>
+            <label htmlFor="filterName" className="form-label">Buscar Comida:</label>
+            <input
+              type="text"
+              className="form-control"
+              id="filterName"
+              name="name"
+              value={filter.name}
+              onChange={handleFilterChange}
+              placeholder="Buscar por nombre"
+            />
           </div>
 
-          <div className="mb-3">
-            <label htmlFor="midMorningSelect" className="form-label">Media Mañana:</label>
-            <select
-              className="form-select"
-              id="midMorningSelect"
-              value={selectedMeals.mid_morning}
-              onChange={(e) => handleMealChange('mid_morning', e.target.value)}
-            >
-              <option value="">Seleccione Media Mañana</option>
-              {meals.map((meal) => (
-                <option key={meal.id} value={meal.id}>{meal.name}</option>
+          {['breakfast', 'mid_morning', 'lunch', 'snack', 'dinner'].map(mealType => (
+            <div key={mealType} className="mb-3">
+              <h4>{mealType.charAt(0).toUpperCase() + mealType.slice(1)}</h4>
+              {meals[mealType] && meals[mealType].map(meal => (
+                <div key={meal.id} className="card mb-2 small-card">
+                  <div className="card-body d-flex justify-content-between align-items-center">
+                    <span>{meal.name}</span>
+                    <button
+                      type="button"
+                      className="btn btn-sm"
+                      onClick={() => handleMealChange(mealType, meal.id)}
+                    >
+                      {selectedMeals[mealType] === meal.id ? 'Quitar' : 'Añadir'}
+                    </button>
+                  </div>
+                </div>
               ))}
-            </select>
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="lunchSelect" className="form-label">Almuerzo:</label>
-            <select
-              className="form-select"
-              id="lunchSelect"
-              value={selectedMeals.lunch}
-              onChange={(e) => handleMealChange('lunch', e.target.value)}
-            >
-              <option value="">Seleccione Almuerzo</option>
-              {meals.map((meal) => (
-                <option key={meal.id} value={meal.id}>{meal.name}</option>
-              ))}
-            </select>
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="snackSelect" className="form-label">Merienda:</label>
-            <select
-              className="form-select"
-              id="snackSelect"
-              value={selectedMeals.snack}
-              onChange={(e) => handleMealChange('snack', e.target.value)}
-            >
-              <option value="">Seleccione Merienda</option>
-              {meals.map((meal) => (
-                <option key={meal.id} value={meal.id}>{meal.name}</option>
-              ))}
-            </select>
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="dinnerSelect" className="form-label">Cena:</label>
-            <select
-              className="form-select"
-              id="dinnerSelect"
-              value={selectedMeals.dinner}
-              onChange={(e) => handleMealChange('dinner', e.target.value)}
-            >
-              <option value="">Seleccione Cena</option>
-              {meals.map((meal) => (
-                <option key={meal.id} value={meal.id}>{meal.name}</option>
-              ))}
-            </select>
-          </div>
+              <div className="pagination">
+                <button
+                  type="button"
+                  disabled={currentPage[mealType] === 1}
+                  onClick={() => handlePageChange(mealType, currentPage[mealType] - 1)}
+                  className="btn btn-secondary"
+                >
+                  Anterior
+                </button>
+                <span> Página {currentPage[mealType]} de {totalPages[mealType]} </span>
+                <button
+                  type="button"
+                  disabled={currentPage[mealType] >= totalPages[mealType]}
+                  onClick={() => handlePageChange(mealType, currentPage[mealType] + 1)}
+                  className="btn btn-secondary"
+                >
+                  Siguiente
+                </button>
+              </div>
+            </div>
+          ))}
 
           {/* Extras with multiple selection */}
           <div className="mb-3">
@@ -286,13 +314,13 @@ function CreateDayOption() {
               value={selectedMeals.extras}
               onChange={handleExtrasChange}
             >
-              {meals.map((meal) => (
+              {meals.extras && meals.extras.map((meal) => (
                 <option key={meal.id} value={meal.id}>{meal.name}</option>
               ))}
             </select>
           </div>
 
-          <div className="mb-3">
+          <div className="mb-3 mt-3">
             <button type="submit" className="btn btn-primary">Crear Opción</button>
           </div>
         </form>

@@ -24,7 +24,7 @@ const OptionSelectionScreen = ({ route, navigation }) => {
         const optionDetails = await optionResponse.json();
         
         // Assuming week_option_one is selected for this example
-        const weekOptionId = optionDetails.week_option_one; 
+        const weekOptionId = optionDetails.week_option_one;
         
         const weekOptionResponse = await fetch(`http://10.0.2.2:8000/nutrition/weekoptions/${weekOptionId}`, {
           headers: {

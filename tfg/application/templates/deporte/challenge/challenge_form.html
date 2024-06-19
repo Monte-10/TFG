@@ -1,9 +1,0 @@
-{% extends 'base_generic.html' %}
-{% block content %}
-    <h2>{% if object %}Edit{% else %}Create{% endif %} Challenge</h2>
-    <form class="form-custom" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" class="btn btn-primary" value="Save">
-    </form>
-{% endblock %}

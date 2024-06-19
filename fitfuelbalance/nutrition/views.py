@@ -18,6 +18,7 @@ from user.models import CustomUser
 import datetime
 from rest_framework.decorators import api_view, permission_classes
 from user.models import *
+from .pagination import StandardResultsSetPagination
 
 def create_food(request):
     if request.method == 'POST':
@@ -63,12 +64,14 @@ class IngredientViewSet(viewsets.ModelViewSet):
     serializer_class = IngredientSerializer
     
 class DishViewSet(viewsets.ModelViewSet):
-    queryset = Dish.objects.all()
+    queryset = Dish.objects.all().prefetch_related('ingredients__food')
     serializer_class = DishSerializer
+    pagination_class = StandardResultsSetPagination
     
 class MealViewSet(viewsets.ModelViewSet):
-    queryset = Meal.objects.all()
+    queryset = Meal.objects.all().prefetch_related('dishes__ingredients__food', 'dishes')
     serializer_class = MealSerializer
+    pagination_class = StandardResultsSetPagination
 
 class DailyDietViewSet(viewsets.ModelViewSet):
     queryset = DailyDiet.objects.all()
@@ -106,12 +109,57 @@ class DailyDietByDateView(APIView):
         return Response(serializer.data)
     
 class DayOptionViewSet(viewsets.ModelViewSet):
-    queryset = DayOption.objects.all()
+    queryset = DayOption.objects.all().prefetch_related('breakfast__dishes__ingredients__food', 'mid_morning__dishes__ingredients__food', 'lunch__dishes__ingredients__food', 'snack__dishes__ingredients__food', 'dinner__dishes__ingredients__food', 'extras__dishes__ingredients__food')
     serializer_class = DayOptionSerializer
+    pagination_class = StandardResultsSetPagination
     
 class WeekOptionViewSet(viewsets.ModelViewSet):
-    queryset = WeekOption.objects.all()
+    queryset = WeekOption.objects.all().prefetch_related(
+        'monday_option__breakfast__dishes__ingredients__food',
+        'monday_option__mid_morning__dishes__ingredients__food',
+        'monday_option__lunch__dishes__ingredients__food',
+        'monday_option__snack__dishes__ingredients__food',
+        'monday_option__dinner__dishes__ingredients__food',
+        'monday_option__extras__dishes__ingredients__food',
+        'tuesday_option__breakfast__dishes__ingredients__food',
+        'tuesday_option__mid_morning__dishes__ingredients__food',
+        'tuesday_option__lunch__dishes__ingredients__food',
+        'tuesday_option__snack__dishes__ingredients__food',
+        'tuesday_option__dinner__dishes__ingredients__food',
+        'tuesday_option__extras__dishes__ingredients__food',
+        'wednesday_option__breakfast__dishes__ingredients__food',
+        'wednesday_option__mid_morning__dishes__ingredients__food',
+        'wednesday_option__lunch__dishes__ingredients__food',
+        'wednesday_option__snack__dishes__ingredients__food',
+        'wednesday_option__dinner__dishes__ingredients__food',
+        'wednesday_option__extras__dishes__ingredients__food',
+        'thursday_option__breakfast__dishes__ingredients__food',
+        'thursday_option__mid_morning__dishes__ingredients__food',
+        'thursday_option__lunch__dishes__ingredients__food',
+        'thursday_option__snack__dishes__ingredients__food',
+        'thursday_option__dinner__dishes__ingredients__food',
+        'thursday_option__extras__dishes__ingredients__food',
+        'friday_option__breakfast__dishes__ingredients__food',
+        'friday_option__mid_morning__dishes__ingredients__food',
+        'friday_option__lunch__dishes__ingredients__food',
+        'friday_option__snack__dishes__ingredients__food',
+        'friday_option__dinner__dishes__ingredients__food',
+        'friday_option__extras__dishes__ingredients__food',
+        'saturday_option__breakfast__dishes__ingredients__food',
+        'saturday_option__mid_morning__dishes__ingredients__food',
+        'saturday_option__lunch__dishes__ingredients__food',
+        'saturday_option__snack__dishes__ingredients__food',
+        'saturday_option__dinner__dishes__ingredients__food',
+        'saturday_option__extras__dishes__ingredients__food',
+        'sunday_option__breakfast__dishes__ingredients__food',
+        'sunday_option__mid_morning__dishes__ingredients__food',
+        'sunday_option__lunch__dishes__ingredients__food',
+        'sunday_option__snack__dishes__ingredients__food',
+        'sunday_option__dinner__dishes__ingredients__food',
+        'sunday_option__extras__dishes__ingredients__food'
+    )
     serializer_class = WeekOptionSerializer
+    pagination_class = StandardResultsSetPagination
     
 class OptionViewSet(viewsets.ModelViewSet):
     queryset = Option.objects.all()

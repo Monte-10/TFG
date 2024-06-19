@@ -1,8 +1,0 @@
-{% extends 'base_generic.html' %}
-{% block content %}
-    <h2>¿Estás seguro de que deseas eliminar el entrenamiento " "{{ object.name }}"?</h2>
-    <form method="post">
-        {% csrf_token %}
-        <input type="submit" value="Confirm">
-    </form>
-{% endblock %}

@@ -407,3 +407,50 @@ def test_get_today_dailydiets(self):
     self.assertEqual(response.data[0]['diet'], diet.id)
     
 #####
+
+def calculate_bmr(user):
+    try:
+        latest_measurement = RegularUserMeasurement.objects.filter(user=user).order_by('-date').first()
+        if not latest_measurement:
+            raise ValueError("No measurements found for user")
+        weight = Decimal(latest_measurement.weight)
+        height = Decimal(latest_measurement.height)
+        age = Decimal(user.profile.age)
+        gender = user.profile.gender
+        if weight is None or height is None or age is None:
+            raise ValueError("Weight, height, or age is None")
+        if gender == 'male':
+            return weight * Decimal(10) + height * Decimal(6.25) - age * Decimal(5) + Decimal(5)
+        else:
+            return weight * Decimal(10) + height * Decimal(6.25) - age * Decimal(5) - Decimal(161)
+    except Exception as e:
+        logger.error(f"Error calculating BMR: {e}")
+        raise
+
+def calculate_daily_caloric_needs(user):
+    bmr = calculate_bmr(user)
+    activity_factor = Decimal(1.55)  # Assuming moderate activity level
+    return bmr * activity_factor
+
+@transaction.atomic
+def adapt_meal(original_meal, scale_factor):
+    new_meal = Meal.objects.create(
+        name=f"{original_meal.name} - adapted",
+        user=original_meal.user
+    )
+    MIN_PORTION = Decimal('0.25')
+    for meal_dish in original_meal.mealdish_set.all():
+        original_portion = Decimal(meal_dish.portion)
+        if original_portion == 0:
+            original_portion = Decimal('1.00')
+        new_portion = (original_portion * Decimal(scale_factor)).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+        
+        if new_portion < MIN_PORTION:
+            new_portion = MIN_PORTION
+        MealDish.objects.create(
+            meal=new_meal,
+            dish=meal_dish.dish,
+            portion=new_portion,
+            notes=meal_dish.notes
+        )
+    return new_meal

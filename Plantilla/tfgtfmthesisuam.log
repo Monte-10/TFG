@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.3.14)  15 JUN 2024 19:57
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.3.14)  19 JUN 2024 17:01
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -636,9 +636,9 @@ Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
 Package: iftex 2020/03/06 v1.0d TeX engine tests
 )))
 \verbatim@out=\write5
-runsystem(touch w18-test-20246151197.tex)...disabled (restricted).
+runsystem(touch w18-test-20246191021.tex)...disabled (restricted).
 
-runsystem(rm -f w18-test-20246151197.tex)...disabled (restricted).
+runsystem(rm -f w18-test-20246191021.tex)...disabled (restricted).
 
 runsystem(rm -f "tfgtfmthesisuam.gnuploterrors")...disabled (restricted).
 
@@ -1196,6 +1196,24 @@ LaTeX Warning: Unused global option(s):
 (./tfgtfmthesisuam.aux
 LaTeX Info: Redefining \. on input line 33.
 LaTeX Info: Redefining \% on input line 33.
+
+
+LaTeX Warning: Label `INSTALACION' multiply defined.
+
+
+LaTeX Warning: Label `INSTALACION@cref' multiply defined.
+
+
+LaTeX Warning: Label `INSTALACION' multiply defined.
+
+
+LaTeX Warning: Label `INSTALACION@cref' multiply defined.
+
+
+LaTeX Warning: Label `INSTALACION' multiply defined.
+
+
+LaTeX Warning: Label `INSTALACION@cref' multiply defined.
 
 
 LaTeX Warning: Label `FIG:crearentrenamiento' multiply defined.
@@ -1993,14 +2011,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
  [16] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
- (./tfgtfmthesisuam.lol)
-\tf@lol=\write25
-\openout6 = `tfgtfmthesisuam.lol'.
-
- (./tfgtfmthesisuam.lof
-LaTeX Info: Redefining \. on input line 1.
-LaTeX Info: Redefining \% on input line 1.
-Package cleveref Info: loaded `spanish' language definitions on input line 1.
+ (./tfgtfmthesisuam.lol
 \openout6 = `tfgtfmthesisuam.mw'.
 
  [17
@@ -2008,6 +2019,14 @@ Package cleveref Info: loaded `spanish' language definitions on input line 1.
 ] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
+)
+\tf@lol=\write25
+\openout6 = `tfgtfmthesisuam.lol'.
+
+ (./tfgtfmthesisuam.lof
+LaTeX Info: Redefining \. on input line 1.
+LaTeX Info: Redefining \% on input line 1.
+Package cleveref Info: loaded `spanish' language definitions on input line 1.
 \openout6 = `tfgtfmthesisuam.mw'.
 
  [18] (./tfgtfmthesisuam.mw)
@@ -2268,18 +2287,18 @@ Package cleveref Info: loaded `spanish' language definitions on input line 57.
 \openout6 = `tfgtfmthesisuam.mw'.
 
 ) (./estructura/copyright.tex
-Underfull \hbox (badness 5908) in paragraph at lines 28--29
+Underfull \hbox (badness 5908) in paragraph at lines 30--31
 \T1/txss/m/n/11 ce-der a al-gu-nas fun-cio-nes
  []
 
 
-Underfull \hbox (badness 1635) in paragraph at lines 28--29
+Underfull \hbox (badness 1635) in paragraph at lines 30--31
 \T1/txss/m/n/11 avan-za-das y la per-so-na-li-za-
  []
 
-LaTeX Info: Redefining \. on input line 67.
-LaTeX Info: Redefining \% on input line 67.
-Package cleveref Info: loaded `spanish' language definitions on input line 67.
+LaTeX Info: Redefining \. on input line 38.
+LaTeX Info: Redefining \% on input line 38.
+Package cleveref Info: loaded `spanish' language definitions on input line 38.
 \openout6 = `tfgtfmthesisuam.mw'.
 
 [10] (./tfgtfmthesisuam.mw)
@@ -2297,29 +2316,29 @@ Package cleveref Info: loaded `spanish' language definitions on input line 67.
 
 \openout6 = `tfgtfmthesisuam.mw'.
 
-\openout6 = `tfgtfmthesisuam.mw'.
-
-\openout6 = `tfgtfmthesisuam.mw'.
-
-LaTeX Info: Redefining \. on input line 67.
-LaTeX Info: Redefining \% on input line 67.
-Package cleveref Info: loaded `spanish' language definitions on input line 67.
+)
+LaTeX Info: Redefining \. on input line 63.
+LaTeX Info: Redefining \% on input line 63.
+Package cleveref Info: loaded `spanish' language definitions on input line 63.
 \openout6 = `tfgtfmthesisuam.mw'.
 
  [11] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
-)
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
 LaTeX Info: Redefining \. on input line 64.
 LaTeX Info: Redefining \% on input line 64.
 Package cleveref Info: loaded `spanish' language definitions on input line 64.
 \openout6 = `tfgtfmthesisuam.mw'.
 
  [12] (./tfgtfmthesisuam.mw)
-\openout6 = `tfgtfmthesisuam.mw'.
-
-\openout6 = `tfgtfmthesisuam.mw'.
-
 \openout6 = `tfgtfmthesisuam.mw'.
 
 
@@ -2508,7 +2527,7 @@ LaTeX Font Info:    Font shape `T1/txss/bx/n' will be
 ) (./codes/python/codigo.py
 consecutive:
 )) (./elemint/restapi.tex
-Underfull \vbox (badness 1147) has occurred while \output is active []
+Underfull \vbox (badness 4765) has occurred while \output is active []
 
 LaTeX Info: Redefining \. on input line 2.
 LaTeX Info: Redefining \% on input line 2.
@@ -2611,14 +2630,18 @@ Package cleveref Info: loaded `spanish' language definitions on input line 7.
 
 \openout6 = `tfgtfmthesisuam.mw'.
 
+LaTeX Font Info:    Font shape `T1/txss/m/n' will be
+(Font)              scaled to size 7.31494pt on input line 12.
+LaTeX Font Info:    Font shape `T1/txss/m/n' will be
+(Font)              scaled to size 5.22498pt on input line 12.
 
-Overfull \hbox (33.50914pt too wide) in paragraph at lines 17--18
-\T1/txss/m/n/11 yen \T1/pcr/m/n/11 CreateExercise.js\T1/txss/m/n/11 , que per-mi-te a los en-tre-na-do-res crear nue-vos ejer-ci-cios; \T1/pcr/m/n/11 CreateTraining.js\T1/txss/m/n/11 ,
+Overfull \hbox (5.37624pt too wide) in paragraph at lines 15--16
+\T1/pcr/m/n/11 CreateTraining.js\T1/txss/m/n/11 , uti-li-za-do pa-ra crear pla-nes de en-tre-na-mien-to com-ple-tos; \T1/pcr/m/n/11 EditExercise.js\T1/txss/m/n/11 ,
  []
 
-LaTeX Info: Redefining \. on input line 23.
-LaTeX Info: Redefining \% on input line 23.
-Package cleveref Info: loaded `spanish' language definitions on input line 23.
+LaTeX Info: Redefining \. on input line 17.
+LaTeX Info: Redefining \% on input line 17.
+Package cleveref Info: loaded `spanish' language definitions on input line 17.
 \openout6 = `tfgtfmthesisuam.mw'.
 
 [30] (./tfgtfmthesisuam.mw)
@@ -2628,21 +2651,12 @@ Package cleveref Info: loaded `spanish' language definitions on input line 23.
 Figure grafico1 with width data
 Figure grafico2 with width data
 ) (./elemint/appmovil.tex
-Overfull \hbox (24.26283pt too wide) in paragraph at lines 5--6
-\T1/txss/m/n/11 com-po-nen-tes prin-ci-pa-les de la apli-ca-ción. Al-gu-nas de las pan-ta-llas más im-por-tan-tes son: \T1/pcr/m/n/11 HomeScreen.js\T1/txss/m/n/11 ,
- []
-
-
-Overfull \hbox (60.1384pt too wide) in paragraph at lines 5--6
-\T1/pcr/m/n/11 CalendarScreen.js \T1/txss/m/n/11 y \T1/pcr/m/n/11 LoginScreen.js\T1/txss/m/n/11 , Fi-gu-ra []F.22[] mues-tra es-tas pan-ta-llas ade-más de \T1/pcr/m/n/11 TodayScreen.js\T1/txss/m/n/11 .
- []
-
 LaTeX Info: Redefining \. on input line 6.
 LaTeX Info: Redefining \% on input line 6.
 Package cleveref Info: loaded `spanish' language definitions on input line 6.
 \openout6 = `tfgtfmthesisuam.mw'.
 
-[31 <./img/grafico1.png> <./img/grafico2.png>] (./tfgtfmthesisuam.mw)
+ [31 <./img/grafico1.png> <./img/grafico2.png>] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 \openout6 = `tfgtfmthesisuam.mw'.
@@ -2833,7 +2847,9 @@ Overfull \hbox (11.12502pt too wide) in paragraph at lines 3--4
 
 Begining itemize
 Ending itemize
-)
+
+Underfull \vbox (badness 5133) has occurred while \output is active []
+
 \openout6 = `tfgtfmthesisuam.mw'.
 
  [45
@@ -2853,11 +2869,74 @@ Ending itemize
 
 \openout6 = `tfgtfmthesisuam.mw'.
 
+ (./codes/instalacion/ins_prerrequisitos.py
+consecutive:
+) (./codes/instalacion/instalacion.py
+consecutive:
+) (./codes/instalacion/instalacion.py
+consecutive:
+)
+LaTeX Info: Redefining \. on input line 48.
+LaTeX Info: Redefining \% on input line 48.
+Package cleveref Info: loaded `spanish' language definitions on input line 48.
 \openout6 = `tfgtfmthesisuam.mw'.
 
- [46
+ [46] (./tfgtfmthesisuam.mw)
+\openout6 = `tfgtfmthesisuam.mw'.
 
-] (./tfgtfmthesisuam.mw)
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+
+Begining itemize
+Ending itemize
+(./codes/instalacion/instalacion.py
+consecutive:
+)
+Begining itemize
+LaTeX Info: Redefining \. on input line 67.
+LaTeX Info: Redefining \% on input line 67.
+Package cleveref Info: loaded `spanish' language definitions on input line 67.
+\openout6 = `tfgtfmthesisuam.mw'.
+
+[47] (./tfgtfmthesisuam.mw)
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+
+Ending itemize
+(./codes/instalacion/instalacion.py
+consecutive:
+)
+Begining itemize
+Ending itemize
+)
+LaTeX Info: Redefining \. on input line 91.
+LaTeX Info: Redefining \% on input line 91.
+Package cleveref Info: loaded `spanish' language definitions on input line 91.
+\openout6 = `tfgtfmthesisuam.mw'.
+
+ [48] (./tfgtfmthesisuam.mw)
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
 \openout6 = `tfgtfmthesisuam.mw'.
 
 
@@ -2874,7 +2953,9 @@ Overfull \hbox (19.21686pt too wide) in paragraph at lines 6--45
 
 \openout6 = `tfgtfmthesisuam.mw'.
 
-[47] (./tfgtfmthesisuam.mw)
+[49
+
+] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 \openout6 = `tfgtfmthesisuam.mw'.
@@ -2895,7 +2976,7 @@ LaTeX Info: Redefining \% on input line 101.
 Package cleveref Info: loaded `spanish' language definitions on input line 101.
 \openout6 = `tfgtfmthesisuam.mw'.
 
-[48] (./tfgtfmthesisuam.mw)
+[50] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 \openout6 = `tfgtfmthesisuam.mw'.
@@ -2925,7 +3006,7 @@ Overfull \hbox (19.21686pt too wide) in paragraph at lines 106--155
 )
 \openout6 = `tfgtfmthesisuam.mw'.
 
- [49] (./tfgtfmthesisuam.mw)
+ [51] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 \openout6 = `tfgtfmthesisuam.mw'.
@@ -2934,7 +3015,7 @@ Overfull \hbox (19.21686pt too wide) in paragraph at lines 106--155
 
 \openout6 = `tfgtfmthesisuam.mw'.
 
- [50
+ [52
 
 ] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
@@ -2950,7 +3031,7 @@ Begining itemize
 Ending itemize
 \openout6 = `tfgtfmthesisuam.mw'.
 
-[51] (./tfgtfmthesisuam.mw)
+[53] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 \openout6 = `tfgtfmthesisuam.mw'.
@@ -2988,7 +3069,7 @@ LaTeX Info: Redefining \% on input line 67.
 Package cleveref Info: loaded `spanish' language definitions on input line 67.
 \openout6 = `tfgtfmthesisuam.mw'.
 
-[52] (./tfgtfmthesisuam.mw)
+[54] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 \openout6 = `tfgtfmthesisuam.mw'.
@@ -3025,7 +3106,7 @@ LaTeX Info: Redefining \% on input line 110.
 Package cleveref Info: loaded `spanish' language definitions on input line 110.
 \openout6 = `tfgtfmthesisuam.mw'.
 
-[53] (./tfgtfmthesisuam.mw)
+[55] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 \openout6 = `tfgtfmthesisuam.mw'.
@@ -3048,7 +3129,7 @@ LaTeX Info: Redefining \% on input line 93.
 Package cleveref Info: loaded `spanish' language definitions on input line 93.
 \openout6 = `tfgtfmthesisuam.mw'.
 
- [54] (./tfgtfmthesisuam.mw)
+ [56] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 
@@ -3072,7 +3153,7 @@ Figure crearoption with width data
 pdfTeX warning: pdflatex (file ./img/crearoption.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
 \openout6 = `tfgtfmthesisuam.mw'.
 
-[55
+[57
 
  <./img/crearuser.pdf> <./img/creartrain.pdf>] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
@@ -3100,7 +3181,7 @@ LaTeX Info: Redefining \% on input line 94.
 Package cleveref Info: loaded `spanish' language definitions on input line 94.
 \openout6 = `tfgtfmthesisuam.mw'.
 
- [56 <./img/crearoption.pdf> <./img/asignartrainer.pdf>] (./tfgtfmthesisuam.mw)
+ [58 <./img/crearoption.pdf> <./img/asignartrainer.pdf>] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 \openout6 = `tfgtfmthesisuam.mw'.
@@ -3126,7 +3207,7 @@ Figure backend with width data
 pdfTeX warning: pdflatex (file ./img/backend.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
 \openout6 = `tfgtfmthesisuam.mw'.
 
-[57
+[59
 
 ] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
@@ -3144,50 +3225,23 @@ LaTeX Info: Redefining \% on input line 22.
 Package cleveref Info: loaded `spanish' language definitions on input line 22.
 \openout6 = `tfgtfmthesisuam.mw'.
 
- [58 <./img/backend.pdf>] (./tfgtfmthesisuam.mw)
+ [60 <./img/backend.pdf>] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 
-Figure db1 with width data
+Figure db with width data
 
 
-pdfTeX warning: pdflatex (file ./img/db1.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-
-Overfull \hbox (40.12239pt too wide) in paragraph at lines 29--30
- [] 
- []
-
+pdfTeX warning: pdflatex (file ./img/db.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
 \openout6 = `tfgtfmthesisuam.mw'.
 
-[59 <./img/db1.pdf>] (./tfgtfmthesisuam.mw)
+[61 <./img/db.pdf>] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
-
-Figure db2 with width data
-
-
-pdfTeX warning: pdflatex (file ./img/db2.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-
-Overfull \hbox (97.02791pt too wide) in paragraph at lines 35--36
- [] 
- []
 
 Begining itemize
 Begining itemize
 Begining itemize
-LaTeX Info: Redefining \. on input line 53.
-LaTeX Info: Redefining \% on input line 53.
-Package cleveref Info: loaded `spanish' language definitions on input line 53.
-\openout6 = `tfgtfmthesisuam.mw'.
-
-[60 <./img/db2.pdf>] (./tfgtfmthesisuam.mw)
-\openout6 = `tfgtfmthesisuam.mw'.
-
-\openout6 = `tfgtfmthesisuam.mw'.
-
-\openout6 = `tfgtfmthesisuam.mw'.
-
-
 Ending itemize
 Ending itemize
 Ending itemize
@@ -3195,9 +3249,21 @@ Figure front with width data
 
 
 pdfTeX warning: pdflatex (file ./img/front.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+LaTeX Info: Redefining \. on input line 60.
+LaTeX Info: Redefining \% on input line 60.
+Package cleveref Info: loaded `spanish' language definitions on input line 60.
 \openout6 = `tfgtfmthesisuam.mw'.
 
-[61 <./img/front.pdf>] (./tfgtfmthesisuam.mw)
+[62] (./tfgtfmthesisuam.mw)
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+ [63 <./img/front.pdf>] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 
@@ -3219,7 +3285,7 @@ LaTeX Info: Redefining \% on input line 95.
 Package cleveref Info: loaded `spanish' language definitions on input line 95.
 \openout6 = `tfgtfmthesisuam.mw'.
 
- [62] (./tfgtfmthesisuam.mw)
+ [64] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 
@@ -3254,7 +3320,7 @@ Figure web/login with width data
 Figure web/registro with width data
 \openout6 = `tfgtfmthesisuam.mw'.
 
-[63
+[65
 
  <./img/web/desplegable.png> <./img/web/HomePageTrainer.png>] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
@@ -3272,25 +3338,12 @@ LaTeX Info: Redefining \% on input line 93.
 Package cleveref Info: loaded `spanish' language definitions on input line 93.
 \openout6 = `tfgtfmthesisuam.mw'.
 
- [64 <./img/web/crearcomida.png> <./img/web/creardayoption.png>] (./tfgtfmthesisuam.mw)
+ [66 <./img/web/crearcomida.png> <./img/web/creardayoption.png>] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 \openout6 = `tfgtfmthesisuam.mw'.
 
- [65 <./img/web/crearejercicio.png> <./img/web/crearentrenamiento.png>] (./tfgtfmthesisuam.mw)
-\openout6 = `tfgtfmthesisuam.mw'.
-
-LaTeX Info: Redefining \. on input line 93.
-LaTeX Info: Redefining \% on input line 93.
-Package cleveref Info: loaded `spanish' language definitions on input line 93.
-\openout6 = `tfgtfmthesisuam.mw'.
-
- [66 <./img/web/crearingrediente.png> <./img/web/listadoalimentos.png>] (./tfgtfmthesisuam.mw)
-\openout6 = `tfgtfmthesisuam.mw'.
-
-\openout6 = `tfgtfmthesisuam.mw'.
-
- [67 <./img/web/navegacion.png> <./img/web/opcionadaptada.png> <./img/web/opcionasignada.png>] (./tfgtfmthesisuam.mw)
+ [67 <./img/web/crearejercicio.png> <./img/web/crearentrenamiento.png>] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 LaTeX Info: Redefining \. on input line 93.
@@ -3298,25 +3351,12 @@ LaTeX Info: Redefining \% on input line 93.
 Package cleveref Info: loaded `spanish' language definitions on input line 93.
 \openout6 = `tfgtfmthesisuam.mw'.
 
- [68 <./img/web/detallescliente.png> <./img/web/listaclientes.png>] (./tfgtfmthesisuam.mw)
+ [68 <./img/web/crearingrediente.png> <./img/web/listadoalimentos.png>] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 \openout6 = `tfgtfmthesisuam.mw'.
 
- [69 <./img/web/homepageuser.png> <./img/web/perfil.png>] (./tfgtfmthesisuam.mw)
-\openout6 = `tfgtfmthesisuam.mw'.
-
-LaTeX Info: Redefining \. on input line 93.
-LaTeX Info: Redefining \% on input line 93.
-Package cleveref Info: loaded `spanish' language definitions on input line 93.
-\openout6 = `tfgtfmthesisuam.mw'.
-
- [70 <./img/web/grafica.png> <./img/web/opcionesasignadas.png>] (./tfgtfmthesisuam.mw)
-\openout6 = `tfgtfmthesisuam.mw'.
-
-\openout6 = `tfgtfmthesisuam.mw'.
-
- [71 <./img/web/trainerlist.png> <./img/web/request.png> <./img/web/solicitud.png>] (./tfgtfmthesisuam.mw)
+ [69 <./img/web/navegacion.png> <./img/web/opcionadaptada.png> <./img/web/opcionasignada.png>] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 LaTeX Info: Redefining \. on input line 93.
@@ -3324,7 +3364,33 @@ LaTeX Info: Redefining \% on input line 93.
 Package cleveref Info: loaded `spanish' language definitions on input line 93.
 \openout6 = `tfgtfmthesisuam.mw'.
 
- [72 <./img/web/trainerdetails.png> <./img/web/login.png>] (./tfgtfmthesisuam.mw)
+ [70 <./img/web/detallescliente.png> <./img/web/listaclientes.png>] (./tfgtfmthesisuam.mw)
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+ [71 <./img/web/homepageuser.png> <./img/web/perfil.png>] (./tfgtfmthesisuam.mw)
+\openout6 = `tfgtfmthesisuam.mw'.
+
+LaTeX Info: Redefining \. on input line 93.
+LaTeX Info: Redefining \% on input line 93.
+Package cleveref Info: loaded `spanish' language definitions on input line 93.
+\openout6 = `tfgtfmthesisuam.mw'.
+
+ [72 <./img/web/grafica.png> <./img/web/opcionesasignadas.png>] (./tfgtfmthesisuam.mw)
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+ [73 <./img/web/trainerlist.png> <./img/web/request.png> <./img/web/solicitud.png>] (./tfgtfmthesisuam.mw)
+\openout6 = `tfgtfmthesisuam.mw'.
+
+LaTeX Info: Redefining \. on input line 93.
+LaTeX Info: Redefining \% on input line 93.
+Package cleveref Info: loaded `spanish' language definitions on input line 93.
+\openout6 = `tfgtfmthesisuam.mw'.
+
+ [74 <./img/web/trainerdetails.png> <./img/web/login.png>] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 
@@ -3342,7 +3408,7 @@ Figure mobile/perfil with width data
 Figure mobile/LoginScreen with width data
 \openout6 = `tfgtfmthesisuam.mw'.
 
-[73 <./img/web/registro.png>] (./tfgtfmthesisuam.mw)
+[75 <./img/web/registro.png>] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 \openout6 = `tfgtfmthesisuam.mw'.
@@ -3354,18 +3420,18 @@ LaTeX Info: Redefining \% on input line 122.
 Package cleveref Info: loaded `spanish' language definitions on input line 122.
 \openout6 = `tfgtfmthesisuam.mw'.
 
- [74 <./img/mobile/CalendarHomeScreens.png> <./img/mobile/TodayScreen.png> <./img/mobile/detallesdia.png> <./img/mobile/detallesplato.png> <./img/mobile/detallesdieta.png> <./img/mobile/detallesingrediente.png>] (./tfgtfmthesisuam.mw)
+ [76 <./img/mobile/CalendarHomeScreens.png> <./img/mobile/TodayScreen.png> <./img/mobile/detallesdia.png> <./img/mobile/detallesplato.png> <./img/mobile/detallesdieta.png> <./img/mobile/detallesingrediente.png>] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 \openout6 = `tfgtfmthesisuam.mw'.
 
- [75 <./img/mobile/TrainingDetailsScreen.png> <./img/mobile/entrenamientoactivo.png> <./img/mobile/feedback.png> <./img/mobile/seleccionopcion.png> <./img/mobile/perfil.png> <./img/mobile/LoginScreen.png>] (./tfgtfmthesisuam.mw)
+ [77 <./img/mobile/TrainingDetailsScreen.png> <./img/mobile/entrenamientoactivo.png> <./img/mobile/feedback.png> <./img/mobile/seleccionopcion.png> <./img/mobile/perfil.png> <./img/mobile/LoginScreen.png>] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 )
 \openout6 = `tfgtfmthesisuam.mw'.
 
- [76
+ [78
 
 ] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
@@ -3379,7 +3445,7 @@ consecutive:
 )
 \openout6 = `tfgtfmthesisuam.mw'.
 
- [77] (./tfgtfmthesisuam.mw)
+ [79] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 \openout6 = `tfgtfmthesisuam.mw'.
@@ -3403,7 +3469,7 @@ LaTeX Info: Redefining \% on input line 9.
 Package cleveref Info: loaded `spanish' language definitions on input line 9.
 \openout6 = `tfgtfmthesisuam.mw'.
 
- [78] (./tfgtfmthesisuam.mw)
+ [80] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
  (./codes/python/codigo.py
@@ -3414,7 +3480,7 @@ LaTeX Info: Redefining \% on input line 14.
 Package cleveref Info: loaded `spanish' language definitions on input line 14.
 \openout6 = `tfgtfmthesisuam.mw'.
 
- [79] (./tfgtfmthesisuam.mw)
+ [81] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 \openout6 = `tfgtfmthesisuam.mw'.
@@ -3429,7 +3495,7 @@ LaTeX Info: Redefining \% on input line 19.
 Package cleveref Info: loaded `spanish' language definitions on input line 19.
 \openout6 = `tfgtfmthesisuam.mw'.
 
- [80] (./tfgtfmthesisuam.mw)
+ [82] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 \openout6 = `tfgtfmthesisuam.mw'.
@@ -3438,44 +3504,12 @@ Package cleveref Info: loaded `spanish' language definitions on input line 19.
 
  (./codes/python/codigo.py
 consecutive:
-)
-LaTeX Info: Redefining \. on input line 24.
-LaTeX Info: Redefining \% on input line 24.
-Package cleveref Info: loaded `spanish' language definitions on input line 24.
-\openout6 = `tfgtfmthesisuam.mw'.
-
- [81] (./tfgtfmthesisuam.mw)
-\openout6 = `tfgtfmthesisuam.mw'.
-
-\openout6 = `tfgtfmthesisuam.mw'.
-
-\openout6 = `tfgtfmthesisuam.mw'.
-
- (./codes/javascript/javascript.js
+) (./codes/python/codigo.py
 consecutive:
 )
-LaTeX Info: Redefining \. on input line 31.
-LaTeX Info: Redefining \% on input line 31.
-Package cleveref Info: loaded `spanish' language definitions on input line 31.
-\openout6 = `tfgtfmthesisuam.mw'.
-
- [82] (./tfgtfmthesisuam.mw)
-\openout6 = `tfgtfmthesisuam.mw'.
-
-\openout6 = `tfgtfmthesisuam.mw'.
-
-\openout6 = `tfgtfmthesisuam.mw'.
-
-\openout6 = `tfgtfmthesisuam.mw'.
-
-\openout6 = `tfgtfmthesisuam.mw'.
-
- (./codes/javascript/javascript.js
-consecutive:
-)
-LaTeX Info: Redefining \. on input line 36.
-LaTeX Info: Redefining \% on input line 36.
-Package cleveref Info: loaded `spanish' language definitions on input line 36.
+LaTeX Info: Redefining \. on input line 27.
+LaTeX Info: Redefining \% on input line 27.
+Package cleveref Info: loaded `spanish' language definitions on input line 27.
 \openout6 = `tfgtfmthesisuam.mw'.
 
  [83] (./tfgtfmthesisuam.mw)
@@ -3485,17 +3519,33 @@ Package cleveref Info: loaded `spanish' language definitions on input line 36.
 
 \openout6 = `tfgtfmthesisuam.mw'.
 
- (./codes/javascript/javascript.js
-consecutive:
-)
-LaTeX Info: Redefining \. on input line 42.
-LaTeX Info: Redefining \% on input line 42.
-Package cleveref Info: loaded `spanish' language definitions on input line 42.
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+LaTeX Info: Redefining \. on input line 27.
+LaTeX Info: Redefining \% on input line 27.
+Package cleveref Info: loaded `spanish' language definitions on input line 27.
 \openout6 = `tfgtfmthesisuam.mw'.
 
  [84] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
+ (./codes/javascript/javascript.js
+consecutive:
+)
+LaTeX Info: Redefining \. on input line 34.
+LaTeX Info: Redefining \% on input line 34.
+Package cleveref Info: loaded `spanish' language definitions on input line 34.
+\openout6 = `tfgtfmthesisuam.mw'.
+
+ [85] (./tfgtfmthesisuam.mw)
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
 \openout6 = `tfgtfmthesisuam.mw'.
 
 \openout6 = `tfgtfmthesisuam.mw'.
@@ -3503,12 +3553,42 @@ Package cleveref Info: loaded `spanish' language definitions on input line 42.
  (./codes/javascript/javascript.js
 consecutive:
 )
-LaTeX Info: Redefining \. on input line 47.
-LaTeX Info: Redefining \% on input line 47.
-Package cleveref Info: loaded `spanish' language definitions on input line 47.
+LaTeX Info: Redefining \. on input line 39.
+LaTeX Info: Redefining \% on input line 39.
+Package cleveref Info: loaded `spanish' language definitions on input line 39.
 \openout6 = `tfgtfmthesisuam.mw'.
 
- [85] (./tfgtfmthesisuam.mw)
+ [86] (./tfgtfmthesisuam.mw)
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+ (./codes/javascript/javascript.js
+consecutive:
+)
+LaTeX Info: Redefining \. on input line 45.
+LaTeX Info: Redefining \% on input line 45.
+Package cleveref Info: loaded `spanish' language definitions on input line 45.
+\openout6 = `tfgtfmthesisuam.mw'.
+
+ [87] (./tfgtfmthesisuam.mw)
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+ (./codes/javascript/javascript.js
+consecutive:
+)
+LaTeX Info: Redefining \. on input line 50.
+LaTeX Info: Redefining \% on input line 50.
+Package cleveref Info: loaded `spanish' language definitions on input line 50.
+\openout6 = `tfgtfmthesisuam.mw'.
+
+ [88] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 \openout6 = `tfgtfmthesisuam.mw'.
@@ -3520,12 +3600,12 @@ consecutive:
 ) (./codes/javascript/javascript.js
 consecutive:
 )
-LaTeX Info: Redefining \. on input line 56.
-LaTeX Info: Redefining \% on input line 56.
-Package cleveref Info: loaded `spanish' language definitions on input line 56.
+LaTeX Info: Redefining \. on input line 59.
+LaTeX Info: Redefining \% on input line 59.
+Package cleveref Info: loaded `spanish' language definitions on input line 59.
 \openout6 = `tfgtfmthesisuam.mw'.
 
- [86] (./tfgtfmthesisuam.mw)
+ [89] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 \openout6 = `tfgtfmthesisuam.mw'.
@@ -3543,58 +3623,9 @@ Package cleveref Info: loaded `spanish' language definitions on input line 56.
  (./codes/javascript/javascript.js
 consecutive:
 )
-LaTeX Info: Redefining \. on input line 61.
-LaTeX Info: Redefining \% on input line 61.
-Package cleveref Info: loaded `spanish' language definitions on input line 61.
-\openout6 = `tfgtfmthesisuam.mw'.
-
- [87] (./tfgtfmthesisuam.mw)
-\openout6 = `tfgtfmthesisuam.mw'.
-
-\openout6 = `tfgtfmthesisuam.mw'.
-
-\openout6 = `tfgtfmthesisuam.mw'.
-
- (./codes/python/codigo.py
-consecutive:
-)
-LaTeX Info: Redefining \. on input line 67.
-LaTeX Info: Redefining \% on input line 67.
-Package cleveref Info: loaded `spanish' language definitions on input line 67.
-\openout6 = `tfgtfmthesisuam.mw'.
-
- [88] (./tfgtfmthesisuam.mw)
-\openout6 = `tfgtfmthesisuam.mw'.
-
-\openout6 = `tfgtfmthesisuam.mw'.
-
-\openout6 = `tfgtfmthesisuam.mw'.
-
-\openout6 = `tfgtfmthesisuam.mw'.
-
-\openout6 = `tfgtfmthesisuam.mw'.
-
- (./codes/python/codigo.py
-consecutive:
-)
-LaTeX Info: Redefining \. on input line 72.
-LaTeX Info: Redefining \% on input line 72.
-Package cleveref Info: loaded `spanish' language definitions on input line 72.
-\openout6 = `tfgtfmthesisuam.mw'.
-
- [89] (./tfgtfmthesisuam.mw)
-\openout6 = `tfgtfmthesisuam.mw'.
-
-\openout6 = `tfgtfmthesisuam.mw'.
-
-\openout6 = `tfgtfmthesisuam.mw'.
-
- (./codes/python/codigo.py
-consecutive:
-)
-LaTeX Info: Redefining \. on input line 78.
-LaTeX Info: Redefining \% on input line 78.
-Package cleveref Info: loaded `spanish' language definitions on input line 78.
+LaTeX Info: Redefining \. on input line 64.
+LaTeX Info: Redefining \% on input line 64.
+Package cleveref Info: loaded `spanish' language definitions on input line 64.
 \openout6 = `tfgtfmthesisuam.mw'.
 
  [90] (./tfgtfmthesisuam.mw)
@@ -3607,9 +3638,9 @@ Package cleveref Info: loaded `spanish' language definitions on input line 78.
  (./codes/python/codigo.py
 consecutive:
 )
-LaTeX Info: Redefining \. on input line 83.
-LaTeX Info: Redefining \% on input line 83.
-Package cleveref Info: loaded `spanish' language definitions on input line 83.
+LaTeX Info: Redefining \. on input line 70.
+LaTeX Info: Redefining \% on input line 70.
+Package cleveref Info: loaded `spanish' language definitions on input line 70.
 \openout6 = `tfgtfmthesisuam.mw'.
 
  [91] (./tfgtfmthesisuam.mw)
@@ -3619,12 +3650,16 @@ Package cleveref Info: loaded `spanish' language definitions on input line 83.
 
 \openout6 = `tfgtfmthesisuam.mw'.
 
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
  (./codes/python/codigo.py
 consecutive:
 )
-LaTeX Info: Redefining \. on input line 88.
-LaTeX Info: Redefining \% on input line 88.
-Package cleveref Info: loaded `spanish' language definitions on input line 88.
+LaTeX Info: Redefining \. on input line 75.
+LaTeX Info: Redefining \% on input line 75.
+Package cleveref Info: loaded `spanish' language definitions on input line 75.
 \openout6 = `tfgtfmthesisuam.mw'.
 
  [92] (./tfgtfmthesisuam.mw)
@@ -3637,9 +3672,9 @@ Package cleveref Info: loaded `spanish' language definitions on input line 88.
  (./codes/python/codigo.py
 consecutive:
 )
-LaTeX Info: Redefining \. on input line 93.
-LaTeX Info: Redefining \% on input line 93.
-Package cleveref Info: loaded `spanish' language definitions on input line 93.
+LaTeX Info: Redefining \. on input line 81.
+LaTeX Info: Redefining \% on input line 81.
+Package cleveref Info: loaded `spanish' language definitions on input line 81.
 \openout6 = `tfgtfmthesisuam.mw'.
 
  [93] (./tfgtfmthesisuam.mw)
@@ -3652,9 +3687,9 @@ Package cleveref Info: loaded `spanish' language definitions on input line 93.
  (./codes/python/codigo.py
 consecutive:
 )
-LaTeX Info: Redefining \. on input line 98.
-LaTeX Info: Redefining \% on input line 98.
-Package cleveref Info: loaded `spanish' language definitions on input line 98.
+LaTeX Info: Redefining \. on input line 86.
+LaTeX Info: Redefining \% on input line 86.
+Package cleveref Info: loaded `spanish' language definitions on input line 86.
 \openout6 = `tfgtfmthesisuam.mw'.
 
  [94] (./tfgtfmthesisuam.mw)
@@ -3664,12 +3699,12 @@ Package cleveref Info: loaded `spanish' language definitions on input line 98.
 
 \openout6 = `tfgtfmthesisuam.mw'.
 
- (./codes/javascript/javascript.js
+ (./codes/python/codigo.py
 consecutive:
 )
-LaTeX Info: Redefining \. on input line 107.
-LaTeX Info: Redefining \% on input line 107.
-Package cleveref Info: loaded `spanish' language definitions on input line 107.
+LaTeX Info: Redefining \. on input line 91.
+LaTeX Info: Redefining \% on input line 91.
+Package cleveref Info: loaded `spanish' language definitions on input line 91.
 \openout6 = `tfgtfmthesisuam.mw'.
 
  [95] (./tfgtfmthesisuam.mw)
@@ -3679,16 +3714,12 @@ Package cleveref Info: loaded `spanish' language definitions on input line 107.
 
 \openout6 = `tfgtfmthesisuam.mw'.
 
-\openout6 = `tfgtfmthesisuam.mw'.
-
-\openout6 = `tfgtfmthesisuam.mw'.
-
- (./codes/javascript/javascript.js
+ (./codes/python/codigo.py
 consecutive:
 )
-LaTeX Info: Redefining \. on input line 112.
-LaTeX Info: Redefining \% on input line 112.
-Package cleveref Info: loaded `spanish' language definitions on input line 112.
+LaTeX Info: Redefining \. on input line 96.
+LaTeX Info: Redefining \% on input line 96.
+Package cleveref Info: loaded `spanish' language definitions on input line 96.
 \openout6 = `tfgtfmthesisuam.mw'.
 
  [96] (./tfgtfmthesisuam.mw)
@@ -3698,12 +3729,12 @@ Package cleveref Info: loaded `spanish' language definitions on input line 112.
 
 \openout6 = `tfgtfmthesisuam.mw'.
 
- (./codes/javascript/javascript.js
+ (./codes/python/codigo.py
 consecutive:
 )
-LaTeX Info: Redefining \. on input line 117.
-LaTeX Info: Redefining \% on input line 117.
-Package cleveref Info: loaded `spanish' language definitions on input line 117.
+LaTeX Info: Redefining \. on input line 101.
+LaTeX Info: Redefining \% on input line 101.
+Package cleveref Info: loaded `spanish' language definitions on input line 101.
 \openout6 = `tfgtfmthesisuam.mw'.
 
  [97] (./tfgtfmthesisuam.mw)
@@ -3716,12 +3747,61 @@ Package cleveref Info: loaded `spanish' language definitions on input line 117.
  (./codes/javascript/javascript.js
 consecutive:
 )
-LaTeX Info: Redefining \. on input line 125.
-LaTeX Info: Redefining \% on input line 125.
-Package cleveref Info: loaded `spanish' language definitions on input line 125.
+LaTeX Info: Redefining \. on input line 110.
+LaTeX Info: Redefining \% on input line 110.
+Package cleveref Info: loaded `spanish' language definitions on input line 110.
 \openout6 = `tfgtfmthesisuam.mw'.
 
  [98] (./tfgtfmthesisuam.mw)
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+ (./codes/javascript/javascript.js
+consecutive:
+)
+LaTeX Info: Redefining \. on input line 115.
+LaTeX Info: Redefining \% on input line 115.
+Package cleveref Info: loaded `spanish' language definitions on input line 115.
+\openout6 = `tfgtfmthesisuam.mw'.
+
+ [99] (./tfgtfmthesisuam.mw)
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+ (./codes/javascript/javascript.js
+consecutive:
+)
+LaTeX Info: Redefining \. on input line 120.
+LaTeX Info: Redefining \% on input line 120.
+Package cleveref Info: loaded `spanish' language definitions on input line 120.
+\openout6 = `tfgtfmthesisuam.mw'.
+
+ [100] (./tfgtfmthesisuam.mw)
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+ (./codes/javascript/javascript.js
+consecutive:
+)
+LaTeX Info: Redefining \. on input line 128.
+LaTeX Info: Redefining \% on input line 128.
+Package cleveref Info: loaded `spanish' language definitions on input line 128.
+\openout6 = `tfgtfmthesisuam.mw'.
+
+ [101] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
 \openout6 = `tfgtfmthesisuam.mw'.
@@ -3736,20 +3816,14 @@ LaTeX Info: Redefining \% on input line 98.
 Package cleveref Info: loaded `spanish' language definitions on input line 98.
 \openout6 = `tfgtfmthesisuam.mw'.
 
- [99] (./tfgtfmthesisuam.mw)
-\openout6 = `tfgtfmthesisuam.mw'.
-
-\openout6 = `tfgtfmthesisuam.mw'.
-
- [100
-
-] (./tfgtfmthesisuam.mw)
+ [102] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
  (./tfgtfmthesisuam.ind)
 \openout6 = `tfgtfmthesisuam.mw'.
 
- [101
+ [103
+
 
 ] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
@@ -3780,13 +3854,61 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 \openout6 = `tfgtfmthesisuam.mw'.
 
-[102 <./logoUAMw.png>] (./tfgtfmthesisuam.mw)
+[104 <./logoUAMw.png>] (./tfgtfmthesisuam.mw)
 \openout6 = `tfgtfmthesisuam.mw'.
 
  (./tfgtfmthesisuam.aux
 LaTeX Info: Redefining \. on input line 33.
 LaTeX Info: Redefining \% on input line 33.
 Package cleveref Info: loaded `spanish' language definitions on input line 33.
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
+\openout6 = `tfgtfmthesisuam.mw'.
+
 \openout6 = `tfgtfmthesisuam.mw'.
 
 \openout6 = `tfgtfmthesisuam.mw'.
@@ -4977,7 +5099,7 @@ LaTeX Warning: There were multiply-defined labels.
 \openout6 = `tfgtfmthesisuam.out'.
 
 Package rerunfilecheck Info: File `tfgtfmthesisuam.out' has not changed.
-(rerunfilecheck)             Checksum: 43F34165215E7DD17115890404FF58ED;8482.
+(rerunfilecheck)             Checksum: D41116E37CA0B1AAF83BA13C8716AEEB;9083.
 \openout6 = `tfgtfmthesisuam.idx'.
 
 \openout6 = `tfgtfmthesisuam.glo'.
@@ -4994,18 +5116,18 @@ Package rerunfilecheck Info: File `tfgtfmthesisuam.out' has not changed.
 
  ) 
 Here is how much of TeX's memory you used:
- 55009 strings out of 478287
- 1197522 string characters out of 5849289
- 2032535 words of memory out of 5000000
- 70715 multiletter control sequences out of 15000+600000
- 552703 words of font info for 148 fonts, out of 8000000 for 9000
+ 55249 strings out of 478287
+ 1201967 string characters out of 5849289
+ 2048829 words of memory out of 5000000
+ 70817 multiletter control sequences out of 15000+600000
+ 556203 words of font info for 150 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  106i,10n,105p,2079b,1788s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc}{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/rtxbsssc.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/rtxsssc.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrb0800.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm0800.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti0800.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb>
-Output written on tfgtfmthesisuam.pdf (122 pages, 28739498 bytes).
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc}{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/rtxbsssc.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/rtxsssc.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrb0800.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm0800.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti0800.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb>
+Output written on tfgtfmthesisuam.pdf (124 pages, 28741901 bytes).
 PDF statistics:
- 2879 PDF objects out of 2984 (max. 8388607)
- 2622 compressed objects within 27 object streams
- 1049 named destinations out of 1200 (max. 500000)
- 1190 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 3038 PDF objects out of 3580 (max. 8388607)
+ 2774 compressed objects within 28 object streams
+ 1170 named destinations out of 1200 (max. 500000)
+ 1241 words of extra memory for PDF output out of 10000 (max. 10000000)
 

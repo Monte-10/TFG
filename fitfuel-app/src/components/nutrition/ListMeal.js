@@ -4,10 +4,10 @@ import './ListMeal.css';
 
 function ListMeal() {
     const [meals, setMeals] = useState([]);
-    const [filteredMeals, setFilteredMeals] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [itemsPerPage] = useState(10); // Ajusta este número según sea necesario
     const [totalPages, setTotalPages] = useState(0);
+    const [loading, setLoading] = useState(false);
     const apiUrl = process.env.REACT_APP_API_URL;
     const [filters, setFilters] = useState({
         name: '',
@@ -50,31 +50,35 @@ function ListMeal() {
 
     const navigate = useNavigate();
 
+    const fetchMeals = async (page = 0) => {
+        setLoading(true);
+        try {
+            const response = await fetch(`${apiUrl}/nutrition/meals/?page=${page + 1}&page_size=${itemsPerPage}`, {
+                headers: {
+                    'Authorization': `Token ${localStorage.getItem('authToken')}`,
+                },
+            });
+            const data = await response.json();
+            setMeals(data.results);
+            setTotalPages(Math.ceil(data.count / itemsPerPage));
+        } catch (error) {
+            console.error('Error fetching meals:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchMeals(currentPage);
+    }, [currentPage, itemsPerPage]);
+
     useEffect(() => {
         const applyFilters = () => {
-            let updatedMeals = meals.filter(meal => {
-                return Object.entries(filters).every(([key, value]) => {
-                    if (value === '' || value === false) return true; // Ignore filter if empty or false
-                    if (typeof value === 'boolean') {
-                        return meal[key] === value;
-                    } else if (key.includes('min') || key.includes('max')) {
-                        const field = key.replace('min', '').replace('max', '').toLowerCase();
-                        if (key.startsWith('min')) {
-                            return parseFloat(meal[field]) >= parseFloat(value);
-                        } else {
-                            return parseFloat(meal[field]) <= parseFloat(value);
-                        }
-                    } else {
-                        return meal[key].toLowerCase().includes(value.toLowerCase());
-                    }
-                });
-            });
-            setFilteredMeals(updatedMeals);
-            setTotalPages(Math.ceil(updatedMeals.length / itemsPerPage));
+            fetchMeals(0); // Reset to first page when filters change
         };
 
         applyFilters();
-    }, [filters, meals, itemsPerPage]);
+    }, [filters]);
 
     const handleDeleteMeal = (mealId) => {
         if (window.confirm('¿Estás seguro de que quieres eliminar esta comida?')) {
@@ -86,7 +90,7 @@ function ListMeal() {
             })
             .then(response => {
                 if (response.ok) {
-                    setMeals(meals.filter(meal => meal.id !== mealId));
+                    fetchMeals(currentPage); // Refetch meals after deletion
                 } else {
                     console.error('Error al eliminar la comida');
                 }
@@ -143,23 +147,6 @@ function ListMeal() {
             other: false
         });
     };
-
-    useEffect(() => {
-        fetch(`${apiUrl}/nutrition/meals/`, {
-            headers: {
-                'Authorization': `Token ${localStorage.getItem('authToken')}`,
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            setMeals(data);
-            setFilteredMeals(data); // Inicializar las comidas filtradas con todas las comidas
-            setTotalPages(Math.ceil(data.length / itemsPerPage));
-        })
-        .catch(error => console.error('Error fetching meals:', error));
-    }, [apiUrl, itemsPerPage]);
-
-    const currentMeals = filteredMeals.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
     return (
         <div className="container-listmeal">
@@ -300,7 +287,7 @@ function ListMeal() {
                     </tr>
                 </thead>
                 <tbody>
-                    {currentMeals.map(meal => (
+                    {meals.map(meal => (
                         <tr key={meal.id} onClick={() => navigate(`/nutrition/meals/${meal.id}`)} style={{ cursor: 'pointer' }}>
                             <td>{meal.name}</td>
                             <td>{(meal.calories || 0).toFixed(2)}</td>
@@ -320,7 +307,8 @@ function ListMeal() {
                     ))}
                 </tbody>
             </table>
-            {filteredMeals.length === 0 && (
+            {loading && <div>Loading...</div>}
+            {!loading && meals.length === 0 && (
                 <div className="alert-listmeal alert-info-listmeal" role="alert">
                     No se encontraron comidas que coincidan con los filtros seleccionados.
                 </div>

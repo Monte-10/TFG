@@ -4,10 +4,9 @@ import './ListDish.css';
 
 function ListDish() {
     const [dishes, setDishes] = useState([]);
-    const [filteredDishes, setFilteredDishes] = useState([]);
-    const [currentPage, setCurrentPage] = useState(0);
-    const [itemsPerPage] = useState(10); // Ajusta este número según sea necesario
     const [totalPages, setTotalPages] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(10); // Ajusta este número según sea necesario
     const apiUrl = process.env.REACT_APP_API_URL;
     const [filters, setFilters] = useState({
         name: '',
@@ -50,6 +49,30 @@ function ListDish() {
 
     const navigate = useNavigate();
 
+    const fetchDishes = (page, filters) => {
+        const queryParams = new URLSearchParams({
+            page: page,
+            page_size: itemsPerPage,
+            ...filters
+        });
+
+        fetch(`${apiUrl}/nutrition/dishes/?${queryParams.toString()}`, {
+            headers: {
+                'Authorization': `Token ${localStorage.getItem('authToken')}`,
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            setDishes(data.results);
+            setTotalPages(Math.ceil(data.count / itemsPerPage));
+        })
+        .catch(error => console.error('Error fetching dishes:', error));
+    };
+
+    useEffect(() => {
+        fetchDishes(currentPage, filters);
+    }, [currentPage, filters]);
+
     const handleDeleteDish = (dishId) => {
         if (window.confirm('¿Estás seguro de que quieres eliminar esta comida?')) {
             fetch(`${apiUrl}/nutrition/dishes/${dishId}/`, {
@@ -60,7 +83,7 @@ function ListDish() {
             })
             .then(response => {
                 if (response.ok) {
-                    setDishes(dishes.filter(dish => dish.id !== dishId));
+                    fetchDishes(currentPage, filters);
                 } else {
                     console.error('Error al eliminar la comida');
                 }
@@ -68,47 +91,6 @@ function ListDish() {
             .catch(error => console.error('Error al eliminar la comida:', error));
         }
     };
-
-    useEffect(() => {
-        fetch(`${apiUrl}/nutrition/dishes/`, {
-            headers: {
-                'Authorization': `Token ${localStorage.getItem('authToken')}`,
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            setDishes(data);
-            setFilteredDishes(data); // Inicializar los platos filtrados con todos los platos
-            setTotalPages(Math.ceil(data.length / itemsPerPage));
-        })
-        .catch(error => console.error('Error fetching dishes:', error));
-    }, [apiUrl, itemsPerPage]);
-
-    useEffect(() => {
-        const applyFilters = () => {
-            let updatedDishes = dishes.filter(dish => {
-                return Object.entries(filters).every(([key, value]) => {
-                    if (value === '' || value === false) return true; // Ignore filter if empty or false
-                    if (typeof value === 'boolean') {
-                        return dish[key] === value;
-                    } else if (key.includes('min') || key.includes('max')) {
-                        const field = key.replace('min', '').replace('max', '').toLowerCase();
-                        if (key.startsWith('min')) {
-                            return parseFloat(dish[field]) >= parseFloat(value);
-                        } else {
-                            return parseFloat(dish[field]) <= parseFloat(value);
-                        }
-                    } else {
-                        return dish[key].toLowerCase().includes(value.toLowerCase());
-                    }
-                });
-            });
-            setFilteredDishes(updatedDishes);
-            setTotalPages(Math.ceil(updatedDishes.length / itemsPerPage));
-        };
-
-        applyFilters();
-    }, [filters, dishes, itemsPerPage]);
 
     const handleFilterChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -158,8 +140,6 @@ function ListDish() {
             other: false
         });
     };
-
-    const currentDishes = filteredDishes.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
     return (
         <div className="container-listdish">
@@ -300,7 +280,7 @@ function ListDish() {
                     </tr>
                 </thead>
                 <tbody>
-                    {currentDishes.map(dish => (
+                    {dishes.map(dish => (
                         <tr key={dish.id} onClick={() => navigate(`/nutrition/dishes/${dish.id}`)} style={{ cursor: 'pointer' }}>
                             <td>{dish.name}</td>
                             <td>{(dish.calories || 0).toFixed(2)}</td>
@@ -320,7 +300,7 @@ function ListDish() {
                     ))}
                 </tbody>
             </table>
-            {filteredDishes.length === 0 && (
+            {dishes.length === 0 && (
                 <div className="alert-listdish alert-info-listdish" role="alert">
                     No se encontraron platos que coincidan con los filtros seleccionados.
                 </div>
@@ -328,15 +308,15 @@ function ListDish() {
 
             <div className="pagination-listdish">
                 <button
-                    disabled={currentPage === 0}
+                    disabled={currentPage === 1}
                     onClick={() => setCurrentPage(currentPage - 1)}
                     className="btn-listdish btn-secondary-listdish"
                 >
                     Anterior
                 </button>
-                <span> Página {currentPage + 1} de {totalPages} </span>
+                <span> Página {currentPage} de {totalPages} </span>
                 <button
-                    disabled={currentPage >= totalPages - 1}
+                    disabled={currentPage >= totalPages}
                     onClick={() => setCurrentPage(currentPage + 1)}
                     className="btn-listdish btn-secondary-listdish"
                 >

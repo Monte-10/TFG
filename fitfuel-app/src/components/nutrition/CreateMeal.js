@@ -32,88 +32,33 @@ function CreateMeal() {
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [itemsPerPage] = useState(6); // Cambiado a 6 para más platos por página
   const [totalPages, setTotalPages] = useState(0);
-  const [currentPage, setCurrentPage] = useState(0);
-
-  const currentDishes = dishes.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    fetch(`${apiUrl}/nutrition/dishes/`, {
+    fetchDishes(currentPage, filter);
+  }, [currentPage, filter]);
+
+  const fetchDishes = (page, filters) => {
+    const queryParams = new URLSearchParams({
+      page: page,
+      page_size: itemsPerPage,
+      ...filters
+    });
+
+    fetch(`${apiUrl}/nutrition/dishes/?${queryParams.toString()}`, {
       headers: {
         'Authorization': `Token ${localStorage.getItem('authToken')}`
       }
     })
       .then(response => response.json())
       .then(data => {
-        const filteredDishes = data.filter(dish => {
-          let isValid = true;
+        setDishes(data.results);
+        setTotalPages(Math.ceil(data.count / itemsPerPage));
+      })
+      .catch(error => console.error('Error fetching dishes:', error));
+  };
 
-          if (filter.name && !dish.name.toLowerCase().includes(filter.name.toLowerCase().trim())) {
-            isValid = false;
-          }
-
-          if (filter.minCalories && Number(filter.minCalories) > dish.calories) {
-            isValid = false;
-          }
-
-          if (filter.maxCalories && Number(filter.maxCalories) < dish.calories) {
-            isValid = false;
-          }
-
-          if (filter.minProtein && Number(filter.minProtein) > dish.protein) {
-            isValid = false;
-          }
-
-          if (filter.maxProtein && Number(filter.maxProtein) < dish.protein) {
-            isValid = false;
-          }
-
-          if (filter.minCarbohydrates && Number(filter.minCarbohydrates) > dish.carbohydrates) {
-            isValid = false;
-          }
-
-          if (filter.maxCarbohydrates && Number(filter.maxCarbohydrates) < dish.carbohydrates) {
-            isValid = false;
-          }
-
-          if (filter.minFat && Number(filter.minFat) > dish.fat) {
-            isValid = false;
-          }
-
-          if (filter.maxFat && Number(filter.maxFat) < dish.fat) {
-            isValid = false;
-          }
-
-          if (filter.minSugar && Number(filter.minSugar) > dish.sugar) {
-            isValid = false;
-          }
-
-          if (filter.maxSugar && Number(filter.maxSugar) < dish.sugar) {
-            isValid = false;
-          }
-
-          if (filter.minFiber && Number(filter.minFiber) > dish.fiber) {
-            isValid = false;
-          }
-
-          if (filter.maxFiber && Number(filter.maxFiber) < dish.fiber) {
-            isValid = false;
-          }
-
-          if (filter.minSaturatedFat && Number(filter.minSaturatedFat) > dish.saturated_fat) {
-            isValid = false;
-          }
-
-          if (filter.maxSaturatedFat && Number(filter.maxSaturatedFat) < dish.saturated_fat) {
-            isValid = false;
-          }
-
-          return isValid;
-        });
-
-        setDishes(filteredDishes);
-        setTotalPages(Math.ceil(filteredDishes.length / itemsPerPage));
-      });
-
+  useEffect(() => {
     fetch(`${apiUrl}/user/regularusers/`, {
       headers: {
         'Authorization': `Token ${localStorage.getItem('authToken')}`
@@ -126,7 +71,7 @@ function CreateMeal() {
           setSelectedUser(data[0].id.toString());
         }
       });
-  }, [filter, apiUrl, itemsPerPage]);
+  }, [apiUrl]);
 
   const toggleAdvancedFilters = () => {
     setShowAdvancedFilters(!showAdvancedFilters);
@@ -399,7 +344,7 @@ function CreateMeal() {
           <div className="row">
             <div className="col-md-6">
               <h3>Platos Disponibles</h3>
-              {currentDishes.map((dish) => (
+              {dishes.map((dish) => (
                 <div key={dish.id} className="card mb-2">
                   <div className="card-body d-flex justify-content-between align-items-center">
                     <span>{dish.name}</span>
@@ -416,16 +361,16 @@ function CreateMeal() {
               <div className="pagination">
                 <button
                   type="button"
-                  disabled={currentPage === 0}
+                  disabled={currentPage === 1}
                   onClick={() => handlePageChange(currentPage - 1)}
                   className="btn btn-secondary"
                 >
                   Anterior
                 </button>
-                <span> Página {currentPage + 1} de {totalPages} </span>
+                <span> Página {currentPage} de {totalPages} </span>
                 <button
                   type="button"
-                  disabled={currentPage >= totalPages - 1}
+                  disabled={currentPage >= totalPages}
                   onClick={() => handlePageChange(currentPage + 1)}
                   className="btn btn-secondary"
                 >
