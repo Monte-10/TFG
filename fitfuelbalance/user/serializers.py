@@ -29,6 +29,32 @@ class RegularUserSerializer(serializers.ModelSerializer):
             'hip', 'arm', 'glute', 'upper_leg', 'middle_leg', 'lower_leg',
             'communication_email', 'phone', 'personal_trainer', 'profile'
         ]
+        extra_kwargs = {
+            'username': {'read_only': True},
+            'id': {'read_only': True},
+            'profile': {'required': False},
+            'personal_trainer': {'required': False},
+        }
+
+    def update(self, instance, validated_data):
+        profile_data = validated_data.pop('profile', None)
+        personal_trainer_data = validated_data.pop('personal_trainer', None)
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        
+        if profile_data:
+            profile_serializer = ProfileSerializer(instance.profile, data=profile_data, partial=True)
+            if profile_serializer.is_valid():
+                profile_serializer.save()
+        
+        if personal_trainer_data:
+            trainer_serializer = TrainerSerializer(instance.personal_trainer, data=personal_trainer_data, partial=True)
+            if trainer_serializer.is_valid():
+                trainer_serializer.save()
+
+        instance.save()
+        return instance
         
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:

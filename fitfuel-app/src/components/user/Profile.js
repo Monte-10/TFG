@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Row, Col, Table, Form } from 'react-bootstrap';
+import { Container, Row, Col, Form } from 'react-bootstrap';
 import { Line, Bar, Pie } from 'react-chartjs-2';
 import 'chart.js/auto';
-import './Profile.css'; // Importar el nuevo archivo de estilos
+import './Profile.css';
 
 const Profile = () => {
     const [profile, setProfile] = useState({
@@ -28,9 +28,7 @@ const Profile = () => {
         glute: '',
         upper_leg: '',
         middle_leg: '',
-        lower_leg: '',
-        communication_email: '',
-        phone: ''
+        lower_leg: ''
     });
     const [specialties, setSpecialties] = useState([]);
     const [isTrainer, setIsTrainer] = useState(false);
@@ -60,8 +58,8 @@ const Profile = () => {
                     image: profileData.image || null,
                     specialties: trainer.specialties || [],
                     trainer_type: trainer.trainer_type || 'trainer',
-                    communication_email: trainer.communication_email || '',
-                    phone: trainer.phone || ''
+                    communication_email: trainer.communication_email || regular_user.communication_email || '',
+                    phone: trainer.phone || regular_user.phone || ''
                 });
 
                 setRegularUser({
@@ -76,28 +74,18 @@ const Profile = () => {
                     glute: regular_user.glute || '',
                     upper_leg: regular_user.upper_leg || '',
                     middle_leg: regular_user.middle_leg || '',
-                    lower_leg: regular_user.lower_leg || '',
-                    communication_email: regular_user.communication_email || '',
-                    phone: regular_user.phone || ''
+                    lower_leg: regular_user.lower_leg || ''
                 });
 
                 setIsTrainer(!!trainer.specialties?.length);
 
-                // Fetch and set the latest measurements
                 if (!trainer.specialties?.length) {
                     const measurementsResponse = await axios.get(`${apiUrl}/user/measurements/history/${response.data.id}/`, {
                         headers: {
                             'Authorization': `Token ${localStorage.getItem('authToken')}`
                         }
                     });
-                    const latestMeasurements = measurementsResponse.data[0];
-                    if (latestMeasurements) {
-                        setRegularUser(prev => ({
-                            ...prev,
-                            ...latestMeasurements
-                        }));
-                    }
-                    setMeasurements(measurementsResponse.data);
+                    setMeasurements(Array.isArray(measurementsResponse.data) ? measurementsResponse.data : []);
                 }
             } catch (error) {
                 setError("Error al cargar el perfil");
@@ -112,31 +100,36 @@ const Profile = () => {
                         'Authorization': `Token ${localStorage.getItem('authToken')}`
                     }
                 });
-                setSpecialties(response.data);
+                setSpecialties(response.data.results);
             } catch (error) {
                 setError("Error al cargar especialidades");
                 console.error("Error al cargar especialidades:", error.response?.data || error.message);
             }
         };
 
-        const fetchMeasurements = async () => {
-            try {
-                const response = await axios.get(`${apiUrl}/user/measurements/`, {
-                    headers: {
-                        'Authorization': `Token ${localStorage.getItem('authToken')}`
-                    }
-                });
-                setMeasurements(response.data);
-            } catch (error) {
-                setError("Error al cargar el historial de medidas");
-                console.error("Error al cargar el historial de medidas:", error.response?.data || error.message);
-            }
-        };
-
         fetchProfile();
         fetchSpecialties();
-        fetchMeasurements();
     }, [apiUrl]);
+
+    useEffect(() => {
+        if (measurements.length > 0) {
+            const latestMeasurement = measurements[measurements.length - 1];
+            setRegularUser({
+                weight: latestMeasurement.weight || '',
+                height: latestMeasurement.height || '',
+                neck: latestMeasurement.neck || '',
+                shoulder: latestMeasurement.shoulder || '',
+                chest: latestMeasurement.chest || '',
+                waist: latestMeasurement.waist || '',
+                hip: latestMeasurement.hip || '',
+                arm: latestMeasurement.arm || '',
+                glute: latestMeasurement.glute || '',
+                upper_leg: latestMeasurement.upper_leg || '',
+                middle_leg: latestMeasurement.middle_leg || '',
+                lower_leg: latestMeasurement.lower_leg || ''
+            });
+        }
+    }, [measurements]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -162,24 +155,24 @@ const Profile = () => {
         setProfile(prevProfile => ({ ...prevProfile, image: e.target.files[0] }));
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmitProfile = async (e) => {
         e.preventDefault();
-    
+
         const formData = new FormData();
         formData.append('bio', profile.bio);
         formData.append('age', profile.age);
         formData.append('gender', profile.gender);
+        formData.append('communication_email', profile.communication_email);
+        formData.append('phone', profile.phone);
         if (profile.image instanceof File) {
             formData.append('image', profile.image);
         }
-    
+
         if (isTrainer) {
             formData.append('trainer_type', profile.trainer_type);
             formData.append('specialties', JSON.stringify(profile.specialties));
-            formData.append('communication_email', profile.communication_email);
-            formData.append('phone', profile.phone);
         }
-    
+
         try {
             const response = await axios.put(`${apiUrl}/user/profile/`, formData, {
                 headers: {
@@ -187,64 +180,45 @@ const Profile = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-    
-            const { profile: updatedProfileData = {}, trainer: updatedTrainerData = {}, regular_user: updatedRegularUserData = {} } = response.data;
-    
+
             setProfile({
-                bio: updatedProfileData.bio || '',
-                age: updatedProfileData.age || '',
-                gender: updatedProfileData.gender || 'male',
-                image: updatedProfileData.image || null,
-                specialties: updatedTrainerData ? updatedTrainerData.specialties : [],
-                trainer_type: updatedTrainerData ? updatedTrainerData.trainer_type : 'trainer',
-                communication_email: updatedTrainerData ? updatedTrainerData.communication_email : '',
-                phone: updatedTrainerData ? updatedTrainerData.phone : ''
-            });
-    
-            setRegularUser({
-                weight: updatedRegularUserData.weight || '',
-                height: updatedRegularUserData.height || '',
-                neck: updatedRegularUserData.neck || '',
-                shoulder: updatedRegularUserData.shoulder || '',
-                chest: updatedRegularUserData.chest || '',
-                waist: updatedRegularUserData.waist || '',
-                hip: updatedRegularUserData.hip || '',
-                arm: updatedRegularUserData.arm || '',
-                glute: updatedRegularUserData.glute || '',
-                upper_leg: updatedRegularUserData.upper_leg || '',
-                middle_leg: updatedRegularUserData.middle_leg || '',
-                lower_leg: updatedRegularUserData.lower_leg || '',
-                communication_email: updatedRegularUserData.communication_email || '',
-                phone: updatedRegularUserData.phone || ''
+                bio: response.data.bio || '',
+                age: response.data.age || '',
+                gender: response.data.gender || 'male',
+                image: response.data.image || null,
+                specialties: response.data.trainer?.specialties || [],
+                trainer_type: response.data.trainer?.trainer_type || 'trainer',
+                communication_email: response.data.communication_email || '',
+                phone: response.data.phone || ''
             });
 
-            // Save measurement data for regular users
-            if (!isTrainer) {
-                try {
-                    await axios.post(`${apiUrl}/user/measurements/`, regularUser, {
-                        headers: {
-                            'Authorization': `Token ${localStorage.getItem('authToken')}`,
-                            'Content-Type': 'application/json'
-                        }
-                    });
-
-                    // Refresh measurements after adding new ones
-                    const measurementsResponse = await axios.get(`${apiUrl}/user/measurements/history/${response.data.id}/`, {
-                        headers: {
-                            'Authorization': `Token ${localStorage.getItem('authToken')}`
-                        }
-                    });
-                    setMeasurements(measurementsResponse.data);
-
-                } catch (error) {
-                    setError(`Error al guardar las medidas: ${error.response ? JSON.stringify(error.response.data) : error.message}`);
-                    console.error("Error al guardar las medidas:", error.response?.data || error.message);
-                }
-            }
-    
         } catch (error) {
             setError(`Error al actualizar el perfil: ${error.response ? JSON.stringify(error.response.data) : error.message}`);
             console.error("Error al actualizar el perfil:", error.response?.data || error.message);
+        }
+    };
+
+    const handleSubmitMeasurements = async (e) => {
+        e.preventDefault();
+
+        try {
+            await axios.post(`${apiUrl}/user/measurements/`, regularUser, {
+                headers: {
+                    'Authorization': `Token ${localStorage.getItem('authToken')}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const measurementsResponse = await axios.get(`${apiUrl}/user/measurements/`, {
+                headers: {
+                    'Authorization': `Token ${localStorage.getItem('authToken')}`
+                }
+            });
+            setMeasurements(Array.isArray(measurementsResponse.data) ? measurementsResponse.data : []);
+
+        } catch (error) {
+            setError(`Error al guardar las medidas: ${error.response ? JSON.stringify(error.response.data) : error.message}`);
+            console.error("Error al guardar las medidas:", error.response?.data || error.message);
         }
     };
 
@@ -278,7 +252,7 @@ const Profile = () => {
                 startDate = new Date(now.setMonth(now.getMonth() - 1));
         }
 
-        return measurements.filter(measurement => new Date(measurement.date) >= startDate);
+        return Array.isArray(measurements) ? measurements.filter(measurement => new Date(measurement.date) >= startDate) : [];
     };
 
     const getChartData = () => {
@@ -292,7 +266,7 @@ const Profile = () => {
             borderColor: `rgba(${index * 50}, ${index * 100}, ${index * 150}, 1)`,
             borderWidth: 1,
             fill: false,
-            spanGaps: true // Esta línea asegura que las líneas se dibujen a través de los puntos faltantes
+            spanGaps: true
         }));
 
         return {
@@ -318,7 +292,7 @@ const Profile = () => {
         const filteredMeasurements = filterMeasurementsByTimeRange();
 
         return (
-            <Table striped bordered hover className="mt-4">
+            <table className="table table-striped mt-4">
                 <thead>
                     <tr>
                         <th>Fecha</th>
@@ -337,7 +311,7 @@ const Profile = () => {
                         </tr>
                     ))}
                 </tbody>
-            </Table>
+            </table>
         );
     };
 
@@ -364,7 +338,7 @@ const Profile = () => {
         <div className="container-profile mt-4">
             <h2 className="title-profile">Perfil</h2>
             {error && <p className="text-danger">{error}</p>}
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmitProfile}>
                 <div className="mb-3">
                     <label htmlFor="bio" className="form-label">Biografía</label>
                     <textarea
@@ -400,7 +374,7 @@ const Profile = () => {
                         <option value="other">Otro</option>
                     </select>
                 </div>
-                {isTrainer ? (
+                {isTrainer && (
                     <>
                         <div className="mb-3">
                             <label htmlFor="trainer_type" className="form-label">Tipo de Entrenador</label>
@@ -434,36 +408,40 @@ const Profile = () => {
                                 </div>
                             ))}
                         </div>
-                        <Row>
-                            <Col md={6}>
-                                <div className="mb-3">
-                                    <label htmlFor="communication_email" className="form-label">Correo Electrónico</label>
-                                    <input
-                                        type="email"
-                                        id="communication_email"
-                                        name="communication_email"
-                                        className="form-control"
-                                        value={profile.communication_email}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-                            </Col>
-                            <Col md={6}>
-                                <div className="mb-3">
-                                    <label htmlFor="phone" className="form-label">Teléfono</label>
-                                    <input
-                                        type="text"
-                                        id="phone"
-                                        name="phone"
-                                        className="form-control"
-                                        value={profile.phone}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-                            </Col>
-                        </Row>
                     </>
-                ) : (
+                )}
+                <Row>
+                    <Col md={6}>
+                        <div className="mb-3">
+                            <label htmlFor="communication_email" className="form-label">Correo Electrónico</label>
+                            <input
+                                type="email"
+                                id="communication_email"
+                                name="communication_email"
+                                className="form-control"
+                                value={profile.communication_email}
+                                onChange={handleChange}
+                            />
+                        </div>
+                    </Col>
+                    <Col md={6}>
+                        <div className="mb-3">
+                            <label htmlFor="phone" className="form-label">Teléfono</label>
+                            <input
+                                type="text"
+                                id="phone"
+                                name="phone"
+                                className="form-control"
+                                value={profile.phone}
+                                onChange={handleChange}
+                            />
+                        </div>
+                    </Col>
+                </Row>
+                <button type="submit" className="btn btn-primary">Guardar Cambios del Perfil</button>
+            </form>
+            {!isTrainer && (
+                <form onSubmit={handleSubmitMeasurements}>
                     <Container>
                         <Row>
                             <Col md={6}>
@@ -633,48 +611,10 @@ const Profile = () => {
                                 </div>
                             </Col>
                         </Row>
-                        <Row>
-                            <Col md={6}>
-                                <div className="mb-3">
-                                    <label htmlFor="communication_email" className="form-label">Correo Electrónico</label>
-                                    <input
-                                        type="email"
-                                        id="communication_email"
-                                        name="communication_email"
-                                        className="form-control"
-                                        value={regularUser.communication_email}
-                                        onChange={handleRegularUserChange}
-                                    />
-                                </div>
-                            </Col>
-                            <Col md={6}>
-                                <div className="mb-3">
-                                    <label htmlFor="phone" className="form-label">Teléfono</label>
-                                    <input
-                                        type="text"
-                                        id="phone"
-                                        name="phone"
-                                        className="form-control"
-                                        value={regularUser.phone}
-                                        onChange={handleRegularUserChange}
-                                    />
-                                </div>
-                            </Col>
-                        </Row>
+                        <button type="submit" className="btn btn-primary">Guardar Medidas</button>
                     </Container>
-                )}
-                <div className="mb-3">
-                    <label htmlFor="image" className="form-label">Imagen de Perfil</label>
-                    <input
-                        type="file"
-                        id="image"
-                        name="image"
-                        className="form-control"
-                        onChange={handleImageChange}
-                    />
-                </div>
-                <button type="submit" className="btn btn-primary">Guardar Cambios</button>
-            </form>
+                </form>
+            )}
             {!isTrainer && (
                 <div>
                     <Form.Group controlId="viewTypeSelect" className="mt-3">

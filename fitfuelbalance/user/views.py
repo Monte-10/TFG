@@ -81,7 +81,7 @@ class ProfileView(viewsets.ViewSet):
                 "trainer": trainer_data,
                 "regular_user": regular_user_data,
                 "username": user.username,
-                "id": user.id,  # Asegúrate de que el user_id se devuelve aquí
+                "id": user.id,
                 "role": "trainer" if user.is_trainer() else "regular_user",
                 "personal_trainer": regular_user_data.get('personal_trainer') if regular_user_data else None
             }, status=status.HTTP_200_OK)
@@ -381,6 +381,13 @@ def remove_trainer(request):
 class RegularUserViewSet(viewsets.ModelViewSet):
     queryset = RegularUser.objects.all()
     serializer_class = RegularUserSerializer
+
+    def update(self, request, *args, **kwargs):
+        user = self.get_object()
+        serializer = self.get_serializer(user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
     
 class TrainerViewSet(viewsets.ModelViewSet):
     queryset = Trainer.objects.all()

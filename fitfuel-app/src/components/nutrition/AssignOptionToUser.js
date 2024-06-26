@@ -24,11 +24,15 @@ function AssignOptionToUser() {
         const optionsResponse = await fetch(`${apiUrl}/nutrition/options/`, {
           headers: { 'Authorization': `Token ${localStorage.getItem('authToken')}` },
         });
+
         if (!usersResponse.ok || !optionsResponse.ok) throw new Error('Error al obtener los datos');
+        
         const usersData = await usersResponse.json();
         const optionsData = await optionsResponse.json();
-        setUsers(usersData);
-        setOptions(optionsData);
+
+        // Utiliza los arrays dentro de la propiedad `results`
+        setUsers(usersData.results);
+        setOptions(optionsData.results);
       } catch (error) {
         setError('Error al obtener los datos. Por favor, intente nuevamente más tarde.');
       }

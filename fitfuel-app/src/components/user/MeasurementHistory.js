@@ -16,7 +16,7 @@ const MeasurementHistory = () => {
                         'Authorization': `Token ${localStorage.getItem('authToken')}`
                     }
                 });
-                setMeasurements(response.data);
+                setMeasurements(Array.isArray(response.data) ? response.data : []);
             } catch (error) {
                 setError('Error al cargar el historial de medidas');
                 console.error("Error al cargar el historial de medidas:", error.response?.data || error.message);

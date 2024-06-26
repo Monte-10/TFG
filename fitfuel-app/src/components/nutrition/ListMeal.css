@@ -41,6 +41,10 @@ h1 {
     color: #f0f0f0; /* Texto claro */
 }
 
+.table-listmeal tbody tr:nth-child(even) {
+    background-color: #3a3a3a; /* Fondo gris oscuro intercalado */
+}
+
 .table-listmeal tbody tr:hover {
     background-color: #444; /* Fondo un poco más claro al pasar el ratón */
 }
@@ -89,6 +93,12 @@ h1 {
 .btn-secondary-listmeal {
     background-color: #6c757d;
     border-color: #6c757d;
+    color: #fff;
+}
+
+.btn-info-listmeal {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
     color: #fff;
 }
 

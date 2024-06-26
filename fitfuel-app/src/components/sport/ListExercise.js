@@ -16,7 +16,9 @@ function ListExercise() {
         })
         .then(response => response.json())
         .then(data => {
-            setExercises(data);
+            // Assuming the response data structure is { results: [...] }
+            const exercisesList = data.results || data; // Adjust according to the actual structure
+            setExercises(exercisesList);
         })
         .catch(error => console.error('Error fetching exercises:', error));
     }, [apiUrl]);
@@ -52,7 +54,7 @@ function ListExercise() {
                     </tr>
                 </thead>
                 <tbody>
-                    {exercises.map(exercise => (
+                    {Array.isArray(exercises) && exercises.length > 0 ? exercises.map(exercise => (
                         <tr key={exercise.id} onClick={() => navigate(`/sport/exercise/${exercise.id}`)} style={{ cursor: 'pointer' }}>
                             <td>{exercise.name}</td>
                             <td>{exercise.type}</td>
@@ -61,14 +63,13 @@ function ListExercise() {
                                 <button onClick={(event) => { event.stopPropagation(); handleDeleteExercise(exercise.id); }} className="btn btn-danger">Eliminar</button>
                             </td>
                         </tr>
-                    ))}
+                    )) : (
+                        <tr>
+                            <td colSpan="3" className="text-center">No se encontraron ejercicios.</td>
+                        </tr>
+                    )}
                 </tbody>
             </table>
-            {exercises.length === 0 && (
-                <div className="alert alert-info" role="alert">
-                    No se encontraron ejercicios.
-                </div>
-            )}
         </div>
     );
 }

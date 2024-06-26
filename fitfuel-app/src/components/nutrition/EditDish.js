@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './EditDish.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function EditDish() {
     const { dishId } = useParams();
@@ -24,9 +26,9 @@ function EditDish() {
     useEffect(() => {
         fetch(`${apiUrl}/nutrition/dishes/${dishId}/`, {
             headers: {
-              'Authorization': `Token ${localStorage.getItem('authToken')}`
+                'Authorization': `Token ${localStorage.getItem('authToken')}`
             }
-          })
+        })
             .then(response => response.json())
             .then(data => {
                 setName(data.name);
@@ -39,25 +41,26 @@ function EditDish() {
 
         fetch(`${apiUrl}/nutrition/ingredients/`, {
             headers: {
-              'Authorization': `Token ${localStorage.getItem('authToken')}`
+                'Authorization': `Token ${localStorage.getItem('authToken')}`
             }
-          })
+        })
             .then(response => response.json())
-            .then(data => setIngredients(data))
+            .then(data => setIngredients(data.results || []))
             .catch(error => console.error('Error fetching ingredients:', error));
 
-            fetch(`${apiUrl}/user/regularusers/`, {
-                headers: {
-                  'Authorization': `Token ${localStorage.getItem('authToken')}`
-                }
-              })
+        fetch(`${apiUrl}/user/regularusers/`, {
+            headers: {
+                'Authorization': `Token ${localStorage.getItem('authToken')}`
+            }
+        })
             .then(response => response.json())
             .then(data => {
-                setUsers(data);
-                if (data.length > 0) {
-                    setSelectedUser(data[0].id.toString());
+                setUsers(data.results || []);
+                if (data.results && data.results.length > 0) {
+                    setSelectedUser(data.results[0].id.toString());
                 }
-            });
+            })
+            .catch(error => console.error('Error fetching users:', error));
     }, [dishId, apiUrl]);
 
     useEffect(() => {
@@ -134,7 +137,7 @@ function EditDish() {
                 quantity: parseFloat(si.quantity),
             })),
         };
-    
+
         try {
             const response = await fetch(`${apiUrl}/nutrition/dishes/`, {
                 method: 'POST',
@@ -144,12 +147,12 @@ function EditDish() {
                 },
                 body: JSON.stringify(dishData),
             });
-    
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(`Error: ${response.status} ${JSON.stringify(errorData)}`);
             }
-    
+
             const newDish = await response.json();
             console.log('New dish created successfully:', newDish);
             navigate(`/dish-details/${newDish.id}`); // Redirect to the new dish details page
@@ -157,7 +160,6 @@ function EditDish() {
             console.error('Error duplicating dish:', error);
         }
     };
-    
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -222,7 +224,8 @@ function EditDish() {
                         onChange={(e) => setSelectedUser(e.target.value)}
                         required
                     >
-                        {users.map(user => (
+                        <option value="">Seleccionar Usuario</option>
+                        {Array.isArray(users) && users.map(user => (
                             <option key={user.id} value={user.id}>{user.username}</option>
                         ))}
                     </select>
@@ -234,7 +237,7 @@ function EditDish() {
                         <div key={index} className="input-group mb-3">
                             <select className="form-select" value={ingredient.ingredientId} onChange={(e) => handleIngredientChange(index, 'ingredientId', e.target.value)} required>
                                 <option value="">Seleccionar Ingrediente</option>
-                                {ingredients.map((ing) => (
+                                {Array.isArray(ingredients) && ingredients.map((ing) => (
                                     <option key={ing.id} value={ing.id}>{ing.name}</option>
                                 ))}
                             </select>

@@ -31,7 +31,14 @@ function CreateDayOption() {
   });
   const [optionCreated, setOptionCreated] = useState(false);
   const [error, setError] = useState('');
-  const [filter, setFilter] = useState({ name: '' });
+  const [filters, setFilters] = useState({
+    breakfast: { name: '' },
+    mid_morning: { name: '' },
+    lunch: { name: '' },
+    snack: { name: '' },
+    dinner: { name: '' },
+    extras: { name: '' }
+  });
   const [currentPage, setCurrentPage] = useState({
     breakfast: 1,
     mid_morning: 1,
@@ -53,9 +60,9 @@ function CreateDayOption() {
 
   useEffect(() => {
     ['breakfast', 'mid_morning', 'lunch', 'snack', 'dinner', 'extras'].forEach(mealType => {
-      fetchMeals(mealType, currentPage[mealType], filter);
+      fetchMeals(mealType, currentPage[mealType], filters[mealType]);
     });
-  }, [currentPage, filter]);
+  }, [currentPage, filters]);
 
   const fetchMeals = (mealType, page, filters) => {
     const queryParams = new URLSearchParams({
@@ -178,8 +185,8 @@ function CreateDayOption() {
     setSelectedMeals({ ...selectedMeals, extras: selectedOptions });
   };
 
-  const handleFilterChange = (e) => {
-    setFilter({ ...filter, [e.target.name]: e.target.value });
+  const handleFilterChange = (mealType, value) => {
+    setFilters(prevFilters => ({ ...prevFilters, [mealType]: { name: value } }));
   };
 
   const handlePageChange = (mealType, newPage) => {
@@ -252,21 +259,17 @@ function CreateDayOption() {
             />
           </div>
 
-          <div className="mb-3">
-            <label htmlFor="filterName" className="form-label">Buscar Comida:</label>
-            <input
-              type="text"
-              className="form-control"
-              id="filterName"
-              name="name"
-              value={filter.name}
-              onChange={handleFilterChange}
-              placeholder="Buscar por nombre"
-            />
-          </div>
-
           {['breakfast', 'mid_morning', 'lunch', 'snack', 'dinner'].map(mealType => (
             <div key={mealType} className="mb-3">
+              <label htmlFor={`filterName-${mealType}`} className="form-label">Buscar {mealType}:</label>
+              <input
+                type="text"
+                className="form-control"
+                id={`filterName-${mealType}`}
+                value={filters[mealType].name}
+                onChange={e => handleFilterChange(mealType, e.target.value)}
+                placeholder={`Buscar por nombre ${mealType}`}
+              />
               <h4>{mealType.charAt(0).toUpperCase() + mealType.slice(1)}</h4>
               {meals[mealType] && meals[mealType].map(meal => (
                 <div key={meal.id} className="card mb-2 small-card">

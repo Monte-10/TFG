@@ -12,23 +12,34 @@ function CreateTraining() {
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch(`${apiUrl}/sport/exercises/`, {
-      headers: {
-        'Authorization': `Token ${localStorage.getItem('authToken')}`
-      }
-    })
-      .then(response => response.json())
-      .then(data => setExercises(data))
-      .catch(error => console.error('Error:', error));
+    const fetchUsersAndExercises = async () => {
+      try {
+        const exercisesResponse = await fetch(`${apiUrl}/sport/exercises/`, {
+          headers: {
+            'Authorization': `Token ${localStorage.getItem('authToken')}`
+          }
+        });
+        const usersResponse = await fetch(`${apiUrl}/user/regularusers/`, {
+          headers: {
+            'Authorization': `Token ${localStorage.getItem('authToken')}`
+          }
+        });
 
-    fetch(`${apiUrl}/user/regularusers/`, {
-      headers: {
-        'Authorization': `Token ${localStorage.getItem('authToken')}`
+        if (!exercisesResponse.ok || !usersResponse.ok) throw new Error('Error al obtener los datos');
+
+        const exercisesData = await exercisesResponse.json();
+        const usersData = await usersResponse.json();
+
+        // Utiliza los arrays dentro de la propiedad `results`
+        setExercises(exercisesData.results);
+        setUsers(usersData.results);
+      } catch (error) {
+        setError('Error al obtener los datos. Por favor, intente nuevamente más tarde.');
+        console.error('Error fetching data:', error);
       }
-    })
-      .then(response => response.json())
-      .then(data => setUsers(data))
-      .catch(error => console.error('Error al obtener usuarios:', error));
+    };
+
+    fetchUsersAndExercises();
   }, [apiUrl]);
 
   const handleAddExercise = () => {
@@ -58,29 +69,27 @@ function CreateTraining() {
       }))
     };
 
-    fetch(`${apiUrl}/sport/trainings/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Token ${authToken}`
-      },
-      body: JSON.stringify(trainingData),
-    })
-    .then(response => {
+    try {
+      const response = await fetch(`${apiUrl}/sport/trainings/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${authToken}`
+        },
+        body: JSON.stringify(trainingData),
+      });
+
       if (!response.ok) {
-        return response.json().then(errorData => {
-          throw new Error('Error al crear el entrenamiento: ' + JSON.stringify(errorData));
-        });
+        const errorData = await response.json();
+        throw new Error('Error al crear el entrenamiento: ' + JSON.stringify(errorData));
       }
-      return response.json();
-    })
-    .then(data => {
+
+      const data = await response.json();
       alert('Entrenamiento creado exitosamente!');
-    })
-    .catch((error) => {
+    } catch (error) {
       setError('Error al crear el entrenamiento');
       console.error('Error:', error);
-    });
+    }
   };
 
   return (

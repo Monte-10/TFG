@@ -43,30 +43,62 @@ function CreateDish() {
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch(`${apiUrl}/nutrition/ingredients/`, {
-      headers: {
-        'Authorization': `Token ${localStorage.getItem('authToken')}`
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        setIngredients(data);
-        setTotalPages(Math.ceil(data.length / itemsPerPage));
-      });
+    fetchIngredients(currentPage, filters);
+    fetchUsers();
+  }, [apiUrl, currentPage, filters]);
 
-    fetch(`${apiUrl}/user/regularusers/`, {
-      headers: {
-        'Authorization': `Token ${localStorage.getItem('authToken')}`
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.length > 0) {
-          setUsers(data);
-          setSelectedUser(data[0]?.id?.toString() || '');
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch(`${apiUrl}/user/regularusers/`, {
+        headers: {
+          'Authorization': `Token ${localStorage.getItem('authToken')}`
         }
       });
-  }, [apiUrl, itemsPerPage]);
+      if (!response.ok) {
+        throw new Error('Error fetching users');
+      }
+      const data = await response.json();
+      setUsers(data.results || []);
+      if (data.results && data.results.length > 0) {
+        setSelectedUser(data.results[0].id.toString());
+      }
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+
+  const fetchIngredients = (page, filters) => {
+    const queryParams = new URLSearchParams({
+      page: page + 1,
+      page_size: itemsPerPage,
+      name: filters.name,
+      calories__gte: filters.minCalories,
+      calories__lte: filters.maxCalories,
+      protein__gte: filters.minProtein,
+      protein__lte: filters.maxProtein,
+      carbohydrates__gte: filters.minCarbohydrates,
+      carbohydrates__lte: filters.maxCarbohydrates,
+      fat__gte: filters.minFat,
+      fat__lte: filters.maxFat,
+      sugar__gte: filters.minSugar,
+      sugar__lte: filters.maxSugar,
+      fiber__gte: filters.minFiber,
+      fiber__lte: filters.maxFiber,
+      saturated_fat__gte: filters.minSaturatedFat,
+      saturated_fat__lte: filters.maxSaturatedFat,
+    });
+
+    fetch(`${apiUrl}/nutrition/ingredients/?${queryParams.toString()}`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        setIngredients(data.results);
+        setTotalPages(Math.ceil(data.count / itemsPerPage));
+      });
+  };
 
   useEffect(() => {
     const totals = selectedIngredients.reduce((acc, { ingredientId, quantity }) => {
@@ -158,29 +190,11 @@ function CreateDish() {
     setSelectedIngredients(updatedIngredients);
   };
 
-  const filteredIngredients = ingredients.filter(ingredient => {
-    return (!filters.name || ingredient.name.toLowerCase().includes(filters.name.toLowerCase())) &&
-      (!filters.minCalories || ingredient.calories >= filters.minCalories) &&
-      (!filters.maxCalories || ingredient.calories <= filters.maxCalories) &&
-      (!filters.minProtein || ingredient.protein >= filters.minProtein) &&
-      (!filters.maxProtein || ingredient.protein <= filters.maxProtein) &&
-      (!filters.minCarbohydrates || ingredient.carbohydrates >= filters.minCarbohydrates) &&
-      (!filters.maxCarbohydrates || ingredient.carbohydrates <= filters.maxCarbohydrates) &&
-      (!filters.minFat || ingredient.fat >= filters.minFat) &&
-      (!filters.maxFat || ingredient.fat <= filters.maxFat) &&
-      (!filters.minSugar || ingredient.sugar >= filters.minSugar) &&
-      (!filters.maxSugar || ingredient.sugar <= filters.maxSugar) &&
-      (!filters.minFiber || ingredient.fiber >= filters.minFiber) &&
-      (!filters.maxFiber || ingredient.fiber <= filters.maxFiber) &&
-      (!filters.minSaturatedFat || ingredient.saturated_fat >= filters.minSaturatedFat) &&
-      (!filters.maxSaturatedFat || ingredient.saturated_fat <= filters.maxSaturatedFat);
-  });
-
   const toggleAdvancedFilters = () => {
     setShowAdvancedFilters(!showAdvancedFilters);
   };
 
-  const currentIngredients = filteredIngredients.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+  const currentIngredients = ingredients.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

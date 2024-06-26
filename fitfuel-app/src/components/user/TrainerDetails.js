@@ -25,7 +25,7 @@ const TrainerDetails = () => {
                 const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/specialties/`, {
                     headers: { 'Authorization': `Token ${localStorage.getItem('authToken')}` }
                 });
-                setSpecialties(response.data);
+                setSpecialties(Array.isArray(response.data) ? response.data : []);
             } catch (error) {
                 console.error("Error al cargar las especialidades:", error);
             }
@@ -65,7 +65,7 @@ const TrainerDetails = () => {
                 <Card className="trainer-details-card mx-auto">
                     <Card.Body>
                         <Card.Title className="text-center">{trainerDetails.username}</Card.Title>
-                        <Card.Text><strong>Especialidades:</strong> {getSpecialtyNames(trainerDetails.specialties)}</Card.Text>
+                        <Card.Text><strong>Especialidades:</strong> {getSpecialtyNames(trainerDetails.specialties || [])}</Card.Text>
                         <Card.Text><strong>Tipo de Entrenador:</strong> {trainerDetails.trainer_type}</Card.Text>
                         <Card.Text><strong>Email:</strong> {trainerDetails.communication_email}</Card.Text>
                         <Card.Text><strong>Teléfono:</strong> {trainerDetails.phone}</Card.Text>

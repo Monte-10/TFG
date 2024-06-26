@@ -6,53 +6,79 @@ import './CreateIngredient.css';
 function CreateIngredient() {
   const [foods, setFoods] = useState([]);
   const [filteredFoods, setFilteredFoods] = useState([]);
-  const [selectedFood, setSelectedFood] = useState('');
+  const [selectedFood, setSelectedFood] = useState(null);
   const [quantity, setQuantity] = useState(0);
   const [name, setName] = useState('');
   const [nutritionalInfo, setNutritionalInfo] = useState({});
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [filters, setFilters] = useState({
-    name: { value: '', active: true },
-    minCalories: { value: '', active: false },
-    maxCalories: { value: '', active: false },
-    minProtein: { value: '', active: false },
-    maxProtein: { value: '', active: false },
-    minCarbohydrates: { value: '', active: false },
-    maxCarbohydrates: { value: '', active: false },
-    minFat: { value: '', active: false },
-    maxFat: { value: '', active: false },
-    minSugar: { value: '', active: false },
-    maxSugar: { value: '', active: false },
-    minFiber: { value: '', active: false },
-    maxFiber: { value: '', active: false },
-    minSaturatedFat: { value: '', active: false },
-    maxSaturatedFat: { value: '', active: false },
+    name: '',
+    minCalories: '',
+    maxCalories: '',
+    minProtein: '',
+    maxProtein: '',
+    minCarbohydrates: '',
+    maxCarbohydrates: '',
+    minFat: '',
+    maxFat: '',
+    minSugar: '',
+    maxSugar: '',
+    minFiber: '',
+    maxFiber: '',
+    minSaturatedFat: '',
+    maxSaturatedFat: ''
   });
+  const [itemsPerPage] = useState(6); // Cambiado a 6 para más platos por página
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch(`${apiUrl}/nutrition/foods/`, {
+    fetchFoods(currentPage, filters);
+  }, [currentPage, filters]);
+
+  const fetchFoods = (page, filters) => {
+    const queryParams = new URLSearchParams({
+      page: page,
+      page_size: itemsPerPage,
+      name: filters.name,
+      calories__gte: filters.minCalories,
+      calories__lte: filters.maxCalories,
+      protein__gte: filters.minProtein,
+      protein__lte: filters.maxProtein,
+      carbohydrates__gte: filters.minCarbohydrates,
+      carbohydrates__lte: filters.maxCarbohydrates,
+      fat__gte: filters.minFat,
+      fat__lte: filters.maxFat,
+      sugar__gte: filters.minSugar,
+      sugar__lte: filters.maxSugar,
+      fiber__gte: filters.minFiber,
+      fiber__lte: filters.maxFiber,
+      saturated_fat__gte: filters.minSaturatedFat,
+      saturated_fat__lte: filters.maxSaturatedFat
+    });
+
+    fetch(`${apiUrl}/nutrition/foods/?${queryParams.toString()}`, {
       headers: {
         'Authorization': `Token ${localStorage.getItem('authToken')}`
       }
     })
-    .then(response => response.json())
-    .then(data => {
-      setFoods(data);
-    })
-    .catch(error => {
-      console.error('Error fetching foods:', error);
-    });
-  }, [apiUrl]);
+      .then(response => response.json())
+      .then(data => {
+        setFoods(data.results);
+        setTotalPages(Math.ceil(data.count / itemsPerPage));
+      })
+      .catch(error => console.error('Error fetching foods:', error));
+  };
 
   useEffect(() => {
     const updatedFoods = foods.filter(food => {
       return Object.entries(filters).every(([key, filter]) => {
-        if (!filter.active || filter.value === '') return true;
-        const value = parseFloat(filter.value);
+        if (!filter || filter === '') return true;
+        const value = parseFloat(filter);
         switch (key) {
           case 'name':
-            return food.name.toLowerCase().includes(filter.value.toLowerCase());
+            return food.name.toLowerCase().includes(filter.toLowerCase());
           case 'minCalories':
             return food.calories >= value;
           case 'maxCalories':
@@ -90,10 +116,9 @@ function CreateIngredient() {
   }, [foods, filters]);
 
   const handleFilterChange = (name, value) => {
-    const isActive = value !== '';
     setFilters(prevFilters => ({
       ...prevFilters,
-      [name]: { value, active: isActive }
+      [name]: value
     }));
   };
 
@@ -103,30 +128,34 @@ function CreateIngredient() {
 
   const resetFilters = () => {
     setFilters({
-      name: { value: '', active: true },
-      minCalories: { value: '', active: false },
-      maxCalories: { value: '', active: false },
-      minProtein: { value: '', active: false },
-      maxProtein: { value: '', active: false },
-      minCarbohydrates: { value: '', active: false },
-      maxCarbohydrates: { value: '', active: false },
-      minFat: { value: '', active: false },
-      maxFat: { value: '', active: false },
-      minSugar: { value: '', active: false },
-      maxSugar: { value: '', active: false },
-      minFiber: { value: '', active: false },
-      maxFiber: { value: '', active: false },
-      minSaturatedFat: { value: '', active: false },
-      maxSaturatedFat: { value: '', active: false },
+      name: '',
+      minCalories: '',
+      maxCalories: '',
+      minProtein: '',
+      maxProtein: '',
+      minCarbohydrates: '',
+      maxCarbohydrates: '',
+      minFat: '',
+      maxFat: '',
+      minSugar: '',
+      maxSugar: '',
+      minFiber: '',
+      maxFiber: '',
+      minSaturatedFat: '',
+      maxSaturatedFat: ''
     });
     setShowAdvancedFilters(false);
   };
 
-  const handleSelectChange = (event) => {
-    const foodId = event.target.value;
-    setSelectedFood(foodId);
-    const selectedFood = foods.find(food => food.id.toString() === foodId);
-    setNutritionalInfo(selectedFood ? selectedFood : {});
+  const handleSelectChange = (foodId) => {
+    if (selectedFood && selectedFood.id === foodId) {
+      setSelectedFood(null);
+      setNutritionalInfo({});
+    } else {
+      const selectedFoodItem = foods.find(food => food.id === foodId);
+      setSelectedFood(selectedFoodItem);
+      setNutritionalInfo(selectedFoodItem ? selectedFoodItem : {});
+    }
   };
 
   const handleQuantityChange = (event) => {
@@ -142,7 +171,7 @@ function CreateIngredient() {
     event.preventDefault();
     const ingredientData = {
       name: name,
-      food: selectedFood,
+      food: selectedFood ? selectedFood.id : null,
       quantity: quantity
     };
 
@@ -152,19 +181,19 @@ function CreateIngredient() {
         'Content-Type': 'application/json',
         'Authorization': `Token ${localStorage.getItem('authToken')}`
       },
-      body: JSON.stringify(ingredientData),
+      body: JSON.stringify(ingredientData)
     })
-    .then(response => response.json())
-    .then(data => {
-      toast.success('Ingrediente creado exitosamente!');
-      setName('');
-      setSelectedFood('');
-      setQuantity(0);
-    })
-    .catch(error => {
-      console.error('Error creando el ingrediente:', error);
-      toast.error('Error creando el ingrediente');
-    });
+      .then(response => response.json())
+      .then(data => {
+        toast.success('Ingrediente creado exitosamente!');
+        setName('');
+        setSelectedFood(null);
+        setQuantity(0);
+      })
+      .catch(error => {
+        console.error('Error creando el ingrediente:', error);
+        toast.error('Error creando el ingrediente');
+      });
   };
 
   return (
@@ -179,7 +208,7 @@ function CreateIngredient() {
               type="text" 
               className="form-control" 
               id="filterName" 
-              value={filters.name.value} 
+              value={filters.name} 
               onChange={e => handleFilterChange('name', e.target.value)} 
             />
           </div>
@@ -195,7 +224,7 @@ function CreateIngredient() {
                     type="number"
                     className="form-control"
                     id="filterMinCalories"
-                    value={filters.minCalories.value}
+                    value={filters.minCalories}
                     onChange={e => handleFilterChange('minCalories', e.target.value)}
                   />
                 </div>
@@ -205,7 +234,7 @@ function CreateIngredient() {
                     type="number"
                     className="form-control"
                     id="filterMaxCalories"
-                    value={filters.maxCalories.value}
+                    value={filters.maxCalories}
                     onChange={e => handleFilterChange('maxCalories', e.target.value)}
                   />
                 </div>
@@ -215,7 +244,7 @@ function CreateIngredient() {
                     type="number"
                     className="form-control"
                     id="filterMinProtein"
-                    value={filters.minProtein.value}
+                    value={filters.minProtein}
                     onChange={e => handleFilterChange('minProtein', e.target.value)}
                   />
                 </div>
@@ -225,7 +254,7 @@ function CreateIngredient() {
                     type="number"
                     className="form-control"
                     id="filterMaxProtein"
-                    value={filters.maxProtein.value}
+                    value={filters.maxProtein}
                     onChange={e => handleFilterChange('maxProtein', e.target.value)}
                   />
                 </div>
@@ -237,7 +266,7 @@ function CreateIngredient() {
                     type="number"
                     className="form-control"
                     id="filterMinCarbohydrates"
-                    value={filters.minCarbohydrates.value}
+                    value={filters.minCarbohydrates}
                     onChange={e => handleFilterChange('minCarbohydrates', e.target.value)}
                   />
                 </div>
@@ -247,7 +276,7 @@ function CreateIngredient() {
                     type="number"
                     className="form-control"
                     id="filterMaxCarbohydrates"
-                    value={filters.maxCarbohydrates.value}
+                    value={filters.maxCarbohydrates}
                     onChange={e => handleFilterChange('maxCarbohydrates', e.target.value)}
                   />
                 </div>
@@ -257,7 +286,7 @@ function CreateIngredient() {
                     type="number"
                     className="form-control"
                     id="filterMinFat"
-                    value={filters.minFat.value}
+                    value={filters.minFat}
                     onChange={e => handleFilterChange('minFat', e.target.value)}
                   />
                 </div>
@@ -267,7 +296,7 @@ function CreateIngredient() {
                     type="number"
                     className="form-control"
                     id="filterMaxFat"
-                    value={filters.maxFat.value}
+                    value={filters.maxFat}
                     onChange={e => handleFilterChange('maxFat', e.target.value)}
                   />
                 </div>
@@ -279,7 +308,7 @@ function CreateIngredient() {
                     type="number"
                     className="form-control"
                     id="filterMinSugar"
-                    value={filters.minSugar.value}
+                    value={filters.minSugar}
                     onChange={e => handleFilterChange('minSugar', e.target.value)}
                   />
                 </div>
@@ -289,7 +318,7 @@ function CreateIngredient() {
                     type="number"
                     className="form-control"
                     id="filterMaxSugar"
-                    value={filters.maxSugar.value}
+                    value={filters.maxSugar}
                     onChange={e => handleFilterChange('maxSugar', e.target.value)}
                   />
                 </div>
@@ -299,7 +328,7 @@ function CreateIngredient() {
                     type="number"
                     className="form-control"
                     id="filterMinFiber"
-                    value={filters.minFiber.value}
+                    value={filters.minFiber}
                     onChange={e => handleFilterChange('minFiber', e.target.value)}
                   />
                 </div>
@@ -309,7 +338,7 @@ function CreateIngredient() {
                     type="number"
                     className="form-control"
                     id="filterMaxFiber"
-                    value={filters.maxFiber.value}
+                    value={filters.maxFiber}
                     onChange={e => handleFilterChange('maxFiber', e.target.value)}
                   />
                 </div>
@@ -332,18 +361,25 @@ function CreateIngredient() {
             onChange={e => setName(e.target.value)}
           />
 
-          <label htmlFor="food" className="form-label">Alimento</label>
-          <select 
-            className="form-select" 
-            id="food" 
-            value={selectedFood} 
-            onChange={handleSelectChange}
-          >
-            <option value="">Selecciona un alimento</option>
+          <label className="form-label">Alimento</label>
+          <div className="row">
             {filteredFoods.map(food => (
-              <option key={food.id} value={food.id}>{food.name}</option>
+              <div key={food.id} className="col-md-6 mb-3">
+                <div className="card">
+                  <div className="card-body">
+                    <h5 className="card-title">{food.name}</h5>
+                    <button 
+                      type="button" 
+                      className={`btn ${selectedFood && selectedFood.id === food.id ? 'btn-danger' : 'btn-primary'}`}
+                      onClick={() => handleSelectChange(food.id)}
+                    >
+                      {selectedFood && selectedFood.id === food.id ? 'Quitar' : 'Seleccionar'}
+                    </button>
+                  </div>
+                </div>
+              </div>
             ))}
-          </select>
+          </div>
 
           <label htmlFor="quantity" className="form-label">Cantidad (g)</label>
           <input 

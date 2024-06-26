@@ -56,22 +56,28 @@ def food_list(request):
     return render(request, 'food_list.html', {'filter': f})
 
 class FoodViewSet(viewsets.ModelViewSet):
-    queryset = Food.objects.all()
+    queryset = Food.objects.all().order_by('name')
     serializer_class = FoodSerializer
     
 class IngredientViewSet(viewsets.ModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     
+from django_filters.rest_framework import DjangoFilterBackend
+    
 class DishViewSet(viewsets.ModelViewSet):
     queryset = Dish.objects.all().prefetch_related('ingredients__food')
     serializer_class = DishSerializer
     pagination_class = StandardResultsSetPagination
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = DishFilter
     
 class MealViewSet(viewsets.ModelViewSet):
     queryset = Meal.objects.all().prefetch_related('dishes__ingredients__food', 'dishes')
     serializer_class = MealSerializer
     pagination_class = StandardResultsSetPagination
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = MealFilter
 
 class DailyDietViewSet(viewsets.ModelViewSet):
     queryset = DailyDiet.objects.all()
@@ -108,10 +114,21 @@ class DailyDietByDateView(APIView):
         serializer = DailyDietSerializer(daily_diets, many=True)
         return Response(serializer.data)
     
+from django_filters import rest_framework as filters
+
 class DayOptionViewSet(viewsets.ModelViewSet):
-    queryset = DayOption.objects.all().prefetch_related('breakfast__dishes__ingredients__food', 'mid_morning__dishes__ingredients__food', 'lunch__dishes__ingredients__food', 'snack__dishes__ingredients__food', 'dinner__dishes__ingredients__food', 'extras__dishes__ingredients__food')
+    queryset = DayOption.objects.all().prefetch_related(
+        'breakfast__dishes__ingredients__food', 
+        'mid_morning__dishes__ingredients__food', 
+        'lunch__dishes__ingredients__food', 
+        'snack__dishes__ingredients__food', 
+        'dinner__dishes__ingredients__food', 
+        'extras__dishes__ingredients__food'
+    )
     serializer_class = DayOptionSerializer
     pagination_class = StandardResultsSetPagination
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = DayOptionFilter
     
 class WeekOptionViewSet(viewsets.ModelViewSet):
     queryset = WeekOption.objects.all().prefetch_related(
@@ -160,6 +177,8 @@ class WeekOptionViewSet(viewsets.ModelViewSet):
     )
     serializer_class = WeekOptionSerializer
     pagination_class = StandardResultsSetPagination
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = WeekOptionFilter
     
 class OptionViewSet(viewsets.ModelViewSet):
     queryset = Option.objects.all()

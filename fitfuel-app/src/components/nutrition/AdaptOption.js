@@ -19,7 +19,7 @@ const AdaptOption = () => {
                         'Authorization': `Token ${localStorage.getItem('authToken')}`
                     }
                 });
-                setOptions(response.data);
+                setOptions(Array.isArray(response.data) ? response.data : []);
             } catch (error) {
                 setError('Error fetching options');
             }
@@ -32,7 +32,7 @@ const AdaptOption = () => {
                         'Authorization': `Token ${localStorage.getItem('authToken')}`
                     }
                 });
-                setUsers(response.data);
+                setUsers(Array.isArray(response.data.results) ? response.data.results : []);
             } catch (error) {
                 setError('Error fetching users');
             }

@@ -96,6 +96,12 @@ h1 {
     color: #fff;
 }
 
+.btn-info-listdish {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    color: #fff;
+}
+
 .pagination-listdish {
     display: flex;
     justify-content: center;

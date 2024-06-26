@@ -64,8 +64,6 @@ function HomePage({ profile }) {
                 <li><Link to="/sport/list-exercise">Listar Ejercicios</Link></li>
                 <li><Link to="/sport/create-training">Crear Entrenamiento</Link></li>
                 <li><Link to="/sport/list-training">Listar Entrenamientos</Link></li>
-                <li><Link to="/sport/create-week-training">Crear Entrenamiento Semanal</Link></li>
-                <li><Link to="/sport/assign-week-training">Asignar Entrenamiento Semanal</Link></li>
             </ul>
         </>
     );

@@ -15,7 +15,12 @@ function ListTraining() {
         })
         .then(response => response.json())
         .then(data => {
-            setTrainings(data);
+            console.log('Fetched trainings:', data);
+            if (data.results && Array.isArray(data.results)) {
+                setTrainings(data.results);
+            } else {
+                console.error('Trainings data is not an array:', data);
+            }
         })
         .catch(error => console.error('Error fetching trainings:', error));
     }, [apiUrl]);

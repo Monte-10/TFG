@@ -56,7 +56,8 @@ const TrainerList = () => {
                         'Authorization': `Token ${localStorage.getItem('authToken')}`
                     }
                 });
-                setTrainers(response.data);
+                console.log('Datos de entrenadores:', response.data.results); // Verificar los datos obtenidos
+                setTrainers(Array.isArray(response.data.results) ? response.data.results : []);
             } catch (error) {
                 console.error("Error al buscar entrenadores:", error);
                 setError("Error al buscar entrenadores. Por favor, inténtelo de nuevo más tarde.");
@@ -71,12 +72,12 @@ const TrainerList = () => {
         setFilters(prevFilters => ({ ...prevFilters, [name]: value }));
     };
 
-    const filteredTrainers = trainers.filter(trainer => {
+    const filteredTrainers = Array.isArray(trainers) ? trainers.filter(trainer => {
         const specialtyFilter = filters.specialty === '' || trainer.specialties.includes(parseInt(filters.specialty));
         const trainerTypeFilter = filters.trainerType === '' || trainer.trainer_type === filters.trainerType;
         const nameFilter = filters.name === '' || trainer.username.toLowerCase().includes(filters.name.toLowerCase());
         return specialtyFilter && trainerTypeFilter && nameFilter;
-    });
+    }) : [];
 
     const indexOfLastTrainer = currentPage * trainersPerPage;
     const indexOfFirstTrainer = indexOfLastTrainer - trainersPerPage;
