@@ -1,6 +1,8 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import './EditDish.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function EditDish() {
     const { dishId } = useParams();
@@ -24,9 +26,9 @@ function EditDish() {
     useEffect(() => {
         fetch(`${apiUrl}/nutrition/dishes/${dishId}/`, {
             headers: {
-              'Authorization': `Token ${localStorage.getItem('authToken')}`
+                'Authorization': `Token ${localStorage.getItem('authToken')}`
             }
-          })
+        })
             .then(response => response.json())
             .then(data => {
                 setName(data.name);
@@ -39,25 +41,26 @@ function EditDish() {
 
         fetch(`${apiUrl}/nutrition/ingredients/`, {
             headers: {
-              'Authorization': `Token ${localStorage.getItem('authToken')}`
+                'Authorization': `Token ${localStorage.getItem('authToken')}`
             }
-          })
+        })
             .then(response => response.json())
-            .then(data => setIngredients(data))
+            .then(data => setIngredients(data.results || []))
             .catch(error => console.error('Error fetching ingredients:', error));
 
-            fetch(`${apiUrl}/user/regularusers/`, {
-                headers: {
-                  'Authorization': `Token ${localStorage.getItem('authToken')}`
-                }
-              })
+        fetch(`${apiUrl}/user/regularusers/`, {
+            headers: {
+                'Authorization': `Token ${localStorage.getItem('authToken')}`
+            }
+        })
             .then(response => response.json())
             .then(data => {
-                setUsers(data);
-                if (data.length > 0) {
-                    setSelectedUser(data[0].id.toString());
+                setUsers(data.results || []);
+                if (data.results && data.results.length > 0) {
+                    setSelectedUser(data.results[0].id.toString());
                 }
-            });
+            })
+            .catch(error => console.error('Error fetching users:', error));
     }, [dishId, apiUrl]);
 
     useEffect(() => {
@@ -134,7 +137,7 @@ function EditDish() {
                 quantity: parseFloat(si.quantity),
             })),
         };
-    
+
         try {
             const response = await fetch(`${apiUrl}/nutrition/dishes/`, {
                 method: 'POST',
@@ -144,12 +147,12 @@ function EditDish() {
                 },
                 body: JSON.stringify(dishData),
             });
-    
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(`Error: ${response.status} ${JSON.stringify(errorData)}`);
             }
-    
+
             const newDish = await response.json();
             console.log('New dish created successfully:', newDish);
             navigate(`/dish-details/${newDish.id}`); // Redirect to the new dish details page
@@ -157,7 +160,6 @@ function EditDish() {
             console.error('Error duplicating dish:', error);
         }
     };
-    
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -196,13 +198,12 @@ function EditDish() {
     };
 
     return (
-        <div className="container mt-4">
-            <h2>Edit Dish</h2>
-            {dishUpdated && <div className="alert alert-success">Dish updated successfully!</div>}
+        <div className="container-editdish mt-4">
+            <h2 className="mb-4">Editar Plato</h2>
+            {dishUpdated && <div className="alert alert-success">Plato actualizado con éxito!</div>}
             <form onSubmit={handleSubmit}>
-                {/* Form fields here */}
-                <div className="form-group mb-3">
-                    <label htmlFor="name">Dish Name:</label>
+                <div className="mb-3">
+                    <label htmlFor="name" className="form-label">Nombre del Plato:</label>
                     <input
                         type="text"
                         className="form-control"
@@ -213,84 +214,81 @@ function EditDish() {
                     />
                 </div>
 
-                <div className="form-group mb-3">
-                <label htmlFor="user">Usuario:</label>
-                <select
-                    className="form-select"
-                    id="user"
-                    name="user"
-                    value={selectedUser}
-                    onChange={(e) => setSelectedUser(e.target.value)}
-                    required
-                >
-                    {users.map(user => (
-                        <option key={user.id} value={user.id}>{user.username}</option>
-                    ))}
-                </select>
-              </div>
+                <div className="mb-3">
+                    <label htmlFor="user" className="form-label">Usuario:</label>
+                    <select
+                        className="form-select"
+                        id="user"
+                        name="user"
+                        value={selectedUser}
+                        onChange={(e) => setSelectedUser(e.target.value)}
+                        required
+                    >
+                        <option value="">Seleccionar Usuario</option>
+                        {Array.isArray(users) && users.map(user => (
+                            <option key={user.id} value={user.id}>{user.username}</option>
+                        ))}
+                    </select>
+                </div>
 
-              {/* Ingredient handling */}
-              <label htmlFor="user">Añadir Ingrediente:</label>
-                {selectedIngredients.map((ingredient, index) => (
-                    <div key={index} className="input-group mb-3">
-                        <select className="form-select" value={ingredient.ingredientId} onChange={(e) => handleIngredientChange(index, 'ingredientId', e.target.value)} required>
-                            <option value="">Select an ingredient</option>
-                            {ingredients.map((ing) => (
-                                <option key={ing.id} value={ing.id}>{ing.name}</option>
-                            ))}
-                        </select>
-                        <input type="number" className="form-control" placeholder="Quantity" value={ingredient.quantity} onChange={(e) => handleIngredientChange(index, 'quantity', e.target.value)} />
-                        <button type="button" className="btn btn-danger" onClick={() => removeIngredientField(index)}>Remove</button>
-                    </div>
-                ))}
-                <button type="button" className="btn btn-info" onClick={addIngredientField}>Añadir Ingrediente</button>
+                <div className="mb-3">
+                    <label htmlFor="ingredient" className="form-label">Añadir Ingrediente:</label>
+                    {selectedIngredients.map((ingredient, index) => (
+                        <div key={index} className="input-group mb-3">
+                            <select className="form-select" value={ingredient.ingredientId} onChange={(e) => handleIngredientChange(index, 'ingredientId', e.target.value)} required>
+                                <option value="">Seleccionar Ingrediente</option>
+                                {Array.isArray(ingredients) && ingredients.map((ing) => (
+                                    <option key={ing.id} value={ing.id}>{ing.name}</option>
+                                ))}
+                            </select>
+                            <input type="number" className="form-control" placeholder="Cantidad" value={ingredient.quantity} onChange={(e) => handleIngredientChange(index, 'quantity', e.target.value)} />
+                            <button type="button" className="btn btn-danger" onClick={() => removeIngredientField(index)}>Eliminar</button>
+                        </div>
+                    ))}
+                    <button type="button" className="btn btn-info" onClick={addIngredientField}>Añadir Ingrediente</button>
+                </div>
 
                 <div className="card mt-4">
-  <div className="card-header">
-    Totales Nutricionales
-  </div>
-  <div className="row">
-    {/* Columna 1 */}
-    <div className="col-md-4">
-      <ul className="list-group list-group-flush">
-        <li className="list-group-item">Calorías: {nutritionTotals.calories.toFixed(2)}</li>
-        <li className="list-group-item">Proteínas: {nutritionTotals.protein.toFixed(2)}g</li>
-        <li className="list-group-item">Carbohidratos: {nutritionTotals.carbohydrates.toFixed(2)}g</li>
-        <li className="list-group-item">Grasas: {nutritionTotals.fat.toFixed(2)}g</li>
-        <li className="list-group-item">Azúcares: {nutritionTotals.sugar.toFixed(2)}g</li>
-        <li className="list-group-item">Fibra: {nutritionTotals.fiber.toFixed(2)}g</li>
-        <li className="list-group-item">Grasas Saturadas: {nutritionTotals.saturated_fat.toFixed(2)}g</li>
-      </ul>
-    </div>
+                    <div className="card-header">
+                        Totales Nutricionales
+                    </div>
+                    <div className="row">
+                        <div className="col-md-4">
+                            <ul className="list-group list-group-flush">
+                                <li className="list-group-item">Calorías: {nutritionTotals.calories.toFixed(2)}</li>
+                                <li className="list-group-item">Proteínas: {nutritionTotals.protein.toFixed(2)}g</li>
+                                <li className="list-group-item">Carbohidratos: {nutritionTotals.carbohydrates.toFixed(2)}g</li>
+                                <li className="list-group-item">Grasas: {nutritionTotals.fat.toFixed(2)}g</li>
+                                <li className="list-group-item">Azúcares: {nutritionTotals.sugar.toFixed(2)}g</li>
+                                <li className="list-group-item">Fibra: {nutritionTotals.fiber.toFixed(2)}g</li>
+                                <li className="list-group-item">Grasas Saturadas: {nutritionTotals.saturated_fat.toFixed(2)}g</li>
+                            </ul>
+                        </div>
+                        <div className="col-md-4">
+                            <ul className="list-group list-group-flush">
+                                <li className="list-group-item">Libre de Gluten: {nutritionTotals.gluten_free ? 'Sí' : 'No'}</li>
+                                <li className="list-group-item">Libre de Lactosa: {nutritionTotals.lactose_free ? 'Sí' : 'No'}</li>
+                                <li className="list-group-item">Vegano: {nutritionTotals.vegan ? 'Sí' : 'No'}</li>
+                                <li className="list-group-item">Vegetariano: {nutritionTotals.vegetarian ? 'Sí' : 'No'}</li>
+                                <li className="list-group-item">Pescetariano: {nutritionTotals.pescetarian ? 'Sí' : 'No'}</li>
+                                <li className="list-group-item">Contiene Carne: {nutritionTotals.contains_meat ? 'Sí' : 'No'}</li>
+                                <li className="list-group-item">Contiene Vegetales: {nutritionTotals.contains_vegetables ? 'Sí' : 'No'}</li>
+                            </ul>
+                        </div>
+                        <div className="col-md-4">
+                            <ul className="list-group list-group-flush">
+                                <li className="list-group-item">Contiene Pescado/Mariscos: {nutritionTotals.contains_fish_shellfish_canned_preserved ? 'Sí' : 'No'}</li>
+                                <li className="list-group-item">Cereal: {nutritionTotals.cereal ? 'Sí' : 'No'}</li>
+                                <li className="list-group-item">Pasta o Arroz: {nutritionTotals.pasta_or_rice ? 'Sí' : 'No'}</li>
+                                <li className="list-group-item">Lácteos (Yogur, Queso): {nutritionTotals.dairy_yogurt_cheese ? 'Sí' : 'No'}</li>
+                                <li className="list-group-item">Fruta: {nutritionTotals.fruit ? 'Sí' : 'No'}</li>
+                                <li className="list-group-item">Frutos Secos: {nutritionTotals.nuts ? 'Sí' : 'No'}</li>
+                                <li className="list-group-item">Legumbres: {nutritionTotals.legume ? 'Sí' : 'No'}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
 
-    {/* Columna 2 */}
-    <div className="col-md-4">
-      <ul className="list-group list-group-flush">
-        <li className="list-group-item">Libre de Gluten: {nutritionTotals.gluten_free ? 'Sí' : 'No'}</li>
-        <li className="list-group-item">Libre de Lactosa: {nutritionTotals.lactose_free ? 'Sí' : 'No'}</li>
-        <li className="list-group-item">Vegano: {nutritionTotals.vegan ? 'Sí' : 'No'}</li>
-        <li className="list-group-item">Vegetariano: {nutritionTotals.vegetarian ? 'Sí' : 'No'}</li>
-        <li className="list-group-item">Pescetariano: {nutritionTotals.pescetarian ? 'Sí' : 'No'}</li>
-        <li className="list-group-item">Contiene Carne: {nutritionTotals.contains_meat ? 'Sí' : 'No'}</li>
-        <li className="list-group-item">Contiene Vegetales: {nutritionTotals.contains_vegetables ? 'Sí' : 'No'}</li>
-      </ul>
-    </div>
-
-    {/* Columna 3 */}
-    <div className="col-md-4">
-      <ul className="list-group list-group-flush">
-        <li className="list-group-item">Contiene Pescado/Mariscos: {nutritionTotals.contains_fish_shellfish_canned_preserved ? 'Sí' : 'No'}</li>
-        <li className="list-group-item">Cereal: {nutritionTotals.cereal ? 'Sí' : 'No'}</li>
-        <li className="list-group-item">Pasta o Arroz: {nutritionTotals.pasta_or_rice ? 'Sí' : 'No'}</li>
-        <li className="list-group-item">Lácteos (Yogur, Queso): {nutritionTotals.dairy_yogurt_cheese ? 'Sí' : 'No'}</li>
-        <li className="list-group-item">Fruta: {nutritionTotals.fruit ? 'Sí' : 'No'}</li>
-        <li className="list-group-item">Frutos Secos: {nutritionTotals.nuts ? 'Sí' : 'No'}</li>
-        <li className="list-group-item">Legumbres: {nutritionTotals.legume ? 'Sí' : 'No'}</li>
-      </ul>
-    </div>
-  </div>
-</div>
-                
                 <div className="mt-3">
                     <button type="submit" className="btn btn-primary">Actualizar Plato</button>
                     <button type="button" className="btn btn-secondary ml-2" onClick={handleDuplicate}>Duplicar Plato</button>

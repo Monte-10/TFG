@@ -16,28 +16,19 @@ class TrainingExerciseSerializer(serializers.ModelSerializer):
         fields = ['exercise', 'exercise_id', 'repetitions', 'sets', 'weight', 'time']
 
 class TrainingSerializer(serializers.ModelSerializer):
-    exercises_details = TrainingExerciseSerializer(source='trainingexercise_set', many=True)
+    exercises_details = TrainingExerciseSerializer(source='trainingexercise_set', many=True, read_only=True)
 
     class Meta:
         model = Training
         fields = ['id', 'name', 'exercises_details', 'date', 'user']
 
     def create(self, validated_data):
-        print("User: ", self.context['request'].user)
-        print("Validated data: ", validated_data)
-        
         exercises_data = validated_data.pop('trainingexercise_set', [])
-        print("Exercises data: ", exercises_data)
-        
         user = self.context['request'].user
         if user.is_trainer:
             trainer = user.trainer
             validated_data['trainer'] = trainer
-            
-            # Crea el objeto Training sin los datos de los ejercicios
             training = Training.objects.create(**validated_data)
-            
-            # Ahora maneja la creación de los objetos TrainingExercise relacionados
             for exercise_data in exercises_data:
                 exercise = exercise_data.get('exercise')
                 TrainingExercise.objects.create(
@@ -45,13 +36,28 @@ class TrainingSerializer(serializers.ModelSerializer):
                     exercise=exercise, 
                     repetitions=exercise_data['repetitions'], 
                     sets=exercise_data['sets'], 
-                    weight=exercise_data.get('weight'),  # Usa get para manejar el caso None
-                    time=exercise_data.get('time')  # Usa get para manejar el caso None
+                    weight=exercise_data.get('weight'), 
+                    time=exercise_data.get('time') 
                 )
-            
             return training
         else:
             raise serializers.ValidationError("El usuario no es un entrenador.")
 
     def update(self, instance, validated_data):
         return super().update(instance, validated_data)
+
+class WeekTrainingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WeekTraining
+        fields = '__all__'
+        
+class AssignedWeekTrainingSerializer(serializers.ModelSerializer):
+    week_training_name = serializers.CharField(source='week_training.name', read_only=True)
+    pdf_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = AssignedWeekTraining
+        fields = ['id', 'week_training_name', 'start_date', 'pdf_url']
+
+    def get_pdf_url(self, obj):
+        return f'/media/pdfs/Week_Training_{obj.week_training.name}.pdf'

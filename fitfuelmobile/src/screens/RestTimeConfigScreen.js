@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
+import { View, Text, StyleSheet, TextInput } from 'react-native';
+import { Button } from 'react-native-elements';
 
 function RestTimeConfigScreen({ route, navigation }) {
   const { trainingDetails } = route.params;
@@ -16,13 +17,14 @@ function RestTimeConfigScreen({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text>Configura tu tiempo de descanso</Text>
+      <Text style={styles.title}>Configura tu tiempo de descanso</Text>
       <TextInput
         style={styles.input}
         onChangeText={setRestTimeBetweenSets}
         value={restTimeBetweenSets}
         keyboardType="numeric"
         placeholder="Tiempo de descanso entre series (segundos)"
+        placeholderTextColor="#888"
       />
       <TextInput
         style={styles.input}
@@ -30,8 +32,13 @@ function RestTimeConfigScreen({ route, navigation }) {
         value={restTimeBetweenExercises}
         keyboardType="numeric"
         placeholder="Tiempo de descanso entre ejercicios (segundos)"
+        placeholderTextColor="#888"
       />
-      <Button title="Empezar Entrenamiento" onPress={handleStartTraining} />
+      <Button
+        title="Empezar Entrenamiento"
+        buttonStyle={styles.button}
+        onPress={handleStartTraining}
+      />
     </View>
   );
 }
@@ -42,13 +49,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
+    backgroundColor: '#1e1e1e',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#28a745',
+    marginBottom: 20,
   },
   input: {
     height: 40,
     margin: 12,
     borderWidth: 1,
+    borderColor: '#28a745',
     padding: 10,
     width: '100%',
+    color: '#fff',
+  },
+  button: {
+    backgroundColor: '#28a745',
+    marginVertical: 10,
+    width: 200,
   },
 });
 

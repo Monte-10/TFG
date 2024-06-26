@@ -1,36 +1,83 @@
-\section{Ventajas e inconvenientes de \LaTeXe}
+\section{Acceso a FitFuelBalance}
 
-El gusto por el LATEX depende de la forma de trabajar de cada uno. La principal virtud
-es la facilidad de formatear cualquier texto y la robustez. Incluir referencias a capítulos, secciones, figuras, tablas, etc.\ es
-inmediato. Las ecuaciones quedan estupendamente, la escritura se puede realizar modularizada y estructurada. Con estilos como el presentado se reduce considerablemente la utilización de paquetes complejos reduciendo su uso a comandos simples aunque liminatos
+Para acceder a FitfuelBalance en su versión de producción, simplemente hay que acceder al link \url{https://fitfuelbalance.onrender.com} y registrarse (El Back-End se encuentra en \url(https://tfg-691w.onrender.com), pero no es necesario entrar para el uso de la aplicación). Una vez registrado, se puede acceder a la aplicación web como usuario o entrenador, ya que ambos roles están abiertos a cualquier usuario. También se proporcionan usuarios para acceder a la aplicación en la siguiente tabla:
 
-\newacronym{wytiwyg}{WYTIWYG}{What You Think Is What You Get}
-\newacronym{wysiwyg}{WYSIWYG}{What You See Is What You Get}
+\begin{table}[Usuarios para acceder a FitFuelBalance]{TAB:USUARIOS}{Usuarios para acceder a FitFuelBalance}
+  \begin{tabular}{|p{3cm}|p{5cm}|p{5cm}|}
+    \hline
+    \textbf{Rol} & \textbf{Username} & \textbf{Password} \\
+    \hline
+    Entrenador & trainer & Tfg123@ \\
+    \hline
+    Usuario & user & Tfg123@ \\
+    \hline
+  \end{tabular}
+\end{table}
 
-El principal inconveniente de \LaTeXe radica en la necesidad de aprender un conjunto de
-comandos para generar los elementos que queremos. Cuando se está acostumbrado a un
-entorno ``lo que veo es lo que obtengo'' (\acs{wysiwyg}) es difícil cambiar la mentalidad a un entorno del tipo ``lo que pienso es lo que obtengo'' (\acs{wytiwyg}) como \LaTeXe.
+La aplicación funciona en cualquier tipo de navegador, pero se recomienda no abrir varias sesiones con usuarios distintos en un mismo navegador para evitar errores.
+\section{Acceso al código fuente}
 
-Por otro lado, en general será muy complicado cambiar el formato para desviarnos de
-la idea original de sus creadores del estilo. No es imposible, pero sí muy difícil. En muchos casos, comno en el tipo de documentos a los que está dirigido este estilo de \LaTeXe es una ventaja y no un inconveniente en el caso de querer obtener una imagen corporativa en los documentos.
+El código fuente del Front-End, Back-End y Aplicación Móvil de FitFuelBalance se encuentra en los siguientes repositorios de GitHub:
 
-\section{Ventajas e inconvenientes de Word\textsuperscript{\textregistered}}
+\begin{itemize}
+    \item \textbf{Front-End:} \url{https://github.com/Monte-10/TFG/tree/main/fitfuel-app}
+    \item \textbf{Back-End:} \url{https://github.com/Monte-10/TFG/tree/main/fitfuelbalance}
+    \item \textbf{Aplicación Móvil:} \url{https://github.com/Monte-10/TFG/tree/main/fitfuelmobile}
+\end{itemize}
 
-La ventaja mayor del Word\textsuperscript{\textregistered} es que permite configurar el formato muy fácilmente. Para
-las ecuaciones tradicionalmente ha proporcionado pésima presentación. Sin embargo, el software adicional
-Mathtype\textsuperscript{\textregistered} solventa este problema, incluyendo una apariencia muy profesional y
-cuidada. Incluso permite utilizar un estilo similar al de \LaTeXe. Además, aunque el Word\textsuperscript{\textregistered}
-incluye sus propios atajos para escribir ecuaciones, Mathtype\textsuperscript{\textregistered} admite también la escritura de ecuaciones utilizando los mismos comandos que \LaTeXe.
+\section{Guía de Instalación}
 
-Trabajar con títulos, referencias cruzadas e índices es un engorro, por no decir nada sobre
-la creación de una tabla de contenidos. Resulta muy frecuente que alguna referencia quede
-pérdida o huérfana y aparezca un mensaje en negrita indicando que no se encuentra. Algunos autores hacen todas estas referencias manualmente lo significa que cualquier cambio supone un arduo trabajo rehaciendo las referencias de todo el documento.
-Los estilos permiten trabajar bien definiendo la apariencia, pero también puede desembocar
-en un descontrolado incremento de los mismos. Además, es muy probable que
-Word\textsuperscript{\textregistered} se quede colgado, sobre todo al trabajar con copiar y pegar de otros textos y cuando
-se utilizan ficheros de gran extensión, como es el caso de un libro.
+Esta guía describe los pasos necesarios para ejecutar el proyecto FitFuelBalance en local para desarrollo y pruebas.
 
-\section{¿Cuál elijo?}
+\subsection{Prerrequisitos}
 
-\index{eigenvalue}
-En cualquier caso las tipografías, colores, distancias entre párrados, interlineados, encabezamientos y estructura del docuemnto debe coincidir con el aquí presentado. Dado que sólo se aporta el estilo de \LaTeXe\ se recomienda su uso aunque no es obligatorio y es decisión del autor elegir.
+Se debe tener \texttt{git}, \texttt{python3}, \texttt{pip}, \texttt{node.js}, y \texttt{npm} instalados en la máquina que se vaya a usar. Los siguientes comandos pueden ser utilizados para instalar estos prerrequisitos en una máquina con sistema operativo basado en Debian/Ubuntu:
+
+\PythonCode[PRERREQUISITOS]{Instalación de Prerrequisitos.}{Instalación de git, python3, pip, node.js, y npm.}{instalacion/ins_prerrequisitos.py}{2}{22}{1}
+
+\subsection{Descargar el Repositorio}
+
+Clona el repositorio desde GitHub:
+
+\PythonCode[INSTALACION]{Descargar Repositorio.}{Clonación del repositorio desde GitHub.}{instalacion/instalacion.py}{2}{3}{1}
+
+\subsection{Backend (Django)}
+
+Para configurar y ejecutar el backend de Django, sigue estos pasos:
+
+\PythonCode[INSTALACION]{Configuración y Ejecución del Backend.}{Configuración y ejecución del backend de Django.}{instalacion/instalacion.py}{5}{17}{1}
+
+\begin{itemize}
+    \item Accede a la carpeta del backend.
+    \item Instala las dependencias necesarias con pip.
+    \item Ejecuta el servidor utilizando make. Esto realizará las migraciones y ejecutará el servidor.
+    \item Alternativamente, puedes realizar las migraciones y ejecutar el servidor manualmente con los comandos de Django.
+    \item Accede a la aplicación en tu navegador en \url{http://127.0.0.1:8000}.
+\end{itemize}
+
+\subsection{Frontend (React)}
+
+Para configurar y ejecutar el frontend de React, sigue estos pasos:
+
+\PythonCode[INSTALACION]{Configuración y Ejecución del Frontend.}{Configuración y ejecución del frontend de React.}{instalacion/instalacion.py}{19}{29}{1}
+
+\begin{itemize}
+    \item Accede a la carpeta del frontend.
+    \item Usa la versión correcta de Node.js con nvm.
+    \item Instala las dependencias necesarias con npm.
+    \item Ejecuta la aplicación del frontend con npm start.
+    \item Accede a la aplicación en tu navegador en \url{http://localhost:3000}.
+\end{itemize}
+
+\subsection{Frontend (React Native)}
+
+Para configurar y ejecutar el frontend móvil de React Native, sigue estos pasos:
+
+\PythonCode[INSTALACION]{Configuración y Ejecución del Frontend Móvil.}{Configuración y ejecución del frontend móvil de React Native.}{instalacion/instalacion.py}{31}{44}{1}
+
+\begin{itemize}
+    \item Accede a la carpeta del frontend móvil.
+    \item Instala las dependencias necesarias con npm.
+    \item Ejecuta la aplicación del frontend móvil con npm start.
+    \item Verás un mensaje en la terminal indicando que el servidor de desarrollo está listo, con opciones para ejecutar en iOS, Android, abrir el menú de desarrollo, o recargar la aplicación.
+\end{itemize}

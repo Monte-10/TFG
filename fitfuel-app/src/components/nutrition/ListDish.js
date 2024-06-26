@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import './ListDish.css';
 
 function ListDish() {
     const [dishes, setDishes] = useState([]);
-    const [filteredDishes, setFilteredDishes] = useState([]);
-    const [currentPage, setCurrentPage] = useState(0);
-    const [itemsPerPage] = useState(10); // Ajusta este número según sea necesario
     const [totalPages, setTotalPages] = useState(0);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [itemsPerPage] = useState(10);
+    const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
     const apiUrl = process.env.REACT_APP_API_URL;
     const [filters, setFilters] = useState({
         name: '',
@@ -49,6 +50,30 @@ function ListDish() {
 
     const navigate = useNavigate();
 
+    const fetchDishes = (page, filters) => {
+        const queryParams = new URLSearchParams({
+            page: page + 1,
+            page_size: itemsPerPage,
+            ...filters
+        });
+
+        fetch(`${apiUrl}/nutrition/dishes/?${queryParams.toString()}`, {
+            headers: {
+                'Authorization': `Token ${localStorage.getItem('authToken')}`,
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            setDishes(data.results);
+            setTotalPages(Math.ceil(data.count / itemsPerPage));
+        })
+        .catch(error => console.error('Error fetching dishes:', error));
+    };
+
+    useEffect(() => {
+        fetchDishes(currentPage, filters);
+    }, [currentPage, filters]);
+
     const handleDeleteDish = (dishId) => {
         if (window.confirm('¿Estás seguro de que quieres eliminar esta comida?')) {
             fetch(`${apiUrl}/nutrition/dishes/${dishId}/`, {
@@ -59,7 +84,7 @@ function ListDish() {
             })
             .then(response => {
                 if (response.ok) {
-                    setDishes(dishes.filter(dish => dish.id !== dishId));
+                    fetchDishes(currentPage, filters);
                 } else {
                     console.error('Error al eliminar la comida');
                 }
@@ -67,47 +92,6 @@ function ListDish() {
             .catch(error => console.error('Error al eliminar la comida:', error));
         }
     };
-
-    useEffect(() => {
-        fetch(`${apiUrl}/nutrition/dishes/`, {
-            headers: {
-                'Authorization': `Token ${localStorage.getItem('authToken')}`,
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            setDishes(data);
-            setFilteredDishes(data); // Inicializar los platos filtrados con todos los platos
-            setTotalPages(Math.ceil(data.length / itemsPerPage));
-        })
-        .catch(error => console.error('Error fetching dishes:', error));
-    }, [apiUrl, itemsPerPage]);
-
-    useEffect(() => {
-        const applyFilters = () => {
-            let updatedDishes = dishes.filter(dish => {
-                return Object.entries(filters).every(([key, value]) => {
-                    if (value === '' || value === false) return true; // Ignore filter if empty or false
-                    if (typeof value === 'boolean') {
-                        return dish[key] === value;
-                    } else if (key.includes('min') || key.includes('max')) {
-                        const field = key.replace('min', '').replace('max', '').toLowerCase();
-                        if (key.startsWith('min')) {
-                            return parseFloat(dish[field]) >= parseFloat(value);
-                        } else {
-                            return parseFloat(dish[field]) <= parseFloat(value);
-                        }
-                    } else {
-                        return dish[key].toLowerCase().includes(value.toLowerCase());
-                    }
-                });
-            });
-            setFilteredDishes(updatedDishes);
-            setTotalPages(Math.ceil(updatedDishes.length / itemsPerPage));
-        };
-
-        applyFilters();
-    }, [filters, dishes, itemsPerPage]);
 
     const handleFilterChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -158,132 +142,133 @@ function ListDish() {
         });
     };
 
-    const currentDishes = filteredDishes.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+    const currentDishes = dishes.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
     return (
-        <div className="container">
-            <h1>Lista de Platos</h1>
-            <div className="row">
-                <div className="col-md-2 mb-3">
+        <div className="container-listdish">
+            <h1 className="mb-4">Lista de Platos</h1>
+            <div className="row mb-4 row-listdish">
+                <div className="col-md-3 mb-3">
                     <input
                         type="text"
                         className="form-control mb-2"
                         placeholder="Filtrar por nombre..."
                         value={filters.name}
-                        onChange={handleFilterChange}
-                        name="name"
-                    />
-                    <input
-                        type="number"
-                        className="form-control mb-2"
-                        placeholder="Calorías mínimas"
-                        value={filters.minCalories}
-                        onChange={handleFilterChange}
-                        name="minCalories"
-                    />
-                    <input
-                        type="number"
-                        className="form-control"
-                        placeholder="Calorías máximas"
-                        value={filters.maxCalories}
-                        onChange={handleFilterChange}
-                        name="maxCalories"
+                        onChange={(e) => handleFilterChange({ target: { name: 'name', value: e.target.value } })}
                     />
                 </div>
-                <div className="col-md-2 mb-3">
-                    <input
-                        type="number"
-                        className="form-control mb-2"
-                        placeholder="Proteínas mínimas"
-                        value={filters.minProtein}
-                        onChange={handleFilterChange}
-                        name="minProtein"
-                    />
-                    <input
-                        type="number"
-                        className="form-control mb-2"
-                        placeholder="Proteínas máximas"
-                        value={filters.maxProtein}
-                        onChange={handleFilterChange}
-                        name="maxProtein"
-                    />
+                <div className="col-md-3 mb-3">
+                    <button className="btn btn-info w-100" onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}>
+                        {showAdvancedFilters ? 'Ocultar Filtros Avanzados' : 'Mostrar Filtros Avanzados'}
+                    </button>
                 </div>
-                <div className="col-md-2 mb-3">
-                    <input
-                        type="number"
-                        className="form-control mb-2"
-                        placeholder="Carbohidratos mínimos"
-                        value={filters.minCarbohydrates}
-                        onChange={handleFilterChange}
-                        name="minCarbohydrates"
-                    />
-                    <input
-                        type="number"
-                        className="form-control mb-2"
-                        placeholder="Carbohidratos máximos"
-                        value={filters.maxCarbohydrates}
-                        onChange={handleFilterChange}
-                        name="maxCarbohydrates"
-                    />
+                <div className="col-md-3 mb-3">
+                    <button className="btn btn-secondary w-100" onClick={resetFilters}>Limpiar Filtros</button>
                 </div>
-                <div className="col-md-2 mb-3">
-                    <input
-                        type="number"
-                        className="form-control mb-2"
-                        placeholder="Grasas mínimas"
-                        value={filters.minFat}
-                        onChange={handleFilterChange}
-                        name="minFat"
-                    />
-                    <input
-                        type="number"
-                        className="form-control mb-2"
-                        placeholder="Grasas máximas"
-                        value={filters.maxFat}
-                        onChange={handleFilterChange}
-                        name="maxFat"
-                    />
-                </div>
-                <div className="col-md-2 mb-3">
-                    <input
-                        type="number"
-                        className="form-control mb-2"
-                        placeholder="Azúcar mínimo"
-                        value={filters.minSugar}
-                        onChange={handleFilterChange}
-                        name="minSugar"
-                    />
-                    <input
-                        type="number"
-                        className="form-control"
-                        placeholder="Azúcar máximo"
-                        value={filters.maxSugar}
-                        onChange={handleFilterChange}
-                        name="maxSugar"
-                    />
-                </div>
-                <div className="col-md-2 mb-3">
-                    <input
-                        type="number"
-                        className="form-control mb-2"
-                        placeholder="Fibra mínima"
-                        value={filters.minFiber}
-                        onChange={handleFilterChange}
-                        name="minFiber"
-                    />
-                    <input
-                        type="number"
-                        className="form-control"
-                        placeholder="Fibra máxima"
-                        value={filters.maxFiber}
-                        onChange={handleFilterChange}
-                        name="maxFiber"
-                    />
-                </div>
-                <button className="btn btn-secondary mt-3" onClick={resetFilters}>Limpiar Filtros</button>
             </div>
 
-            <table className="table">
+            {showAdvancedFilters && (
+                <div className="row mb-4 row-listdish">
+                    <div className="col-md-2 mb-3">
+                        <input
+                            type="number"
+                            className="form-control mb-2"
+                            placeholder="Calorías mínimas"
+                            value={filters.minCalories}
+                            onChange={(e) => handleFilterChange({ target: { name: 'minCalories', value: e.target.value } })}
+                        />
+                        <input
+                            type="number"
+                            className="form-control"
+                            placeholder="Calorías máximas"
+                            value={filters.maxCalories}
+                            onChange={(e) => handleFilterChange({ target: { name: 'maxCalories', value: e.target.value } })}
+                        />
+                    </div>
+                    <div className="col-md-2 mb-3">
+                        <input
+                            type="number"
+                            className="form-control mb-2"
+                            placeholder="Proteínas mínimas"
+                            value={filters.minProtein}
+                            onChange={(e) => handleFilterChange({ target: { name: 'minProtein', value: e.target.value } })}
+                        />
+                        <input
+                            type="number"
+                            className="form-control mb-2"
+                            placeholder="Proteínas máximas"
+                            value={filters.maxProtein}
+                            onChange={(e) => handleFilterChange({ target: { name: 'maxProtein', value: e.target.value } })}
+                        />
+                    </div>
+                    <div className="col-md-2 mb-3">
+                        <input
+                            type="number"
+                            className="form-control mb-2"
+                            placeholder="Carbohidratos mínimos"
+                            value={filters.minCarbohydrates}
+                            onChange={(e) => handleFilterChange({ target: { name: 'minCarbohydrates', value: e.target.value } })}
+                        />
+                        <input
+                            type="number"
+                            className="form-control mb-2"
+                            placeholder="Carbohidratos máximos"
+                            value={filters.maxCarbohydrates}
+                            onChange={(e) => handleFilterChange({ target: { name: 'maxCarbohydrates', value: e.target.value } })}
+                        />
+                    </div>
+                    <div className="col-md-2 mb-3">
+                        <input
+                            type="number"
+                            className="form-control mb-2"
+                            placeholder="Grasas mínimas"
+                            value={filters.minFat}
+                            onChange={(e) => handleFilterChange({ target: { name: 'minFat', value: e.target.value } })}
+                        />
+                        <input
+                            type="number"
+                            className="form-control mb-2"
+                            placeholder="Grasas máximas"
+                            value={filters.maxFat}
+                            onChange={(e) => handleFilterChange({ target: { name: 'maxFat', value: e.target.value } })}
+                        />
+                    </div>
+                    <div className="col-md-2 mb-3">
+                        <input
+                            type="number"
+                            className="form-control mb-2"
+                            placeholder="Azúcar mínimo"
+                            value={filters.minSugar}
+                            onChange={(e) => handleFilterChange({ target: { name: 'minSugar', value: e.target.value } })}
+                        />
+                        <input
+                            type="number"
+                            className="form-control"
+                            placeholder="Azúcar máximo"
+                            value={filters.maxSugar}
+                            onChange={(e) => handleFilterChange({ target: { name: 'maxSugar', value: e.target.value } })}
+                        />
+                    </div>
+                    <div className="col-md-2 mb-3">
+                        <input
+                            type="number"
+                            className="form-control mb-2"
+                            placeholder="Fibra mínima"
+                            value={filters.minFiber}
+                            onChange={(e) => handleFilterChange({ target: { name: 'minFiber', value: e.target.value } })}
+                        />
+                        <input
+                            type="number"
+                            className="form-control"
+                            placeholder="Fibra máxima"
+                            value={filters.maxFiber}
+                            onChange={(e) => handleFilterChange({ target: { name: 'maxFiber', value: e.target.value } })}
+                        />
+                    </div>
+                </div>
+            )}
+
+            <table className="table-listdish table-striped">
                 <thead>
                     <tr>
                         <th>Nombre</th>
@@ -299,37 +284,37 @@ function ListDish() {
                     </tr>
                 </thead>
                 <tbody>
-                    {currentDishes.map(dish => (
+                    {dishes.map(dish => (
                         <tr key={dish.id} onClick={() => navigate(`/nutrition/dishes/${dish.id}`)} style={{ cursor: 'pointer' }}>
                             <td>{dish.name}</td>
-                            <td>{dish.calories}</td>
-                            <td>{dish.protein}</td>
-                            <td>{dish.carbohydrates}</td>
-                            <td>{dish.fat}</td>
-                            <td>{dish.sugar}</td>
-                            <td>{dish.fiber}</td>
-                            <td>{dish.saturatedFat}</td>
+                            <td>{(dish.calories || 0).toFixed(2)}</td>
+                            <td>{(dish.protein || 0).toFixed(2)}</td>
+                            <td>{(dish.carbohydrates || 0).toFixed(2)}</td>
+                            <td>{(dish.fat || 0).toFixed(2)}</td>
+                            <td>{(dish.sugar || 0).toFixed(2)}</td>
+                            <td>{(dish.fiber || 0).toFixed(2)}</td>
+                            <td>{(dish.saturatedFat || 0).toFixed(2)}</td>
                             <td>
-                                <Link to={`/nutrition/edit-dish/${dish.id}`} className="btn btn-primary me-2">Editar</Link>
+                                <Link to={`/nutrition/edit-dish/${dish.id}`} className="btn-listdish btn-primary-listdish me-2" onClick={(e) => e.stopPropagation()}>Editar</Link>
                             </td>
                             <td>
-                                <button onClick={(e) => { e.stopPropagation(); handleDeleteDish(dish.id); }} className="btn btn-danger">Eliminar</button>
+                                <button onClick={(e) => { e.stopPropagation(); handleDeleteDish(dish.id); }} className="btn-listdish btn-danger-listdish">Eliminar</button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            {filteredDishes.length === 0 && (
-                <div className="alert alert-info" role="alert">
+            {dishes.length === 0 && (
+                <div className="alert-listdish alert-info-listdish" role="alert">
                     No se encontraron platos que coincidan con los filtros seleccionados.
                 </div>
             )}
 
-            <div className="pagination">
+            <div className="pagination-listdish">
                 <button
                     disabled={currentPage === 0}
                     onClick={() => setCurrentPage(currentPage - 1)}
-                    className="btn btn-secondary"
+                    className="btn-listdish btn-secondary-listdish"
                 >
                     Anterior
                 </button>
@@ -337,7 +322,7 @@ function ListDish() {
                 <button
                     disabled={currentPage >= totalPages - 1}
                     onClick={() => setCurrentPage(currentPage + 1)}
-                    className="btn btn-secondary"
+                    className="btn-listdish btn-secondary-listdish"
                 >
                     Siguiente
                 </button>

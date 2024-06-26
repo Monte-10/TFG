@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './CreateExercise.css';
 
 function CreateExercise() {
   const [name, setName] = useState('');
@@ -19,8 +20,6 @@ function CreateExercise() {
     if (image) formData.append('image', image, image.name);
     formData.append('video_url', videoUrl);
 
-    console.log("Sending exercise data");
-
     fetch(`${apiUrl}/sport/exercises/`, {
       method: 'POST',
       body: formData,
@@ -35,7 +34,6 @@ function CreateExercise() {
       throw new Error('Network response was not ok.');
     })
     .then(data => {
-      console.log('Success:', data);
       setExerciseCreated(true);
     })
     .catch((error) => {
@@ -48,12 +46,12 @@ function CreateExercise() {
   };
 
   return (
-    <div className="container mt-4">
+    <div className="container-create-exercise mt-4">
       <h2>Crear Ejercicio</h2>
       {exerciseCreated ? (
         <div className="alert alert-success">
           <p>El ejercicio se ha creado correctamente.</p>
-          <button className="btn btn-primary" onClick={() => setExerciseCreated(false)}>Crear otro Ejercicio</button>
+          <button className="btn btn-success" onClick={() => setExerciseCreated(false)}>Crear otro Ejercicio</button>
         </div>
       ) : (
         <form onSubmit={handleSubmit}>
@@ -65,6 +63,7 @@ function CreateExercise() {
               id="exerciseName"
               value={name}
               onChange={e => setName(e.target.value)}
+              required
             />
           </div>
           <div className="mb-3">
@@ -74,11 +73,12 @@ function CreateExercise() {
               id="exerciseDescription"
               value={description}
               onChange={e => setDescription(e.target.value)}
+              required
             />
           </div>
           <div className="mb-3">
             <label htmlFor="exerciseType" className="form-label">Tipo:</label>
-            <select className="form-select" id="exerciseType" value={type} onChange={e => setType(e.target.value)}>
+            <select className="form-select" id="exerciseType" value={type} onChange={e => setType(e.target.value)} required>
               <option value="">Seleccione un tipo</option>
               <option value="FUERZA">Fuerza</option>
               <option value="CARDIO">Cardio</option>

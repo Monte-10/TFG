@@ -1,7 +1,8 @@
 from django.urls import path, include
 from . import views
 from rest_framework.routers import DefaultRouter
-from .views import *
+from django.conf import settings
+from django.conf.urls.static import static
 
 router = DefaultRouter()
 router.register(r'foods', views.FoodViewSet)
@@ -21,9 +22,14 @@ urlpatterns = [
     path('food_upload/', views.upload_food_csv, name='upload_food_csv'),
     path('food_detail/<int:pk>/', views.food_detail, name='food_detail'),
     path('food_list/', views.food_list, name='food_list'),
-    path('dailydiets/today', TodayDailyDietView.as_view(), name='today-dailydiets'),
-    path('dailydiets/date/<str:date>', DailyDietByDateView.as_view(), name='dailydiet-by-date'),
+    path('dailydiets/today', views.TodayDailyDietView.as_view(), name='today-dailydiets'),
+    path('dailydiets/date/<str:date>', views.DailyDietByDateView.as_view(), name='dailydiet-by-date'),
     path('assignOption/', views.assignOption, name='assignOption'),
-    path('options/<int:option_id>/pdf/', generate_option_pdf, name='generate_option_pdf'),
-    path('adapt-diet-or-option/', adapt_diet_or_option, name='adapt_diet_or_option'),
+    path('options/<int:option_id>/pdf/', views.generate_option_pdf, name='generate_option_pdf'),
+    path('assigned-options/', views.assigned_options, name='assigned_options'),
+    path('adapt-option/', views.adapt_option_to_user_view, name='adapt_option_to_user'),
+    path('assignedoptions/client/<int:client_id>/', views.get_assigned_options, name='get_assigned_options'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

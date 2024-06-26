@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './TrainerSignUp.css'; // Importar el nuevo archivo de estilos
 
 function TrainerSignUp({ onSignUpSuccess }) {
   const [username, setUsername] = useState('');
@@ -26,44 +27,49 @@ function TrainerSignUp({ onSignUpSuccess }) {
       });
 
       if (!response.ok) {
-        throw new Error('Error en el registro');
+        const errorData = await response.json();
+        throw new Error(errorData.username ? errorData.username[0] : 'Error en el registro');
       }
 
       const data = await response.json();
       onSignUpSuccess(data.token);
     } catch (error) {
-      setError('Error al registrarse');
+      setError('Error al registrarse: ' + (error.message || 'Unknown error'));
       console.error(error);
     }
   };
 
   return (
-    <div className="container mt-5">
-      <div className="row">
-        <div className="col-md-6 offset-md-3">
-          <h2 className="text-center">Registro de Entrenador</h2>
-          <form onSubmit={handleSubmit} className="mt-4">
-            <div className="mb-3">
-              <label htmlFor="username" className="form-label">Username</label>
-              <input type="text" id="username" className="form-control" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
+    <div className="container-trainersignup mt-5">
+      <div className="row-trainersignup">
+        <div className="col-trainersignup">
+          <div className="card-trainersignup">
+            <div className="card-body">
+              <h2 className="text-center">Registro de Entrenador</h2>
+              <form onSubmit={handleSubmit} className="mt-4">
+                <div className="mb-3">
+                  <label htmlFor="username" className="form-label">Username</label>
+                  <input type="text" id="username" className="form-control" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="email" className="form-label">Email</label>
+                  <input type="email" id="email" className="form-control" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="password" className="form-label">Password</label>
+                  <input type="password" id="password" className="form-control" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="confirmPassword" className="form-label">Confirmar Password</label>
+                  <input type="password" id="confirmPassword" className="form-control" placeholder="Confirmar Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+                </div>
+                <div className="d-grid">
+                  <button type="submit" className="btn btn-primary">Registrarse</button>
+                </div>
+                {error && <div className="alert alert-danger mt-3">{error}</div>}
+              </form>
             </div>
-            <div className="mb-3">
-              <label htmlFor="email" className="form-label">Email</label>
-              <input type="email" id="email" className="form-control" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="password" className="form-label">Password</label>
-              <input type="password" id="password" className="form-control" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="confirmPassword" className="form-label">Confirmar Password</label>
-              <input type="password" id="confirmPassword" className="form-control" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
-            </div>
-            <div className="d-grid">
-              <button type="submit" className="btn btn-primary">Registrarse</button>
-            </div>
-            {error && <div className="alert alert-danger mt-3">{error}</div>}
-          </form>
+          </div>
         </div>
       </div>
     </div>

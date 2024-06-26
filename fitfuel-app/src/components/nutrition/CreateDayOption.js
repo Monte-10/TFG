@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import './CreateDayOption.css';
 
 function CreateDayOption() {
   const [name, setName] = useState('');
@@ -18,24 +21,74 @@ function CreateDayOption() {
     legume: false, sauce_or_condiment: false, deli_meat: false, bread_or_toast: false, egg: false,
     special_drink_or_supplement: false, tuber: false, other: false
   });
-  const [meals, setMeals] = useState([]);
+  const [meals, setMeals] = useState({
+    breakfast: [],
+    mid_morning: [],
+    lunch: [],
+    snack: [],
+    dinner: [],
+    extras: []
+  });
   const [optionCreated, setOptionCreated] = useState(false);
   const [error, setError] = useState('');
+  const [filters, setFilters] = useState({
+    breakfast: { name: '' },
+    mid_morning: { name: '' },
+    lunch: { name: '' },
+    snack: { name: '' },
+    dinner: { name: '' },
+    extras: { name: '' }
+  });
+  const [currentPage, setCurrentPage] = useState({
+    breakfast: 1,
+    mid_morning: 1,
+    lunch: 1,
+    snack: 1,
+    dinner: 1,
+    extras: 1
+  });
+  const [totalPages, setTotalPages] = useState({
+    breakfast: 0,
+    mid_morning: 0,
+    lunch: 0,
+    snack: 0,
+    dinner: 0,
+    extras: 0
+  });
+  const [itemsPerPage] = useState(6);
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch(`${apiUrl}/nutrition/meals/`, {
-      headers: {
-        'Authorization': `Token ${localStorage.getItem('authToken')}`,
-      },
-    })
-    .then(response => response.json())
-    .then(data => setMeals(data))
-    .catch(error => {
-      console.error('Error fetching meals:', error);
-      setError('Failed to fetch meals. Please refresh the page.');
+    ['breakfast', 'mid_morning', 'lunch', 'snack', 'dinner', 'extras'].forEach(mealType => {
+      fetchMeals(mealType, currentPage[mealType], filters[mealType]);
     });
-  }, [apiUrl]);
+  }, [currentPage, filters]);
+
+  const fetchMeals = (mealType, page, filters) => {
+    const queryParams = new URLSearchParams({
+      page: page,
+      page_size: itemsPerPage,
+      name: filters.name
+    });
+
+    fetch(`${apiUrl}/nutrition/meals/?${queryParams.toString()}`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        setMeals(prevMeals => ({ ...prevMeals, [mealType]: data.results }));
+        setTotalPages(prevTotalPages => ({
+          ...prevTotalPages,
+          [mealType]: Math.ceil(data.count / itemsPerPage)
+        }));
+      })
+      .catch(error => {
+        console.error('Error fetching meals:', error);
+        setError('Error al obtener comidas. Por favor, refresque la página.');
+      });
+  };
 
   const calculateNutritionTotals = useCallback(() => {
     let newTotals = {
@@ -49,7 +102,7 @@ function CreateDayOption() {
 
     Object.values(selectedMeals).forEach(mealId => {
       if (mealId !== '') {
-        const meal = meals.find(m => m.id.toString() === mealId);
+        const meal = Object.values(meals).flat().find(m => m.id.toString() === mealId);
         if (meal) {
           newTotals.calories += meal.calories;
           newTotals.protein += meal.protein;
@@ -84,7 +137,7 @@ function CreateDayOption() {
     });
 
     selectedMeals.extras.forEach(extraId => {
-      const extra = meals.find(m => m.id.toString() === extraId);
+      const extra = Object.values(meals).flat().find(m => m.id.toString() === extraId);
       if (extra) {
         newTotals.calories += extra.calories;
         newTotals.protein += extra.protein;
@@ -132,13 +185,21 @@ function CreateDayOption() {
     setSelectedMeals({ ...selectedMeals, extras: selectedOptions });
   };
 
+  const handleFilterChange = (mealType, value) => {
+    setFilters(prevFilters => ({ ...prevFilters, [mealType]: { name: value } }));
+  };
+
+  const handlePageChange = (mealType, newPage) => {
+    setCurrentPage(prevPage => ({ ...prevPage, [mealType]: newPage }));
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const authToken = localStorage.getItem('authToken');
     if (!authToken) {
       console.error('Auth token not found');
-      setError('Authentication required.');
+      setError('Autenticación requerida.');
       return;
     }
 
@@ -152,7 +213,7 @@ function CreateDayOption() {
       extras: selectedMeals.extras
     };
 
-    console.log("Sending option day data", optionData);
+    console.log("Enviando datos de opción diaria", optionData);
 
     try {
       const response = await fetch(`${apiUrl}/nutrition/dayoptions/`, {
@@ -170,106 +231,81 @@ function CreateDayOption() {
       }
 
       const data = await response.json();
-      console.log('Success:', data);
+      console.log('Éxito:', data);
+      toast.success('¡Opción creada exitosamente!');
       setOptionCreated(true);
 
     } catch (error) {
-      console.error('Error creating option:', error);
-      setError('Failed to create option. Please try again.');
+      console.error('Error creando la opción:', error);
+      toast.error('Error al crear la opción. Por favor intente de nuevo.');
+      setError('Error al crear la opción. Por favor intente de nuevo.');
     }
   };
 
   return (
-    <div className="container mt-5">
-      <h2>Create Day Option</h2>
+    <div className="create-day-option-container mt-5">
+      <h2>Crear Opción de Día</h2>
       {!optionCreated ? (
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label htmlFor="optionName" className="form-label">Option Name:</label>
+            <label htmlFor="optionName" className="form-label">Nombre de la Opción:</label>
             <input
               type="text"
               className="form-control"
               id="optionName"
               value={name}
               onChange={e => setName(e.target.value)}
-              placeholder="Option Name"
+              placeholder="Nombre de la Opción"
             />
           </div>
 
-          <div className="mb-3">
-            <label htmlFor="breakfastSelect" className="form-label">Breakfast:</label>
-            <select
-              className="form-select"
-              id="breakfastSelect"
-              value={selectedMeals.breakfast}
-              onChange={(e) => handleMealChange('breakfast', e.target.value)}
-            >
-              <option value="">Select Breakfast</option>
-              {meals.map((meal) => (
-                <option key={meal.id} value={meal.id}>{meal.name}</option>
+          {['breakfast', 'mid_morning', 'lunch', 'snack', 'dinner'].map(mealType => (
+            <div key={mealType} className="mb-3">
+              <label htmlFor={`filterName-${mealType}`} className="form-label">Buscar {mealType}:</label>
+              <input
+                type="text"
+                className="form-control"
+                id={`filterName-${mealType}`}
+                value={filters[mealType].name}
+                onChange={e => handleFilterChange(mealType, e.target.value)}
+                placeholder={`Buscar por nombre ${mealType}`}
+              />
+              <h4>{mealType.charAt(0).toUpperCase() + mealType.slice(1)}</h4>
+              {meals[mealType] && meals[mealType].map(meal => (
+                <div key={meal.id} className="card mb-2 small-card">
+                  <div className="card-body d-flex justify-content-between align-items-center">
+                    <span>{meal.name}</span>
+                    <button
+                      type="button"
+                      className="btn btn-sm"
+                      onClick={() => handleMealChange(mealType, meal.id)}
+                    >
+                      {selectedMeals[mealType] === meal.id ? 'Quitar' : 'Añadir'}
+                    </button>
+                  </div>
+                </div>
               ))}
-            </select>
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="midMorningSelect" className="form-label">Mid Morning:</label>
-            <select
-              className="form-select"
-              id="midMorningSelect"
-              value={selectedMeals.mid_morning}
-              onChange={(e) => handleMealChange('mid_morning', e.target.value)}
-            >
-              <option value="">Select Mid Morning</option>
-              {meals.map((meal) => (
-                <option key={meal.id} value={meal.id}>{meal.name}</option>
-              ))}
-            </select>
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="lunchSelect" className="form-label">Lunch:</label>
-            <select
-              className="form-select"
-              id="lunchSelect"
-              value={selectedMeals.lunch}
-              onChange={(e) => handleMealChange('lunch', e.target.value)}
-            >
-              <option value="">Select Lunch</option>
-              {meals.map((meal) => (
-                <option key={meal.id} value={meal.id}>{meal.name}</option>
-              ))}
-            </select>
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="snackSelect" className="form-label">Snack:</label>
-            <select
-              className="form-select"
-              id="snackSelect"
-              value={selectedMeals.snack}
-              onChange={(e) => handleMealChange('snack', e.target.value)}
-            >
-              <option value="">Select Snack</option>
-              {meals.map((meal) => (
-                <option key={meal.id} value={meal.id}>{meal.name}</option>
-              ))}
-            </select>
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="dinnerSelect" className="form-label">Dinner:</label>
-            <select
-              className="form-select"
-              id="dinnerSelect"
-              value={selectedMeals.dinner}
-              onChange={(e) => handleMealChange('dinner', e.target.value)}
-            >
-              <option value="">Select Dinner</option>
-              {meals.map((meal) => (
-                <option key={meal.id} value={meal.id}>{meal.name}</option>
-              ))}
-            </select>
-          </div>
+              <div className="pagination">
+                <button
+                  type="button"
+                  disabled={currentPage[mealType] === 1}
+                  onClick={() => handlePageChange(mealType, currentPage[mealType] - 1)}
+                  className="btn btn-secondary"
+                >
+                  Anterior
+                </button>
+                <span> Página {currentPage[mealType]} de {totalPages[mealType]} </span>
+                <button
+                  type="button"
+                  disabled={currentPage[mealType] >= totalPages[mealType]}
+                  onClick={() => handlePageChange(mealType, currentPage[mealType] + 1)}
+                  className="btn btn-secondary"
+                >
+                  Siguiente
+                </button>
+              </div>
+            </div>
+          ))}
 
           {/* Extras with multiple selection */}
           <div className="mb-3">
@@ -281,53 +317,74 @@ function CreateDayOption() {
               value={selectedMeals.extras}
               onChange={handleExtrasChange}
             >
-              {meals.map((meal) => (
+              {meals.extras && meals.extras.map((meal) => (
                 <option key={meal.id} value={meal.id}>{meal.name}</option>
               ))}
             </select>
           </div>
 
-          <div className="mb-3">
-            <button type="submit" className="btn btn-primary">Create Option</button>
+          <div className="mb-3 mt-3">
+            <button type="submit" className="btn btn-primary">Crear Opción</button>
           </div>
         </form>
       ) : (
-        <div className="alert alert-success" role="alert">Option created successfully!</div>
+        <div className="alert alert-success" role="alert">¡Opción creada exitosamente!</div>
       )}
 
       <div className="nutrition-totals mt-4">
-        <h4>Nutritional Totals:</h4>
-        <p>Calories: {nutritionTotals.calories.toFixed(2)}</p>
-        <p>Protein: {nutritionTotals.protein.toFixed(2)}g</p>
-        <p>Carbohydrates: {nutritionTotals.carbohydrates.toFixed(2)}g</p>
-        <p>Fat: {nutritionTotals.fat.toFixed(2)}g</p>
-        <p>Sugar: {nutritionTotals.sugar.toFixed(2)}g</p>
-        <p>Fiber: {nutritionTotals.fiber.toFixed(2)}g</p>
-        <p>Saturated Fat: {nutritionTotals.saturated_fat.toFixed(2)}g</p>
-        <p>Gluten Free: {nutritionTotals.gluten_free ? 'Yes' : 'No'}</p>
-        <p>Lactose Free: {nutritionTotals.lactose_free ? 'Yes' : 'No'}</p>
-        <p>Vegan: {nutritionTotals.vegan ? 'Yes' : 'No'}</p>
-        <p>Vegetarian: {nutritionTotals.vegetarian ? 'Yes' : 'No'}</p>
-        <p>Pescetarian: {nutritionTotals.pescetarian ? 'Yes' : 'No'}</p>
-        <p>Contains Meat: {nutritionTotals.contains_meat ? 'Yes' : 'No'}</p>
-        <p>Contains Vegetables: {nutritionTotals.contains_vegetables ? 'Yes' : 'No'}</p>
-        <p>Contains Fish/Shellfish/Canned/Preserved: {nutritionTotals.contains_fish_shellfish_canned_preserved ? 'Yes' : 'No'}</p>
-        <p>Cereal: {nutritionTotals.cereal ? 'Yes' : 'No'}</p>
-        <p>Pasta or Rice: {nutritionTotals.pasta_or_rice ? 'Yes' : 'No'}</p>
-        <p>Dairy/Yogurt/Cheese: {nutritionTotals.dairy_yogurt_cheese ? 'Yes' : 'No'}</p>
-        <p>Fruit: {nutritionTotals.fruit ? 'Yes' : 'No'}</p>
-        <p>Nuts: {nutritionTotals.nuts ? 'Yes' : 'No'}</p>
-        <p>Legume: {nutritionTotals.legume ? 'Yes' : 'No'}</p>
-        <p>Sauce or Condiment: {nutritionTotals.sauce_or_condiment ? 'Yes' : 'No'}</p>
-        <p>Deli Meat: {nutritionTotals.deli_meat ? 'Yes' : 'No'}</p>
-        <p>Bread or Toast: {nutritionTotals.bread_or_toast ? 'Yes' : 'No'}</p>
-        <p>Egg: {nutritionTotals.egg ? 'Yes' : 'No'}</p>
-        <p>Special Drink or Supplement: {nutritionTotals.special_drink_or_supplement ? 'Yes' : 'No'}</p>
-        <p>Tuber: {nutritionTotals.tuber ? 'Yes' : 'No'}</p>
-        <p>Other: {nutritionTotals.other ? 'Yes' : 'No'}</p>
+        <h4>Totales Nutricionales:</h4>
+        <table className="table table-bordered">
+          <tbody>
+            <tr>
+              <td>Calorías: {nutritionTotals.calories.toFixed(2)}</td>
+              <td>Libre de Gluten: {nutritionTotals.gluten_free ? 'Sí' : 'No'}</td>
+              <td>Contiene Pescado/Mariscos: {nutritionTotals.contains_fish_shellfish_canned_preserved ? 'Sí' : 'No'}</td>
+            </tr>
+            <tr>
+              <td>Proteínas: {nutritionTotals.protein.toFixed(2)}g</td>
+              <td>Libre de Lactosa: {nutritionTotals.lactose_free ? 'Sí' : 'No'}</td>
+              <td>Cereal: {nutritionTotals.cereal ? 'Sí' : 'No'}</td>
+            </tr>
+            <tr>
+              <td>Carbohidratos: {nutritionTotals.carbohydrates.toFixed(2)}g</td>
+              <td>Vegano: {nutritionTotals.vegan ? 'Sí' : 'No'}</td>
+              <td>Pasta o Arroz: {nutritionTotals.pasta_or_rice ? 'Sí' : 'No'}</td>
+            </tr>
+            <tr>
+              <td>Grasas: {nutritionTotals.fat.toFixed(2)}g</td>
+              <td>Vegetariano: {nutritionTotals.vegetarian ? 'Sí' : 'No'}</td>
+              <td>Lácteos (Yogur, Queso): {nutritionTotals.dairy_yogurt_cheese ? 'Sí' : 'No'}</td>
+            </tr>
+            <tr>
+              <td>Azúcares: {nutritionTotals.sugar.toFixed(2)}g</td>
+              <td>Pescetariano: {nutritionTotals.pescetarian ? 'Sí' : 'No'}</td>
+              <td>Fruta: {nutritionTotals.fruit ? 'Sí' : 'No'}</td>
+            </tr>
+            <tr>
+              <td>Grasas Saturadas: {nutritionTotals.saturated_fat.toFixed(2)}g</td>
+              <td>Contiene Carne: {nutritionTotals.contains_meat ? 'Sí' : 'No'}</td>
+              <td>Frutos Secos: {nutritionTotals.nuts ? 'Sí' : 'No'}</td>
+            </tr>
+            <tr>
+              <td>Contiene Vegetales: {nutritionTotals.contains_vegetables ? 'Sí' : 'No'}</td>
+              <td>Legumbres: {nutritionTotals.legume ? 'Sí' : 'No'}</td>
+              <td>Salsas/Condimentos: {nutritionTotals.sauce_or_condiment ? 'Sí' : 'No'}</td>
+            </tr>
+            <tr>
+              <td>Embutidos: {nutritionTotals.deli_meat ? 'Sí' : 'No'}</td>
+              <td>Pan/Tostada: {nutritionTotals.bread_or_toast ? 'Sí' : 'No'}</td>
+              <td>Huevo: {nutritionTotals.egg ? 'Sí' : 'No'}</td>
+            </tr>
+            <tr>
+              <td>Bebidas Especiales/Suplementos: {nutritionTotals.special_drink_or_supplement ? 'Sí' : 'No'}</td>
+              <td>Otros: {nutritionTotals.other ? 'Sí' : 'No'}</td>
+              <td>Tubérculo: {nutritionTotals.tuber ? 'Sí' : 'No'}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      {error && <div className="alert alert-danger" role="alert">{error}</div>}
+      {error && <ToastContainer />}
     </div>
   );
 }

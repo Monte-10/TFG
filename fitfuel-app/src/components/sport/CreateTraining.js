@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './CreateTraining.css';
 
 function CreateTraining() {
   const [exercises, setExercises] = useState([]);
@@ -11,23 +12,34 @@ function CreateTraining() {
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch(`${apiUrl}/sport/exercises/`, {
-      headers: {
-        'Authorization': `Token ${localStorage.getItem('authToken')}`
-      }
-    })
-      .then(response => response.json())
-      .then(data => setExercises(data))
-      .catch(error => console.error('Error:', error));
+    const fetchUsersAndExercises = async () => {
+      try {
+        const exercisesResponse = await fetch(`${apiUrl}/sport/exercises/`, {
+          headers: {
+            'Authorization': `Token ${localStorage.getItem('authToken')}`
+          }
+        });
+        const usersResponse = await fetch(`${apiUrl}/user/regularusers/`, {
+          headers: {
+            'Authorization': `Token ${localStorage.getItem('authToken')}`
+          }
+        });
 
-    fetch(`${apiUrl}/user/regularusers/`, {
-      headers: {
-        'Authorization': `Token ${localStorage.getItem('authToken')}`
+        if (!exercisesResponse.ok || !usersResponse.ok) throw new Error('Error al obtener los datos');
+
+        const exercisesData = await exercisesResponse.json();
+        const usersData = await usersResponse.json();
+
+        // Utiliza los arrays dentro de la propiedad `results`
+        setExercises(exercisesData.results);
+        setUsers(usersData.results);
+      } catch (error) {
+        setError('Error al obtener los datos. Por favor, intente nuevamente más tarde.');
+        console.error('Error fetching data:', error);
       }
-    })
-      .then(response => response.json())
-      .then(data => setUsers(data))
-      .catch(error => console.error('Error al obtener usuarios:', error));
+    };
+
+    fetchUsersAndExercises();
   }, [apiUrl]);
 
   const handleAddExercise = () => {
@@ -53,52 +65,49 @@ function CreateTraining() {
         repetitions: exercise.repetitions,
         sets: exercise.sets,
         weight: exercise.weight,
-        time: exercise.time || null // Use null for time if it's not set
+        time: exercise.time || null
       }))
     };
 
-    fetch(`${apiUrl}/sport/trainings/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Token ${authToken}`
-      },
-      body: JSON.stringify(trainingData),
-    })
-    .then(response => {
+    try {
+      const response = await fetch(`${apiUrl}/sport/trainings/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${authToken}`
+        },
+        body: JSON.stringify(trainingData),
+      });
+
       if (!response.ok) {
-        return response.json().then(errorData => {
-          throw new Error('Error al crear el entrenamiento: ' + JSON.stringify(errorData));
-        });
+        const errorData = await response.json();
+        throw new Error('Error al crear el entrenamiento: ' + JSON.stringify(errorData));
       }
-      return response.json();
-    })
-    .then(data => {
-      console.log('Success:', data);
+
+      const data = await response.json();
       alert('Entrenamiento creado exitosamente!');
-    })
-    .catch((error) => {
+    } catch (error) {
       setError('Error al crear el entrenamiento');
       console.error('Error:', error);
-    });
+    }
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container-create-training mt-5">
       <h2>Crear Entrenamiento</h2>
       {error && <div className="alert alert-danger">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="trainingName" className="form-label">Nombre del Entrenamiento:</label>
-          <input type="text" className="form-control" id="trainingName" value={trainingName} onChange={(e) => setTrainingName(e.target.value)} />
+          <input type="text" className="form-control" id="trainingName" value={trainingName} onChange={(e) => setTrainingName(e.target.value)} required />
         </div>
         <div className="mb-3">
           <label htmlFor="trainingDate" className="form-label">Fecha del Entrenamiento:</label>
-          <input type="date" className="form-control" id="trainingDate" value={trainingDate} onChange={(e) => setTrainingDate(e.target.value)} />
+          <input type="date" className="form-control" id="trainingDate" value={trainingDate} onChange={(e) => setTrainingDate(e.target.value)} required />
         </div>
         <div className="mb-3">
           <label htmlFor="userSelect" className="form-label">Usuario:</label>
-          <select className="form-select" id="userSelect" value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)}>
+          <select className="form-select" id="userSelect" value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)} required>
             <option value="">Selecciona un usuario</option>
             {users.map(user => (
               <option key={user.id} value={user.id}>{user.username}</option>
@@ -108,28 +117,26 @@ function CreateTraining() {
         {selectedExercises.map((exercise, index) => (
           <div key={index} className="mb-3">
             <div className="input-group">
-              <select className="form-select" value={exercise.exerciseId} onChange={(e) => handleChange(index, 'exerciseId', e.target.value)}>
+              <select className="form-select" value={exercise.exerciseId} onChange={(e) => handleChange(index, 'exerciseId', e.target.value)} required>
                 <option value="">Selecciona un ejercicio</option>
                 {exercises.map(ex => (
-                  <option key={ex.id}
-                  value={ex.id}>{ex.name}</option>
-                  ))}
-                </select>
-                <input type="number" className="form-control" placeholder="Repeticiones" value={exercise.repetitions} onChange={(e) => handleChange(index, 'repetitions', e.target.value)} />
-                <input type="number" className="form-control" placeholder="Series" value={exercise.sets} onChange={(e) => handleChange(index, 'sets', e.target.value)} />
-                <input type="text" className="form-control" placeholder="Peso (opcional)" value={exercise.weight} onChange={(e) => handleChange(index, 'weight', e.target.value)} />
-                <input type="number" className="form-control" placeholder="Tiempo en segundos (opcional)" value={exercise.time || ''} onChange={(e) => handleChange(index, 'time', e.target.value)} />
-              </div>
+                  <option key={ex.id} value={ex.id}>{ex.name}</option>
+                ))}
+              </select>
+              <input type="number" className="form-control" placeholder="Repeticiones" value={exercise.repetitions} onChange={(e) => handleChange(index, 'repetitions', e.target.value)} required />
+              <input type="number" className="form-control" placeholder="Series" value={exercise.sets} onChange={(e) => handleChange(index, 'sets', e.target.value)} required />
+              <input type="text" className="form-control" placeholder="Peso (opcional)" value={exercise.weight} onChange={(e) => handleChange(index, 'weight', e.target.value)} />
+              <input type="number" className="form-control" placeholder="Tiempo en segundos (opcional)" value={exercise.time || ''} onChange={(e) => handleChange(index, 'time', e.target.value)} />
             </div>
-          ))}
-          <div className="d-grid gap-2 d-md-flex justify-content-md-start mb-3">
-            <button type="button" className="btn btn-outline-primary" onClick={handleAddExercise}>Añadir Ejercicio</button>
-            <button type="submit" className="btn btn-success">Guardar Entrenamiento</button>
           </div>
-        </form>
-      </div>
-    );
-  }
-  
-  export default CreateTraining;
-  
+        ))}
+        <div className="d-grid gap-2 d-md-flex justify-content-md-start mb-3">
+          <button type="button" className="btn btn-outline-secondary" onClick={handleAddExercise}>Añadir Ejercicio</button>
+          <button type="submit" className="btn btn-success">Guardar Entrenamiento</button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
+export default CreateTraining;

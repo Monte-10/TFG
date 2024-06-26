@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import './ManageDailyDiet.css';
 
 function ManageDailyDiet() {
   const { dietId } = useParams();
-const [dietName, setDietName] = useState('');
-const [dailyDiets, setDailyDiets] = useState([]);
-const [currentPage, setCurrentPage] = useState(0);
-const apiUrl = process.env.REACT_APP_API_URL;
-const [meals, setMeals] = useState([]);
-const [selectedMeals, setSelectedMeals] = useState({});
-const [mealFilters, setMealFilters] = useState({
+  const [dietName, setDietName] = useState('');
+  const [dailyDiets, setDailyDiets] = useState([]);
+  const [currentDayPage, setCurrentDayPage] = useState(0);
+  const [currentMealPage, setCurrentMealPage] = useState(0);
+  const [totalMealPages, setTotalMealPages] = useState(0);
+  const [loadingMeals, setLoadingMeals] = useState(false);
+  const apiUrl = process.env.REACT_APP_API_URL;
+  const [meals, setMeals] = useState([]);
+  const [selectedMeals, setSelectedMeals] = useState({});
+  const [mealFilters, setMealFilters] = useState({
     name: '',
     minCalories: '',
     maxCalories: '',
@@ -25,67 +29,62 @@ const [mealFilters, setMealFilters] = useState({
     maxFiber: '',
     minSaturatedFat: '',
     maxSaturatedFat: '',
-});
+  });
 
-useEffect(() => {
-    const fetchDailyDiets = async () => {
-        try {
-            const response = await fetch(`${apiUrl}/nutrition/diet/${dietId}/`, {
-              headers: {
-                'Authorization': `Token ${localStorage.getItem('authToken')}`
-              }
-            });
-            if (!response.ok) throw new Error('Failed to fetch daily diets');
-            const data = await response.json();
-            setDailyDiets(data.daily_diets || []);
-            setDietName(data.name);
-            const mealsSelection = {};
-            data.daily_diets.forEach(dd => {
-                mealsSelection[dd.date] = dd.meals.map(m => m.id); // Ensure this is always an array
-            });
-            setSelectedMeals(mealsSelection);
-        } catch (error) {
-            console.error('Error fetching daily diets:', error);
-        }
-    };
-
-    fetchDailyDiets();
-}, [dietId, apiUrl]);
+  const itemsPerPage = 5;
 
   useEffect(() => {
-    const fetchMeals = async () => {
+    const fetchDailyDiets = async () => {
       try {
-        const response = await fetch(`${apiUrl}/nutrition/meals/`, {
+        const response = await fetch(`${apiUrl}/nutrition/diet/${dietId}/`, {
           headers: {
             'Authorization': `Token ${localStorage.getItem('authToken')}`
           }
         });
-        if (!response.ok) throw new Error('Failed to fetch meals');
+        if (!response.ok) throw new Error('Failed to fetch daily diets');
         const data = await response.json();
-        setMeals(data);
+        setDailyDiets(data.daily_diets || []);
+        setDietName(data.name);
+        const mealsSelection = {};
+        data.daily_diets.forEach(dd => {
+          mealsSelection[dd.date] = dd.meals.map(m => m.id); // Ensure this is always an array
+        });
+        setSelectedMeals(mealsSelection);
       } catch (error) {
-        console.error('Error fetching meals:', error);
+        console.error('Error fetching daily diets:', error);
       }
     };
 
-    fetchMeals();
-  }, [apiUrl]);
+    fetchDailyDiets();
+  }, [dietId, apiUrl]);
 
-  const applyFilters = () => {
-    return meals.filter(meal => {
-      return Object.entries(mealFilters).every(([key, value]) => {
-        if (!value) return true; // No filter applied
-        const field = key.slice(3).toLowerCase();
-        const mealValue = meal[field];
-        if (key.startsWith('min') && mealValue < Number(value)) return false;
-        if (key.startsWith('max') && mealValue > Number(value)) return false;
-        if (key === 'name' && !meal.name.toLowerCase().includes(value.toLowerCase())) return false;
-        return true;
+  const fetchMeals = async (page = 0, filters = mealFilters) => {
+    setLoadingMeals(true);
+    try {
+      const filterParams = new URLSearchParams({
+        ...filters,
+        page: page + 1,
+        page_size: itemsPerPage,
+      }).toString();
+      const response = await fetch(`${apiUrl}/nutrition/meals/?${filterParams}`, {
+        headers: {
+          'Authorization': `Token ${localStorage.getItem('authToken')}`
+        }
       });
-    });
+      if (!response.ok) throw new Error('Failed to fetch meals');
+      const data = await response.json();
+      setMeals(data.results);
+      setTotalMealPages(Math.ceil(data.count / itemsPerPage));
+    } catch (error) {
+      console.error('Error fetching meals:', error);
+    } finally {
+      setLoadingMeals(false);
+    }
   };
 
-  const filteredMeals = applyFilters();
+  useEffect(() => {
+    fetchMeals(currentMealPage, mealFilters);
+  }, [currentMealPage, mealFilters]);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -93,32 +92,37 @@ useEffect(() => {
       ...prev,
       [name]: value
     }));
+    setCurrentMealPage(0); // Reset meal page to 0 when filters change
   };
 
   const handleMealSelection = (mealId, date) => {
     setSelectedMeals(prev => {
-        const updatedMealsForDate = prev[date] ? [...prev[date]] : [];
-        if (!updatedMealsForDate.includes(mealId)) {
-            updatedMealsForDate.push(mealId);
-        }
-        return { ...prev, [date]: updatedMealsForDate };
+      const updatedMealsForDate = prev[date] ? [...prev[date]] : [];
+      if (!updatedMealsForDate.includes(mealId)) {
+        updatedMealsForDate.push(mealId);
+      }
+      return { ...prev, [date]: updatedMealsForDate };
     });
-};
+  };
 
-
-const handleMealRemoval = (mealId, date) => {
-  setSelectedMeals(prev => {
+  const handleMealRemoval = (mealId, date) => {
+    setSelectedMeals(prev => {
       const updatedMealsForDate = prev[date] ? prev[date].filter(id => id !== mealId) : [];
       return { ...prev, [date]: updatedMealsForDate };
-  });
-};
+    });
+  };
 
-  const handlePageChange = (index) => {
-    setCurrentPage(index);
+  const handleDayPageChange = (index) => {
+    setCurrentDayPage(index);
+    setCurrentMealPage(0); // Reset meal page to 0 when changing day page
+  };
+
+  const handleMealPageChange = (index) => {
+    setCurrentMealPage(index);
   };
 
   const saveDailyDiet = async () => {
-    const dailyDiet = dailyDiets[currentPage];
+    const dailyDiet = dailyDiets[currentDayPage];
     if (!dailyDiet) {
       alert('No se encontró el Daily Diet para la página actual');
       return;
@@ -148,23 +152,25 @@ const handleMealRemoval = (mealId, date) => {
     }
   };
 
+  const displayedMeals = meals;
+
   return (
-    <div className="container mt-4">
+    <div className="manage-daily-diet-container mt-4">
       <h2>Administrar Dieta Diaria para la Dieta: {dietName}</h2>
       <div className="mb-3">
-        <button onClick={() => handlePageChange(Math.max(0, currentPage - 1))}>Anterior</button>
-        <button onClick={() => handlePageChange(Math.min(dailyDiets.length - 1, currentPage + 1))}>Siguiente</button>
+        <button className="btn btn-secondary mr-2" onClick={() => handleDayPageChange(Math.max(0, currentDayPage - 1))}>Anterior Día</button>
+        <button className="btn btn-secondary" onClick={() => handleDayPageChange(Math.min(dailyDiets.length - 1, currentDayPage + 1))}>Siguiente Día</button>
       </div>
 
       {dailyDiets.length > 0 && (
         <div>
-          <h3>Día: {dailyDiets[currentPage].date}</h3>
+          <h3>Día: {dailyDiets[currentDayPage].date}</h3>
           <div className="row mb-4">
             {Object.keys(mealFilters).map((filter) => (
               <div key={filter} className="col-md-4">
                 <input
                   type={filter.includes('Calories') || filter.includes('Protein') || filter.includes('Fat') || filter.includes('Sugar') || filter.includes('Fiber') || filter.includes('SaturatedFat') ? "number" : "text"}
-                  className="form-control"
+                  className="form-control mb-2"
                   placeholder={filter}
                   value={mealFilters[filter]}
                   onChange={handleFilterChange}
@@ -177,30 +183,38 @@ const handleMealRemoval = (mealId, date) => {
           <div className="row">
             <div className="col-md-6">
               <h4>Comidas Disponibles</h4>
-              {filteredMeals.map(meal => (
-                <div key={meal.id} className="card mb-2">
-                  <div className="card-body">
-                    <h5 className="card-title">{meal.name} - {meal.calories} Calorías</h5>
-                    <button
-                      className="btn btn-primary btn-sm"
-                      onClick={() => handleMealSelection(meal.id, dailyDiets[currentPage].date)}
-                    >
-                      Añadir
-                    </button>
+              {loadingMeals ? (
+                <p>Cargando comidas...</p>
+              ) : (
+                displayedMeals.map(meal => (
+                  <div key={meal.id} className="card mb-2">
+                    <div className="card-body">
+                      <h5 className="card-title">{meal.name} - {meal.calories} Calorías</h5>
+                      <button
+                        className="btn btn-primary btn-sm"
+                        onClick={() => handleMealSelection(meal.id, dailyDiets[currentDayPage].date)}
+                      >
+                        Añadir
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
+              <div className="d-flex justify-content-center mt-4">
+                <button className="btn btn-secondary mx-2" onClick={() => handleMealPageChange(Math.max(0, currentMealPage - 1))}>Anterior Página de Comidas</button>
+                <button className="btn btn-secondary mx-2" onClick={() => handleMealPageChange(Math.min(totalMealPages - 1, currentMealPage + 1))}>Siguiente Página de Comidas</button>
+              </div>
             </div>
 
             <div className="col-md-6">
               <h4>Comidas Seleccionadas</h4>
               <ul className="list-group">
-                {selectedMeals[dailyDiets[currentPage].date]?.map((mealId, index) => {
+                {selectedMeals[dailyDiets[currentDayPage].date]?.map((mealId, index) => {
                   const meal = meals.find(m => m.id === mealId);
                   return (
                     <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
                       {meal?.name}
-                      <button className="btn btn-warning btn-sm" onClick={() => handleMealRemoval(mealId, dailyDiets[currentPage].date)}>Quitar</button>
+                      <button className="btn btn-warning btn-sm" onClick={() => handleMealRemoval(mealId, dailyDiets[currentDayPage].date)}>Quitar</button>
                     </li>
                   );
                 })}
@@ -209,7 +223,7 @@ const handleMealRemoval = (mealId, date) => {
           </div>
           <div className="row">
             <div className="col-12 text-center mt-3">
-              <button className="btn btn-success" onClick={saveDailyDiet}>Guardar Cambios</button>
+              <button className="btn btn-success" onClick={saveDailyDiet}>Guardar cambios para este día</button>
             </div>
           </div>
         </div>

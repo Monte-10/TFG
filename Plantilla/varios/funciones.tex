@@ -1,173 +1,95 @@
-En este apéndice se presenta un listado de funciones y otro de los entornos. Se presentan en formato de tabla a modo de resumen y para que puedan ser impresas a modo de referencia. En cada función o entorno se indica si debe usarse en el cuerpo del texto o en el preámbulo, los parámetros opcionales si tiene y los obligatorios si tiene. También se presentan aquellos comandos de \LaTeXe\ que no sólo ha sido modificado su comportamiento sino que también han cambiado los parámetros.
+En este apéndice se presentan la estructura del backend y del frontend de la aplicación FitFuelBalance. Se han realizado con la herramienta \textit{Lucidchart} y se han exportado a formato \textit{pdf} para su inclusión en este documento.
 
-\def\funcl#1#2#3{\textbf{\textbackslash#1}&#2&#3\\}
-\def\entorn#1#2#3{\textbf{#1}&#2&#3\\}
-\def\Bttl#1{\multicolumn{3}{c}{\small\textbf{#1}}\\}
-\def\ttl#1{\hline\multicolumn{3}{|c|}{\textbf{#1}}\\\hline}
-\def\myseparator{\multicolumn{3}{c}{\mbox{}}\\}
+\subsection{Backend}
 
-\section{Comandos en el preámbulo}
-\begin{center}
-\begin{scriptsize}
-  \begin{longtable}{lll}
-    \myseparator
-    \ttl{Autoría}
-    \funcl{advisor}{}{\{tutor\}}
-    \funcl{author}{}{\{titulo\}}
-    \funcl{coadvisor}{}{\{cotutor\}}
-    \funcl{copyrightdate}{}{\{fecha\}}
-    \funcl{faculty}{}{\{facultad/escuela\}}
-    \funcl{levelin}{}{\{titulacion\}}
-    \funcl{title}{[título corto]}{\{titulo\}}
-    \funcl{speaker}{}{\{ponente\}}
-    \myseparator
-    \ttl{Decoraciones}
-    \funcl{coverdata}{}{\{texto\}}
-    \funcl{facultylogo}{}{\{fichero\}}
-    \funcl{facultylogowide}{}{\{dimension\}}
-    \myseparator
-    \ttl{Directorios}
-    \funcl{codesdir}{}{\{directorio\}}
-    \funcl{datadir}{}{\{directorio\}}
-    \funcl{graphicsdir}{}{\{directorio\}}
-    \funcl{logosdir}{}{\{directorio\}}
-    \myseparator
-    \ttl{Prefacio}
-    \funcl{abstractfile}{}{\{fichero\}}
-    \funcl{ackfile}{}{\{fichero\}}
-    \funcl{dedication}{}{\{dedicatoria\}}
-    \funcl{famouscite}{}{\{cita\}}
-    \funcl{keywords}{}{\{palabras\}}
-    \funcl{palabrasclave}{}{\{palabras\}}
-    \funcl{prefacefile}{}{\{fichero\}}
-    \funcl{privateaddress}{}{\{direccion\}}
-    \funcl{resumenfile}{}{\{fichero\}}
-  \end{longtable}
-\end{scriptsize}
-\end{center}
+El diagrama de la figura \ref{FIG:backend} muestra la estructura del backend de la aplicación FitFuelBalance. En él se pueden ver los diferentes módulos que componen el backend de la aplicación, cada uno de los cuales tiene un propósito específico en el funcionamiento del sistema. 
+
+\begin{itemize}
+  \item fitfuelbalance: Contiene la configuración global de la aplicación, incluyendo `settings.py`, `urls.py`, y los archivos de arranque `wsgi.py` y `asgi.py`.
+  \item nutrition: Módulo que maneja toda la lógica relacionada con la nutrición, incluyendo modelos, vistas, serializadores, formularios y filtros.
+  \item sport: Módulo que gestiona las funcionalidades relacionadas con el deporte, como la creación y edición de entrenamientos y ejercicios.
+  \item user: Módulo dedicado a la gestión de usuarios, manejo de autenticación y perfil de usuario.
+  \item media: Carpeta que contiene los archivos multimedia subidos por los usuarios, como imágenes de alimentos y ejercicios.
+  \item templates: Contiene las plantillas HTML utilizadas en las vistas de Django.
+  \item manage.py: Archivo principal de gestión de comandos de Django.
+  \item requirements.txt: Archivo que lista todas las dependencias del proyecto necesarias para la instalación y ejecución del backend.
+\end{itemize}
+
+\begin{figure}[Diagrama de la estructura del backend]{FIG:backend}{Diagrama de la estructura del backend de FitFuelBalance}
+  \image{16cm}{}{backend}
+\end{figure}
+
 \newpage
-\section{Commandos en el cuerpo del texto}
-\begin{center}
-\begin{scriptsize}
-  \begin{longtable}{lll}
-    \myseparator
-    \ttl{Código}
-    \funcl{Code}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}\{lenguaje\}}
-    \funcl{AdaCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \funcl{ASMCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \funcl{ASMMotorolaCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \funcl{CCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \funcl{CPPCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \funcl{CSharpCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \funcl{GnuplotCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \funcl{HaskellCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \funcl{HTMLCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \funcl{JavaCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \funcl{LaTeXCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \funcl{LispCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \funcl{MakeCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \funcl{MathematicaCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \funcl{MatlabCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \funcl{OctaveCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \funcl{PascalCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \funcl{PerlCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \funcl{PHPCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \funcl{PythonCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \funcl{RCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \funcl{RubyCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \funcl{ScilabCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \funcl{SQLCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \funcl{VHDLCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \funcl{XMLCode}{[etiqueta]}{\{pie corto\}\{pie largo\}\{fichero\}\{línea inicial\}\{línea final\}\{numeración inicial\}}
-    \myseparator
-    \ttl{Ecuaciones}
-    \funcl{boxed}{}{\{ecuación\}}
-    \myseparator
-    \ttl{Estructura}
-    \funcl{cleardoublepage}{}{}
-    \funcl{part}{[título corto]}{\{titulo\}\{fichero\}}
-    \funcl{part}{[título corto]}{\{titulo\}}
-    \funcl{chapter}{[título corto]}{\{titulo\}\{fichero\}}
-    \funcl{chapter}{[título corto]}{\{titulo\}}
-    \funcl{section}{[título corto]}{\{titulo\}\{fichero\}}
-    \funcl{section}{[título corto]}{\{titulo\}}
-    \funcl{subsection}{[título corto]}{\{titulo\}\{fichero\}}
-    \funcl{subsection}{[título corto]}{\{titulo\}}
-    \funcl{subsubsection}{[título corto]}{\{titulo\}\{fichero\}}
-    \funcl{subsubsection}{[título corto]}{\{titulo\}}
-    \funcl{paragraph}{[título corto]}{\{titulo\}\{fichero\}}
-    \funcl{paragraph}{[título corto]}{\{titulo\}}
-    \funcl{subparagraph}{[título corto]}{\{titulo\}\{fichero\}}
-    \funcl{subparagraph}{[título corto]}{\{titulo\}}
-    \myseparator
-    \ttl{Figuras y tablas}
-    \funcl{subfigure}{[etiqueta]}{\{pie\}\{contenido\}}
-    \funcl{subtable}{[etiqueta]}{\{pie\}\{contenido\}}
-    \myseparator
-    \ttl{Gantt}
-    \funcl{milestone}{[etiqueta enlace]}{\{etiqueta gantt\}\{tiempo\}}
-    \funcl{taskbar}{[etiqueta enlace][porcentaje fin]}{\{etiqueta gantt\}\{tiempo inicio\}\{tiempo fin\}}
-    \funcl{taskgroup}{[etiqueta enlace][porcentaje fin]}{\{etiqueta gantt\}\{tiempo inicio\}\{tiempo fin\}}
-    \funcl{FtoFlink}{}{\{eetiqueta inicio\}\{eetiqueta fin\}}
-    \funcl{FtoSlink}{}{\{eetiqueta inicio\}\{eetiqueta fin\}}
-    \funcl{StoSlink}{}{\{eetiqueta inicio\}\{eetiqueta fin\}}
-    \myseparator
-    \myseparator
-    \myseparator
-    \ttl{Gráficas}
-    \funcl{plotlined}{}{\{fichero datos\}\{titulo datos\}}
-    \funcl{plotdatalined}{}{\{fichero datos\}\{titulo datos\}}
-    \funcl{plotdata}{}{\{fichero datos\}\{titulo datos\}}
-    \funcl{plotfunction}{}{\{fichero datos\}\{titulo datos\}}
-    \myseparator
-    \ttl{Imágenes}
-    \funcl{image}{}{\{ancho\}\{alto\}\{fichero\}}
-    \funcl{imageIL}{ancho}{fichero}
-    \myseparator
-    \ttl{Presupuestos}
-    \funcl{budgettitle}{}{\{titulo presupuesto\}}
-    \funcl{concept}{}{\{título\}\{precio unitario\}\{cantidad\}\{coste total\}}
-    \funcl{separator}{}{}
-    \funcl{subconcept}{}{\{título\}\{precio unitario\}\{cantidad\}\{coste total\}}
-    \funcl{subtotal}{}{\{subtotal\}}
-    \funcl{total}{}{\{total presupuesto\}}
-    \myseparator
-    \ttl{Texto citado}
-    \funcl{onlinecitation}{}{\{autor\}\{texto\}}
-  \end{longtable}
-\end{scriptsize}
-\end{center}
 
-\section{Entornos}
+\subsubsection{Base de Datos}
 
-De igual forma en la siguiente tabla se presentan los distintos entornos creados o modificados para este estilo. Todos los entornos deben usarse dentro del cuerpo del documento.
+El siguiente diagrama representa el diseño de la base de datos, este diseño. Las figura \ref{FIG:db} muestra las tablas y relaciones de la base de datos de FitFuelBalance.
 
-\begin{footnotesize}
-  \begin{longtable}{lll}
-    \ttl{General}
-    \entorn{algorithm}{[pie corto]}{\{etiqueta\}\{pie completo\}}
-    \entorn{algorithmN}{[pie corto]}{\{etiqueta\}\{pie completo\}}
-    \entorn{budget}{}{}
-    \entorn{equation}{[etiqueta]}{\{título\}}
-    \entorn{figure}{[pie corto]}{\{etiqueta\}\{pie completo\}}
-    \entorn{gantt}{}{\{tiempo inicio\}\{tiempo fin\}}
-    \entorn{largecitation}{}{\{autor\}}
-    \entorn{multiequation}{}{}
-    \entorn{table}{[pie corto]}{\{etiqueta\}\{pie completo\}}
-    \entorn{textbox}{[pie corto]}{\{etiqueta\}\{pie completo\}}
-    \myseparator
-    \ttl{Listados especiales}
-    \entorn{functionality}{}{}
-    \entorn{objetive}{}{}
-    \entorn{functional}{}{}
-    \entorn{nonfunctional}{}{}
-    \entorn{simplelist}{}{}
-    \myseparator
-    \ttl{Gráficas}
-    \entorn{gnuplot}{[opciones]}{}
-    \entorn{loglogplot}{[posicion leyenda]}{\{título\}\{título eje x\}\{título eje y\}\{ancho\}\{alto\}}
-    \entorn{semilogxplot}{[posicion leyenda]}{\{título\}\{título eje x\}\{título eje y\}\{ancho\}\{alto\}}
-    \entorn{semilogyplot}{[posicion leyenda]}{\{título\}\{título eje x\}\{título eje y\}\{ancho\}\{alto\}}
-    \entorn{xyplot}{[posicion leyenda]}{\{título\}\{título eje x\}\{título eje y\}\{ancho\}\{alto\}}
-  \end{longtable}
-\end{footnotesize}
+\begin{figure}[Diseño de la base de datos]{FIG:db}{Diseño de la base de datos de FitFuelBalance}
+  \image{15.075cm}{}{db}
+\end{figure}
+
+\newpage
+\subsection{Frontend}
+
+El diagrama de la figura \ref{FIG:frontend} muestra la estructura del frontend de la aplicación FitFuelBalance. En él se pueden ver los diferentes módulos que componen el frontend de la aplicación, cada uno de los cuales contribuye a la interfaz de usuario y la interacción con el backend.
+
+\begin{itemize}
+  \item src: Carpeta principal del código fuente del frontend.
+    \begin{itemize}
+      \item App.js: Componente principal de la aplicación que contiene la estructura básica y las rutas principales.
+      \item App.css: Archivo de estilos principal que aplica estilos globales a la aplicación.
+      \item components: Contiene todos los componentes específicos de la aplicación.
+        \begin{itemize}
+          \item HomePage.js: Componente que representa la página de inicio de la aplicación.
+          \item layout/Header.js: Componente que contiene la cabecera de la aplicación.
+          \item nutrition: Carpeta que contiene los componentes relacionados con la funcionalidad de nutrición, como `AdaptDietOrOption.js`, `CreateDiet.js`, `ListFood.js`, etc.
+          \item sport: Carpeta que contiene los componentes relacionados con la funcionalidad de deporte, como `CreateExercise.js`, `ListTraining.js`, etc.
+          \item user: Carpeta que contiene los componentes relacionados con la gestión de usuarios, como `Login.js`, `Profile.js`, `RegularSignUp.js`, etc.
+        \end{itemize}
+      \item css/style.css: Archivo de estilos CSS globales que se aplican a toda la aplicación.
+    \end{itemize}
+  \item public: Carpeta que contiene los archivos estáticos y el archivo HTML principal.
+  \item nodemodules: Carpeta que contiene todas las dependencias instaladas a través de npm.
+  \item package.json: Archivo que contiene las dependencias y scripts del proyecto.
+\end{itemize}
+
+\begin{figure}[Diagrama de la estructura del frontend]{FIG:frontend}{Diagrama de la estructura del frontend de FitFuelBalance}
+  \image{16cm}{}{front}
+\end{figure}
+\newpage
+
+\subsubsection{Aplicación Móvil}
+
+A continuación se muestra un esquema de la estructura de la aplicación móvil:
+
+\begin{figure}[Estructura de aplicación móvil]{FIG:estrucmovil}{Esquema de la estructura de la aplicación móvil}
+    \begin{itemize}
+        \item \texttt{src/} - Directorio principal del código fuente.
+        \begin{itemize}
+            \item \texttt{api/} - Contiene los archivos relacionados con la API.
+            \begin{itemize}
+                \item \texttt{trainingApi.js} - Archivo para las llamadas a la API relacionadas con los entrenamientos.
+            \end{itemize}
+            \item \texttt{AuthContext.js} - Contexto de autenticación.
+            \item \texttt{components/} - Contiene los componentes reutilizables de la UI.
+            \begin{itemize}
+                \item \texttt{CountdownTimer.js} - Componente para un temporizador de cuenta regresiva.
+            \end{itemize}
+            \item \texttt{navigation/} - Configuración de la navegación de la aplicación.
+            \begin{itemize}
+                \item \texttt{AppNavigator.js} - Archivo de configuración del navegador de la aplicación.
+            \end{itemize}
+            \item \texttt{screens/} - Contiene las diferentes pantallas de la aplicación, la más importantes son:
+            \begin{itemize}
+                \item \texttt{ActiveTrainingScreen.js} - Pantalla de entrenamiento activo.
+                \item \texttt{CalendarScreen.js} - Pantalla del calendario.
+                \item \texttt{FoodDetailsScreen.js} - Pantalla de detalles de alimentos.
+                \item \texttt{HomeScreen.js} - Pantalla de inicio.
+                \item \texttt{LoginScreen.js} - Pantalla de inicio de sesión.
+                \item \texttt{TodayScreen.js} - Muestra los entrenamientos y comidas del día.
+                \item \texttt{TrainingDetailsScreen.js} - Pantalla de detalles del entrenamiento.
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{figure}

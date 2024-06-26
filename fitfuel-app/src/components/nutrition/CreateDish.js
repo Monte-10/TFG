@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import './CreateDish.css'; // Importa el archivo CSS
 
 function CreateDish() {
   const [ingredients, setIngredients] = useState([]);
   const [selectedIngredients, setSelectedIngredients] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const [itemsPerPage] = useState(3);
+  const [itemsPerPage] = useState(6); // Ajustado para mostrar más ingredientes por página
   const [totalPages, setTotalPages] = useState(0);
   const [nutritionTotals, setNutritionTotals] = useState({
     calories: 0, protein: 0, carbohydrates: 0, fat: 0, sugar: 0, fiber: 0, saturated_fat: 0,
@@ -15,6 +18,7 @@ function CreateDish() {
     special_drink_or_supplement: false, tuber: false, other: false
   });
   const [selectedUser, setSelectedUser] = useState('');
+  const [users, setUsers] = useState([]);
   const [name, setName] = useState('');
   const [dishCreated, setDishCreated] = useState(false);
   const [createdDishId, setCreatedDishId] = useState(null);
@@ -39,29 +43,62 @@ function CreateDish() {
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    fetch(`${apiUrl}/nutrition/ingredients/`, {
-      headers: {
-        'Authorization': `Token ${localStorage.getItem('authToken')}`
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        setIngredients(data);
-        setTotalPages(Math.ceil(data.length / itemsPerPage));
-      });
+    fetchIngredients(currentPage, filters);
+    fetchUsers();
+  }, [apiUrl, currentPage, filters]);
 
-    fetch(`${apiUrl}/user/regularusers/`, {
-      headers: {
-        'Authorization': `Token ${localStorage.getItem('authToken')}`
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.length > 0) {
-          setSelectedUser(data[0].id.toString());
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch(`${apiUrl}/user/regularusers/`, {
+        headers: {
+          'Authorization': `Token ${localStorage.getItem('authToken')}`
         }
       });
-  }, [apiUrl, itemsPerPage]);
+      if (!response.ok) {
+        throw new Error('Error fetching users');
+      }
+      const data = await response.json();
+      setUsers(data.results || []);
+      if (data.results && data.results.length > 0) {
+        setSelectedUser(data.results[0].id.toString());
+      }
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+
+  const fetchIngredients = (page, filters) => {
+    const queryParams = new URLSearchParams({
+      page: page + 1,
+      page_size: itemsPerPage,
+      name: filters.name,
+      calories__gte: filters.minCalories,
+      calories__lte: filters.maxCalories,
+      protein__gte: filters.minProtein,
+      protein__lte: filters.maxProtein,
+      carbohydrates__gte: filters.minCarbohydrates,
+      carbohydrates__lte: filters.maxCarbohydrates,
+      fat__gte: filters.minFat,
+      fat__lte: filters.maxFat,
+      sugar__gte: filters.minSugar,
+      sugar__lte: filters.maxSugar,
+      fiber__gte: filters.minFiber,
+      fiber__lte: filters.maxFiber,
+      saturated_fat__gte: filters.minSaturatedFat,
+      saturated_fat__lte: filters.maxSaturatedFat,
+    });
+
+    fetch(`${apiUrl}/nutrition/ingredients/?${queryParams.toString()}`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        setIngredients(data.results);
+        setTotalPages(Math.ceil(data.count / itemsPerPage));
+      });
+  };
 
   useEffect(() => {
     const totals = selectedIngredients.reduce((acc, { ingredientId, quantity }) => {
@@ -119,7 +156,7 @@ function CreateDish() {
   };
 
   const handleIngredientToggle = (ingredientId) => {
-    const existingIndex = selectedIngredients.findIndex(item => item.ingredientId === ingredientId);
+    const existingIndex = selectedIngredients.findIndex(item => item.ingredientId === ingredientId.toString());
 
     if (existingIndex >= 0) {
       // Ingrediente ya añadido, quitarlo
@@ -130,7 +167,7 @@ function CreateDish() {
       const ingredient = ingredients.find(ing => ing.id === ingredientId);
       if (ingredient) {
         setSelectedIngredients([...selectedIngredients, {
-          ingredientId: ingredient.id,
+          ingredientId: ingredient.id.toString(),
           quantity: 1,
           name: ingredient.name
         }]);
@@ -153,41 +190,25 @@ function CreateDish() {
     setSelectedIngredients(updatedIngredients);
   };
 
-  const filteredIngredients = ingredients.filter(ingredient => {
-    return (!filters.name || ingredient.name.toLowerCase().includes(filters.name.toLowerCase())) &&
-      (!filters.minCalories || ingredient.calories >= filters.minCalories) &&
-      (!filters.maxCalories || ingredient.calories <= filters.maxCalories) &&
-      (!filters.minProtein || ingredient.protein >= filters.minProtein) &&
-      (!filters.maxProtein || ingredient.protein <= filters.maxProtein) &&
-      (!filters.minCarbohydrates || ingredient.carbohydrates >= filters.minCarbohydrates) &&
-      (!filters.maxCarbohydrates || ingredient.carbohydrates <= filters.maxCarbohydrates) &&
-      (!filters.minFat || ingredient.fat >= filters.minFat) &&
-      (!filters.maxFat || ingredient.fat <= filters.maxFat) &&
-      (!filters.minSugar || ingredient.sugar >= filters.minSugar) &&
-      (!filters.maxSugar || ingredient.sugar <= filters.maxSugar) &&
-      (!filters.minFiber || ingredient.fiber >= filters.minFiber) &&
-      (!filters.maxFiber || ingredient.fiber <= filters.maxFiber) &&
-      (!filters.minSaturatedFat || ingredient.saturated_fat >= filters.minSaturatedFat) &&
-      (!filters.maxSaturatedFat || ingredient.saturated_fat <= filters.maxSaturatedFat);
-  });
-
   const toggleAdvancedFilters = () => {
     setShowAdvancedFilters(!showAdvancedFilters);
   };
 
-  const currentIngredients = filteredIngredients.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+  const currentIngredients = ingredients.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const dishData = {
       name,
-      user: selectedUser,
+      user: parseInt(selectedUser, 10),  // Asegura que el ID de usuario es un entero
       ingredients: selectedIngredients.map(si => ({
         ingredient: si.ingredientId,
         quantity: si.quantity,
       })),
     };
+
+    console.log('Dish Data:', dishData);
 
     try {
       const response = await fetch(`${apiUrl}/nutrition/dishes/`, {
@@ -209,18 +230,21 @@ function CreateDish() {
       const data = await response.json();
       console.log('Dish created successfully:', data);
       setDishCreated(true);
+      toast.success('Plato creado exitosamente!');
       setCreatedDishId(data.id);
       setName('');
       setSelectedUser('');
       setSelectedIngredients([]);
     } catch (error) {
       console.error('Error creating dish:', error.message);
+      toast.error('Error al crear el plato');
     }
   };
 
   return (
-    <div className="container mt-4">
+    <div className="container mt-4 create-dish-container">
       <h2 className="mb-4">Crear Plato</h2>
+      <ToastContainer />
       {dishCreated && (
         <div className="alert alert-success" role="alert">
           Plato creado con éxito. ID: {createdDishId}
@@ -238,6 +262,23 @@ function CreateDish() {
           placeholder="Introduce el nombre del plato"
           required
         />
+      </div>
+      <div className="form-group mb-3">
+        <label htmlFor="userSelect">Seleccionar Usuario:</label>
+        <select
+          className="form-control"
+          id="userSelect"
+          name="user"
+          value={selectedUser}
+          onChange={(e) => setSelectedUser(e.target.value)}
+          required
+        >
+          {users.map(user => (
+            <option key={user.id} value={user.id}>
+              {user.username}
+            </option>
+          ))}
+        </select>
       </div>
       {!dishCreated && (
         <form onSubmit={handleSubmit}>
@@ -405,58 +446,72 @@ function CreateDish() {
             <div className="row">
               <div className="col-md-6">
                 <h3>Ingredientes Disponibles</h3>
-                {currentIngredients.map((ingredient, index) => (
-                  <div key={index} className="card mb-2">
-                    <div className="card-body">
-                      {ingredient.food_image && (
-                        <img
-                          src={ingredient.food_image}
-                          className="card-img-top"
-                          alt={ingredient.name}
-                          style={{ maxWidth: '100px', marginBottom: '10px' }}
-                        />
-                      )}
-                      <h5 className="card-title">{ingredient.name}</h5>
-                      <button
-                        type="button"
-                        className={selectedIngredients.some(item => item.ingredientId === ingredient.id) ? "btn btn-danger" : "btn btn-primary"}
-                        onClick={() => handleIngredientToggle(ingredient.id)}
-                      >
-                        {selectedIngredients.some(item => item.ingredientId === ingredient.id) ? "Quitar" : "Añadir"}
-                      </button>
+                <div className="row">
+                  {currentIngredients.map((ingredient) => (
+                    <div key={ingredient.id} className="col-md-6">
+                      <div className="card mb-2">
+                        <div className="card-body">
+                          {ingredient.food_image && (
+                            <img
+                              src={ingredient.food_image}
+                              className="card-img-top"
+                              alt={ingredient.name}
+                              style={{ maxWidth: '100px', marginBottom: '10px' }}
+                            />
+                          )}
+                          <h5 className="card-title">{ingredient.name}</h5>
+                          <button
+                            type="button"
+                            className={selectedIngredients.some(item => item.ingredientId === ingredient.id.toString()) ? "btn btn-danger" : "btn btn-primary"}
+                            onClick={() => handleIngredientToggle(ingredient.id)}
+                          >
+                            {selectedIngredients.some(item => item.ingredientId === ingredient.id.toString()) ? "Quitar" : "Añadir"}
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
               <div className="col-md-6">
                 <h3>Ingredientes Seleccionados</h3>
-                {selectedIngredients.map((item, index) => (
-                  <div key={index} className="input-group mb-3">
-                    <input
-                      type="text"
-                      readOnly
-                      className="form-control"
-                      value={item.name}
-                    />
-                    <input
-                      type="number"
-                      className="form-control"
-                      value={item.quantity}
-                      onChange={(e) => handleQuantityChange(index, e.target.value)}
-                      min="0.01"
-                      step="0.01"
-                    />
-                    <div className="input-group-append">
-                      <button
-                        type="button"
-                        className="btn btn-danger"
-                        onClick={() => handleRemoveIngredient(index)}
-                      >
-                        Quitar
-                      </button>
+                {selectedIngredients.map((item, index) => {
+                  const ingredient = ingredients.find(ing => ing.id.toString() === item.ingredientId);
+                  return (
+                    <div key={index} className="input-group mb-3">
+                      <input
+                        type="text"
+                        readOnly
+                        className="form-control"
+                        value={item.name}
+                      />
+                      <input
+                        type="number"
+                        className="form-control"
+                        value={item.quantity}
+                        onChange={(e) => handleQuantityChange(index, e.target.value)}
+                        min="0.01"
+                        step="0.01"
+                      />
+                      <div className="input-group-append">
+                        <button
+                          type="button"
+                          className="btn btn-danger"
+                          onClick={() => handleRemoveIngredient(index)}
+                        >
+                          Quitar
+                        </button>
+                      </div>
+                      {ingredient && (
+                        <div className="ingredient-summary">
+                          <small>
+                            Cal: {ingredient.calories.toFixed(2)} | Prot: {ingredient.protein.toFixed(2)}g | Carb: {ingredient.carbohydrates.toFixed(2)}g | Grasa: {ingredient.fat.toFixed(2)}g
+                          </small>
+                        </div>
+                      )}
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>

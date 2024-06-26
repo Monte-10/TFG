@@ -46,6 +46,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 INTERNAL_IPS = [
@@ -62,6 +63,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
+    'DEFAULT_PAGINATION_CLASS': 'nutrition.pagination.StandardResultsSetPagination',
+    'PAGE_SIZE': 10,
 }
 
 
@@ -125,7 +128,7 @@ if not DEBUG:
 
 AUTH_USER_MODEL = 'user.CustomUser'
 
-LOGIN_REDIRECT_URL = "https://tfg-691w.onrender.com"
+LOGIN_REDIRECT_URL = "http://127.0.0.1:3000"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -171,3 +174,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+X_FRAME_OPTIONS = 'ALLOW-FROM http://localhost:3000'
+X_FRAME_OPTIONS = 'ALLOW-FROM https://fitfuelbalance.onrender.com'

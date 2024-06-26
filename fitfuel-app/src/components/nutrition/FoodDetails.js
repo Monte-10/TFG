@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import './FoodDetails.css'; // Asegúrate de tener un archivo CSS separado
 
 function FoodDetails() {
     const [foodDetails, setFoodDetails] = useState(null);
@@ -23,12 +23,11 @@ function FoodDetails() {
     }
 
     return (
-        <div className="container mt-5">
-            <h1>Detalles del Alimento</h1>
+        <div className="container-foodd mt-5">
+            <h1 className="mb-4">Detalles del Alimento</h1>
             <div className="card">
                 {foodDetails.image && (
-                    <img src={foodDetails
-                        .image} className="card-img-top" alt={foodDetails.name} />
+                    <img src={foodDetails.image} className="card-img-top" alt={foodDetails.name} />
                 )}
                 <div className="card-header">
                     {foodDetails.name}

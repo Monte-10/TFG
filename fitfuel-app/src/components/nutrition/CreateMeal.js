@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import './CreateMeal.css'; // Importa el archivo CSS
 
 function CreateMeal() {
   const [dishes, setDishes] = useState([]);
@@ -9,7 +12,7 @@ function CreateMeal() {
   const [mealCreated, setMealCreated] = useState(false);
   const [createdMealId, setCreatedMealId] = useState(null);
   const apiUrl = process.env.REACT_APP_API_URL;
-  const [filter, setFilter] = useState({
+  const [filters, setFilters] = useState({
     name: '',
     minCalories: '',
     maxCalories: '',
@@ -27,90 +30,49 @@ function CreateMeal() {
     maxSaturatedFat: '',
   });
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
-  const [itemsPerPage] = useState(3);
+  const [itemsPerPage] = useState(6); // Cambiado a 6 para más platos por página
   const [totalPages, setTotalPages] = useState(0);
-  const [currentPage, setCurrentPage] = useState(0);
-
-  const currentDishes = dishes.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    fetch(`${apiUrl}/nutrition/dishes/`, {
+    fetchDishes(currentPage, filters);
+  }, [currentPage, filters]);
+
+  const fetchDishes = (page, filters) => {
+    const queryParams = new URLSearchParams({
+      page: page,
+      page_size: itemsPerPage,
+      name: filters.name,
+      calories__gte: filters.minCalories,
+      calories__lte: filters.maxCalories,
+      protein__gte: filters.minProtein,
+      protein__lte: filters.maxProtein,
+      carbohydrates__gte: filters.minCarbohydrates,
+      carbohydrates__lte: filters.maxCarbohydrates,
+      fat__gte: filters.minFat,
+      fat__lte: filters.maxFat,
+      sugar__gte: filters.minSugar,
+      sugar__lte: filters.maxSugar,
+      fiber__gte: filters.minFiber,
+      fiber__lte: filters.maxFiber,
+      saturated_fat__gte: filters.minSaturatedFat,
+      saturated_fat__lte: filters.maxSaturatedFat,
+    });
+
+    fetch(`${apiUrl}/nutrition/dishes/?${queryParams.toString()}`, {
       headers: {
         'Authorization': `Token ${localStorage.getItem('authToken')}`
       }
     })
       .then(response => response.json())
       .then(data => {
-        const filteredDishes = data.filter(dish => {
-          let isValid = true;
+        setDishes(data.results);
+        setTotalPages(Math.ceil(data.count / itemsPerPage));
+      })
+      .catch(error => console.error('Error fetching dishes:', error));
+  };
 
-          if (filter.name && !dish.name.toLowerCase().includes(filter.name.toLowerCase().trim())) {
-            isValid = false;
-          }
-
-          if (filter.minCalories && Number(filter.minCalories) > dish.calories) {
-            isValid = false;
-          }
-
-          if (filter.maxCalories && Number(filter.maxCalories) < dish.calories) {
-            isValid = false;
-          }
-
-          if (filter.minProtein && Number(filter.minProtein) > dish.protein) {
-            isValid = false;
-          }
-
-          if (filter.maxProtein && Number(filter.maxProtein) < dish.protein) {
-            isValid = false;
-          }
-
-          if (filter.minCarbohydrates && Number(filter.minCarbohydrates) > dish.carbohydrates) {
-            isValid = false;
-          }
-
-          if (filter.maxCarbohydrates && Number(filter.maxCarbohydrates) < dish.carbohydrates) {
-            isValid = false;
-          }
-
-          if (filter.minFat && Number(filter.minFat) > dish.fat) {
-            isValid = false;
-          }
-
-          if (filter.maxFat && Number(filter.maxFat) < dish.fat) {
-            isValid = false;
-          }
-
-          if (filter.minSugar && Number(filter.minSugar) > dish.sugar) {
-            isValid = false;
-          }
-
-          if (filter.maxSugar && Number(filter.maxSugar) < dish.sugar) {
-            isValid = false;
-          }
-
-          if (filter.minFiber && Number(filter.minFiber) > dish.fiber) {
-            isValid = false;
-          }
-
-          if (filter.maxFiber && Number(filter.maxFiber) < dish.fiber) {
-            isValid = false;
-          }
-
-          if (filter.minSaturatedFat && Number(filter.minSaturatedFat) > dish.saturated_fat) {
-            isValid = false;
-          }
-
-          if (filter.maxSaturatedFat && Number(filter.maxSaturatedFat) < dish.saturated_fat) {
-            isValid = false;
-          }
-
-          return isValid;
-        });
-
-        setDishes(filteredDishes);
-        setTotalPages(Math.ceil(filteredDishes.length / itemsPerPage));
-      });
-
+  useEffect(() => {
     fetch(`${apiUrl}/user/regularusers/`, {
       headers: {
         'Authorization': `Token ${localStorage.getItem('authToken')}`
@@ -118,12 +80,12 @@ function CreateMeal() {
     })
       .then(response => response.json())
       .then(data => {
-        setUsers(data);
-        if (data.length > 0) {
-          setSelectedUser(data[0].id.toString());
+        setUsers(Array.isArray(data.results) ? data.results : []); // Asegura que users sea un array
+        if (data.results.length > 0) {
+          setSelectedUser(data.results[0]?.id?.toString() || '');
         }
       });
-  }, [filter, apiUrl, itemsPerPage]);
+  }, [apiUrl]);
 
   const toggleAdvancedFilters = () => {
     setShowAdvancedFilters(!showAdvancedFilters);
@@ -166,7 +128,7 @@ function CreateMeal() {
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-    setFilter(prev => ({
+    setFilters(prev => ({
       ...prev,
       [name]: value,
     }));
@@ -195,19 +157,23 @@ function CreateMeal() {
         setName('');
         setSelectedUser('');
         setSelectedDishes([]);
+        toast.success('Comida creada exitosamente!');
       } else {
         console.error('Failed to create meal');
+        toast.error('Error al crear la comida');
       }
     } catch (error) {
       console.error('Error creating meal:', error);
+      toast.error('Error al crear la comida');
     }
   };
 
   const nutritionTotals = calculateNutritionTotals(selectedDishes, dishes);
 
   return (
-    <div className="container mt-5">
+    <div className="create-meal-container meal-container mt-5">
       <h2>Crear Comida</h2>
+      <ToastContainer />
       {mealCreated ? (
         <div className="alert alert-success">
           <p>La Comida se ha creado correctamente. ID: {createdMealId}</p>
@@ -237,13 +203,14 @@ function CreateMeal() {
               type="text"
               className="form-control"
               id="filterName"
-              value={filter.name}
+              value={filters.name}
               onChange={handleFilterChange}
               placeholder="Buscar por nombre"
+              name="name"
             />
           </div>
   
-          <button type="button" className="btn btn-info" onClick={toggleAdvancedFilters}>
+          <button type="button" className="btn btn-info btn-lg mb-3" onClick={toggleAdvancedFilters}>
             {showAdvancedFilters ? 'Ocultar Filtros Avanzados' : 'Mostrar Filtros Avanzados'}
           </button>
 
@@ -256,7 +223,7 @@ function CreateMeal() {
                     type="number"
                     className="form-control mt-2"
                     placeholder="Calorías Mínimas"
-                    value={filter.minCalories.value}
+                    value={filters.minCalories}
                     onChange={handleFilterChange}
                     name="minCalories"
                   />
@@ -267,7 +234,7 @@ function CreateMeal() {
                     type="number"
                     className="form-control mt-2"
                     placeholder="Calorías Máximas"
-                    value={filter.maxCalories.value}
+                    value={filters.maxCalories}
                     onChange={handleFilterChange}
                     name="maxCalories"
                   />
@@ -278,7 +245,7 @@ function CreateMeal() {
                     type="number"
                     className="form-control mt-2"
                     placeholder="Proteínas Mínimas"
-                    value={filter.minProtein.value}
+                    value={filters.minProtein}
                     onChange={handleFilterChange}
                     name="minProtein"
                   />
@@ -289,7 +256,7 @@ function CreateMeal() {
                     type="number"
                     className="form-control mt-2"
                     placeholder="Proteínas Máximas"
-                    value={filter.maxProtein.value}
+                    value={filters.maxProtein}
                     onChange={handleFilterChange}
                     name="maxProtein"
                   />
@@ -302,7 +269,7 @@ function CreateMeal() {
                     type="number"
                     className="form-control mt-2"
                     placeholder="Carbohidratos Mínimos"
-                    value={filter.minCarbohydrates.value}
+                    value={filters.minCarbohydrates}
                     onChange={handleFilterChange}
                     name="minCarbohydrates"
                   />
@@ -313,7 +280,7 @@ function CreateMeal() {
                     type="number"
                     className="form-control mt-2"
                     placeholder="Carbohidratos Máximos"
-                    value={filter.maxCarbohydrates.value}
+                    value={filters.maxCarbohydrates}
                     onChange={handleFilterChange}
                     name="maxCarbohydrates"
                   />
@@ -324,7 +291,7 @@ function CreateMeal() {
                     type="number"
                     className="form-control mt-2"
                     placeholder="Grasas Mínimas"
-                    value={filter.minFat.value}
+                    value={filters.minFat}
                     onChange={handleFilterChange}
                     name="minFat"
                   />
@@ -335,7 +302,7 @@ function CreateMeal() {
                     type="number"
                     className="form-control mt-2"
                     placeholder="Grasas Máximas"
-                    value={filter.maxFat.value}
+                    value={filters.maxFat}
                     onChange={handleFilterChange}
                     name="maxFat"
                   />
@@ -348,7 +315,7 @@ function CreateMeal() {
                     type="number"
                     className="form-control mt-2"
                     placeholder="Azúcares Mínimos"
-                    value={filter.minSugar.value}
+                    value={filters.minSugar}
                     onChange={handleFilterChange}
                     name="minSugar"
                   />
@@ -359,7 +326,7 @@ function CreateMeal() {
                     type="number"
                     className="form-control mt-2"
                     placeholder="Azúcares Máximos"
-                    value={filter.maxSugar.value}
+                    value={filters.maxSugar}
                     onChange={handleFilterChange}
                     name="maxSugar"
                   />
@@ -370,7 +337,7 @@ function CreateMeal() {
                     type="number"
                     className="form-control mt-2"
                     placeholder="Fibra Mínima"
-                    value={filter.minFiber.value}
+                    value={filters.minFiber}
                     onChange={handleFilterChange}
                     name="minFiber"
                   />
@@ -381,7 +348,7 @@ function CreateMeal() {
                     type="number"
                     className="form-control mt-2"
                     placeholder="Fibra Máxima"
-                    value={filter.maxFiber.value}
+                    value={filters.maxFiber}
                     onChange={handleFilterChange}
                     name="maxFiber"
                   />
@@ -392,7 +359,7 @@ function CreateMeal() {
           <div className="row">
             <div className="col-md-6">
               <h3>Platos Disponibles</h3>
-              {currentDishes.map((dish) => (
+              {dishes.map((dish) => (
                 <div key={dish.id} className="card mb-2">
                   <div className="card-body d-flex justify-content-between align-items-center">
                     <span>{dish.name}</span>
@@ -409,16 +376,16 @@ function CreateMeal() {
               <div className="pagination">
                 <button
                   type="button"
-                  disabled={currentPage === 0}
+                  disabled={currentPage === 1}
                   onClick={() => handlePageChange(currentPage - 1)}
                   className="btn btn-secondary"
                 >
                   Anterior
                 </button>
-                <span> Página {currentPage + 1} de {totalPages} </span>
+                <span> Página {currentPage} de {totalPages} </span>
                 <button
                   type="button"
-                  disabled={currentPage >= totalPages - 1}
+                  disabled={currentPage >= totalPages}
                   onClick={() => handlePageChange(currentPage + 1)}
                   className="btn btn-secondary"
                 >
@@ -430,7 +397,7 @@ function CreateMeal() {
               <h3>Platos Seleccionados</h3>
               {selectedDishes.map((dish, index) => (
                 <div key={index} className="d-flex justify-content-between align-items-center mb-2">
-                  <span>{dishes.find(d => d.id === dish.dishId)?.name || ''}</span>
+                  <span>{dishes.find(d => d.id.toString() === dish.dishId)?.name || ''}</span>
                   <div>
                     <input
                       type="number"
@@ -460,7 +427,7 @@ function CreateMeal() {
               ))}
             </div>
           </div>
-          <button type="submit" className="btn btn-primary">Crear Comida</button>
+          <button type="submit" className="btn btn-success btn-lg">Crear Comida</button>
         </form>
       )}
 
@@ -478,7 +445,6 @@ function CreateMeal() {
               <li className="list-group-item">Carbohidratos: {nutritionTotals.carbohydrates.toFixed(2)}g</li>
               <li className="list-group-item">Grasas: {nutritionTotals.fat.toFixed(2)}g</li>
               <li className="list-group-item">Azúcares: {nutritionTotals.sugar.toFixed(2)}g</li>
-              <li className="list-group-item">Fibra: {nutritionTotals.fiber.toFixed(2)}g</li>
               <li className="list-group-item">
                 Grasas Saturadas: {nutritionTotals.saturated_fat.toFixed(2)}g
               </li>

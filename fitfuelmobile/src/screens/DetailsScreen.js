@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Button } from 'react-native';
 
-const DetailsScreen = ({ route }) => {
-  const { date, dietEvents, trainingEvents } = route.params;
+const DetailsScreen = ({ route, navigation }) => {
+  const { date, dietEvents, trainingEvents, optionEvents } = route.params;
 
   return (
     <ScrollView style={styles.container}>
@@ -55,6 +55,19 @@ const DetailsScreen = ({ route }) => {
       ) : (
         <Text style={styles.noDataText}>No hay dieta asignada para este día.</Text>
       )}
+
+      {/* Opciones diarias */}
+      {optionEvents && optionEvents.length > 0 ? (
+        <View style={styles.section}>
+          <Text style={styles.subtitle}>Opciones diarias:</Text>
+          <Button
+            title="Seleccionar Opción"
+            onPress={() => navigation.navigate('OptionSelectionScreen', { selectedOption: optionEvents[0], date })}
+          />
+        </View>
+      ) : (
+        <Text style={styles.noDataText}>No hay opciones asignadas para este día.</Text>
+      )}
     </ScrollView>
   );
 };
@@ -63,32 +76,42 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: '#1e1e1e',
   },
   title: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
+    color: '#28a745',
     marginBottom: 20,
   },
   subtitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
+    color: '#fff',
     marginTop: 20,
-  },
-  section: {
     marginBottom: 10,
   },
+  section: {
+    marginBottom: 20,
+    padding: 10,
+    backgroundColor: '#333',
+    borderRadius: 8,
+  },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '500',
+    color: '#28a745',
     marginBottom: 5,
   },
   itemText: {
-    fontSize: 14,
+    fontSize: 16,
+    color: '#ddd',
     marginVertical: 2,
   },
   noDataText: {
-    fontSize: 14,
+    fontSize: 16,
     fontStyle: 'italic',
+    color: '#888',
   },
 });
 

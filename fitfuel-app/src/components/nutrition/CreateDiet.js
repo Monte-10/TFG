@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './CreateDiet.css';
 
 function CreateDiet() {
   const [users, setUsers] = useState([]);
@@ -18,9 +19,13 @@ function CreateDiet() {
     })
       .then(response => response.json())
       .then(data => {
-        setUsers(data);
-        if (data.length > 0) {
-          setSelectedUser(data[0].id.toString());
+        if (Array.isArray(data.results)) {
+          setUsers(data.results);
+          if (data.results.length > 0) {
+            setSelectedUser(data.results[0].id.toString());
+          }
+        } else {
+          setUsers([]);
         }
       });
   }, [apiUrl]);
@@ -36,30 +41,30 @@ function CreateDiet() {
 
     console.log("Sending diet data", dietData);
     fetch(`${apiUrl}/nutrition/diet/`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Token ${localStorage.getItem('authToken')}`
-        },
-        body: JSON.stringify(dietData),
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+      },
+      body: JSON.stringify(dietData),
     })
-    .then(response => {
+      .then(response => {
         if (!response.ok) {
-            throw new Error('Something went wrong');
+          throw new Error('Something went wrong');
         }
         return response.json();
-    })
-    .then(data => {
-      console.log('Redirecting to:', `nutrition/edit-dailydiet/${data.id}`)
+      })
+      .then(data => {
+        console.log('Redirecting to:', `nutrition/edit-dailydiet/${data.id}`)
         navigate(`/nutrition/edit-dailydiet/${data.id}`);
-    })
-    .catch(error => {
+      })
+      .catch(error => {
         console.error('Error:', error);
-    });
+      });
   };
 
   return (
-    <div className="container mt-5">
+    <div className="create-diet-container mt-5">
       <h2 className="mb-4">Crear Nueva Dieta</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">

@@ -1,10 +1,10 @@
 # nutrition/filters.py
 
 import django_filters
-from .models import Food
+from .models import *
 from django import forms
 import django_filters
-from .models import Food
+from django_filters import rest_framework as filters
 
 class FoodFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(lookup_expr='icontains')
@@ -72,3 +72,144 @@ class FoodFilter(django_filters.FilterSet):
             'tuber': ['exact'],
             'other': ['exact'],
         }
+
+
+class DishFilter(django_filters.FilterSet):
+    name = django_filters.CharFilter(field_name="name", lookup_expr='icontains')
+    min_calories = django_filters.NumberFilter(method='filter_min_calories')
+    max_calories = django_filters.NumberFilter(method='filter_max_calories')
+    min_protein = django_filters.NumberFilter(method='filter_min_protein')
+    max_protein = django_filters.NumberFilter(method='filter_max_protein')
+    min_carbohydrates = django_filters.NumberFilter(method='filter_min_carbohydrates')
+    max_carbohydrates = django_filters.NumberFilter(method='filter_max_carbohydrates')
+    min_fat = django_filters.NumberFilter(method='filter_min_fat')
+    max_fat = django_filters.NumberFilter(method='filter_max_fat')
+    min_sugar = django_filters.NumberFilter(method='filter_min_sugar')
+    max_sugar = django_filters.NumberFilter(method='filter_max_sugar')
+    min_fiber = django_filters.NumberFilter(method='filter_min_fiber')
+    max_fiber = django_filters.NumberFilter(method='filter_max_fiber')
+    min_saturated_fat = django_filters.NumberFilter(method='filter_min_saturated_fat')
+    max_saturated_fat = django_filters.NumberFilter(method='filter_max_saturated_fat')
+
+    class Meta:
+        model = Dish
+        fields = ['name']
+
+    def filter_min_calories(self, queryset, name, value):
+        return queryset.filter(ingredients__calories__gte=value).distinct()
+
+    def filter_max_calories(self, queryset, name, value):
+        return queryset.filter(ingredients__calories__lte=value).distinct()
+
+    def filter_min_protein(self, queryset, name, value):
+        return queryset.filter(ingredients__protein__gte=value).distinct()
+
+    def filter_max_protein(self, queryset, name, value):
+        return queryset.filter(ingredients__protein__lte=value).distinct()
+
+    def filter_min_carbohydrates(self, queryset, name, value):
+        return queryset.filter(ingredients__carbohydrates__gte=value).distinct()
+
+    def filter_max_carbohydrates(self, queryset, name, value):
+        return queryset.filter(ingredients__carbohydrates__lte=value).distinct()
+
+    def filter_min_fat(self, queryset, name, value):
+        return queryset.filter(ingredients__fat__gte=value).distinct()
+
+    def filter_max_fat(self, queryset, name, value):
+        return queryset.filter(ingredients__fat__lte=value).distinct()
+
+    def filter_min_sugar(self, queryset, name, value):
+        return queryset.filter(ingredients__sugar__gte=value).distinct()
+
+    def filter_max_sugar(self, queryset, name, value):
+        return queryset.filter(ingredients__sugar__lte=value).distinct()
+
+    def filter_min_fiber(self, queryset, name, value):
+        return queryset.filter(ingredients__fiber__gte=value).distinct()
+
+    def filter_max_fiber(self, queryset, name, value):
+        return queryset.filter(ingredients__fiber__lte=value).distinct()
+
+    def filter_min_saturated_fat(self, queryset, name, value):
+        return queryset.filter(ingredients__saturated_fat__gte=value).distinct()
+
+    def filter_max_saturated_fat(self, queryset, name, value):
+        return queryset.filter(ingredients__saturated_fat__lte=value).distinct()
+
+class MealFilter(django_filters.FilterSet):
+    name = django_filters.CharFilter(field_name="name", lookup_expr='icontains')
+    min_calories = django_filters.NumberFilter(method='filter_min_calories')
+    max_calories = django_filters.NumberFilter(method='filter_max_calories')
+    min_protein = django_filters.NumberFilter(method='filter_min_protein')
+    max_protein = django_filters.NumberFilter(method='filter_max_protein')
+    min_carbohydrates = django_filters.NumberFilter(method='filter_min_carbohydrates')
+    max_carbohydrates = django_filters.NumberFilter(method='filter_max_carbohydrates')
+    min_fat = django_filters.NumberFilter(method='filter_min_fat')
+    max_fat = django_filters.NumberFilter(method='filter_max_fat')
+    min_sugar = django_filters.NumberFilter(method='filter_min_sugar')
+    max_sugar = django_filters.NumberFilter(method='filter_max_sugar')
+    min_fiber = django_filters.NumberFilter(method='filter_min_fiber')
+    max_fiber = django_filters.NumberFilter(method='filter_max_fiber')
+    min_saturated_fat = django_filters.NumberFilter(method='filter_min_saturated_fat')
+    max_saturated_fat = django_filters.NumberFilter(method='filter_max_saturated_fat')
+
+    class Meta:
+        model = Meal
+        fields = ['name']
+
+    def filter_min_calories(self, queryset, name, value):
+        return queryset.filter(dishes__calories__gte=value).distinct()
+
+    def filter_max_calories(self, queryset, name, value):
+        return queryset.filter(dishes__calories__lte=value).distinct()
+
+    def filter_min_protein(self, queryset, name, value):
+        return queryset.filter(dishes__protein__gte=value).distinct()
+
+    def filter_max_protein(self, queryset, name, value):
+        return queryset.filter(dishes__protein__lte=value).distinct()
+
+    def filter_min_carbohydrates(self, queryset, name, value):
+        return queryset.filter(dishes__carbohydrates__gte=value).distinct()
+
+    def filter_max_carbohydrates(self, queryset, name, value):
+        return queryset.filter(dishes__carbohydrates__lte=value).distinct()
+
+    def filter_min_fat(self, queryset, name, value):
+        return queryset.filter(dishes__fat__gte=value).distinct()
+
+    def filter_max_fat(self, queryset, name, value):
+        return queryset.filter(dishes__fat__lte=value).distinct()
+
+    def filter_min_sugar(self, queryset, name, value):
+        return queryset.filter(dishes__sugar__gte=value).distinct()
+
+    def filter_max_sugar(self, queryset, name, value):
+        return queryset.filter(dishes__sugar__lte=value).distinct()
+
+    def filter_min_fiber(self, queryset, name, value):
+        return queryset.filter(dishes__fiber__gte=value).distinct()
+
+    def filter_max_fiber(self, queryset, name, value):
+        return queryset.filter(dishes__fiber__lte=value).distinct()
+
+    def filter_min_saturated_fat(self, queryset, name, value):
+        return queryset.filter(dishes__saturated_fat__gte=value).distinct()
+
+    def filter_max_saturated_fat(self, queryset, name, value):
+        return queryset.filter(dishes__saturated_fat__lte=value).distinct()
+
+class DayOptionFilter(django_filters.FilterSet):
+    name = django_filters.CharFilter(field_name="name", lookup_expr='icontains')
+
+    class Meta:
+        model = DayOption
+        fields = ['name']
+
+class WeekOptionFilter(django_filters.FilterSet):
+    name = django_filters.CharFilter(field_name="name", lookup_expr='icontains')
+
+    class Meta:
+        model = WeekOption
+        fields = ['name']

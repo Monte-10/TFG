@@ -831,10 +831,14 @@ class Option(models.Model):
     def __str__(self):
         return self.name
     
+from django.utils import timezone
+from django.conf import settings
+    
 class AssignedOption(models.Model):
     user = models.ForeignKey('user.CustomUser', on_delete=models.CASCADE)
     start_date = models.DateField(default=timezone.now)
     option = models.ForeignKey(Option, on_delete=models.CASCADE)
+    pdf_url = models.URLField(blank=True, null=True)
     
     # Campos para almacenar las opciones diarias seleccionadas
     monday_option = models.ForeignKey(DayOption, related_name='assigned_monday_options', on_delete=models.SET_NULL, null=True, blank=True)
@@ -847,3 +851,8 @@ class AssignedOption(models.Model):
     
     def __str__(self):
         return f"{self.user}'s option starting {self.start_date}"
+
+    def save(self, *args, **kwargs):
+        if not self.pdf_url:
+            self.pdf_url = f'{settings.MEDIA_URL}pdfs/{self.option.name}.pdf'
+        super().save(*args, **kwargs)

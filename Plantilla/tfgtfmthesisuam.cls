@@ -581,17 +581,17 @@
 		\def\@auxvarcode{Código}
 		\def\@auxvarcodeindex{\addtocounter{section}{1}Lista de códigos}
 		\def\@auxvartextbox{Cuadro}
-		\def\@auxvartextboxindex{\addtocounter{section}{1}Lista de cuadros}
+		%\def\@auxvartextboxindex{\addtocounter{section}{1}Lista de cuadros}
 		\def\contentsname{Índice}
 		\def\bibname{Bibliografía}
 		\def\appendixname{Apéndices}
 		\def\listfigurename{\addtocounter{section}{1}Lista de figuras}
-		\def\listequationname{\addtocounter{section}{1}Lista de ecuaciones}
+		%\def\listequationname{\addtocounter{section}{1}Lista de ecuaciones}
 		\def\figurename{Figura}
 		\def\listtablename{\addtocounter{section}{1}Lista de tablas}
 		\def\tablename{Tabla}
 		\def\@auxvaralgorithm{Algoritmo}
-		\def\@auxvaralgorithmindex{\addtocounter{section}{1}Lista de algoritmos}
+		%\def\@auxvaralgorithmindex{\addtocounter{section}{1}Lista de algoritmos}
 		\def\indexname{Índice terminológico}
 		\def\glosario{Glosario}
 		\renewcommand*{\acronymname}{Acrónimos}
@@ -602,17 +602,17 @@
 		\def\@auxvarcode{Code}
 		\def\@auxvarcodeindex{\addtocounter{section}{1}List of codes}
 		\def\@auxvartextbox{Frame}
-		\def\@auxvartextboxindex{\addtocounter{section}{1}List of text boxes}
+		%\def\@auxvartextboxindex{\addtocounter{section}{1}List of text boxes}
 		\def\contentsname{Table of Contents}
 		\def\bibname{Bibliography}
 		\def\appendixname{Appendices}
 		\def\listfigurename{\addtocounter{section}{1}List of figures}
-		\def\listequationname{\addtocounter{section}{1}List of equations}
+		%\def\listequationname{\addtocounter{section}{1}List of equations}
 		\def\figurename{Figure}
 		\def\listtablename{\addtocounter{section}{1}List of tables}
 		\def\tablename{Table}
 		\def\@auxvaralgorithm{Algorithm}
-		\def\@auxvaralgorithmindex{\addtocounter{section}{1}List of algorithms}
+		%\def\@auxvaralgorithmindex{\addtocounter{section}{1}List of algorithms}
 		\def\indexname{Index}
 		\def\glosario{Glossary}
 		\renewcommand*{\acronymname}{Acronyms}
@@ -1606,7 +1606,7 @@
 
 \newif\if@mathcapbool \@mathcapboolfalse
 
-\newlistof{equations}{loe}{\listequationname}
+%\newlistof{equations}{loe}{\listequationname}
 \newcommand{\eqncaption}[1]{\addcontentsline{loe}{table}{\numberline{\theequation} #1\string\relax}}
 
 \renewcommand{\boxed}[1]{\fcolorbox{equationfgcolor}{equationbgcolor}{\m@th$\displaystyle#1$}}
@@ -3100,13 +3100,13 @@ coordinates {(#1,0) (#2,0)};
 
 \def\listoflists
 {
-	\if@listofalgsbool \listofalgorithms{\@auxvaralgorithmindex}  \fi
+	%\if@listofalgsbool \listofalgorithms{\@auxvaralgorithmindex}  \fi
 	\if@listofcodesbool \mylistof{\@auxvarcodeindex}{lol}  \fi
-	\if@languagespa \if@listoftextboxesbool \listoftextboxes{\@auxvartextboxindex} \fi \fi
-	\if@listofequationsbool \mylistof{\listequationname}{loe} \fi
+	%\if@languagespa \if@listoftextboxesbool \listoftextboxes{\@auxvartextboxindex} \fi \fi
+	%\if@listofequationsbool \mylistof{\listequationname}{loe} \fi
 	\if@listoffiguresbool \mylistof{\listfigurename}{lof} \fi
 	\if@listoftablesbool \mylistof{\listtablename}{lot} \fi
-	\if@languagespa \else \if@listoftextboxesbool \listoftextboxes{\@auxvartextboxindex} \fi \fi
+	%\if@languagespa \else \if@listoftextboxesbool \listoftextboxes{\@auxvartextboxindex} \fi \fi
 }
 
 \newcommand{\listoftextboxes}[1]
@@ -3137,22 +3137,22 @@ coordinates {(#1,0) (#2,0)};
 	\if@nonelistbool\empty\else
 		\if@alllistsbool
 			\@newschapter{\@ListsChapter}
-			\listofalgorithms{\@auxvaralgorithmindex}
+			%\listofalgorithms{\@auxvaralgorithmindex}
 			\mylistof{\@auxvarcodeindex}{lol}
-			\if@languagespa \listoftextboxes{\@auxvartextboxindex} \fi
-	    \mylistof{\listequationname}{loe}
+			%\if@languagespa \listoftextboxes{\@auxvartextboxindex} \fi
+	    %\mylistof{\listequationname}{loe}
 			\mylistof{\listfigurename}{lof}
 			\mylistof{\listtablename}{lot}
-			\if@languagespa  \listoftextboxes{\@auxvartextboxindex} \fi
+			%\if@languagespa  \listoftextboxes{\@auxvartextboxindex} \fi
 		\else
 			\@newschapter{\@ListsChapter}
-			\if@algorithmsbool \listofalgorithms{\@auxvaralgorithmindex} \fi
+			%\if@algorithmsbool \listofalgorithms{\@auxvaralgorithmindex} \fi
 			\if@codesbool \mylistof{\@auxvarcodeindex}{lol} \fi
-			\if@languagespa \else \if@textboxesbool \listoftextboxes{\@auxvartextboxindex} \fi \fi
-			\if@equationsbool \mylistof{\listequationname}{loe} \fi
+			%\if@languagespa \else \if@textboxesbool \listoftextboxes{\@auxvartextboxindex} \fi \fi
+			%\if@equationsbool \mylistof{\listequationname}{loe} \fi
 			\if@figuresbool \mylistof{\listfigurename}{lof} \fi
 			\if@tablesbool \mylistof{\listtablename}{lot} \fi
-			\if@languagespa \else \if@textboxesbool  \listoftextboxes{\@auxvartextboxindex} \fi \fi
+			%\if@languagespa \else \if@textboxesbool  \listoftextboxes{\@auxvartextboxindex} \fi \fi
 		\fi
 	\fi
 }

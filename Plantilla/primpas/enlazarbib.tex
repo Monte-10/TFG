@@ -1,35 +1,28 @@
-Para el desarrollo de FitFuelBalance, se ha optado por utilizar un modelo incremental. Esta metodología permite el desarrollo del proyecto en pequeños incrementos funcionales, lo que facilita la incorporación de nuevas funcionalidades de manera progresiva, esto permite el desarollo de un sistema robusto y haciendo que los incrementos no afecten a otros subsistemas al desarollarse.
+Para el desarrollo de FitFuelBalance, se ha optado por utilizar un modelo incremental. Esta metodología permite el desarrollo del proyecto en pequeños incrementos funcionales, lo que facilita la incorporación de nuevas funcionalidades de manera progresiva, esto permite el desarollo de un sistema robusto y haciendo que los incrementos no afecten a otros subsistemas al desarollarse. Figura \ref{FIG:esquemaIncremento} muestra el ciclo de vida del proyecto basado en un enfoque incremental.
+
+\begin{figure}[Esquema Modelo Incremental]{FIG:esquemaIncremento}{Modelo de desarrollo incremental \cite{MetodologiaIncremental}}
+    \image{16cm}{}{esquemaIncremento}
+\end{figure}
 
 \subsubsection{Fases del proyecto}
 
 El proyecto se ha dividido en varias fases clave, cada una con objetivos específicos y entregables definidos:
 
 \begin{itemize}
-    \item \textbf{Análisis de requisitos:} Se recopilaron los requisitos funcionales y no funcionales a través de reuniones con los stakeholders y encuestas a usuarios potenciales. Esta fase incluyó la creación de historias de usuario y la definición del backlog del producto.
+    \item \textbf{Análisis de requisitos:} Se recopilaron los requisitos funcionales y no funcionales a través de la solicitud de opioniones a entrenadores y deportistas sobre que esperarían de una aplicación innovadora.
 
     \item \textbf{Diseño:} En esta fase se definió la arquitectura del sistema, incluyendo la estructura de la base de datos, la arquitectura de la aplicación web y móvil, y la integración de servicios externos. Se crearon diagramas UML para visualizar la arquitectura y las interacciones entre los componentes del sistema.
 
     \item \textbf{Desarrollo:} El desarrollo se realizó en incrementos, cada uno añadiendo nuevas funcionalidades al sistema. Las tecnologías utilizadas en esta fase incluyen Django para el backend, React para el frontend web, React Native para la aplicación móvil, y PostgreSQL gestionado a través de Neon para la base de datos.
 
-    \item \textbf{Pruebas:} Se realizaron pruebas unitarias, de integración y funcionales para garantizar la calidad del código y el correcto funcionamiento de la aplicación. También se llevaron a cabo pruebas de usabilidad con un grupo de usuarios seleccionados para obtener feedback directo y realizar mejoras en la interfaz y la experiencia de usuario.
+    \item \textbf{Pruebas:} Se realizaron pruebas unitarias, de integración y funcionales para garantizar la calidad del código y el correcto funcionamiento de la aplicación.
 
-    \item \textbf{Despliegue:} La aplicación se desplegó en entornos de prueba y producción utilizando Render para el alojamiento tanto del frontend como del backend. Se implementaron procesos de CI/CD (Integración Continua/Despliegue Continuo) para automatizar las pruebas y el despliegue.
+    \item \textbf{Despliegue:} La aplicación se desplegó en entornos de prueba y producción utilizando Render para el alojamiento tanto del frontend como del backend.
 
-    \item \textbf{Mantenimiento:} Se establecieron procedimientos para el mantenimiento y actualización continua de la aplicación, incluyendo la monitorización del rendimiento y la gestión de incidencias a través de un sistema de tickets.
+    \item \textbf{Mantenimiento:} Se establecieron procedimientos para el mantenimiento y actualización continua de la aplicación, cada vez que se incluyen funcionalidades, estas son subidas a producción para mantener la aplicación actualizada.
 
 \end{itemize}
 
 \subsubsection{Herramientas y técnicas}
 
-Durante el desarrollo del proyecto se utilizaron diversas herramientas y técnicas para apoyar el modelo incremental:
-
-\begin{itemize}
-    \item \textbf{Git y GitHub:} Para el control de versiones y la colaboración en el código fuente.
-    \item \textbf{Visual Studio Code:} Como entorno de desarrollo integrado (IDE) para la programación.
-    \item \textbf{Figma:} Para el diseño de interfaces de usuario y la creación de prototipos.
-    \item \textbf{React Native CLI:} Para la prueba y depuración de la aplicación móvil.
-    \item \textbf{Neon:} Para la gestión de la base de datos PostgreSQL.
-    \item \textbf{Render:} Para el despliegue y alojamiento del frontend y backend.
-\end{itemize}
-
-Este modelo incremental ha permitido un desarrollo progresivo y adaptable, asegurando que el producto final cumpla con los requisitos de los usuarios y sea de alta calidad.
+Durante el desarrollo del proyecto se utilizaron diversas herramientas y técnicas para apoyar el modelo incremental. Git y GitHub \cite{GitHub} se emplearon para el control de versiones y la colaboración en el código fuente, permitiendo un seguimiento detallado de los cambios y facilitando el trabajo en equipo. Visual Studio Code \cite{VSCode} fue el entorno de desarrollo integrado (IDE) elegido para la programación, debido a su flexibilidad y amplia gama de extensiones que mejoran la productividad. Figma \cite{Figma} se utilizó para el diseño de interfaces de usuario y la creación de prototipos, proporcionando una visualización clara y precisa del diseño final antes de su implementación. React Native CLI \cite{ReactNativeCLI} se empleó para la prueba y depuración de la aplicación móvil, asegurando que la funcionalidad y el rendimiento fueran óptimos en dispositivos reales. Neon \cite{Neon} se utilizó para la gestión de la base de datos PostgreSQL, facilitando la administración de datos de manera eficiente y segura. Finalmente, Render \cite{Render} se encargó del despliegue y alojamiento del frontend y backend, garantizando que la aplicación estuviera disponible y funcionando correctamente en un entorno de producción.

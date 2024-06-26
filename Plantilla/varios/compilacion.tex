@@ -1,40 +1,35 @@
-Para compilar el documento se puede hacer de múltiples formas y aquí se van a contar dos posibles formas. Una compilación manual basada en pdflatex y otra basada en arara.
+La siguiente sección detalla las pruebas realizadas en el proyecto FitFuelBalance, incluyendo pruebas del back-end y pruebas del front-end. Todas las pruebas han sido realizadas en entornos controlados aparte del entorno de producción, para asegurar que el sistema funcione correctamente y sin errores. También aclarar que para la realización de las pruebas se ha desactivado el uso tokens de autenticación para facilitar el acceso a los endpoints.
+\section{Pruebas del Back-End}
 
-\section{Pdflatex}
+Las pruebas del back-end se han centrado en verificar la funcionalidad de la API y asegurar que todas las operaciones del servidor se realicen correctamente. Para esto, se han utilizado herramientas como \textit{pytest} para ejecutar pruebas automatizadas y \textit{Postman} para realizar pruebas manuales de los distintos endpoints de la API. Se ha creado un testsettings.py para configurar las pruebas de Django. Todas las pruebas se encuentran en la sección \ref{SEC:PRUEBASBACKEND} del Apéndice \ref{CAP:CODIGO}.
 
-Cuando se compila manualmente es importante saber qué hacer, en qué orden y por qué. El primer paso es compilar el fuente principal con pdflatex usando como parámetro el nombre del fuente principal (no es necesario poner la extensión .tex). Esta compilación permite guardar el en fichero del mismo nombre pero con extensión .aux información acerca de elementos sin resolver. Si no hay elementos especiales, una segunda compilación resuelve todos los elementos que habían quedado sin resolver gracias a la información almacenada en el .aux. Sin embargo, si introducimos bibliografía o acrónimos, definiciones o glosario no se realizará esa segunda compilación.
+\subsubsection{Configuración de Pruebas}
+Para realizar las pruebas, se configuró un entorno de pruebas separado en el que se llevaron a cabo pruebas. Como se ha comentado anteriormente, para no causar problemas con el proyecto en producción todas las pruebas han sido realizadas en un entorno y una base de datos separada. Se ha creado un archivo de configuración de pruebas testsettings.py para configurar las pruebas de Django. En este archivo se han configurado las credenciales de la base de datos de pruebas y se han desactivado las migraciones automáticas para evitar conflictos con la base de datos de producción. La configuración de este archivo se muestra en Código \ref{COD:testsettings}.
+La configuración de los tests de usuario se representan en Código \ref{COD:usertestsconfig}. La de deporte en la Código \ref{COD:sporttestsconfig} y la de nutrición en Código \ref{COD:nutritiontestsconfig}.
 
-Si se usa bibliografía es necesario ejecutar el comando bibtex con el nombre del fuente principal por parámetro (ahora siempre sin extensión) que recurrirá a la información de varios ficheros auxiliares par construir la bibliografía.
+\subsubsection{Pruebas de Endpoints}
+Se han realizado pruebas a todos los endpoints críticos del back-end, asegurando que cada uno de ellos responda adecuadamente y maneje los errores de manera eficiente. Todas las aplicaciones del proyecto han sido probadas, incluyendo las aplicaciones de usuario, deporte y nutrición. Código \ref{COD:usertests} muestra un ejemplo de pruebas realizadas a la aplicación de usuario. Código \ref{COD:sporttests} muestra un ejemplo de pruebas realizadas a la aplicación de deporte y Código \ref{COD:nutritiontests} muestra un ejemplo de pruebas realizadas a la aplicación de nutrición.
+\section{Pruebas del Front-End}
 
-De igual forma, si se usan acrónimos o definiciones es necesario ejecutar el comando glossaries con el nombre del fuente principal sin extensión que, al igual que en el caso de la bibliografía utilizará múltiples ficheros auxiliares para crear el capítulo de acrónimos o de definiciones.
+Las pruebas del front-end son esenciales para asegurar que la interfaz de usuario sea intuitiva, funcional y libre de errores. Para esto, se han utilizado diferentes técnicas y herramientas para probar tanto la aplicación web como la aplicación móvil.
 
-Para finalizar, si se quiere crear el glosario es necesario ejecutar makeindex con el nombre del principal como parámetro y como estilo el .ist creado al compilar. El fichero con el estilo será un segundo parámetro precedido por la bandera -s.
+\subsubsection{Pruebas de la Aplicación Web}
+Para la aplicación web, se ha utilizado \textit{Jest} y \textit{React Testing Library} para realizar las pruebas de sus componentes. Estas herramientas permiten simular eventos y verificar que los componentes reaccionen adecuadamente a diferentes interacciones del usuario.
 
-Una vez realizados estos pasos se realizará una doble compilación con pdflatex como en el primer paso de este proceso.
+\paragraph{Prueba de Componentes}
+Se ha realizado una serie de pruebas a los componentes principales de la aplicación web para asegurarse de que se rendericen correctamente y manejen los eventos de usuario como se espera.  Los tests se encuentran en la sección \ref{SEC:PRUEBASFRONTEND} del Apéndice \ref{CAP:CODIGO}.
+\subsubsection{Pruebas de la Aplicación Móvil}
+Para la aplicación móvil desarrollada con \textit{React Native}, se han utilizado herramientas como \textit{Jest} y \textit{React Native Testing Library} para realizar pruebas unitarias. Además, se ha utilizado \textit{React Native CLI} para probar la aplicación en diferentes dispositivos y asegurar la compatibilidad. 
 
-Es importante acudir al .log para ver el proceso de compilación, errores y \textit{warnings} con el fin de resolver los problemas que sea necesario resolver. \LaTeXe\ es extremadamente preciso en la creación de textos y muchos \textit{warnings} no es necesario resolverlos pero sí hay que revisarlos todos.
+\paragraph{Prueba de Componentes Móviles}
+Las pruebas de componentes móviles aseguran que los elementos de la interfaz de usuario se rendericen correctamente en diferentes tamaños de pantalla y manejen las interacciones del usuario de manera adecuada. Las pruebas se encuentran en la subsección \ref{SEC:PRUEBASMOVIL} de la sección \ref{SEC:PRUEBASFRONTEND} del Apéndice \ref{CAP:CODIGO}.
 
-\section{Arara}
+\section{Despliegue}
 
-Otra forma de compilar es usando el programa arara con el nombre del principal como paámetro. En el programa principal, cada línea de comentario que contenga tras el símbolo de comentario la palabra arara será el indicador de una acción de compilación. En el fuente principal de este documento puede verse un ejemplo que además se copia en el \cref{TB:ARARA}.
+El despliegue de la plataforma ha sido un proceso que ha involucrado varias fases, desde el desarrollo inicial hasta el despliegue en un entorno de producción. Esta sección describe las principales etapas del proceso de implementación, incluyendo la configuración de los servidores, el despliegue de la base de datos y las aplicaciones.
 
-Al igual que en la compilación manual, comprobar los ficheros .log es importante.
+\subsubsection{Despliegue del Back-End}
+Los pasos principales seguidos durante el despliegue incluyen la configuración del entorno, donde se configuraron las variables de entorno necesarias, incluyendo las credenciales de la base de datos y las claves secretas de la aplicación. El despliegue del código se manejó utilizando Git para el control de versiones y despliegue continuo, con el código desplegado desde el repositorio de GitHub a Render. Las migraciones de la base de datos se ejecutaron para configurar la estructura de la base de datos en PostgreSQL, que se encuentra desplegada en Neon. Finalmente, se realizaron pruebas post-despliegue para asegurar que el servidor estuviera funcionando correctamente y todas las API estuvieran accesibles.
 
-\begin{textbox}[Ejemplo de compilación con arara.]{TB:ARARA}{Ejemplo de compilación con arara. Estos comentarios deben introducirse al principio del documento principal y permiten que arara realice las tareas indicadas en el orden que se indica.}
-\% arara: clean: \{files: [tfgtfmthesisuam.aux, tfgtfmthesisuam.idx, tfgtfmthesisuam.ilg, tfgtfmthesisuam.ind, tfgtfmthesisuam.bbl, tfgtfmthesisuam.bcf, tfgtfmthesisuam.blg, tfgtfmthesisuam.run.xml, tfgtfmthesisuam.fdb\_latexmk, tfgtfmthesisuam.fls, tfgtfmthesisuam.loe, tfgtfmthesisuam.lof, tfgtfmthesisuam.lol, tfgtfmthesisuam.lot, tfgtfmthesisuam.ltb, tfgtfmthesisuam.out, tfgtfmthesisuam.toc, tfgtfmthesisuam.upa, tfgtfmthesisuam.upb, tfgtfmthesisuam.acn, tfgtfmthesisuam.acr, tfgtfmthesisuam.alg, tfgtfmthesisuam.glg, tfgtfmthesisuam.glo, tfgtfmthesisuam.gls, tfgtfmthesisuam.glsdefs, tfgtfmthesisuam.idx,  tfgtfmthesisuam.ilg, tfgtfmthesisuam.xdy, tfgtfmthesisuam.loa, tfgtfmthesisuam.gnuploterrors , tfgtfmthesisuam.mw]\} \\
-\% arara: pdflatex: \{shell: yes\} \\
-\% arara: makeglossaries \\
-\% arara: makeindex: \{style: tfgtfmthesisuam.ist \} \\
-\% arara: bibtex \\
-\% arara: pdflatex: \{shell: yes\} \\
-\% arara: pdflatex: \{shell: yes\} \\
-\% arara: clean: \{files: [tfgtfmthesisuam.aux, tfgtfmthesisuam.idx, tfgtfmthesisuam.ilg, tfgtfmthesisuam.ind, tfgtfmthesisuam.bbl, tfgtfmthesisuam.bcf, tfgtfmthesisuam.blg, tfgtfmthesisuam.run.xml, tfgtfmthesisuam.fdb\_latexmk, tfgtfmthesisuam.fls, tfgtfmthesisuam.loe, tfgtfmthesisuam.lof, tfgtfmthesisuam.lol, tfgtfmthesisuam.lot, tfgtfmthesisuam.ltb, tfgtfmthesisuam.out, tfgtfmthesisuam.toc, tfgtfmthesisuam.upa, tfgtfmthesisuam.upb, tfgtfmthesisuam.acn, tfgtfmthesisuam.acr, tfgtfmthesisuam.alg, tfgtfmthesisuam.glg, tfgtfmthesisuam.glo, tfgtfmthesisuam.gls, tfgtfmthesisuam.glsdefs, tfgtfmthesisuam.idx,  tfgtfmthesisuam.ilg, tfgtfmthesisuam.xdy, tfgtfmthesisuam.loa, tfgtfmthesisuam.gnuploterrors , tfgtfmthesisuam.mw]\}
-\end{textbox}
-
-\section{Overleaf}
-
-En overleaf no se puede controlar la compilación y por tanto no se puede utilizar xindy ni gnuplot. En este sentido es necesario indicar la opción overleaf y no utilizar la opción gnuplot. Si se utiliza Mendeley o Zotero puede importarse la bibliografía en un solo click si se enlazan las cuentas en la configuración de Overleaf. En el menú del proyecto de Overleaf se selecciona ``bibliografía'' y se puede importar directamente el .bib de cualquiera de estos sistemas.
-
-\section{Permitir el uso de la shell al compilador}
-
-Si se utiliza gnuplot para crear gráficas es necesario permitir que el compilador pueda ejecutar comandos en una shell, para ello, en el caso de pdflatex es necesario usar la bandera -shell-escape y en el caso de arara utilizar la opción de shell como puede verse en el \cref{TB:ARARA}.
+\subsubsection{Despliegue del Front-End}
+El front-end de la plataforma, desarrollado en React, también fue desplegado en la plataforma Render. Los pasos seguidos incluyen la configuración del proyecto, donde se configuraron las variables de entorno necesarias para la comunicación con el back-end. El despliegue del código se manejó similar al back-end, utilizando GitHub para el despliegue continuo. Cada push al repositorio de producción desencadena un nuevo despliegue en Render. Se realizaron optimizaciones de compilación para mejorar el rendimiento y reducir el tiempo de carga de la aplicación. Finalmente, se verificó que la aplicación web estuviera funcionando correctamente y se realizaron pruebas de rendimiento.

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import './ListFood.css';
 
 function ListFood() {
     const [foods, setFoods] = useState([]);
     const [filteredFoods, setFilteredFoods] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
-    const [itemsPerPage] = useState(10); // Adjust this number as needed
+    const [itemsPerPage] = useState(10);
     const [totalPages, setTotalPages] = useState(0);
+    const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
     const apiUrl = process.env.REACT_APP_API_URL;
     const [filters, setFilters] = useState({
         name: '',
@@ -76,9 +78,9 @@ function ListFood() {
         })
         .then(response => response.json())
         .then(data => {
-            setFoods(data);
-            setFilteredFoods(data);
-            setTotalPages(Math.ceil(data.length / itemsPerPage));
+            setFoods(data.results); // Asumiendo que el backend usa paginación y devuelve 'results'
+            setFilteredFoods(data.results);
+            setTotalPages(Math.ceil(data.count / itemsPerPage));
         })
         .catch(error => console.error('Error fetching foods:', error));
     }, [apiUrl, itemsPerPage]);
@@ -168,10 +170,10 @@ function ListFood() {
     const currentFoods = filteredFoods.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
     return (
-        <div className="container">
-            <h1>Lista de Alimentos</h1>
-            <div className="row">
-                <div className="col-md-2 mb-3">
+        <div className="container-listfood">
+            <h1 className="mb-4">Lista de Alimentos</h1>
+            <div className="row mb-4 row-listfood">
+                <div className="col-md-3 mb-3">
                     <input
                         type="text"
                         className="form-control mb-2"
@@ -179,105 +181,119 @@ function ListFood() {
                         value={filters.name}
                         onChange={(e) => handleFilterChange({ target: { name: 'name', value: e.target.value } })}
                     />
-                    <input
-                        type="number"
-                        className="form-control mb-2"
-                        placeholder="Calorías mínimas"
-                        value={filters.minCalories}
-                        onChange={(e) => handleFilterChange({ target: { name: 'minCalories', value: e.target.value } })}
-                    />
-                    <input
-                        type="number"
-                        className="form-control"
-                        placeholder="Calorías máximas"
-                        value={filters.maxCalories}
-                        onChange={(e) => handleFilterChange({ target: { name: 'maxCalories', value: e.target.value } })}
-                    />
                 </div>
-                <div className="col-md-2 mb-3">
-                    <input
-                        type="number"
-                        className="form-control mb-2"
-                        placeholder="Proteínas mínimas"
-                        value={filters.minProtein}
-                        onChange={(e) => handleFilterChange({ target: { name: 'minProtein', value: e.target.value } })}
-                    />
-                    <input
-                        type="number"
-                        className="form-control mb-2"
-                        placeholder="Proteínas máximas"
-                        value={filters.maxProtein}
-                        onChange={(e) => handleFilterChange({ target: { name: 'maxProtein', value: e.target.value } })}
-                    />
+                <div className="col-md-3 mb-3">
+                    <button className="btn btn-info w-100" onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}>
+                        {showAdvancedFilters ? 'Ocultar Filtros Avanzados' : 'Mostrar Filtros Avanzados'}
+                    </button>
                 </div>
-                <div className="col-md-2 mb-3">
-                    <input
-                        type="number"
-                        className="form-control mb-2"
-                        placeholder="Carbohidratos mínimos"
-                        value={filters.minCarbohydrates}
-                        onChange={(e) => handleFilterChange({ target: { name: 'minCarbohydrates', value: e.target.value } })}
-                    />
-                    <input
-                        type="number"
-                        className="form-control mb-2"
-                        placeholder="Carbohidratos máximos"
-                        value={filters.maxCarbohydrates}
-                        onChange={(e) => handleFilterChange({ target: { name: 'maxCarbohydrates', value: e.target.value } })}
-                    />
+                <div className="col-md-3 mb-3">
+                    <button className="btn btn-secondary w-100" onClick={resetFilters}>Limpiar Filtros</button>
                 </div>
-                <div className="col-md-2 mb-3">
-                    <input
-                        type="number"
-                        className="form-control mb-2"
-                        placeholder="Grasas mínimas"
-                        value={filters.minFat}
-                        onChange={(e) => handleFilterChange({ target: { name: 'minFat', value: e.target.value } })}
-                    />
-                    <input
-                        type="number"
-                        className="form-control mb-2"
-                        placeholder="Grasas máximas"
-                        value={filters.maxFat}
-                        onChange={(e) => handleFilterChange({ target: { name: 'maxFat', value: e.target.value } })}
-                    />
-                </div>
-                <div className="col-md-2 mb-3">
-                    <input
-                        type="number"
-                        className="form-control mb-2"
-                        placeholder="Azúcar mínimo"
-                        value={filters.minSugar}
-                        onChange={(e) => handleFilterChange({ target: { name: 'minSugar', value: e.target.value } })}
-                    />
-                    <input
-                        type="number"
-                        className="form-control"
-                        placeholder="Azúcar máximo"
-                        value={filters.maxSugar}
-                        onChange={(e) => handleFilterChange({ target: { name: 'maxSugar', value: e.target.value } })}
-                    />
-                </div>
-                <div className="col-md-2 mb-3">
-                    <input
-                        type="number"
-                        className="form-control mb-2"
-                        placeholder="Fibra mínima"
-                        value={filters.minFiber}
-                        onChange={(e) => handleFilterChange({ target: { name: 'minFiber', value: e.target.value } })}
-                    />
-                    <input
-                        type="number"
-                        className="form-control"
-                        placeholder="Fibra máxima"
-                        value={filters.maxFiber}
-                        onChange={(e) => handleFilterChange({ target: { name: 'maxFiber', value: e.target.value } })}
-                    />
-                </div>
-                <button className="btn btn-secondary mt-3" onClick={resetFilters}>Limpiar Filtros</button>
             </div>
 
-            <table className="table">
+            {showAdvancedFilters && (
+                <div className="row mb-4 row-listfood">
+                    <div className="col-md-2 mb-3">
+                        <input
+                            type="number"
+                            className="form-control mb-2"
+                            placeholder="Calorías mínimas"
+                            value={filters.minCalories}
+                            onChange={(e) => handleFilterChange({ target: { name: 'minCalories', value: e.target.value } })}
+                        />
+                        <input
+                            type="number"
+                            className="form-control"
+                            placeholder="Calorías máximas"
+                            value={filters.maxCalories}
+                            onChange={(e) => handleFilterChange({ target: { name: 'maxCalories', value: e.target.value } })}
+                        />
+                    </div>
+                    <div className="col-md-2 mb-3">
+                        <input
+                            type="number"
+                            className="form-control mb-2"
+                            placeholder="Proteínas mínimas"
+                            value={filters.minProtein}
+                            onChange={(e) => handleFilterChange({ target: { name: 'minProtein', value: e.target.value } })}
+                        />
+                        <input
+                            type="number"
+                            className="form-control mb-2"
+                            placeholder="Proteínas máximas"
+                            value={filters.maxProtein}
+                            onChange={(e) => handleFilterChange({ target: { name: 'maxProtein', value: e.target.value } })}
+                        />
+                    </div>
+                    <div className="col-md-2 mb-3">
+                        <input
+                            type="number"
+                            className="form-control mb-2"
+                            placeholder="Carbohidratos mínimos"
+                            value={filters.minCarbohydrates}
+                            onChange={(e) => handleFilterChange({ target: { name: 'minCarbohydrates', value: e.target.value } })}
+                        />
+                        <input
+                            type="number"
+                            className="form-control mb-2"
+                            placeholder="Carbohidratos máximos"
+                            value={filters.maxCarbohydrates}
+                            onChange={(e) => handleFilterChange({ target: { name: 'maxCarbohydrates', value: e.target.value } })}
+                        />
+                    </div>
+                    <div className="col-md-2 mb-3">
+                        <input
+                            type="number"
+                            className="form-control mb-2"
+                            placeholder="Grasas mínimas"
+                            value={filters.minFat}
+                            onChange={(e) => handleFilterChange({ target: { name: 'minFat', value: e.target.value } })}
+                        />
+                        <input
+                            type="number"
+                            className="form-control mb-2"
+                            placeholder="Grasas máximas"
+                            value={filters.maxFat}
+                            onChange={(e) => handleFilterChange({ target: { name: 'maxFat', value: e.target.value } })}
+                        />
+                    </div>
+                    <div className="col-md-2 mb-3">
+                        <input
+                            type="number"
+                            className="form-control mb-2"
+                            placeholder="Azúcar mínimo"
+                            value={filters.minSugar}
+                            onChange={(e) => handleFilterChange({ target: { name: 'minSugar', value: e.target.value } })}
+                        />
+                        <input
+                            type="number"
+                            className="form-control"
+                            placeholder="Azúcar máximo"
+                            value={filters.maxSugar}
+                            onChange={(e) => handleFilterChange({ target: { name: 'maxSugar', value: e.target.value } })}
+                        />
+                    </div>
+                    <div className="col-md-2 mb-3">
+                        <input
+                            type="number"
+                            className="form-control mb-2"
+                            placeholder="Fibra mínima"
+                            value={filters.minFiber}
+                            onChange={(e) => handleFilterChange({ target: { name: 'minFiber', value: e.target.value } })}
+                        />
+                        <input
+                            type="number"
+                            className="form-control"
+                            placeholder="Fibra máxima"
+                            value={filters.maxFiber}
+                            onChange={(e) => handleFilterChange({ target: { name: 'maxFiber', value: e.target.value } })}
+                        />
+                    </div>
+                </div>
+            )}
+
+            <table className="table table-striped">
                 <thead>
                     <tr>
                         <th>Nombre</th>
@@ -293,33 +309,34 @@ function ListFood() {
                     </tr>
                 </thead>
                 <tbody>
-                    {currentFoods.map((food) => (
-                        <tr key={food.id} onClick={() => navigate(`/nutrition/foods/${food.id}`)} style={{ cursor: 'pointer' }}>
-                            <td>{food.name}</td>
-                            <td>{food.calories}</td>
-                            <td>{food.protein}</td>
-                            <td>{food.carbohydrates}</td>
-                            <td>{food.fat}</td>
-                            <td>{food.sugar}</td>
-                            <td>{food.fiber}</td>
-                            <td>{food.saturated_fat}</td>
-                            <td>
-                                <Link to={`/nutrition/edit-food/${food.id}`} className="btn btn-primary me-2">Editar</Link>
-                            </td>
-                            <td>
-                                <button onClick={(e) => { e.stopPropagation(); handleDeleteFood(food.id); }} className="btn btn-danger">Eliminar</button>
-                            </td>
+                    {Array.isArray(currentFoods) && currentFoods.length > 0 ? (
+                        currentFoods.map((food) => (
+                            <tr key={food.id} onClick={() => navigate(`/nutrition/foods/${food.id}`)} style={{ cursor: 'pointer' }}>
+                                <td>{food.name}</td>
+                                <td>{food.calories.toFixed(2)}</td>
+                                <td>{food.protein.toFixed(2)}</td>
+                                <td>{food.carbohydrates.toFixed(2)}</td>
+                                <td>{food.fat.toFixed(2)}</td>
+                                <td>{food.sugar.toFixed(2)}</td>
+                                <td>{food.fiber.toFixed(2)}</td>
+                                <td>{food.saturated_fat.toFixed(2)}</td>
+                                <td>
+                                    <Link to={`/nutrition/edit-food/${food.id}`} className="btn btn-primary me-2" onClick={(e) => e.stopPropagation()}>Editar</Link>
+                                </td>
+                                <td>
+                                    <button onClick={(e) => { e.stopPropagation(); handleDeleteFood(food.id); }} className="btn btn-danger">Eliminar</button>
+                                </td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan="10" className="text-center">No se encontraron alimentos que coincidan con los filtros seleccionados.</td>
                         </tr>
-                    ))}
+                    )}
                 </tbody>
             </table>
-            {filteredFoods.length === 0 && (
-                <div className="alert alert-info" role="alert">
-                    No se encontraron alimentos que coincidan con los filtros seleccionados.
-                </div>
-            )}
 
-            <div className="pagination">
+            <div className="pagination-listfood">
                 <button
                     disabled={currentPage === 0}
                     onClick={() => setCurrentPage(currentPage - 1)}

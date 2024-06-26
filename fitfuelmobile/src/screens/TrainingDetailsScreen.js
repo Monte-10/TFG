@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
 import { fetchTrainingDetails } from '../api/trainingApi';
 import { Button } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function TrainingDetailsScreen({ route }) {
   const { trainingId } = route.params;
@@ -11,12 +12,22 @@ function TrainingDetailsScreen({ route }) {
 
   useEffect(() => {
     const loadTrainingDetails = async () => {
-      const details = await fetchTrainingDetails(trainingId);
-      console.log('Detalles del training:', details);
-      setTrainingDetails(details);
+      try {
+        const authToken = await AsyncStorage.getItem('authToken');
+        if (!authToken) {
+          throw new Error('AuthToken not found');
+        }
+
+        const details = await fetchTrainingDetails(trainingId, authToken);
+        console.log('Detalles del training:', details);
+        setTrainingDetails(details);
+      } catch (error) {
+        console.error('Error loading training details:', error);
+      }
     };
+
     loadTrainingDetails();
-  }, [trainingId]); // trainingId es ahora una constante fija, pero lo mantenemos aquí para mantener la consistencia.
+  }, [trainingId]);
 
   return (
     <View style={styles.container}>
@@ -30,22 +41,61 @@ function TrainingDetailsScreen({ route }) {
             {item.exercise.image && (
               <Image source={{ uri: item.exercise.image }} style={styles.image} />
             )}
-            <Text>Descripción: {item.exercise.description}</Text>
-            <Text>Tipo: {item.exercise.type}</Text>
-            <Text>Repeticiones: {item.repetitions}</Text>
-            <Text>Series: {item.sets}</Text>
-            {item.weight ? <Text>Peso: {item.weight}</Text> : null}
-            {item.time ? <Text>Tiempo: {item.time}</Text> : null}
+            <Text style={styles.text}>Descripción: {item.exercise.description}</Text>
+            <Text style={styles.text}>Tipo: {item.exercise.type}</Text>
+            <Text style={styles.text}>Repeticiones: {item.repetitions}</Text>
+            <Text style={styles.text}>Series: {item.sets}</Text>
+            {item.weight ? <Text style={styles.text}>Peso: {item.weight}</Text> : null}
+            {item.time ? <Text style={styles.text}>Tiempo: {item.time}</Text> : null}
           </View>
         )}
       />
-      <Button title="Empezar Entrenamiento" onPress={() => navigation.navigate('RestTimeConfigScreen', { trainingDetails })}/>
+      <Button
+        title="Empezar Entrenamiento"
+        buttonStyle={styles.button}
+        onPress={() => navigation.navigate('RestTimeConfigScreen', { trainingDetails })}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#1e1e1e',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+    color: '#28a745',
+  },
+  exerciseContainer: {
+    marginBottom: 20,
+    padding: 15,
+    backgroundColor: '#333',
+    borderRadius: 10,
+  },
+  exerciseTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#28a745',
+  },
+  image: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'contain',
+    marginVertical: 10,
+  },
+  text: {
+    color: '#fff',
+  },
+  button: {
+    backgroundColor: '#28a745',
+    marginVertical: 10,
+  },
 });
 
 export default TrainingDetailsScreen;

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './Login.css'; // Importar el nuevo archivo de estilos
 
 function Login({ onLoginSuccess }) {
     const [username, setUsername] = useState('');
@@ -38,17 +39,16 @@ function Login({ onLoginSuccess }) {
     };
 
     return (
-        <main className="main">
-            <div className="container">
-                <section className="section login d-flex align-items-center justify-content-center py-4">
-                    <div className="container">
-                        <div className="row justify-content-center">
-                            <div className="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
-                                <div className="card mb-3">
+            <div className="container-login">
+                <section className="section-login d-flex align-items-center justify-content-center py-4">
+                    <div className="container-login-inner">
+                        <div className="row-login justify-content-center">
+                            <div className="col-login">
+                                <div className="card-login mb-3">
                                     <div className="card-body">
                                         <div className="pt-4 pb-2">
-                                            <h5 className="card-title text-center pb-0 fs-4">Login to Your Account</h5>
-                                            <p className="text-center small">Enter your username & password to login</p>
+                                            <h5 className="card-title text-center pb-0 fs-4">Login</h5>
+                                            <p className="text-center small">Introduce tu Usuario y Contraseña</p>
                                         </div>
 
                                         <form className="row g-3 needs-validation" noValidate onSubmit={handleSubmit}>
@@ -72,7 +72,6 @@ function Login({ onLoginSuccess }) {
                     </div>
                 </section>
             </div>
-        </main>
     );
 }
 
