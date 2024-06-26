@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure--r28um1k$jb0$mbe4+6#@t&1t0j_9jp&u)s9t21dlrr6@elask'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['10.0.2.2', '127.0.0.1', 'localhost', 'tfg-691w.onrender.com', 'https://fitfuelbalance.onrender.com']
 
