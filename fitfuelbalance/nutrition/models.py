@@ -42,119 +42,134 @@ class Ingredient(models.Model):
     name = models.CharField(max_length=100)
     food = models.ForeignKey(Food, on_delete=models.CASCADE)
     quantity = models.FloatField(default=0)
-    
+    unit_based = models.BooleanField(default=False)
+
     @property
     def calories(self):
+        if self.unit_based:
+            return self.food.calories * (self.quantity * self.food.unit_weight / 100)
         return self.food.calories * self.quantity / 100
-    
+
     @property
     def protein(self):
+        if self.unit_based:
+            return self.food.protein * (self.quantity * self.food.unit_weight / 100)
         return self.food.protein * self.quantity / 100
-    
+
     @property
     def carbohydrates(self):
+        if self.unit_based:
+            return self.food.carbohydrates * (self.quantity * self.food.unit_weight / 100)
         return self.food.carbohydrates * self.quantity / 100
-    
+
     @property
     def sugar(self):
+        if self.unit_based:
+            return self.food.sugar * (self.quantity * self.food.unit_weight / 100)
         return self.food.sugar * self.quantity / 100
-    
+
     @property
     def fiber(self):
+        if self.unit_based:
+            return self.food.fiber * (self.quantity * self.food.unit_weight / 100)
         return self.food.fiber * self.quantity / 100
-    
+
     @property
     def fat(self):
+        if self.unit_based:
+            return self.food.fat * (self.quantity * self.food.unit_weight / 100)
         return self.food.fat * self.quantity / 100
-    
+
     @property
     def saturated_fat(self):
+        if self.unit_based:
+            return self.food.saturated_fat * (self.quantity * self.food.unit_weight / 100)
         return self.food.saturated_fat * self.quantity / 100
-    
+
     @property
     def gluten_free(self):
         return self.food.gluten_free
-    
+
     @property
     def lactose_free(self):
         return self.food.lactose_free
-    
+
     @property
     def vegan(self):
         return self.food.vegan
-    
+
     @property
     def vegetarian(self):
         return self.food.vegetarian
-    
+
     @property
     def pescetarian(self):
         return self.food.pescetarian
-    
+
     @property
     def contains_meat(self):
         return self.food.contains_meat
-    
+
     @property
     def contains_vegetables(self):
         return self.food.contains_vegetables
-    
+
     @property
     def contains_fish_shellfish_canned_preserved(self):
         return self.food.contains_fish_shellfish_canned_preserved
-    
+
     @property
     def cereal(self):
         return self.food.cereal
-    
+
     @property
     def pasta_or_rice(self):
         return self.food.pasta_or_rice
-    
+
     @property
     def dairy_yogurt_cheese(self):
         return self.food.dairy_yogurt_cheese
-    
+
     @property
     def fruit(self):
         return self.food.fruit
-    
+
     @property
     def nuts(self):
         return self.food.nuts
-    
+
     @property
     def legume(self):
         return self.food.legume
-    
+
     @property
     def sauce_or_condiment(self):
         return self.food.sauce_or_condiment
-    
+
     @property
     def deli_meat(self):
         return self.food.deli_meat
-    
+
     @property
     def bread_or_toast(self):
         return self.food.bread_or_toast
-    
+
     @property
     def egg(self):
         return self.food.egg
-    
+
     @property
     def special_drink_or_supplement(self):
         return self.food.special_drink_or_supplement
-    
+
     @property
     def tuber(self):
         return self.food.tuber
-    
+
     @property
     def other(self):
         return self.food.other
-    
+
     def __str__(self):
         return str(self.name)
     
@@ -856,3 +871,75 @@ class AssignedOption(models.Model):
         if not self.pdf_url:
             self.pdf_url = f'{settings.MEDIA_URL}pdfs/{self.option.name}.pdf'
         super().save(*args, **kwargs)
+        
+class Plan(models.Model):
+    name = models.CharField(max_length=100)
+    user = models.ForeignKey('user.RegularUser', on_delete=models.CASCADE)
+    start_date = models.DateField()
+    end_date = models.DateField()
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def duration(self):
+        return (self.end_date - self.start_date).days + 1
+    
+class CustomMeal(models.Model):
+    plan = models.ForeignKey(Plan, on_delete=models.CASCADE)
+    meal_number = models.PositiveIntegerField()
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.name} (Meal {self.meal_number})"
+    
+class CustomMealIngredient(models.Model):
+    custom_meal = models.ForeignKey(CustomMeal, on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    quantity = models.FloatField(default=0)
+    unit_based = models.BooleanField(default=False)
+
+    @property
+    def calories(self):
+        if self.unit_based:
+            return self.ingredient.food.calories * (self.quantity * self.ingredient.food.unit_weight / 100)
+        return self.ingredient.food.calories * self.quantity / 100
+
+    @property
+    def protein(self):
+        if self.unit_based:
+            return self.ingredient.food.protein * (self.quantity * self.ingredient.food.unit_weight / 100)
+        return self.ingredient.food.protein * self.quantity / 100
+
+    @property
+    def carbohydrates(self):
+        if self.unit_based:
+            return self.ingredient.food.carbohydrates * (self.quantity * self.ingredient.food.unit_weight / 100)
+        return self.ingredient.food.carbohydrates * self.quantity / 100
+
+    @property
+    def sugar(self):
+        if self.unit_based:
+            return self.ingredient.food.sugar * (self.quantity * self.ingredient.food.unit_weight / 100)
+        return self.ingredient.food.sugar * self.quantity / 100
+
+    @property
+    def fiber(self):
+        if self.unit_based:
+            return self.ingredient.food.fiber * (self.quantity * self.ingredient.food.unit_weight / 100)
+        return self.ingredient.food.fiber * self.quantity / 100
+
+    @property
+    def fat(self):
+        if self.unit_based:
+            return self.ingredient.food.fat * (self.quantity * self.ingredient.food.unit_weight / 100)
+        return self.ingredient.food.fat * self.quantity / 100
+
+    @property
+    def saturated_fat(self):
+        if self.unit_based:
+            return self.ingredient.food.saturated_fat * (self.quantity * self.ingredient.food.unit_weight / 100)
+        return self.ingredient.food.saturated_fat * self.quantity / 100
+
+    def __str__(self):
+        return f"{self.ingredient.name} ({self.quantity} {'units' if self.unit_based else 'grams'})"
